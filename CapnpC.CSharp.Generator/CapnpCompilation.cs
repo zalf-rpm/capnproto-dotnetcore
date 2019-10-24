@@ -15,6 +15,8 @@ namespace CapnpC.CSharp.Generator
     /// </summary>
     public static class CapnpCompilation
     {
+        readonly public static HashSet<(string, string)> existingExtensionMethods = new HashSet<(string, string)>();
+
         /// <summary>
         /// Generates C# code from given input stream
         /// </summary>
@@ -32,7 +34,7 @@ namespace CapnpC.CSharp.Generator
                 var dec = DeserializerState.CreateRoot(segments);
                 var reader = Schema.CodeGeneratorRequest.Reader.Create(dec);
                 var model = Model.SchemaModel.Create(reader);
-                var codeGen = new CodeGen.CodeGenerator(model, new CodeGen.GeneratorOptions());
+                var codeGen = new CodeGen.CodeGenerator(model, new CodeGen.GeneratorOptions(), existingExtensionMethods);
                 return new GenerationResult(codeGen.Generate());
             }
             catch (Exception exception)

@@ -21,7 +21,7 @@
         readonly WriterSnippetGen _writerGen;
         readonly InterfaceSnippetGen _interfaceGen;
 
-        public CodeGenerator(SchemaModel model, GeneratorOptions options)
+        public CodeGenerator(SchemaModel model, GeneratorOptions options, HashSet<(string, string)> existingExtensionMethods)
         {
             _model = model;
             _names = new GenNames(options);
@@ -29,7 +29,7 @@
             _domClassGen = new DomainClassSnippetGen(_names);
             _readerGen = new ReaderSnippetGen(_names);
             _writerGen = new WriterSnippetGen(_names);
-            _interfaceGen = new InterfaceSnippetGen(_names);
+            _interfaceGen = new InterfaceSnippetGen(_names, existingExtensionMethods);
         }
 
         internal GenNames GetNames() => _names;

@@ -104,7 +104,7 @@ namespace CapnpC.CSharp.Generator.Tests
         }
 
         static CodeGen.CodeGenerator NewGeneratorFor(Model.SchemaModel model)
-            => new CodeGen.CodeGenerator(model, new CodeGen.GeneratorOptions());
+            => new CodeGen.CodeGenerator(model, new CodeGen.GeneratorOptions(), CapnpCompilation.existingExtensionMethods);
 
         Run LoadAndGenerate(string inputName, int? testNum = null)
         {

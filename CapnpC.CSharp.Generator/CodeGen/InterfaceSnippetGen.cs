@@ -14,10 +14,12 @@ namespace CapnpC.CSharp.Generator.CodeGen
     class InterfaceSnippetGen
     {
         readonly GenNames _names;
+        readonly HashSet<(string, string)> _existingExtensionMethods;
 
-        public InterfaceSnippetGen(GenNames names)
+        public InterfaceSnippetGen(GenNames names, HashSet<(string, string)> existingExtensionMethods)
         {
             _names = names;
+            _existingExtensionMethods = existingExtensionMethods;
         }
 
         TypeSyntax TransformReturnType(Method method)
@@ -758,7 +760,7 @@ namespace CapnpC.CSharp.Generator.CodeGen
             }
         }
 
-        readonly HashSet<(string, string)> _existingExtensionMethods = new HashSet<(string, string)>();
+        //readonly HashSet<(string, string)> _existingExtensionMethods = new HashSet<(string, string)>();
 
         public IEnumerable<MemberDeclarationSyntax> MakePipeliningSupport(TypeDefinition type)
         {
