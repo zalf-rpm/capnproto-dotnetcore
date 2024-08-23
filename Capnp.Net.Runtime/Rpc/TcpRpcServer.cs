@@ -180,6 +180,11 @@ namespace Capnp.Rpc
         TcpListener? _listener;
 
         /// <summary>
+        /// Gets the Port number being used.
+        /// </summary>
+        public int Port { get { return (_listener?.LocalEndpoint is IPEndPoint ep) ? ep.Port : 0; } }
+
+        /// <summary>
         /// Gets the number of currently active inbound TCP connections.
         /// </summary>
         public int ConnectionCount { get; private set; }
