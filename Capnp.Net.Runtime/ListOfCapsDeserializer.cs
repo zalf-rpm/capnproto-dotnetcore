@@ -13,6 +13,10 @@ namespace Capnp
     {
         internal ListOfCapsDeserializer(in DeserializerState state) : base(state)
         {
+            // increase ref count to transfer ownership on result deserialization
+            // and to prevent disposing caps on DeserializeState disposal before
+            // user could access the caps in the list (which causes proxy creation and AddRef)
+            foreach(var cap in state.Caps ?? []) cap.AddRef();
             Rpc.CapabilityReflection.ValidateCapabilityInterface(typeof(T));
         }
 
