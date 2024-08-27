@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Capnp</RootNamespace>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>12</LangVersion>
     <Nullable>Enable</Nullable>
     <WarningsAsErrors>CS8600;CS8602;CS8603</WarningsAsErrors>
     <AssemblyName>Capnp.Net.Runtime</AssemblyName>
@@ -26,6 +25,7 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>  
+    <TargetFramework>net8.0</TargetFramework>  
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">

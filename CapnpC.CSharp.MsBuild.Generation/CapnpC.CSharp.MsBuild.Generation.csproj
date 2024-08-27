@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net471;netcoreapp2.1</TargetFrameworks>
     <SignAssembly>false</SignAssembly>
     
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -13,6 +12,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>..\bin\$(Configuration)</PackageOutputPath>
     <Configurations>Debug;Release</Configurations>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   
   <ItemGroup>
