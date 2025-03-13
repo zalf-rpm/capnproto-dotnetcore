@@ -1,44 +1,48 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+    <PropertyGroup>
 
-    <IsPackable>false</IsPackable>
+        <IsPackable>false</IsPackable>
 
-    <LangVersion>7.1</LangVersion>
+        <LangVersion>13.0</LangVersion>
 
-    <OutputType>Library</OutputType>
+        <OutputType>Library</OutputType>
 
-    <Configurations>Debug;Release</Configurations>
+        <Configurations>Debug;Release</Configurations>
 
-    <RootNamespace>Capnp.Net.Runtime.Tests</RootNamespace>
+        <RootNamespace>Capnp.Net.Runtime.Tests</RootNamespace>
 
-    <TargetFramework>net8.0</TargetFramework>
-  </PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
-    <DefineConstants>TRACE</DefineConstants>
-  </PropertyGroup>
+    <PropertyGroup
+            Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0|AnyCPU'">
+        <DefineConstants>TRACE</DefineConstants>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="1.2.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
-    <PackageReference Include="System.IO.Pipelines" Version="4.7.0" />
-    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.10.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="6.0.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.2"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.2"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0"/>
+        <PackageReference Include="MSTest.TestAdapter" Version="3.8.2"/>
+        <PackageReference Include="MSTest.TestFramework" Version="3.8.2"/>
+        <PackageReference Include="System.IO.Pipelines" Version="9.0.2"/>
+        <PackageReference Include="System.Threading.Tasks.Dataflow" Version="9.0.2"/>
+        <PackageReference Update="Nerdbank.GitVersioning">
+            <Version>3.7.115</Version>
+        </PackageReference>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Capnp.Net.Runtime\Capnp.Net.Runtime.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Capnp.Net.Runtime\Capnp.Net.Runtime.csproj"/>
+    </ItemGroup>
 
 </Project>

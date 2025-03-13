@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
-    
+
 <Rule
     Name="Capnp"
     DisplayName="Cap'n Proto"
     PageTemplate="tool"
-    Description="Cap'n Proto schema file" 
+    Description="Cap'n Proto schema file"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.DataSource>
@@ -32,15 +33,18 @@
     <!--<BoolProperty Name="Exclude" DisplayName="Exclude from build" Category="Misc" Visible="True"
                   Description="Whether to skip code generation for this item"/>-->
 
-    <StringProperty Name="WorkingDirectory" DisplayName="Working Directory" ReadOnly="false" Category="Misc" Visible="True"
-                    Subtype="Folder" Description="Working directory for capnp"/>
+    <StringProperty Name="WorkingDirectory" DisplayName="Working Directory" ReadOnly="false" Category="Misc"
+                    Visible="True"
+                    Subtype="Folder" Description="Working directory for capnp" />
 
     <StringListProperty Name="ImportPaths" DisplayName="Import Paths" Category="Misc" Visible="True" Subtype="Folder"
-                        Description="List of directories searched for non-relative imports (ones that start with a '/')"/>
+                        Description="List of directories searched for non-relative imports (ones that start with a '/')" />
 
-    <StringProperty Name="SourcePrefix" DisplayName="Source Prefix" Switch="src-prefix" SwitchPrefix="--" Category="Misc" Visible="True"
-                    Description="If a file specified for compilation starts with the specified prefix, remove the prefix for the purpose of deciding the names of output files."/>
+    <StringProperty Name="SourcePrefix" DisplayName="Source Prefix" Switch="src-prefix" SwitchPrefix="--"
+                    Category="Misc" Visible="True"
+                    Description="If a file specified for compilation starts with the specified prefix, remove the prefix for the purpose of deciding the names of output files." />
 
-    <BoolProperty Name="Verbose" DisplayName="Verbose" Switch="verbose" SwitchPrefix="--" Category="Misc" Visible="True"
-                  Description="Log informational messages to stderr; useful for debugging."/>
+    <BoolProperty Name="Verbose" DisplayName="Verbose" Switch="verbose" SwitchPrefix="--" Category="Misc"
+                  Visible="True"
+                  Description="Log informational messages to stderr; useful for debugging." />
 </Rule>

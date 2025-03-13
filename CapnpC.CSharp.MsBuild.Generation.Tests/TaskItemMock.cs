@@ -1,42 +1,37 @@
 ﻿using System.Collections;
 using Microsoft.Build.Framework;
 
-namespace CapnpC.CSharp.MsBuild.Generation.Tests
+namespace CapnpC.CSharp.MsBuild.Generation.Tests;
+
+internal class TaskItemMock : ITaskItem
 {
+    public string ItemSpec { get; set; }
 
-    class TaskItemMock : ITaskItem
+    public ICollection MetadataNames => null;
+
+    public int MetadataCount => 0;
+
+    public IDictionary CloneCustomMetadata()
     {
-        public string ItemSpec { get; set; }
+        return null;
+    }
 
-        public ICollection MetadataNames => null;
+    public void CopyMetadataTo(ITaskItem destinationItem)
+    {
+    }
 
-        public int MetadataCount => 0;
+    public string GetMetadata(string metadataName)
+    {
+        if (metadataName == "FullPath") return ItemSpec;
 
-        public IDictionary CloneCustomMetadata()
-        {
-            return null;
-        }
+        return string.Empty;
+    }
 
-        public void CopyMetadataTo(ITaskItem destinationItem)
-        {
-        }
+    public void RemoveMetadata(string metadataName)
+    {
+    }
 
-        public string GetMetadata(string metadataName)
-        {
-            if (metadataName == "FullPath")
-            {
-                return ItemSpec;
-            }
-
-            return string.Empty;
-        }
-
-        public void RemoveMetadata(string metadataName)
-        {
-        }
-
-        public void SetMetadata(string metadataName, string metadataValue)
-        {
-        }
+    public void SetMetadata(string metadataName, string metadataValue)
+    {
     }
 }

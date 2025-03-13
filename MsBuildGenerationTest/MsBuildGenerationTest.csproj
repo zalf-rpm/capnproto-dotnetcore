@@ -1,77 +1,78 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>Enable</Nullable>
-    <Configurations>Debug;Release</Configurations>
-    <PackageReferenceVersion Condition="'$(PackageReferenceVersion)'==''">$(Version)*</PackageReferenceVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net9.0</TargetFramework>
+		<LangVersion>13.0</LangVersion>
+		<Nullable>Enable</Nullable>
+		<Configurations>Debug;Release</Configurations>
+		<PackageReferenceVersion Condition="'$(PackageReferenceVersion)'==''">$(Version)*</PackageReferenceVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <CapnpCsharpObsoleteCodeBehindFiles Remove="capnp\bergm.capnp.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<CapnpCsharpObsoleteCodeBehindFiles Remove="capnp\bergm.capnp.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="capnp\bergm.capnp.bin" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="capnp\bergm.capnp.bin" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <CapnpFiles Include="Issue25.capnp" />
-  </ItemGroup>
+	<ItemGroup>
+		<CapnpFiles Include="Issue25.capnp" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Capnp.Net.Runtime" Version="$(PackageReferenceVersion)" />
-    <PackageReference Include="CapnpC.CSharp.MsBuild.Generation" Version="$(PackageReferenceVersion)" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Capnp.Net.Runtime" Version="$(PackageReferenceVersion)" />
+		<PackageReference Include="CapnpC.CSharp.MsBuild.Generation"
+			Version="$(PackageReferenceVersion)" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <CapnpFiles Update="capnp\c++.capnp">
-      <WorkingDirectory>$(ProjectDir)</WorkingDirectory>
-      <Verbose Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">true</Verbose>
-    </CapnpFiles>
-    <CapnpFiles Update="capnp\compat\json-test.capnp">
-      <WorkingDirectory>$(ProjectDir)</WorkingDirectory>
-      <ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
-    </CapnpFiles>
-    <CapnpFiles Update="capnp\compat\json.capnp">
-      <WorkingDirectory>$(ProjectDir)</WorkingDirectory>
-      <ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
-    </CapnpFiles>
-    <CapnpFiles Update="capnp\persistent.capnp">
-      <ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
-    </CapnpFiles>
-    <CapnpFiles Update="capnp\rpc-twoparty.capnp">
-      <WorkingDirectory>$(ProjectDir)</WorkingDirectory>
-      <ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
-    </CapnpFiles>
-    <CapnpFiles Update="capnp\rpc.capnp">
-      <WorkingDirectory>$(ProjectDir)</WorkingDirectory>
-      <ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
-    </CapnpFiles>
-    <CapnpFiles Update="capnp\schema.capnp">
-      <WorkingDirectory>$(ProjectDir)</WorkingDirectory>
-      <ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
-    </CapnpFiles>
-    <CapnpFiles Update="capnp\test-import.capnp">
-      <WorkingDirectory>$(ProjectDir)</WorkingDirectory>
-      <ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
-    </CapnpFiles>
-    <CapnpFiles Update="capnp\test-import2.capnp">
-      <WorkingDirectory>$(ProjectDir)</WorkingDirectory>
-      <ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
-    </CapnpFiles>
-    <CapnpFiles Update="capnp\test.capnp">
-      <WorkingDirectory>$(ProjectDir)</WorkingDirectory>
-      <ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
-    </CapnpFiles>
-  </ItemGroup>
+	<ItemGroup>
+		<CapnpFiles Update="capnp\c++.capnp">
+			<WorkingDirectory>$(ProjectDir)</WorkingDirectory>
+			<Verbose Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">true</Verbose>
+		</CapnpFiles>
+		<CapnpFiles Update="capnp\compat\json-test.capnp">
+			<WorkingDirectory>$(ProjectDir)</WorkingDirectory>
+			<ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
+		</CapnpFiles>
+		<CapnpFiles Update="capnp\compat\json.capnp">
+			<WorkingDirectory>$(ProjectDir)</WorkingDirectory>
+			<ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
+		</CapnpFiles>
+		<CapnpFiles Update="capnp\persistent.capnp">
+			<ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
+		</CapnpFiles>
+		<CapnpFiles Update="capnp\rpc-twoparty.capnp">
+			<WorkingDirectory>$(ProjectDir)</WorkingDirectory>
+			<ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
+		</CapnpFiles>
+		<CapnpFiles Update="capnp\rpc.capnp">
+			<WorkingDirectory>$(ProjectDir)</WorkingDirectory>
+			<ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
+		</CapnpFiles>
+		<CapnpFiles Update="capnp\schema.capnp">
+			<WorkingDirectory>$(ProjectDir)</WorkingDirectory>
+			<ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
+		</CapnpFiles>
+		<CapnpFiles Update="capnp\test-import.capnp">
+			<WorkingDirectory>$(ProjectDir)</WorkingDirectory>
+			<ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
+		</CapnpFiles>
+		<CapnpFiles Update="capnp\test-import2.capnp">
+			<WorkingDirectory>$(ProjectDir)</WorkingDirectory>
+			<ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
+		</CapnpFiles>
+		<CapnpFiles Update="capnp\test.capnp">
+			<WorkingDirectory>$(ProjectDir)</WorkingDirectory>
+			<ImportPaths>$(ProjectDir);%(ImportPaths)</ImportPaths>
+		</CapnpFiles>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="issue19.capnp.cs">
-      <DependentUpon>Issue19.capnp</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="issue19.capnp.cs">
+			<DependentUpon>Issue19.capnp</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
 </Project>

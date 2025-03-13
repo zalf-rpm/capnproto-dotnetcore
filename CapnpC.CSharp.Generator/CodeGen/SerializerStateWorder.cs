@@ -1,10 +1,9 @@
 ﻿using Capnp;
 
-namespace CapnpC.CSharp.Generator.CodeGen
+namespace CapnpC.CSharp.Generator.CodeGen;
+
+internal class SerializerStateWorder : SerializerState
 {
-    class SerializerStateWorder: SerializerState
-    {
-        public const string LinkName = nameof(SerializerStateWorder.Link);
-        public const string SetStructName = nameof(SerializerStateWorder.SetStruct);
-    }
+    public const string LinkName = nameof(Link);
+    public const string SetStructName = nameof(SetStruct);
 }

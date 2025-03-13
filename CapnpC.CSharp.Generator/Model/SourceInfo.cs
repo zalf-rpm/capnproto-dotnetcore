@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace CapnpC.CSharp.Generator.Model
+namespace CapnpC.CSharp.Generator.Model;
+
+internal class SourceInfo
 {
-    class SourceInfo
-    {
-        public string DocComment { get; set; }
-        public IReadOnlyList<string> MemberDocComments { get; set; }
-    }
+    public string DocComment { get; set; }
+    public IReadOnlyList<string> MemberDocComments { get; set; }
 }

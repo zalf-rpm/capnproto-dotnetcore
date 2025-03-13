@@ -1,219 +1,235 @@
 ﻿using Capnp;
-using Capnp.Rpc;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace CapnpGen
+namespace CapnpGen;
+
+[TypeId(0xb706e295e5860f3dUL)]
+public class RpcRequest<TRequest> : ICapnpSerializable where TRequest : class
 {
-    [TypeId(0xb706e295e5860f3dUL)]
-    public class RpcRequest<TRequest> : ICapnpSerializable where TRequest : class
+    public const ulong typeId = 0xb706e295e5860f3dUL;
+
+    public string Method { get; set; }
+
+    public TRequest Request { get; set; }
+
+    void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        public const UInt64 typeId = 0xb706e295e5860f3dUL;
-        void ICapnpSerializable.Deserialize(DeserializerState arg_)
+        var reader = READER.create(arg_);
+        Method = reader.Method;
+        Request = CapnpSerializable.Create<TRequest>(reader.Request);
+        applyDefaults();
+    }
+
+    void ICapnpSerializable.Serialize(SerializerState arg_)
+    {
+        serialize(arg_.Rewrap<WRITER>());
+    }
+
+    public void serialize(WRITER writer)
+    {
+        writer.Method = Method;
+        writer.Request.SetObject(Request);
+    }
+
+    public void applyDefaults()
+    {
+    }
+
+    public struct READER
+    {
+        private readonly DeserializerState ctx;
+
+        public READER(DeserializerState ctx)
         {
-            var reader = READER.create(arg_);
-            Method = reader.Method;
-            Request = CapnpSerializable.Create<TRequest>(reader.Request);
-            applyDefaults();
+            this.ctx = ctx;
         }
 
-        public void serialize(WRITER writer)
+        public static READER create(DeserializerState ctx)
         {
-            writer.Method = Method;
-            writer.Request.SetObject(Request);
+            return new READER(ctx);
         }
 
-        void ICapnpSerializable.Serialize(SerializerState arg_)
+        public static implicit operator DeserializerState(READER reader)
         {
-            serialize(arg_.Rewrap<WRITER>());
+            return reader.ctx;
         }
 
-        public void applyDefaults()
+        public static implicit operator READER(DeserializerState ctx)
         {
+            return new READER(ctx);
+        }
+
+        public string Method => ctx.ReadText(0, "");
+        public DeserializerState Request => ctx.StructReadPointer(1);
+    }
+
+    public class WRITER : SerializerState
+    {
+        public WRITER()
+        {
+            SetStruct(0, 2);
         }
 
         public string Method
         {
-            get;
-            set;
+            get => ReadText(0, "");
+            set => WriteText(0, value, "");
         }
 
-        public TRequest Request
+        public DynamicSerializerState Request
         {
-            get;
-            set;
-        }
-
-        public struct READER
-        {
-            readonly DeserializerState ctx;
-            public READER(DeserializerState ctx)
-            {
-                this.ctx = ctx;
-            }
-
-            public static READER create(DeserializerState ctx) => new READER(ctx);
-            public static implicit operator DeserializerState(READER reader) => reader.ctx;
-            public static implicit operator READER(DeserializerState ctx) => new READER(ctx);
-            public string Method => ctx.ReadText(0, "");
-            public DeserializerState Request => ctx.StructReadPointer(1);
-        }
-
-        public class WRITER : SerializerState
-        {
-            public WRITER()
-            {
-                this.SetStruct(0, 2);
-            }
-
-            public string Method
-            {
-                get => this.ReadText(0, "");
-                set => this.WriteText(0, value, "");
-            }
-
-            public DynamicSerializerState Request
-            {
-                get => BuildPointer<DynamicSerializerState>(1);
-                set => Link(1, value);
-            }
+            get => BuildPointer<DynamicSerializerState>(1);
+            set => Link(1, value);
         }
     }
+}
 
-    [TypeId(0xca749dac8d513c9fUL)]
-    public class ArithmeticOperationRequest : ICapnpSerializable
+[TypeId(0xca749dac8d513c9fUL)]
+public class ArithmeticOperationRequest : ICapnpSerializable
+{
+    public const ulong typeId = 0xca749dac8d513c9fUL;
+
+    public int NumA { get; set; }
+
+    public int NumB { get; set; }
+
+    void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        public const UInt64 typeId = 0xca749dac8d513c9fUL;
-        void ICapnpSerializable.Deserialize(DeserializerState arg_)
+        var reader = READER.create(arg_);
+        NumA = reader.NumA;
+        NumB = reader.NumB;
+        applyDefaults();
+    }
+
+    void ICapnpSerializable.Serialize(SerializerState arg_)
+    {
+        serialize(arg_.Rewrap<WRITER>());
+    }
+
+    public void serialize(WRITER writer)
+    {
+        writer.NumA = NumA;
+        writer.NumB = NumB;
+    }
+
+    public void applyDefaults()
+    {
+    }
+
+    public struct READER
+    {
+        private readonly DeserializerState ctx;
+
+        public READER(DeserializerState ctx)
         {
-            var reader = READER.create(arg_);
-            NumA = reader.NumA;
-            NumB = reader.NumB;
-            applyDefaults();
+            this.ctx = ctx;
         }
 
-        public void serialize(WRITER writer)
+        public static READER create(DeserializerState ctx)
         {
-            writer.NumA = NumA;
-            writer.NumB = NumB;
+            return new READER(ctx);
         }
 
-        void ICapnpSerializable.Serialize(SerializerState arg_)
+        public static implicit operator DeserializerState(READER reader)
         {
-            serialize(arg_.Rewrap<WRITER>());
+            return reader.ctx;
         }
 
-        public void applyDefaults()
+        public static implicit operator READER(DeserializerState ctx)
         {
+            return new READER(ctx);
+        }
+
+        public int NumA => ctx.ReadDataInt(0UL);
+        public int NumB => ctx.ReadDataInt(32UL);
+    }
+
+    public class WRITER : SerializerState
+    {
+        public WRITER()
+        {
+            SetStruct(1, 0);
         }
 
         public int NumA
         {
-            get;
-            set;
+            get => this.ReadDataInt(0UL);
+            set => this.WriteData(0UL, value);
         }
 
         public int NumB
         {
-            get;
-            set;
-        }
-
-        public struct READER
-        {
-            readonly DeserializerState ctx;
-            public READER(DeserializerState ctx)
-            {
-                this.ctx = ctx;
-            }
-
-            public static READER create(DeserializerState ctx) => new READER(ctx);
-            public static implicit operator DeserializerState(READER reader) => reader.ctx;
-            public static implicit operator READER(DeserializerState ctx) => new READER(ctx);
-            public int NumA => ctx.ReadDataInt(0UL, 0);
-            public int NumB => ctx.ReadDataInt(32UL, 0);
-        }
-
-        public class WRITER : SerializerState
-        {
-            public WRITER()
-            {
-                this.SetStruct(1, 0);
-            }
-
-            public int NumA
-            {
-                get => this.ReadDataInt(0UL, 0);
-                set => this.WriteData(0UL, value, 0);
-            }
-
-            public int NumB
-            {
-                get => this.ReadDataInt(32UL, 0);
-                set => this.WriteData(32UL, value, 0);
-            }
+            get => this.ReadDataInt(32UL);
+            set => this.WriteData(32UL, value);
         }
     }
+}
 
-    [TypeId(0xc64f52df07418506UL)]
-    public class ArithmeticOperationReply : ICapnpSerializable
+[TypeId(0xc64f52df07418506UL)]
+public class ArithmeticOperationReply : ICapnpSerializable
+{
+    public const ulong typeId = 0xc64f52df07418506UL;
+
+    public int Result { get; set; }
+
+    void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        public const UInt64 typeId = 0xc64f52df07418506UL;
-        void ICapnpSerializable.Deserialize(DeserializerState arg_)
+        var reader = READER.create(arg_);
+        Result = reader.Result;
+        applyDefaults();
+    }
+
+    void ICapnpSerializable.Serialize(SerializerState arg_)
+    {
+        serialize(arg_.Rewrap<WRITER>());
+    }
+
+    public void serialize(WRITER writer)
+    {
+        writer.Result = Result;
+    }
+
+    public void applyDefaults()
+    {
+    }
+
+    public struct READER
+    {
+        private readonly DeserializerState ctx;
+
+        public READER(DeserializerState ctx)
         {
-            var reader = READER.create(arg_);
-            Result = reader.Result;
-            applyDefaults();
+            this.ctx = ctx;
         }
 
-        public void serialize(WRITER writer)
+        public static READER create(DeserializerState ctx)
         {
-            writer.Result = Result;
+            return new READER(ctx);
         }
 
-        void ICapnpSerializable.Serialize(SerializerState arg_)
+        public static implicit operator DeserializerState(READER reader)
         {
-            serialize(arg_.Rewrap<WRITER>());
+            return reader.ctx;
         }
 
-        public void applyDefaults()
+        public static implicit operator READER(DeserializerState ctx)
         {
+            return new READER(ctx);
+        }
+
+        public int Result => ctx.ReadDataInt(0UL);
+    }
+
+    public class WRITER : SerializerState
+    {
+        public WRITER()
+        {
+            SetStruct(1, 0);
         }
 
         public int Result
         {
-            get;
-            set;
-        }
-
-        public struct READER
-        {
-            readonly DeserializerState ctx;
-            public READER(DeserializerState ctx)
-            {
-                this.ctx = ctx;
-            }
-
-            public static READER create(DeserializerState ctx) => new READER(ctx);
-            public static implicit operator DeserializerState(READER reader) => reader.ctx;
-            public static implicit operator READER(DeserializerState ctx) => new READER(ctx);
-            public int Result => ctx.ReadDataInt(0UL, 0);
-        }
-
-        public class WRITER : SerializerState
-        {
-            public WRITER()
-            {
-                this.SetStruct(1, 0);
-            }
-
-            public int Result
-            {
-                get => this.ReadDataInt(0UL, 0);
-                set => this.WriteData(0UL, value, 0);
-            }
+            get => this.ReadDataInt(0UL);
+            set => this.WriteData(0UL, value);
         }
     }
 }

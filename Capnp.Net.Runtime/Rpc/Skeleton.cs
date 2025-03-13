@@ -1,145 +1,143 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Capnp.Rpc
+namespace Capnp.Rpc;
+
+/// <summary>
+///     A skeleton is a wrapper around a capability interface implementation which adapts it in the way it is
+///     expected by the <see cref="RpcEngine" />.
+/// </summary>
+public abstract class Skeleton : IProvidedCapability
 {
     /// <summary>
-    /// A skeleton is a wrapper around a capability interface implementation which adapts it in the way it is
-    /// expected by the <see cref="RpcEngine"/>.
+    ///     Calls an interface method of this capability.
     /// </summary>
-    public abstract class Skeleton: IProvidedCapability
+    /// <param name="interfaceId">ID of interface to call</param>
+    /// <param name="methodId">ID of method to call</param>
+    /// <param name="args">Method arguments ("params struct")</param>
+    /// <param name="cancellationToken">Cancellation token, indicating when the call should cancelled.</param>
+    /// <returns>A Task which will resolve to the call result</returns>
+    public abstract Task<AnswerOrCounterquestion> Invoke(ulong interfaceId, ushort methodId, DeserializerState args,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Claims ownership on the given capability, preventing its automatic disposal.
+    /// </summary>
+    /// <typeparam name="T">Capability interface</typeparam>
+    /// <param name="impl">Capability implementation</param>
+    /// <returns>A disposable object. Calling Dispose() on the returned instance relinquishes ownership again.</returns>
+    public static IDisposable Claim<T>(T impl) where T : class
     {
-        class SkeletonRelinquisher: IDisposable
+        return new SkeletonRelinquisher(CapabilityReflection.CreateSkeletonInternal(impl));
+    }
+
+    internal abstract void Claim();
+    internal abstract void Relinquish();
+
+    internal void Relinquish(int count)
+    {
+        if (count < 0)
+            throw new ArgumentOutOfRangeException(nameof(count));
+
+        while (count-- > 0)
+            Relinquish();
+    }
+
+    internal virtual void Bind(object impl)
+    {
+        throw new NotSupportedException("Cannot bind");
+    }
+
+    internal abstract ConsumedCapability AsCapability();
+
+    private class SkeletonRelinquisher : IDisposable
+    {
+        private readonly Skeleton _skeleton;
+
+        public SkeletonRelinquisher(Skeleton skeleton)
         {
-            readonly Skeleton _skeleton;
-
-            public SkeletonRelinquisher(Skeleton skeleton)
-            {
-                _skeleton = skeleton;
-                _skeleton.Claim();
-            }
-
-            public void Dispose()
-            {
-                _skeleton.Relinquish();
-            }
+            _skeleton = skeleton;
+            _skeleton.Claim();
         }
 
-        /// <summary>
-        /// Claims ownership on the given capability, preventing its automatic disposal.
-        /// </summary>
-        /// <typeparam name="T">Capability interface</typeparam>
-        /// <param name="impl">Capability implementation</param>
-        /// <returns>A disposable object. Calling Dispose() on the returned instance relinquishes ownership again.</returns>
-        public static IDisposable Claim<T>(T impl) where T: class
+        public void Dispose()
         {
-            return new SkeletonRelinquisher(CapabilityReflection.CreateSkeletonInternal(impl));
+            _skeleton.Relinquish();
         }
+    }
+}
 
-        /// <summary>
-        /// Calls an interface method of this capability.
-        /// </summary>
-        /// <param name="interfaceId">ID of interface to call</param>
-        /// <param name="methodId">ID of method to call</param>
-        /// <param name="args">Method arguments ("params struct")</param>
-        /// <param name="cancellationToken">Cancellation token, indicating when the call should cancelled.</param>
-        /// <returns>A Task which will resolve to the call result</returns>
-        public abstract Task<AnswerOrCounterquestion> Invoke(ulong interfaceId, ushort methodId, DeserializerState args, CancellationToken cancellationToken = default);
+/// <summary>
+///     Skeleton for a specific capability interface.
+/// </summary>
+/// <typeparam name="T">Capability interface</typeparam>
+public abstract class Skeleton<T> : RefCountingSkeleton, IMonoSkeleton
+{
+    private Func<DeserializerState, CancellationToken, Task<AnswerOrCounterquestion>>[] _methods = null!;
 
-        internal abstract void Claim();
-        internal abstract void Relinquish();
-
-        internal void Relinquish(int count)
-        {
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count));
-
-            while (count-- > 0)
-                Relinquish();
-        }
-
-        internal virtual void Bind(object impl)
-        {
-            throw new NotSupportedException("Cannot bind");
-        }
-
-        internal abstract ConsumedCapability AsCapability();
+    /// <summary>
+    ///     Constructs an instance.
+    /// </summary>
+    public Skeleton()
+    {
     }
 
     /// <summary>
-    /// Skeleton for a specific capability interface.
+    ///     Gets the underlying capability implementation.
     /// </summary>
-    /// <typeparam name="T">Capability interface</typeparam>
-    public abstract class Skeleton<T> : RefCountingSkeleton, IMonoSkeleton
+    protected T Impl { get; private set; } = default!;
+
+    /// <summary>
+    ///     Gets the ID of the implemented interface.
+    /// </summary>
+    public abstract ulong InterfaceId { get; }
+
+    /// <summary>
+    ///     Calls an interface method of this capability.
+    /// </summary>
+    /// <param name="interfaceId">ID of interface to call</param>
+    /// <param name="methodId">ID of method to call</param>
+    /// <param name="args">Method arguments ("params struct")</param>
+    /// <param name="cancellationToken">Cancellation token, indicating when the call should cancelled.</param>
+    /// <returns>A Task which will resolve to the call result</returns>
+    /// <exception cref="ObjectDisposedException">This Skeleton was disposed</exception>
+    public override async Task<AnswerOrCounterquestion> Invoke(ulong interfaceId, ushort methodId,
+        DeserializerState args, CancellationToken cancellationToken = default)
     {
-        Func<DeserializerState, CancellationToken, Task<AnswerOrCounterquestion>>[] _methods = null!;
+        if (InterfaceId != InterfaceId)
+            throw new NotImplementedException("Wrong interface id");
 
-        /// <summary>
-        /// Constructs an instance.
-        /// </summary>
-        public Skeleton()
-        {
-        }
+        if (methodId >= _methods.Length)
+            throw new NotImplementedException("Wrong method id");
 
-        /// <summary>
-        /// Populates this skeleton's method table. The method table maps method IDs (which are consecutively numbered from 0 
-        /// onwards) to the underlying capability's method implementations.
-        /// </summary>
-        /// <param name="methods">The method table. Index is method ID.</param>
-        protected void SetMethodTable(params Func<DeserializerState, CancellationToken, Task<AnswerOrCounterquestion>>[] methods)
-        {
-            _methods = methods;
-        }
+        return await _methods[methodId](args, cancellationToken);
+    }
 
-        /// <summary>
-        /// Gets the underlying capability implementation.
-        /// </summary>
-        protected T Impl { get; private set; } = default!;
+    /// <summary>
+    ///     Populates this skeleton's method table. The method table maps method IDs (which are consecutively numbered from 0
+    ///     onwards) to the underlying capability's method implementations.
+    /// </summary>
+    /// <param name="methods">The method table. Index is method ID.</param>
+    protected void SetMethodTable(
+        params Func<DeserializerState, CancellationToken, Task<AnswerOrCounterquestion>>[] methods)
+    {
+        _methods = methods;
+    }
 
-        /// <summary>
-        /// Gets the ID of the implemented interface.
-        /// </summary>
-        public abstract ulong InterfaceId { get; }
+    /// <summary>
+    ///     Dispose pattern implementation
+    /// </summary>
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing && Impl is IDisposable disposable) disposable.Dispose();
+    }
 
-        /// <summary>
-        /// Calls an interface method of this capability.
-        /// </summary>
-        /// <param name="interfaceId">ID of interface to call</param>
-        /// <param name="methodId">ID of method to call</param>
-        /// <param name="args">Method arguments ("params struct")</param>
-        /// <param name="cancellationToken">Cancellation token, indicating when the call should cancelled.</param>
-        /// <returns>A Task which will resolve to the call result</returns>
-        /// <exception cref="ObjectDisposedException">This Skeleton was disposed</exception>
-        public override async Task<AnswerOrCounterquestion> Invoke(ulong interfaceId, ushort methodId, DeserializerState args, CancellationToken cancellationToken = default)
-        {
-            if (InterfaceId != InterfaceId)
-                throw new NotImplementedException("Wrong interface id");
+    internal override void Bind(object impl)
+    {
+        if (Impl != null)
+            throw new InvalidOperationException("Skeleton was already bound");
 
-            if (methodId >= _methods.Length)
-                throw new NotImplementedException("Wrong method id");
-
-            return await _methods[methodId](args, cancellationToken);
-        }
-
-        /// <summary>
-        /// Dispose pattern implementation
-        /// </summary>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && Impl is IDisposable disposable)
-            {
-                disposable.Dispose();
-            }
-        }
-
-        internal override void Bind(object impl)
-        {
-            if (Impl != null)
-                throw new InvalidOperationException("Skeleton was already bound");
-
-            Impl = (T)impl;
-        }
+        Impl = (T)impl;
     }
 }

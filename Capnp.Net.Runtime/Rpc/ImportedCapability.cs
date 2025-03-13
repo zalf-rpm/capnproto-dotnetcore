@@ -1,46 +1,46 @@
 ﻿using System;
 
-namespace Capnp.Rpc
+namespace Capnp.Rpc;
+
+/// <summary>
+///     Low-level capability which as imported from a remote peer.
+/// </summary>
+internal class ImportedCapability : RemoteCapability
 {
-    /// <summary>
-    /// Low-level capability which as imported from a remote peer.
-    /// </summary>
-    class ImportedCapability : RemoteCapability
+    private readonly uint _remoteId;
+
+    public ImportedCapability(IRpcEndpoint ep, uint remoteId) : base(ep)
     {
-        readonly uint _remoteId;
+        _remoteId = remoteId;
+    }
 
-        public ImportedCapability(IRpcEndpoint ep, uint remoteId): base(ep)
+    protected override void ReleaseRemotely()
+    {
+        _ep.ReleaseImport(_remoteId);
+    }
+
+    protected override Call.WRITER SetupMessage(DynamicSerializerState args, ulong interfaceId, ushort methodId)
+    {
+        var call = base.SetupMessage(args, interfaceId, methodId);
+        call.Target.which = MessageTarget.WHICH.ImportedCap;
+        call.Target.ImportedCap = _remoteId;
+
+        return call;
+    }
+
+    internal override Action? Export(IRpcEndpoint endpoint, CapDescriptor.WRITER capDesc)
+    {
+        if (endpoint == _ep)
         {
-            _remoteId = remoteId;
+            capDesc.which = CapDescriptor.WHICH.ReceiverHosted;
+            capDesc.ReceiverHosted = _remoteId;
+        }
+        else
+        {
+            capDesc.which = CapDescriptor.WHICH.SenderHosted;
+            capDesc.SenderHosted = endpoint.AllocateExport(AsSkeleton(), out _);
         }
 
-        protected override void ReleaseRemotely()
-        {
-            _ep.ReleaseImport(_remoteId);
-        }
-
-        protected override Call.WRITER SetupMessage(DynamicSerializerState args, ulong interfaceId, ushort methodId)
-        {
-            var call = base.SetupMessage(args, interfaceId, methodId);
-            call.Target.which = MessageTarget.WHICH.ImportedCap;
-            call.Target.ImportedCap = _remoteId;
-
-            return call;
-        }
-
-        internal override Action? Export(IRpcEndpoint endpoint, CapDescriptor.WRITER capDesc)
-        {
-            if (endpoint == _ep)
-            {
-                capDesc.which = CapDescriptor.WHICH.ReceiverHosted;
-                capDesc.ReceiverHosted = _remoteId;
-            }
-            else
-            {
-                capDesc.which = CapDescriptor.WHICH.SenderHosted;
-                capDesc.SenderHosted = endpoint.AllocateExport(AsSkeleton(), out var _);
-            }
-            return null;
-        }
+        return null;
     }
 }
