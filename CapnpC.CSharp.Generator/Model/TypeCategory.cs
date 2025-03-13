@@ -1,8 +1,7 @@
-﻿namespace CapnpC.CSharp.Generator.Model
+﻿namespace CapnpC.CSharp.Generator.Model;
+
+internal enum TypeCategory
 {
-    enum TypeCategory
-    {
-        Value,
-        Pointer
-    }
+    Value,
+    Pointer
 }

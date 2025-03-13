@@ -1,9 +1,8 @@
-﻿namespace CapnpC.CSharp.Generator.Model
+﻿namespace CapnpC.CSharp.Generator.Model;
+
+internal enum SpecialName
 {
-    enum SpecialName
-    {
-        NothingSpecial,
-        MethodParamsStruct,
-        MethodResultStruct
-    }
+    NothingSpecial,
+    MethodParamsStruct,
+    MethodResultStruct
 }

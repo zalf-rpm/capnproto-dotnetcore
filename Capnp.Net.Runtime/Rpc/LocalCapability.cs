@@ -1,53 +1,54 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Capnp.Rpc
+namespace Capnp.Rpc;
+
+internal class LocalCapability : ConsumedCapability
 {
-    class LocalCapability : ConsumedCapability
+    public LocalCapability(Skeleton providedCap)
     {
-        static async Task<DeserializerState> AwaitAnswer(Task<AnswerOrCounterquestion> call)
-        {
-            var aorcq = await call;
-            return aorcq.Answer ?? await aorcq.Counterquestion!.WhenReturned;
-        }
+        ProvidedCap = providedCap ?? throw new ArgumentNullException(nameof(providedCap));
+    }
 
-        public Skeleton ProvidedCap { get; }
+    public Skeleton ProvidedCap { get; }
 
-        internal override Skeleton AsSkeleton() => ProvidedCap;
+    private static async Task<DeserializerState> AwaitAnswer(Task<AnswerOrCounterquestion> call)
+    {
+        var aorcq = await call;
+        return aorcq.Answer ?? await aorcq.Counterquestion!.WhenReturned;
+    }
 
-        public LocalCapability(Skeleton providedCap)
-        {
-            ProvidedCap = providedCap ?? throw new ArgumentNullException(nameof(providedCap));
-        }
+    internal override Skeleton AsSkeleton()
+    {
+        return ProvidedCap;
+    }
 
-        internal override void AddRef()
-        {
-            ProvidedCap.Claim();
-        }
+    internal override void AddRef()
+    {
+        ProvidedCap.Claim();
+    }
 
-        internal override void Release()
-        {
-            ProvidedCap.Relinquish();
-        }
+    internal override void Release()
+    {
+        ProvidedCap.Relinquish();
+    }
 
-        internal override IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args)
-        {
-            var cts = new CancellationTokenSource();
-            var call = ProvidedCap.Invoke(interfaceId, methodId, args, cts.Token);
-            return new LocalAnswer(cts, AwaitAnswer(call));
-        }
+    internal override IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args)
+    {
+        var cts = new CancellationTokenSource();
+        var call = ProvidedCap.Invoke(interfaceId, methodId, args, cts.Token);
+        return new LocalAnswer(cts, AwaitAnswer(call));
+    }
 
-        internal override Action? Export(IRpcEndpoint endpoint, CapDescriptor.WRITER capDesc)
-        {
-            capDesc.which = CapDescriptor.WHICH.SenderHosted;
-            capDesc.SenderHosted = endpoint.AllocateExport(ProvidedCap, out bool _);
-            return null;
-        }
+    internal override Action? Export(IRpcEndpoint endpoint, CapDescriptor.WRITER capDesc)
+    {
+        capDesc.which = CapDescriptor.WHICH.SenderHosted;
+        capDesc.SenderHosted = endpoint.AllocateExport(ProvidedCap, out _);
+        return null;
+    }
 
-        protected override void ReleaseRemotely()
-        {
-        }
+    protected override void ReleaseRemotely()
+    {
     }
 }

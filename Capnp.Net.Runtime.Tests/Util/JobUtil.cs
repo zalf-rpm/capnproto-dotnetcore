@@ -1,145 +1,142 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
-using System.Security;
-using System.Text;
 
-namespace Capnp.Net.Runtime.Tests
+namespace Capnp.Net.Runtime.Tests;
+
+public class Job : IDisposable
 {
-    public class Job : IDisposable
+    private bool disposed;
+
+    private IntPtr handle;
+
+    public Job()
     {
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        static extern IntPtr CreateJobObject(IntPtr a, string lpName);
+        handle = CreateJobObject(IntPtr.Zero, null);
 
-        [DllImport("kernel32.dll")]
-        static extern bool SetInformationJobObject(IntPtr hJob, JobObjectInfoType infoType, IntPtr lpJobObjectInfo, UInt32 cbJobObjectInfoLength);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool CloseHandle(IntPtr hObject);
-
-        private IntPtr handle;
-        private bool disposed;
-
-        public Job()
+        var info = new JOBOBJECT_BASIC_LIMIT_INFORMATION
         {
-            handle = CreateJobObject(IntPtr.Zero, null);
+            LimitFlags = 0x2000
+        };
 
-            var info = new JOBOBJECT_BASIC_LIMIT_INFORMATION
-            {
-                LimitFlags = 0x2000
-            };
-
-            var extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION
-            {
-                BasicLimitInformation = info
-            };
-
-            int length = Marshal.SizeOf(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
-            IntPtr extendedInfoPtr = Marshal.AllocHGlobal(length);
-            Marshal.StructureToPtr(extendedInfo, extendedInfoPtr, false);
-
-            if (!SetInformationJobObject(handle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length))
-                throw new Exception(string.Format("Unable to set information.  Error: {0}", Marshal.GetLastWin32Error()));
-        }
-
-        public void Dispose()
+        var extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+            BasicLimitInformation = info
+        };
 
-        private void Dispose(bool disposing)
-        {
-            if (disposed)
-                return;
+        var length = Marshal.SizeOf(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
+        var extendedInfoPtr = Marshal.AllocHGlobal(length);
+        Marshal.StructureToPtr(extendedInfo, extendedInfoPtr, false);
 
-            if (disposing) { }
-
-            Close();
-            disposed = true;
-        }
-
-        public void Close()
-        {
-            CloseHandle(handle);
-            handle = IntPtr.Zero;
-        }
-
-        public bool AddProcess(IntPtr processHandle)
-        {
-            return AssignProcessToJobObject(handle, processHandle);
-        }
-
-        public bool AddProcess(int processId)
-        {
-            return AddProcess(Process.GetProcessById(processId).Handle);
-        }
-
+        if (!SetInformationJobObject(handle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length))
+            throw new Exception(string.Format("Unable to set information.  Error: {0}", Marshal.GetLastWin32Error()));
     }
 
-    #region Helper classes
-
-    [StructLayout(LayoutKind.Sequential)]
-    struct IO_COUNTERS
+    public void Dispose()
     {
-        public UInt64 ReadOperationCount;
-        public UInt64 WriteOperationCount;
-        public UInt64 OtherOperationCount;
-        public UInt64 ReadTransferCount;
-        public UInt64 WriteTransferCount;
-        public UInt64 OtherTransferCount;
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+    private static extern IntPtr CreateJobObject(IntPtr a, string lpName);
 
-    [StructLayout(LayoutKind.Sequential)]
-    struct JOBOBJECT_BASIC_LIMIT_INFORMATION
+    [DllImport("kernel32.dll")]
+    private static extern bool SetInformationJobObject(IntPtr hJob, JobObjectInfoType infoType, IntPtr lpJobObjectInfo,
+        uint cbJobObjectInfoLength);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool CloseHandle(IntPtr hObject);
+
+    private void Dispose(bool disposing)
     {
-        public Int64 PerProcessUserTimeLimit;
-        public Int64 PerJobUserTimeLimit;
-        public UInt32 LimitFlags;
-        public UIntPtr MinimumWorkingSetSize;
-        public UIntPtr MaximumWorkingSetSize;
-        public UInt32 ActiveProcessLimit;
-        public UIntPtr Affinity;
-        public UInt32 PriorityClass;
-        public UInt32 SchedulingClass;
+        if (disposed)
+            return;
+
+        if (disposing)
+        {
+        }
+
+        Close();
+        disposed = true;
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SECURITY_ATTRIBUTES
+    public void Close()
     {
-        public UInt32 nLength;
-        public IntPtr lpSecurityDescriptor;
-        public Int32 bInheritHandle;
+        CloseHandle(handle);
+        handle = IntPtr.Zero;
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    struct JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+    public bool AddProcess(IntPtr processHandle)
     {
-        public JOBOBJECT_BASIC_LIMIT_INFORMATION BasicLimitInformation;
-        public IO_COUNTERS IoInfo;
-        public UIntPtr ProcessMemoryLimit;
-        public UIntPtr JobMemoryLimit;
-        public UIntPtr PeakProcessMemoryUsed;
-        public UIntPtr PeakJobMemoryUsed;
+        return AssignProcessToJobObject(handle, processHandle);
     }
 
-    public enum JobObjectInfoType
+    public bool AddProcess(int processId)
     {
-        AssociateCompletionPortInformation = 7,
-        BasicLimitInformation = 2,
-        BasicUIRestrictions = 4,
-        EndOfJobTimeInformation = 6,
-        ExtendedLimitInformation = 9,
-        SecurityLimitInformation = 5,
-        GroupInformation = 11
+        return AddProcess(Process.GetProcessById(processId).Handle);
     }
-
-    #endregion
 }
+
+#region Helper classes
+
+[StructLayout(LayoutKind.Sequential)]
+internal struct IO_COUNTERS
+{
+    public UInt64 ReadOperationCount;
+    public UInt64 WriteOperationCount;
+    public UInt64 OtherOperationCount;
+    public UInt64 ReadTransferCount;
+    public UInt64 WriteTransferCount;
+    public UInt64 OtherTransferCount;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+internal struct JOBOBJECT_BASIC_LIMIT_INFORMATION
+{
+    public Int64 PerProcessUserTimeLimit;
+    public Int64 PerJobUserTimeLimit;
+    public UInt32 LimitFlags;
+    public UIntPtr MinimumWorkingSetSize;
+    public UIntPtr MaximumWorkingSetSize;
+    public UInt32 ActiveProcessLimit;
+    public UIntPtr Affinity;
+    public UInt32 PriorityClass;
+    public UInt32 SchedulingClass;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct SECURITY_ATTRIBUTES
+{
+    public UInt32 nLength;
+    public IntPtr lpSecurityDescriptor;
+    public Int32 bInheritHandle;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+internal struct JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+{
+    public JOBOBJECT_BASIC_LIMIT_INFORMATION BasicLimitInformation;
+    public IO_COUNTERS IoInfo;
+    public UIntPtr ProcessMemoryLimit;
+    public UIntPtr JobMemoryLimit;
+    public UIntPtr PeakProcessMemoryUsed;
+    public UIntPtr PeakJobMemoryUsed;
+}
+
+public enum JobObjectInfoType
+{
+    AssociateCompletionPortInformation = 7,
+    BasicLimitInformation = 2,
+    BasicUIRestrictions = 4,
+    EndOfJobTimeInformation = 6,
+    ExtendedLimitInformation = 9,
+    SecurityLimitInformation = 5,
+    GroupInformation = 11
+}
+
+#endregion

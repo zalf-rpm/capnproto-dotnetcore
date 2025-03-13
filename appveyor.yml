@@ -28,38 +28,37 @@ before_build:
   - cmd: msbuild -ver
   - cmd: dotnet restore ./Capnp.Net.Runtime/Capnp.Net.Runtime.csproj --verbosity m
   - cmd: dotnet restore ./Capnp.Net.Runtime.Tests/Capnp.Net.Runtime.Tests.csproj --verbosity m
-  - cmd: dotnet restore ./CapnpC.CSharp.Generator/CapnpC.CSharp.Generator.csproj --verbosity m  
-  - cmd: dotnet restore ./CapnpC.CSharp.Generator.Tests/CapnpC.CSharp.Generator.Tests.csproj --verbosity m  
-  - cmd: dotnet restore ./CapnpC.CSharp.MsBuild.Generation/CapnpC.CSharp.MsBuild.Generation.csproj --verbosity m  
-  - cmd: dotnet restore ./CapnpC.CSharp.MsBuild.Generation.Tests/CapnpC.CSharp.MsBuild.Generation.Tests.csproj --verbosity m  
-  - cmd: dotnet restore ./capnpc-csharp/capnpc-csharp.csproj --verbosity m  
+  - cmd: dotnet restore ./CapnpC.CSharp.Generator/CapnpC.CSharp.Generator.csproj --verbosity m
+  - cmd: dotnet restore ./CapnpC.CSharp.Generator.Tests/CapnpC.CSharp.Generator.Tests.csproj --verbosity m
+  - cmd: dotnet restore ./CapnpC.CSharp.MsBuild.Generation/CapnpC.CSharp.MsBuild.Generation.csproj --verbosity m
+  - cmd: dotnet restore ./CapnpC.CSharp.MsBuild.Generation.Tests/CapnpC.CSharp.MsBuild.Generation.Tests.csproj --verbosity m
+  - cmd: dotnet restore ./capnpc-csharp/capnpc-csharp.csproj --verbosity m
 build_script:
   - cmd: msbuild ./Capnp.Net.sln /p:Configuration="Debug" -V:m
   - cmd: msbuild ./Capnp.Net.sln /p:Configuration="Release" -V:m
   - cmd: msbuild ./CapnpCompatTest.sln /p:Configuration="Debug" -V:m
   - cmd: msbuild ./CapnpCompatTest.sln /p:Configuration="Release" -V:m
   - ps: scripts\capnpc-csharp-pack.ps1
-after_build:
-  # For once the build has completed
+after_build: # For once the build has completed
 artifacts:
- - path: bin\Release\Capnp.Net.Runtime.*.nupkg
-   name: Capnp.Net.Runtime
-   type: NuGetPackage
- - path: bin\Release\CapnpC.CSharp.MsBuild.Generation.*.nupkg
-   name: CapnpC.CSharp.MsBuild.Generation
-   type: NuGetPackage
- - path: chocolatey\install\capnpc-csharp-win-x86.*.nupkg
-   name: capnpc-csharp-win-x86
-   type: NuGetPackage
- - path: chocolatey\install\capnpc-csharp.*-deprecated.nupkg
-   name: capnpc-csharp-deprecated
-   type: NuGetPackage
- - path: capnpc-csharp\nupkg\*.nupkg
-   name: capnpc-csharp
-   type: NuGetPackage
- - path: coverage
-   name: Coverage report
-   type: zip
+  - path: bin\Release\Capnp.Net.Runtime.*.nupkg
+    name: Capnp.Net.Runtime
+    type: NuGetPackage
+  - path: bin\Release\CapnpC.CSharp.MsBuild.Generation.*.nupkg
+    name: CapnpC.CSharp.MsBuild.Generation
+    type: NuGetPackage
+  - path: chocolatey\install\capnpc-csharp-win-x86.*.nupkg
+    name: capnpc-csharp-win-x86
+    type: NuGetPackage
+  - path: chocolatey\install\capnpc-csharp.*-deprecated.nupkg
+    name: capnpc-csharp-deprecated
+    type: NuGetPackage
+  - path: capnpc-csharp\nupkg\*.nupkg
+    name: capnpc-csharp
+    type: NuGetPackage
+  - path: coverage
+    name: Coverage report
+    type: zip
 test_script:
   - cmd: |
       nbgv get-version -v NuGetPackageVersion >> myversion.txt
@@ -85,12 +84,10 @@ test_script:
       vstest.console /logger:Appveyor /inIsolation CapnpC.CSharp.MsBuild.Generation.Tests\bin\Release\netcoreapp3.1\CapnpC.CSharp.MsBuild.Generation.Tests.dll
       msbuild -t:restore ./MsBuildGenerationTest/MsBuildGenerationTest.csproj /p:Configuration="Debug" /p:PackageReferenceVersion="%VERSION%"
       msbuild ./MsBuildGenerationTest/MsBuildGenerationTest.sln /p:Configuration="Debug" /p:PackageReferenceVersion="%VERSION%"
-      vstest.console /logger:Appveyor /inIsolation Capnp.Net.Runtime.Tests\bin\Debug\net471\Capnp.Net.Runtime.Tests.dll
-      vstest.console /logger:Appveyor /inIsolation Capnp.Net.Runtime.Tests\bin\Release\netcoreapp3.1\Capnp.Net.Runtime.Tests.dll
+      vstest.console /logger:Appveyor /inIsolation Capnp.Net.Runtime.Tests\bin\Release\net9.0\Capnp.Net.Runtime.Tests.dll
       powershell -File .\scripts\measure-coverage.ps1
       csmacnz.Coveralls --lcov -i "coverage\lcov.info" --repoToken %COVERALLS_REPO_TOKEN%
-on_finish :
-  # any cleanup in here
+on_finish: # any cleanup in here
 deploy:
   - provider: Environment
     name: GitHub Releases
@@ -100,4 +97,4 @@ deploy:
     prerelease: true
     force_update: true
     on:
-      APPVEYOR_REPO_TAG: true 
+      APPVEYOR_REPO_TAG: true

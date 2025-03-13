@@ -1,54 +1,57 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>CapnpC.CSharp.Generator.Tests</RootNamespace>
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace>CapnpC.CSharp.Generator.Tests</RootNamespace>
 
-    <IsPackable>false</IsPackable>
+        <IsPackable>false</IsPackable>
 
-    <Configurations>Debug;Release</Configurations>
-  </PropertyGroup>
+        <Configurations>Debug;Release</Configurations>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="1.2.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.4.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.4.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-    <PackageReference Include="Mono.Cecil" Version="0.11.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
-    <PackageReference Include="SpecFlow" Version="3.9.74" />
-    <PackageReference Include="SpecFlow.MsTest" Version="3.1.78" />
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.74" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="6.0.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.13.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0"/>
+        <PackageReference Include="Mono.Cecil" Version="0.11.6"/>
+        <PackageReference Include="MSTest.TestAdapter" Version="3.8.2"/>
+        <PackageReference Include="MSTest.TestFramework" Version="3.8.2"/>
+        <PackageReference Include="SpecFlow" Version="3.9.74"/>
+        <PackageReference Include="SpecFlow.MsTest" Version="3.9.74"/>
+        <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.74"/>
+        <PackageReference Update="Nerdbank.GitVersioning">
+            <Version>3.7.115</Version>
+        </PackageReference>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Embedded Resources\*.cs" />
-    <Compile Remove="CodeGenerator.feature.cs" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Embedded Resources\*.cs"/>
+        <Compile Remove="CodeGenerator.feature.cs"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Embedded Resources\*" />
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Embedded Resources\*"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="No Resources\UnitTest1.capnp" />
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="No Resources\UnitTest1.capnp"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CapnpC.CSharp.Generator\CapnpC.CSharp.Generator.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CapnpC.CSharp.Generator\CapnpC.CSharp.Generator.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <SpecFlowFeatureFiles Update="CodeGenerator.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>CodeGenerator.feature.cs</LastGenOutput>
-      <Generator Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'"></Generator>
-      <Generator Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|AnyCPU'"></Generator>
-    </SpecFlowFeatureFiles>
-  </ItemGroup>
-  
+    <ItemGroup>
+        <SpecFlowFeatureFiles Update="CodeGenerator.feature">
+            <Generator>SpecFlowSingleFileGenerator</Generator>
+            <LastGenOutput>CodeGenerator.feature.cs</LastGenOutput>
+            <Generator Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'"></Generator>
+            <Generator Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|AnyCPU'"></Generator>
+        </SpecFlowFeatureFiles>
+    </ItemGroup>
+
 </Project>

@@ -1,9 +1,8 @@
-﻿namespace Capnp.Rpc
+﻿namespace Capnp.Rpc;
+
+internal class RpcProtocolErrorException : System.Exception
 {
-    class RpcProtocolErrorException : System.Exception
+    public RpcProtocolErrorException(string reason) : base(reason)
     {
-        public RpcProtocolErrorException(string reason): base(reason)
-        {
-        }
     }
 }

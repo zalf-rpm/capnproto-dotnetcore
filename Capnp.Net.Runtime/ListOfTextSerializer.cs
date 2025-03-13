@@ -2,108 +2,101 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Capnp
+namespace Capnp;
+
+/// <summary>
+///     SerializerState specialization for List(Text)
+/// </summary>
+public class ListOfTextSerializer :
+    SerializerState,
+    IReadOnlyList<string?>
 {
     /// <summary>
-    /// SerializerState specialization for List(Text)
+    ///     Gets or sets the text at given index. Once an element is set, it cannot be overwritten.
     /// </summary>
-    public class ListOfTextSerializer :
-        SerializerState,
-        IReadOnlyList<string?>
+    /// <param name="index">Element index</param>
+    /// <exception cref="InvalidOperationException">List is not initialized</exception>
+    /// <exception cref="IndexOutOfRangeException"><paramref name="index" /> is out of range.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">UTF-8 encoding exceeds 2^29-2 bytes</exception>
+    public string? this[int index]
     {
-        /// <summary>
-        /// Gets or sets the text at given index. Once an element is set, it cannot be overwritten.
-        /// </summary>
-        /// <param name="index">Element index</param>
-        /// <exception cref="InvalidOperationException">List is not initialized</exception>
-        /// <exception cref="IndexOutOfRangeException"><paramref name="index"/> is out of range.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">UTF-8 encoding exceeds 2^29-2 bytes</exception>
-        public string? this[int index]
+        get
         {
-            get
-            {
-                ListSerializerHelper.EnsureAllocated(this);
+            ListSerializerHelper.EnsureAllocated(this);
 
-                if (index < 0 || index >= Count)
-                    throw new IndexOutOfRangeException();
+            if (index < 0 || index >= Count)
+                throw new IndexOutOfRangeException();
 
-                return ReadText(index);
-            }
-            set
-            {
-                ListSerializerHelper.EnsureAllocated(this);
-
-                if (index < 0 || index >= Count)
-                    throw new IndexOutOfRangeException();
-
-                WriteText(index, value);
-            }
+            return ReadText(index);
         }
-
-        /// <summary>
-        /// This list's element count.
-        /// </summary>
-        public int Count => ListElementCount;
-
-        IEnumerable<string?> Enumerate()
+        set
         {
-            int count = Count;
+            ListSerializerHelper.EnsureAllocated(this);
 
-            for (int i = 0; i < count; i++)
-            {
-                yield return this[i];
-            }
+            if (index < 0 || index >= Count)
+                throw new IndexOutOfRangeException();
+
+            WriteText(index, value);
         }
+    }
 
-        /// <summary>
-        /// Implementation of <see cref="IEnumerable{String}"/>/>
-        /// </summary>
-        public IEnumerator<string?> GetEnumerator()
-        {
-            return Enumerate().GetEnumerator();
-        }
+    /// <summary>
+    ///     This list's element count.
+    /// </summary>
+    public int Count => ListElementCount;
 
-        /// <summary>
-        /// Initializes this list with a specific size. The list can be initialized only once.
-        /// </summary>
-        /// <param name="count">List element count</param>
-        /// <exception cref="InvalidOperationException">The list was already initialized</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative or greater than 2^29-1</exception>
-        public void Init(int count)
-        {
-            if (IsAllocated)
-                throw new InvalidOperationException("Already initialized");
+    /// <summary>
+    ///     Implementation of <see cref="IEnumerable{String}" />/>
+    /// </summary>
+    public IEnumerator<string?> GetEnumerator()
+    {
+        return Enumerate().GetEnumerator();
+    }
 
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count));
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
-            SetListOfPointers(count);
-        }
+    private IEnumerable<string?> Enumerate()
+    {
+        var count = Count;
 
-        /// <summary>
-        /// Initializes the list with given content.
-        /// </summary>
-        /// <param name="items">List content. Can be null in which case the list is simply not initialized.</param>
-        /// <exception cref="InvalidOperationException">The list was already initialized</exception>
-        /// <exception cref="ArgumentOutOfRangeException">More than 2^29-1 items, or the UTF-8 encoding of an individual string requires more than 2^29-2 bytes.</exception>
-        public void Init(IReadOnlyList<string?>? items)
-        {
-            if (items == null)
-            {
-                return;
-            }
+        for (var i = 0; i < count; i++) yield return this[i];
+    }
 
-            Init(items.Count);
+    /// <summary>
+    ///     Initializes this list with a specific size. The list can be initialized only once.
+    /// </summary>
+    /// <param name="count">List element count</param>
+    /// <exception cref="InvalidOperationException">The list was already initialized</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="count" /> is negative or greater than 2^29-1</exception>
+    public void Init(int count)
+    {
+        if (IsAllocated)
+            throw new InvalidOperationException("Already initialized");
 
-            for (int i = 0; i < items.Count; i++)
-            {
-                this[i] = items[i];
-            }
-        }
+        if (count < 0)
+            throw new ArgumentOutOfRangeException(nameof(count));
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        SetListOfPointers(count);
+    }
+
+    /// <summary>
+    ///     Initializes the list with given content.
+    /// </summary>
+    /// <param name="items">List content. Can be null in which case the list is simply not initialized.</param>
+    /// <exception cref="InvalidOperationException">The list was already initialized</exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     More than 2^29-1 items, or the UTF-8 encoding of an individual string
+    ///     requires more than 2^29-2 bytes.
+    /// </exception>
+    public void Init(IReadOnlyList<string?>? items)
+    {
+        if (items == null) return;
+
+        Init(items.Count);
+
+        for (var i = 0; i < items.Count; i++) this[i] = items[i];
     }
 }

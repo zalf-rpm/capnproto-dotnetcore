@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CapnpC.CSharp.Generator.Model
-{
-    interface IHasNestedDefinitions
-    {
-        IEnumerable<TypeDefinition> NestedTypes { get; }
-        ICollection<IDefinition> NestedDefinitions { get; }
-        ICollection<Constant> Constants { get; }
-    }
+namespace CapnpC.CSharp.Generator.Model;
 
-    static partial class Extensions
+internal interface IHasNestedDefinitions
+{
+    IEnumerable<TypeDefinition> NestedTypes { get; }
+    ICollection<IDefinition> NestedDefinitions { get; }
+    ICollection<Constant> Constants { get; }
+}
+
+internal static class Extensions
+{
+    public static IEnumerable<TypeDefinition> GetNestedTypes(this IHasNestedDefinitions def)
     {
-        public static IEnumerable<TypeDefinition> GetNestedTypes(this IHasNestedDefinitions def)
-            => def.NestedDefinitions.Select(d => d as TypeDefinition).Where(d => d != null);
+        return def.NestedDefinitions.Select(d => d as TypeDefinition).Where(d => d != null);
     }
 }

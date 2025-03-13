@@ -1,49 +1,50 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <RootNamespace>Capnp</RootNamespace>
-    <LangVersion>12</LangVersion>
-    <Nullable>Enable</Nullable>
-    <WarningsAsErrors>CS8600;CS8602;CS8603</WarningsAsErrors>
-    <AssemblyName>Capnp.Net.Runtime</AssemblyName>
-    <PackageId>Capnp.Net.Runtime</PackageId>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageOutputPath>..\bin\$(Configuration)</PackageOutputPath>
-    <Authors>Christian Köllner and contributors</Authors>
-    <Description>A Cap'n Proto implementation for .NET Standard &amp; Core</Description>
-    <Product>capnproto-dotnetcore</Product>
-    <Copyright>Christian Köllner and contributors</Copyright>
-    <PackageLicenseFile></PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/c80k/capnproto-dotnetcore</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/c80k/capnproto-dotnetcore</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryType>Git</RepositoryType>
-    <PackageTags>capnp "Cap'n Proto" RPC serialization cerealization</PackageTags>
-    <Configurations>Debug;Release</Configurations>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>  
-    <TargetFramework>net8.0</TargetFramework>  
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-  </PropertyGroup>
+    <PropertyGroup>
+        <RootNamespace>Capnp</RootNamespace>
+        <LangVersion>13.0</LangVersion>
+        <Nullable>Enable</Nullable>
+        <WarningsAsErrors>CS8600;CS8602;CS8603</WarningsAsErrors>
+        <AssemblyName>Capnp.Net.Runtime</AssemblyName>
+        <PackageId>Capnp.Net.Runtime</PackageId>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageOutputPath>..\bin\$(Configuration)</PackageOutputPath>
+        <Authors>Christian Köllner and contributors</Authors>
+        <Description>A Cap'n Proto implementation for .NET Standard &amp; Core</Description>
+        <Product>capnproto-dotnetcore</Product>
+        <Copyright>Christian Köllner and contributors</Copyright>
+        <PackageLicenseFile></PackageLicenseFile>
+        <PackageProjectUrl>https://github.com/c80k/capnproto-dotnetcore</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/c80k/capnproto-dotnetcore</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>capnp "Cap'n Proto" RPC serialization cerealization</PackageTags>
+        <Configurations>Debug;Release</Configurations>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <TargetFramework>net9.0</TargetFramework>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <DefineConstants></DefineConstants>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+        <DefineConstants>TRACE;DEBUG</DefineConstants>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-    <DebugType>portable</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
+    <PropertyGroup>
+        <DefineConstants></DefineConstants>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.19" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
+    <PropertyGroup
+            Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
+        <DebugType>portable</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.19" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.2"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+    </ItemGroup>
 </Project>

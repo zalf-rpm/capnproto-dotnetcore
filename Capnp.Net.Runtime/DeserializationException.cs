@@ -1,25 +1,24 @@
 ﻿using System;
 
-namespace Capnp
+namespace Capnp;
+
+/// <summary>
+///     This exception gets thrown when a Cap'n Proto object could not be deserialized correctly.
+/// </summary>
+public class DeserializationException : Exception
 {
     /// <summary>
-    /// This exception gets thrown when a Cap'n Proto object could not be deserialized correctly.
+    ///     Constructs an instance
     /// </summary>
-    public class DeserializationException : Exception
+    public DeserializationException(string message) : base(message)
     {
-        /// <summary>
-        /// Constructs an instance
-        /// </summary>
-        public DeserializationException(string message) : base(message)
-        {
-        }
+    }
 
-        /// <summary>
-        /// Constructs an instance with message and inner exception
-        /// </summary>
-        public DeserializationException(string message, Exception innerException): 
-            base(message, innerException)
-        {
-        }
+    /// <summary>
+    ///     Constructs an instance with message and inner exception
+    /// </summary>
+    public DeserializationException(string message, Exception innerException) :
+        base(message, innerException)
+    {
     }
 }

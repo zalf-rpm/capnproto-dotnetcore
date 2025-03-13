@@ -1,13 +1,12 @@
 ﻿using System;
 
-namespace Capnp
+namespace Capnp;
+
+internal static class ListSerializerHelper
 {
-    static class ListSerializerHelper
+    public static void EnsureAllocated(SerializerState serializer)
     {
-        public static void EnsureAllocated(SerializerState serializer)
-        {
-            if (!serializer.IsAllocated)
-                throw new InvalidOperationException("Call Init() first");
-        }
+        if (!serializer.IsAllocated)
+            throw new InvalidOperationException("Call Init() first");
     }
 }

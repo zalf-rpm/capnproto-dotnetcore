@@ -2,41 +2,41 @@
 using System.Collections;
 using Microsoft.Build.Framework;
 
-namespace CapnpC.CSharp.MsBuild.Generation.Tests
+namespace CapnpC.CSharp.MsBuild.Generation.Tests;
+
+internal class BuildEngineMock : IBuildEngine
 {
-    class BuildEngineMock : IBuildEngine
+    public bool ContinueOnError => true;
+
+    public int LineNumberOfTaskNode => 0;
+
+    public int ColumnNumberOfTaskNode => 0;
+
+    public string ProjectFileOfTaskNode => null;
+
+    public bool BuildProjectFile(string projectFileName, string[] targetNames, IDictionary globalProperties,
+        IDictionary targetOutputs)
     {
-        public bool ContinueOnError => true;
+        return true;
+    }
 
-        public int LineNumberOfTaskNode => 0;
+    public void LogCustomEvent(CustomBuildEventArgs e)
+    {
+        Console.WriteLine(e.Message);
+    }
 
-        public int ColumnNumberOfTaskNode => 0;
+    public void LogErrorEvent(BuildErrorEventArgs e)
+    {
+        Console.WriteLine(e.Message);
+    }
 
-        public string ProjectFileOfTaskNode => null;
+    public void LogMessageEvent(BuildMessageEventArgs e)
+    {
+        Console.WriteLine(e.Message);
+    }
 
-        public bool BuildProjectFile(string projectFileName, string[] targetNames, IDictionary globalProperties, IDictionary targetOutputs)
-        {
-            return true;
-        }
-
-        public void LogCustomEvent(CustomBuildEventArgs e)
-        {
-            Console.WriteLine(e.Message);
-        }
-
-        public void LogErrorEvent(BuildErrorEventArgs e)
-        {
-            Console.WriteLine(e.Message);
-        }
-
-        public void LogMessageEvent(BuildMessageEventArgs e)
-        {
-            Console.WriteLine(e.Message);
-        }
-
-        public void LogWarningEvent(BuildWarningEventArgs e)
-        {
-            Console.WriteLine(e.Message);
-        }
+    public void LogWarningEvent(BuildWarningEventArgs e)
+    {
+        Console.WriteLine(e.Message);
     }
 }

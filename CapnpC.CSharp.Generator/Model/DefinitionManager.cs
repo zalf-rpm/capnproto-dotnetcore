@@ -2,66 +2,78 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CapnpC.CSharp.Generator.Model
+namespace CapnpC.CSharp.Generator.Model;
+
+internal class DefinitionManager
 {
-    class DefinitionManager
+    private readonly Dictionary<ulong, IDefinition> _id2def = new();
+
+    public IEnumerable<GenFile> Files => _id2def.Values.Where(d => d.Tag == TypeTag.File).Select(f => f as GenFile);
+
+    public GenFile CreateFile(ulong id, bool isGenerated)
     {
-        readonly Dictionary<ulong, IDefinition> _id2def = new Dictionary<ulong, IDefinition>();
+        return CreateId<GenFile>(id, () => new GenFile(id, isGenerated));
+    }
 
-        public GenFile CreateFile(ulong id, bool isGenerated)
-            => CreateId<GenFile>(id, () => new GenFile(id, isGenerated));
-        public GenFile GetExistingFile(ulong id)
-            => GetId<GenFile>(id, TypeTag.File);
+    public GenFile GetExistingFile(ulong id)
+    {
+        return GetId<GenFile>(id, TypeTag.File);
+    }
 
-        public TypeDefinition CreateTypeDef(ulong id, TypeTag tag, IHasNestedDefinitions decl)
-            => CreateId<TypeDefinition>(id, () => new TypeDefinition(tag, id, decl));
-        public TypeDefinition GetExistingTypeDef(ulong id, TypeTag tag)
-        {
-            var def = GetId<TypeDefinition>(id, tag);
-            if (def.Tag == TypeTag.Unknown) def.Tag = tag;
-            return def;
-        }
+    public TypeDefinition CreateTypeDef(ulong id, TypeTag tag, IHasNestedDefinitions decl)
+    {
+        return CreateId<TypeDefinition>(id, () => new TypeDefinition(tag, id, decl));
+    }
 
-        public Annotation CreateAnnotation(ulong id, IHasNestedDefinitions decl)
-            => CreateId<Annotation>(id, () => new Annotation(id, decl));
-        public Annotation GetExistingAnnotation(ulong id)
-            => GetId<Annotation>(id, TypeTag.Annotation);
+    public TypeDefinition GetExistingTypeDef(ulong id, TypeTag tag)
+    {
+        var def = GetId<TypeDefinition>(id, tag);
+        if (def.Tag == TypeTag.Unknown) def.Tag = tag;
+        return def;
+    }
 
-        public Constant CreateConstant(ulong id, IHasNestedDefinitions decl)
-            => CreateId<Constant>(id, () => new Constant(id, decl));
-        public Constant GetExistingConstant(ulong id)
-            => GetId<Constant>(id, TypeTag.Const);
+    public Annotation CreateAnnotation(ulong id, IHasNestedDefinitions decl)
+    {
+        return CreateId<Annotation>(id, () => new Annotation(id, decl));
+    }
 
-        public IDefinition GetExistingDef(ulong id, TypeTag tag)
-            => GetId<IDefinition>(id, tag);
+    public Annotation GetExistingAnnotation(ulong id)
+    {
+        return GetId<Annotation>(id, TypeTag.Annotation);
+    }
 
-        public IEnumerable<GenFile> Files
-        {
-            get => _id2def.Values.Where(d => d.Tag == TypeTag.File).Select(f => f as GenFile);
-        }
+    public Constant CreateConstant(ulong id, IHasNestedDefinitions decl)
+    {
+        return CreateId<Constant>(id, () => new Constant(id, decl));
+    }
 
-        T CreateId<T>(ulong id, Func<IDefinition> creator) where T : class, IDefinition
-        {
-            if (_id2def.TryGetValue(id, out var d))
-            {
-                throw new ArgumentException(nameof(id), $"Attempting to redefine {d.Tag.ToString()} {id.StrId()} (as {nameof(T)}).");
-            }
-            var def = creator();
-            _id2def.Add(id, def);
-            return def as T;
-        }
+    public Constant GetExistingConstant(ulong id)
+    {
+        return GetId<Constant>(id, TypeTag.Const);
+    }
 
-        T GetId<T>(ulong id, TypeTag tag) where T : IDefinition
-        {
-            if (!_id2def.TryGetValue(id, out var anyDef))
-            {
-                throw new ArgumentOutOfRangeException($"Attempting to retrieve nonexistent node {id.StrId()}.");
-            }
-            if (!(anyDef is T def) || (tag != TypeTag.Unknown && def.Tag != tag))
-            {
-                throw new ArgumentOutOfRangeException($"Attempting to retrieve {tag.ToString()} {id.StrId()}, but found {anyDef.Tag.ToString()} instead.");
-            }
-            return def;
-        }
+    public IDefinition GetExistingDef(ulong id, TypeTag tag)
+    {
+        return GetId<IDefinition>(id, tag);
+    }
+
+    private T CreateId<T>(ulong id, Func<IDefinition> creator) where T : class, IDefinition
+    {
+        if (_id2def.TryGetValue(id, out var d))
+            throw new ArgumentException(nameof(id),
+                $"Attempting to redefine {d.Tag.ToString()} {id.StrId()} (as {nameof(T)}).");
+        var def = creator();
+        _id2def.Add(id, def);
+        return def as T;
+    }
+
+    private T GetId<T>(ulong id, TypeTag tag) where T : IDefinition
+    {
+        if (!_id2def.TryGetValue(id, out var anyDef))
+            throw new ArgumentOutOfRangeException($"Attempting to retrieve nonexistent node {id.StrId()}.");
+        if (!(anyDef is T def) || (tag != TypeTag.Unknown && def.Tag != tag))
+            throw new ArgumentOutOfRangeException(
+                $"Attempting to retrieve {tag.ToString()} {id.StrId()}, but found {anyDef.Tag.ToString()} instead.");
+        return def;
     }
 }
