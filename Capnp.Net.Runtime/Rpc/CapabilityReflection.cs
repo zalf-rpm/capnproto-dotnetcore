@@ -132,7 +132,7 @@ public static class CapabilityReflection
                 if (attrs.Length == 1)
                 {
                     var proxyClass = attrs[0].ProxyClass;
-                    Type[] genericArguments = type.GetGenericArguments();
+                    var genericArguments = type.GetGenericArguments();
                     if (genericArguments.Length > 0)
                         proxyClass = proxyClass.MakeGenericType(genericArguments);
 
