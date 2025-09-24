@@ -14,12 +14,12 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0"/>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.13.0"/>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
         <PackageReference Include="Mono.Cecil" Version="0.11.6"/>
-        <PackageReference Include="MSTest.TestAdapter" Version="3.8.2"/>
-        <PackageReference Include="MSTest.TestFramework" Version="3.8.2"/>
+        <PackageReference Include="MSTest.TestAdapter" Version="3.10.4" />
+        <PackageReference Include="MSTest.TestFramework" Version="3.10.4" />
         <PackageReference Include="SpecFlow" Version="3.9.74"/>
         <PackageReference Include="SpecFlow.MsTest" Version="3.9.74"/>
         <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.74"/>

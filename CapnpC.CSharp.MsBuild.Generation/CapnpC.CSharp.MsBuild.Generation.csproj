@@ -36,16 +36,16 @@
     </ItemDefinitionGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Build.Framework" Version="17.13.9"/>
-        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.13.9"/>
+        <PackageReference Include="Microsoft.Build.Framework" Version="17.14.8" />
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.14.8" />
         <PackageReference Update="@(PackageReference)" PrivateAssets="All"/>
-        <PackageReference Update="Microsoft.VisualStudio.Composition" Version="17.12.20"/>
+        <PackageReference Update="Microsoft.VisualStudio.Composition" Version="17.13.41" />
         <PackageReference Update="Microsoft.VisualStudio.ProjectSystem" Version="17.9.380"/>
         <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK" Version="17.9.380"/>
         <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools" Version="17.9.380"/>
-        <PackageReference Update="Microsoft.VisualStudio.Threading" Version="17.13.61" />
+        <PackageReference Update="Microsoft.VisualStudio.Threading" Version="17.14.15" />
         <PackageReference Update="Microsoft.Xaml" Version="4.0.0.1"/>
-        <PackageReference Update="System.Collections.Immutable" Version="9.0.3"/>
+        <PackageReference Update="System.Collections.Immutable" Version="9.0.9" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
     </ItemGroup>
 
