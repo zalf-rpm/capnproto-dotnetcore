@@ -38,7 +38,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             bootCapId = _.Return.Results.CapTable[0].SenderHosted;
         });
         tester.ExpectAbort();
@@ -61,7 +61,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             bootCapId = _.Return.Results.CapTable[0].SenderHosted;
         });
         tester.Send(_ =>
@@ -95,7 +95,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             bootCapId = _.Return.Results.CapTable[0].SenderHosted;
         });
         tester.Send(_ =>
@@ -172,7 +172,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             bootCapId = _.Return.Results.CapTable[0].SenderHosted;
         });
         tester.Send(_ =>
@@ -368,7 +368,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             bootCapId = _.Return.Results.CapTable[0].SenderHosted;
         });
         tester.Send(_ =>
@@ -402,7 +402,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             bootCapId = _.Return.Results.CapTable[0].SenderHosted;
         });
         tester.Send(_ =>
@@ -438,7 +438,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             bootCapId = _.Return.Results.CapTable[0].SenderHosted;
         });
         tester.Send(_ =>
@@ -632,7 +632,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             bootCapId = _.Return.Results.CapTable[0].SenderHosted;
         });
         tester.Send(_ =>
@@ -667,7 +667,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             bootCapId = _.Return.Results.CapTable[0].SenderHosted;
         });
         tester.Send(_ =>
@@ -801,7 +801,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             bootCapId = _.Return.Results.CapTable[0].SenderHosted;
         });
         tester.Send(_ =>
@@ -837,7 +837,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             bootCapId = _.Return.Results.CapTable[0].SenderHosted;
         });
         tester.Send(_ =>
@@ -875,7 +875,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             bootCapId = _.Return.Results.CapTable[0].SenderHosted;
         });
         tester.Send(_ =>
@@ -895,7 +895,7 @@ public class EdgeCaseHandling : TestBase
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
             Assert.AreEqual(Return.WHICH.Results, _.Return.which);
-            Assert.AreEqual(1, _.Return.Results.CapTable.Count);
+            Assert.HasCount(1, _.Return.Results.CapTable);
             Assert.AreEqual(CapDescriptor.WHICH.SenderPromise, _.Return.Results.CapTable[0].which);
         });
         tcs.SetResult(0);

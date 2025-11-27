@@ -229,7 +229,7 @@ public class SerializationTests
 
         DeserializerState d = list;
         var list3 = d.RequireList().Cast(_ => _);
-        Assert.AreEqual(7, list3.Count);
+        Assert.HasCount(7, list3);
         Assert.IsNotNull(list3[0]);
         Assert.AreEqual(ObjectKind.Nil, list3[0].Kind);
         Assert.AreEqual(ObjectKind.Capability, list3[1].Kind);
@@ -271,7 +271,7 @@ public class SerializationTests
 
         DeserializerState d = list2;
         var list3 = d.RequireList().CastFloat();
-        Assert.AreEqual(4, list3.Count);
+        Assert.HasCount(4, list3);
         Assert.AreEqual(0.0f, list3[0]);
         Assert.AreEqual(1.0f, list3[1]);
         Assert.AreEqual(2.0f, list3[2]);
@@ -423,7 +423,7 @@ public class SerializationTests
 
         DeserializerState d = list2;
         var list3 = d.RequireList().Cast(_ => new SomeStruct.READER(_));
-        Assert.AreEqual(4, list3.Count);
+        Assert.HasCount(4, list3);
         Assert.AreEqual("0", list3[0].SomeText);
         Assert.AreEqual("3", list3[3].SomeText);
     }
@@ -499,7 +499,7 @@ public class SerializationTests
         DeserializerState d = list2;
         var tmp = d.RequireList();
         var list3 = tmp.CastText2();
-        Assert.AreEqual(4, list3.Count);
+        Assert.HasCount(4, list3);
         Assert.AreEqual("0", list3[0]);
         Assert.IsNull(list3[1]);
         Assert.IsNull(list3[2]);
@@ -866,8 +866,8 @@ public class SerializationTests
         dss.SetObject(expected);
         DeserializerState d = dss;
         var list = d.RequireList().Cast(_ => _);
-        Assert.AreEqual(3, list.Count);
-        Assert.IsTrue(list[0].Kind == ObjectKind.Nil);
+        Assert.HasCount(3, list);
+        Assert.AreEqual(ObjectKind.Nil, list[0].Kind);
         Assert.AreEqual("foo", list[1].RequireList().CastText());
         var proxy = list[2].RequireCap<ITestInterface>();
         proxy.Foo(123u, true);
@@ -916,7 +916,7 @@ public class SerializationTests
         {
             var _ = list[0];
         });
-        Assert.AreEqual(0, list.ToArray().Length);
+        Assert.IsEmpty(list.ToArray());
     }
 
     [TestMethod]

@@ -153,7 +153,7 @@ public class CodeGeneratorSteps
     {
         Assert.IsNotNull(_result, "expected generation result");
         Assert.IsTrue(_result.IsSuccess, $"Tool invocation failed: {_result.Exception?.Message}");
-        Assert.IsTrue(_result.GeneratedFiles.Count == 1, "Expected exactly one file");
+        Assert.AreEqual(1, _result.GeneratedFiles.Count, "Expected exactly one file");
         Assert.IsTrue(_result.GeneratedFiles[0].IsSuccess,
             $"Code generation failed: {_result.GeneratedFiles[0].Exception?.Message}");
         Assert.IsFalse(string.IsNullOrEmpty(_result.GeneratedFiles[0].GeneratedContent),
@@ -169,7 +169,7 @@ public class CodeGeneratorSteps
     [Then(@"the reason must be bad input")]
     public void ThenTheReasonMustBeBadInput()
     {
-        Assert.IsTrue(_result.ErrorCategory == CapnpProcessFailure.BadInput);
+        Assert.AreEqual(CapnpProcessFailure.BadInput, _result.ErrorCategory);
     }
 
     [Then(@"the error output must contain ""(.*)""")]
@@ -181,7 +181,7 @@ public class CodeGeneratorSteps
     [Then(@"the error output must contain multiple messages")]
     public void ThenTheErrorOutputMustContainMultipleMessages()
     {
-        Assert.IsTrue(_result.Messages.Count >= 2);
+        Assert.IsGreaterThanOrEqualTo(2, _result.Messages.Count);
     }
 
     [Given(@"I enable generation of nullable reference types according to (.*)")]

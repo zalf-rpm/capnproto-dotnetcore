@@ -314,7 +314,7 @@ public class TcpRpc : TestBase
 
                 var exTask = Assert.ThrowsAsync<RpcException>(async () => await answer.WhenReturned);
                 Assert.IsTrue(exTask.Wait(MediumNonDbgTimeout));
-                Assert.IsTrue(exTask.Result.Message.Contains(new MyTestException().Message));
+                Assert.Contains(new MyTestException().Message, exTask.Result.Message);
             }
         }
     }
@@ -750,8 +750,8 @@ public class TcpRpc : TestBase
         Assert.AreEqual(ConnectionState.Active, c1.State);
         var proxy = client1.GetMain<ITestInterface>();
         Assert.IsTrue(proxy is IResolvingCapability r && r.WhenResolved.WrappedTask.Wait(MediumNonDbgTimeout));
-        Assert.IsTrue(c1.RecvCount > 0);
-        Assert.IsTrue(c1.SendCount > 0);
+        Assert.IsGreaterThan(0, c1.RecvCount);
+        Assert.IsGreaterThan(0, c1.SendCount);
 
         var client2 = new TcpRpcClient(addr.ToString(), port);
         var c2 = cbb.Receive(TimeSpan.FromMilliseconds(MediumNonDbgTimeout));
@@ -846,7 +846,7 @@ public class TcpRpc : TestBase
                 client.AttachTracer(new RpcFrameTracer(Console.Out, false)));
             Assert.Throws<InvalidOperationException>(() => client.InjectMidlayer(_ => _));
             Assert.AreEqual(port, client.RemotePort);
-            Assert.IsTrue(client.LocalPort != 0);
+            Assert.AreNotEqual(0, client.LocalPort);
             Assert.AreEqual(0L, client.SendCount);
             Assert.AreEqual(0L, client.RecvCount);
             Assert.IsTrue(SpinWait.SpinUntil(() => client.IsWaitingForData, MediumNonDbgTimeout));

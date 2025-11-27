@@ -37,7 +37,7 @@ public class DynamicSerializerStateTests
 
         Assert.Throws<ArgumentOutOfRangeException>(() => ds.Link(2, ds));
 
-        Assert.AreEqual(1, alloc.Segments.Count);
+        Assert.HasCount(1, alloc.Segments);
         Assert.AreEqual(7, alloc.Segments[0].Length);
 
         DeserializerState d = ds;
@@ -46,7 +46,7 @@ public class DynamicSerializerStateTests
         Assert.AreEqual(2, d.StructPtrCount);
         Assert.AreEqual(0x4321, d.ReadDataUShort(0));
         Assert.AreEqual(0x87654321, d.ReadDataUInt(64));
-        Assert.IsTrue(0x1234567812345678 == d.ReadDataULong(128));
+        Assert.AreEqual<ulong>(0x1234567812345678, d.ReadDataULong(128));
         var p0 = d.StructReadPointer(0);
         Assert.AreEqual(ObjectKind.Struct, p0.Kind);
         Assert.AreEqual(1.23, p0.ReadDataDouble(0));
@@ -85,10 +85,10 @@ public class DynamicSerializerStateTests
         Assert.AreEqual(short.MaxValue - 1, d.ReadDataShort(208, 321));
         Assert.AreEqual(byte.MaxValue - 1, d.ReadDataByte(224, 111));
         Assert.AreEqual(sbyte.MaxValue - 1, d.ReadDataSByte(232, -111));
-        Assert.AreEqual(false, d.ReadDataBool(240));
-        Assert.AreEqual(false, d.ReadDataBool(241, true));
-        Assert.AreEqual(true, d.ReadDataBool(242));
-        Assert.AreEqual(true, d.ReadDataBool(243, true));
+        Assert.IsFalse(d.ReadDataBool(240));
+        Assert.IsFalse(d.ReadDataBool(241, true));
+        Assert.IsTrue(d.ReadDataBool(242));
+        Assert.IsTrue(d.ReadDataBool(243, true));
         Assert.AreEqual(12.34, d.ReadDataDouble(256, 0.5));
         Assert.AreEqual(1.2f, d.ReadDataFloat(320, 0.5f));
     }
@@ -139,7 +139,7 @@ public class DynamicSerializerStateTests
             Assert.AreEqual(ObjectKind.Struct, d.Kind);
             Assert.AreEqual("Lorem ipsum", d.ReadText(0));
             var los = d.ReadListOfStructs(1, _ => _);
-            Assert.AreEqual(3, los.Count);
+            Assert.HasCount(3, los);
             Assert.AreEqual(long.MinValue, los[0].ReadDataLong(0));
             Assert.AreEqual(long.MinValue.ToString(), los[0].ReadText(0));
             Assert.AreEqual(0L, los[1].ReadDataLong(0));
@@ -161,7 +161,7 @@ public class DynamicSerializerStateTests
         ds.WriteText(0, s0);
         var s1 = "All men are created equal";
         ds.WriteText(1, s1);
-        Assert.IsTrue(alloc.Segments.Count >= 3);
+        Assert.IsGreaterThanOrEqualTo(3, alloc.Segments.Count);
 
         DeserializerState d = ds;
         Assert.AreEqual(815, d.ReadDataInt(0));
@@ -221,7 +221,7 @@ public class DynamicSerializerStateTests
             Assert.AreEqual(ObjectKind.ListOfBits, d.Kind);
             Assert.AreEqual(count, d.ListElementCount);
             var rlist = d.RequireList().CastBool();
-            Assert.AreEqual(count, rlist.Count);
+            Assert.HasCount(count, rlist);
             for (var i = 0; i < count; i++)
             {
                 var expected = ValueGen(i);
@@ -762,7 +762,7 @@ public class DynamicSerializerStateTests
         for (var i = 0; i < w; i++)
         {
             var v = matrix[i];
-            Assert.AreEqual(h, v.Count);
+            Assert.HasCount(h, v);
             for (var j = 0; j < h; j++) Assert.AreEqual(i - j, v[j]);
         }
     }
@@ -795,7 +795,7 @@ public class DynamicSerializerStateTests
         for (var i = 0; i < d0; i++)
         {
             var matrix = qube[i];
-            Assert.AreEqual(d1, matrix.Count);
+            Assert.HasCount(d1, matrix);
             for (var j = 0; j < d1; j++)
             {
                 var vector = matrix[j];
@@ -840,15 +840,15 @@ public class DynamicSerializerStateTests
         for (var i = 0; i < d0; i++)
         {
             var qube = (IReadOnlyList<object>)hqube[i];
-            Assert.AreEqual(d1, qube.Count);
+            Assert.HasCount(d1, qube);
             for (var j = 0; j < d1; j++)
             {
                 var matrix = (IReadOnlyList<object>)qube[j];
-                Assert.AreEqual(d2, matrix.Count);
+                Assert.HasCount(d2, matrix);
                 for (var k = 0; k < d2; k++)
                 {
                     var vector = (IReadOnlyList<float>)matrix[k];
-                    Assert.AreEqual(d3, vector.Count);
+                    Assert.HasCount(d3, vector);
                     for (var l = 0; l < d3; l++) Assert.AreEqual(i * j + k * l, vector[l]);
                 }
             }

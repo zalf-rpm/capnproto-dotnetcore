@@ -42,7 +42,7 @@ public class GenerateCapnpFileCodeBehindTaskTest
         task.CapnpFiles = new ITaskItem[1] { new TaskItemMock { ItemSpec = capnpPath } };
         Assert.IsTrue(task.Execute());
         Assert.IsNotNull(task.GeneratedFiles);
-        Assert.AreEqual(1, task.GeneratedFiles.Length);
+        Assert.HasCount(1, task.GeneratedFiles);
         var csPath = Path.Combine(tmpPath, task.GeneratedFiles[0].ItemSpec);
         Assert.AreEqual(capnpPath + ".cs", csPath);
         Assert.IsTrue(File.Exists(csPath));

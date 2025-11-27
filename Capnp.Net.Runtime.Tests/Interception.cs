@@ -115,7 +115,7 @@ public class Interception : TestBase
 
                 var pr = new TestInterface.Params_Foo.READER(cc.InArgs);
                 Assert.AreEqual(321u, pr.I);
-                Assert.AreEqual(false, pr.J);
+                Assert.IsFalse(pr.J);
 
                 var pw = cc.InArgs.Rewrap<TestInterface.Params_Foo.WRITER>();
                 pw.I = 123u;
@@ -409,7 +409,7 @@ public class Interception : TestBase
                 var baz = main.Baz(new TestAllTypes());
                 Assert.IsTrue(policy.Calls.TryReceive(out var cc));
 
-                Assert.IsTrue(cc.MethodId == 2);
+                Assert.AreEqual(2, cc.MethodId);
                 Assert.AreEqual(new TestInterface_Skeleton().InterfaceId, cc.InterfaceId);
             }
         }

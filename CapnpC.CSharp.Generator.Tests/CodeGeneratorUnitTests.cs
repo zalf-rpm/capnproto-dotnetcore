@@ -181,7 +181,7 @@ public class CodeGeneratorUnitTests
             var frame = Framing.ReadSegments(input);
             var ds = DeserializerState.CreateRoot(frame);
             var cgr = CapnpSerializable.Create<CodeGeneratorRequest>(ds);
-            Assert.IsTrue(cgr.Nodes.Count > 0);
+            Assert.IsNotEmpty(cgr.Nodes);
         }
     }
 

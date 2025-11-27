@@ -326,11 +326,11 @@ public class TcpRpcInterop : TestBase
                                     line = await stdout.ReadLineAsync();
                                     Assert.AreEqual("++", line);
                                     ++handleCount;
-                                    Assert.IsTrue(handleCount <= iterationCount);
+                                    Assert.IsLessThanOrEqualTo(iterationCount, handleCount);
                                     break;
 
                                 case "--":
-                                    Assert.IsTrue(handleCount > 0);
+                                    Assert.IsGreaterThan(0, handleCount);
                                     --handleCount;
                                     break;
 

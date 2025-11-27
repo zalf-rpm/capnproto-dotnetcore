@@ -130,12 +130,12 @@ public class RpcSchemaTests
         Assert.AreEqual(ulong.MaxValue, r.Call.InterfaceId);
         Assert.AreEqual((ushort)0x1111, r.Call.MethodId);
         var capTable = r.Call.Params.CapTable;
-        Assert.AreEqual(6, capTable.Count);
+        Assert.HasCount(6, capTable);
         Assert.AreEqual(CapDescriptor.WHICH.None, capTable[0].which);
         Assert.AreEqual(CapDescriptor.WHICH.ReceiverAnswer, capTable[1].which);
         Assert.AreEqual(0x12345678u, capTable[1].ReceiverAnswer.QuestionId);
         var transform = capTable[1].ReceiverAnswer.Transform;
-        Assert.AreEqual(2, transform.Count);
+        Assert.HasCount(2, transform);
         Assert.AreEqual(PromisedAnswer.Op.WHICH.GetPointerField, transform[0].which);
         Assert.AreEqual((ushort)0x2222, transform[0].GetPointerField);
         Assert.AreEqual(PromisedAnswer.Op.WHICH.Noop, transform[1].which);
@@ -262,7 +262,7 @@ public class RpcSchemaTests
             Assert.AreEqual(-1, r.Provide.Recipient.ReadDataInt(0));
             Assert.AreEqual(MessageTarget.WHICH.PromisedAnswer, r.Provide.Target.which);
             Assert.AreEqual(0xcccccccc, r.Provide.Target.PromisedAnswer.QuestionId);
-            Assert.AreEqual(1, r.Provide.Target.PromisedAnswer.Transform.Count);
+            Assert.HasCount(1, r.Provide.Target.PromisedAnswer.Transform);
             Assert.AreEqual(PromisedAnswer.Op.WHICH.Noop, r.Provide.Target.PromisedAnswer.Transform[0].which);
         }
     }
@@ -337,7 +337,7 @@ public class RpcSchemaTests
         {
             Assert.AreEqual(Message.WHICH.Return, r.which);
             Assert.AreEqual(Return.WHICH.Results, r.Return.which);
-            Assert.AreEqual(1, r.Return.Results.CapTable.Count);
+            Assert.HasCount(1, r.Return.Results.CapTable);
             Assert.AreEqual(CapDescriptor.WHICH.SenderHosted, r.Return.Results.CapTable[0].which);
             Assert.AreEqual(0x22222222u, r.Return.Results.CapTable[0].SenderHosted);
             Assert.AreEqual(double.MinValue, r.Return.Results.Content.ReadDataDouble(0));
@@ -534,11 +534,11 @@ public class RpcSchemaTests
                 Assert.AreEqual(0x5555u, msg.Call.MethodId);
                 Assert.IsNotNull(msg.Call.Params);
                 Assert.IsNotNull(msg.Call.Params.CapTable);
-                Assert.AreEqual(5, msg.Call.Params.CapTable.Count);
+                Assert.HasCount(5, msg.Call.Params.CapTable);
                 Assert.IsNotNull(msg.Call.Params.CapTable[0].ReceiverAnswer);
                 Assert.AreEqual(42u, msg.Call.Params.CapTable[0].ReceiverAnswer.QuestionId);
                 Assert.IsNotNull(msg.Call.Params.CapTable[0].ReceiverAnswer.Transform);
-                Assert.AreEqual(1, msg.Call.Params.CapTable[0].ReceiverAnswer.Transform.Count);
+                Assert.HasCount(1, msg.Call.Params.CapTable[0].ReceiverAnswer.Transform);
                 Assert.AreEqual((ushort)3, msg.Call.Params.CapTable[0].ReceiverAnswer.Transform[0].GetPointerField);
                 Assert.AreEqual(7u, msg.Call.Params.CapTable[1].ReceiverHosted);
                 Assert.AreEqual(8u, msg.Call.Params.CapTable[2].SenderHosted);
@@ -578,7 +578,7 @@ public class RpcSchemaTests
                 Assert.IsFalse(msg.Return.ReleaseParamCaps);
                 Assert.IsNotNull(msg.Return.Results);
                 Assert.IsNotNull(msg.Return.Results.CapTable);
-                Assert.AreEqual(0, msg.Return.Results.CapTable.Count);
+                Assert.IsEmpty(msg.Return.Results.CapTable);
             }
         );
     }

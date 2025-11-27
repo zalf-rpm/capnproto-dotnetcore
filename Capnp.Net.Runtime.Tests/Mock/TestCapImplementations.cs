@@ -155,7 +155,7 @@ internal class Common
         Assert.IsTrue(DataSequenceEqual(sub.DataList, new[] { Data("garply"), Data("waldo"), Data("fred") }));
         {
             var list = sub.StructList;
-            Assert.AreEqual(3, list.Count);
+            Assert.HasCount(3, list);
             Assert.AreEqual("x structlist 1", list[0].TextField);
             Assert.AreEqual("x structlist 2", list[1].TextField);
             Assert.AreEqual("x structlist 3", list[2].TextField);
@@ -175,7 +175,7 @@ internal class Common
         Assert.IsTrue(s.UInt64List.SequenceEqual(new[] { 11111111111111111111 }));
         {
             var list = s.Float32List;
-            Assert.AreEqual(4, list.Count);
+            Assert.HasCount(4, list);
             Assert.AreEqual(5555.5f, list[0]);
             Assert.AreEqual(float.PositiveInfinity, list[1]);
             Assert.AreEqual(float.NegativeInfinity, list[2]);
@@ -183,7 +183,7 @@ internal class Common
         }
         {
             var list = s.Float64List;
-            Assert.AreEqual(4, list.Count);
+            Assert.HasCount(4, list);
             Assert.AreEqual(7777.75, list[0]);
             Assert.IsTrue(double.IsPositiveInfinity(list[1]));
             Assert.IsTrue(double.IsNegativeInfinity(list[2]));
@@ -193,7 +193,7 @@ internal class Common
         Assert.IsTrue(DataSequenceEqual(s.DataList, new[] { Data("oops"), Data("exhausted"), Data("rfc3092") }));
         {
             var list = s.StructList;
-            Assert.AreEqual(3, list.Count);
+            Assert.HasCount(3, list);
             Assert.AreEqual("structlist 1", list[0].TextField);
             Assert.AreEqual("structlist 2", list[1].TextField);
             Assert.AreEqual("structlist 3", list[2].TextField);
@@ -237,37 +237,37 @@ internal class Common
                 Assert.AreEqual(string.Empty, subsub.StructField.TextField);
             }
             Assert.AreEqual(0, sub.VoidList);
-            Assert.AreEqual(0, sub.BoolList.Count);
-            Assert.AreEqual(0, sub.Int8List.Count);
-            Assert.AreEqual(0, sub.Int16List.Count);
-            Assert.AreEqual(0, sub.Int32List.Count);
-            Assert.AreEqual(0, sub.Int64List.Count);
-            Assert.AreEqual(0, sub.UInt8List.Count);
-            Assert.AreEqual(0, sub.UInt16List.Count);
-            Assert.AreEqual(0, sub.UInt32List.Count);
-            Assert.AreEqual(0, sub.UInt64List.Count);
-            Assert.AreEqual(0, sub.Float32List.Count);
-            Assert.AreEqual(0, sub.Float64List.Count);
-            Assert.AreEqual(0, sub.TextList.Count);
-            Assert.AreEqual(0, sub.DataList.Count);
-            Assert.AreEqual(0, sub.StructList.Count);
+            Assert.IsEmpty(sub.BoolList);
+            Assert.IsEmpty(sub.Int8List);
+            Assert.IsEmpty(sub.Int16List);
+            Assert.IsEmpty(sub.Int32List);
+            Assert.IsEmpty(sub.Int64List);
+            Assert.IsEmpty(sub.UInt8List);
+            Assert.IsEmpty(sub.UInt16List);
+            Assert.IsEmpty(sub.UInt32List);
+            Assert.IsEmpty(sub.UInt64List);
+            Assert.IsEmpty(sub.Float32List);
+            Assert.IsEmpty(sub.Float64List);
+            Assert.IsEmpty(sub.TextList);
+            Assert.IsEmpty(sub.DataList);
+            Assert.IsEmpty(sub.StructList);
         }
 
         Assert.AreEqual(0, s.VoidList);
-        Assert.AreEqual(0, s.BoolList.Count);
-        Assert.AreEqual(0, s.Int8List.Count);
-        Assert.AreEqual(0, s.Int16List.Count);
-        Assert.AreEqual(0, s.Int32List.Count);
-        Assert.AreEqual(0, s.Int64List.Count);
-        Assert.AreEqual(0, s.UInt8List.Count);
-        Assert.AreEqual(0, s.UInt16List.Count);
-        Assert.AreEqual(0, s.UInt32List.Count);
-        Assert.AreEqual(0, s.UInt64List.Count);
-        Assert.AreEqual(0, s.Float32List.Count);
-        Assert.AreEqual(0, s.Float64List.Count);
-        Assert.AreEqual(0, s.TextList.Count);
-        Assert.AreEqual(0, s.DataList.Count);
-        Assert.AreEqual(0, s.StructList.Count);
+        Assert.IsEmpty(s.BoolList);
+        Assert.IsEmpty(s.Int8List);
+        Assert.IsEmpty(s.Int16List);
+        Assert.IsEmpty(s.Int32List);
+        Assert.IsEmpty(s.Int64List);
+        Assert.IsEmpty(s.UInt8List);
+        Assert.IsEmpty(s.UInt16List);
+        Assert.IsEmpty(s.UInt32List);
+        Assert.IsEmpty(s.UInt64List);
+        Assert.IsEmpty(s.Float32List);
+        Assert.IsEmpty(s.Float64List);
+        Assert.IsEmpty(s.TextList);
+        Assert.IsEmpty(s.DataList);
+        Assert.IsEmpty(s.StructList);
     }
 
     public static void InitListDefaults(TestLists lists)
@@ -340,13 +340,13 @@ internal class Common
 
     public static void CheckListDefault(TestLists lists)
     {
-        Assert.AreEqual(2, lists.List0.Count);
-        Assert.AreEqual(4, lists.List1.Count);
-        Assert.AreEqual(2, lists.List8.Count);
-        Assert.AreEqual(2, lists.List16.Count);
-        Assert.AreEqual(2, lists.List32.Count);
-        Assert.AreEqual(2, lists.List64.Count);
-        Assert.AreEqual(2, lists.ListP.Count);
+        Assert.HasCount(2, lists.List0);
+        Assert.HasCount(4, lists.List1);
+        Assert.HasCount(2, lists.List8);
+        Assert.HasCount(2, lists.List16);
+        Assert.HasCount(2, lists.List32);
+        Assert.HasCount(2, lists.List64);
+        Assert.HasCount(2, lists.ListP);
 
         Assert.IsTrue(lists.List1[0].F);
         Assert.IsFalse(lists.List1[1].F);
@@ -368,21 +368,21 @@ internal class Common
         Assert.AreEqual("foo", lists.ListP[0].F);
         Assert.AreEqual("bar", lists.ListP[1].F);
 
-        Assert.AreEqual(3, lists.Int32ListList.Count);
+        Assert.HasCount(3, lists.Int32ListList);
         Assert.IsTrue(lists.Int32ListList[0].SequenceEqual(new[] { 1, 2, 3 }));
         Assert.IsTrue(lists.Int32ListList[1].SequenceEqual(new[] { 4, 5 }));
         Assert.IsTrue(lists.Int32ListList[2].SequenceEqual(new[] { 12341234 }));
 
-        Assert.AreEqual(3, lists.TextListList.Count);
+        Assert.HasCount(3, lists.TextListList);
         Assert.IsTrue(lists.TextListList[0].SequenceEqual(new[] { "foo", "bar" }));
         Assert.IsTrue(lists.TextListList[1].SequenceEqual(new[] { "baz" }));
         Assert.IsTrue(lists.TextListList[2].SequenceEqual(new[] { "qux", "corge" }));
 
-        Assert.AreEqual(2, lists.StructListList.Count);
-        Assert.AreEqual(2, lists.StructListList[0].Count);
+        Assert.HasCount(2, lists.StructListList);
+        Assert.HasCount(2, lists.StructListList[0]);
         //Assert.AreEqual(123, lists.StructListList[0][0]);
         //Assert.AreEqual(456, lists.StructListList[0][1]);
-        Assert.AreEqual(1, lists.StructListList[1].Count);
+        Assert.HasCount(1, lists.StructListList[1]);
         //Assert.AreEqual(789, lists.StructListList[1][0]);
     }
 }

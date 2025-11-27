@@ -30,7 +30,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfStructs = d.RequireList().Cast(_ => _);
-        Assert.AreEqual(10, asListOfStructs.Count);
+        Assert.HasCount(10, asListOfStructs);
         Assert.AreEqual(ObjectKind.Value, asListOfStructs[0].Kind);
         Assert.AreEqual((byte)0x00, asListOfStructs[0].ReadDataByte(0));
         Assert.AreEqual((byte)0x11, asListOfStructs[1].ReadDataByte(0));
@@ -61,7 +61,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfStructs = d.RequireList().Cast(_ => _);
-        Assert.AreEqual(10, asListOfStructs.Count);
+        Assert.HasCount(10, asListOfStructs);
         Assert.AreEqual(ObjectKind.Value, asListOfStructs[0].Kind);
         Assert.AreEqual((sbyte)0, asListOfStructs[0].ReadDataSByte(0));
         Assert.AreEqual((sbyte)-1, asListOfStructs[1].ReadDataSByte(0));
@@ -85,7 +85,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfStructs = d.RequireList().Cast(_ => _);
-        Assert.AreEqual(3, asListOfStructs.Count);
+        Assert.HasCount(3, asListOfStructs);
         Assert.AreEqual(ObjectKind.Value, asListOfStructs[0].Kind);
         Assert.AreEqual((ushort)0x0000, asListOfStructs[0].ReadDataUShort(0));
         Assert.AreEqual((ushort)0x1111, asListOfStructs[1].ReadDataUShort(0));
@@ -102,7 +102,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfStructs = d.RequireList().Cast(_ => _);
-        Assert.AreEqual(3, asListOfStructs.Count);
+        Assert.HasCount(3, asListOfStructs);
         Assert.AreEqual(ObjectKind.Value, asListOfStructs[0].Kind);
         Assert.AreEqual((short)0, asListOfStructs[0].ReadDataShort(0));
         Assert.AreEqual((short)-0x1111, asListOfStructs[1].ReadDataShort(0));
@@ -118,7 +118,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfStructs = d.RequireList().Cast(_ => _);
-        Assert.AreEqual(2, asListOfStructs.Count);
+        Assert.HasCount(2, asListOfStructs);
         Assert.AreEqual(ObjectKind.Value, asListOfStructs[0].Kind);
         Assert.AreEqual(0u, asListOfStructs[0].ReadDataUInt(0));
         Assert.AreEqual(uint.MaxValue, asListOfStructs[1].ReadDataUInt(0));
@@ -134,7 +134,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfStructs = d.RequireList().Cast(_ => _);
-        Assert.AreEqual(2, asListOfStructs.Count);
+        Assert.HasCount(2, asListOfStructs);
         Assert.AreEqual(ObjectKind.Value, asListOfStructs[0].Kind);
         Assert.AreEqual(int.MinValue, asListOfStructs[0].ReadDataInt(0));
         Assert.AreEqual(int.MaxValue, asListOfStructs[1].ReadDataInt(0));
@@ -149,7 +149,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfStructs = d.RequireList().Cast(_ => _);
-        Assert.AreEqual(2, asListOfStructs.Count);
+        Assert.HasCount(2, asListOfStructs);
         Assert.AreEqual(0ul, asListOfStructs[0].ReadDataULong(0));
         Assert.AreEqual(ulong.MaxValue, asListOfStructs[1].ReadDataULong(0));
         Assert.Throws<IndexOutOfRangeException>(() => asListOfStructs[-1].ReadDataUShort(0));
@@ -168,7 +168,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfStructs = d.RequireList().Cast(_ => _);
-        Assert.AreEqual(2, asListOfStructs.Count);
+        Assert.HasCount(2, asListOfStructs);
         Assert.AreEqual(long.MinValue, asListOfStructs[0].ReadDataLong(0));
         Assert.AreEqual(long.MaxValue, asListOfStructs[1].ReadDataLong(0));
     }
@@ -187,7 +187,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfStructs = d.RequireList().Cast(_ => _);
-        Assert.AreEqual(6, asListOfStructs.Count);
+        Assert.HasCount(6, asListOfStructs);
         Assert.AreEqual(1.0f, asListOfStructs[0].ReadDataFloat(0));
         Assert.AreEqual(float.MinValue, asListOfStructs[1].ReadDataFloat(0));
         Assert.AreEqual(float.MaxValue, asListOfStructs[2].ReadDataFloat(0));
@@ -210,7 +210,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfStructs = d.RequireList().Cast(_ => _);
-        Assert.AreEqual(6, asListOfStructs.Count);
+        Assert.HasCount(6, asListOfStructs);
         Assert.AreEqual(1.0, asListOfStructs[0].ReadDataDouble(0));
         Assert.AreEqual(double.MinValue, asListOfStructs[1].ReadDataDouble(0));
         Assert.AreEqual(double.MaxValue, asListOfStructs[2].ReadDataDouble(0));
@@ -229,10 +229,10 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfBools = d.RequireList().CastBool();
-        Assert.AreEqual(3, asListOfBools.Count);
-        Assert.AreEqual(false, asListOfBools[0]);
-        Assert.AreEqual(false, asListOfBools[1]);
-        Assert.AreEqual(true, asListOfBools[2]);
+        Assert.HasCount(3, asListOfBools);
+        Assert.IsFalse(asListOfBools[0]);
+        Assert.IsFalse(asListOfBools[1]);
+        Assert.IsTrue(asListOfBools[2]);
     }
 
     [TestMethod]
@@ -245,7 +245,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfBytes = d.RequireList().CastByte();
-        Assert.AreEqual(3, asListOfBytes.Count);
+        Assert.HasCount(3, asListOfBytes);
         Assert.AreEqual(0, asListOfBytes[0]);
         Assert.AreEqual((byte)0x11, asListOfBytes[1]);
         Assert.AreEqual((byte)0x22, asListOfBytes[2]);
@@ -260,7 +260,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfSBytes = d.RequireList().CastSByte();
-        Assert.AreEqual(2, asListOfSBytes.Count);
+        Assert.HasCount(2, asListOfSBytes);
         Assert.AreEqual((sbyte)0, asListOfSBytes[0]);
         Assert.AreEqual(sbyte.MinValue, asListOfSBytes[1]);
     }
@@ -274,7 +274,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfUShorts = d.RequireList().CastUShort();
-        Assert.AreEqual(2, asListOfUShorts.Count);
+        Assert.HasCount(2, asListOfUShorts);
         Assert.AreEqual((ushort)0, asListOfUShorts[0]);
         Assert.AreEqual(ushort.MaxValue, asListOfUShorts[1]);
     }
@@ -289,7 +289,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfShorts = d.RequireList().CastShort();
-        Assert.AreEqual(2, asListOfShorts.Count);
+        Assert.HasCount(2, asListOfShorts);
         Assert.AreEqual(short.MinValue, asListOfShorts[0]);
         Assert.AreEqual(short.MaxValue, asListOfShorts[1]);
     }
@@ -303,7 +303,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfUInts = d.RequireList().CastUInt();
-        Assert.AreEqual(2, asListOfUInts.Count);
+        Assert.HasCount(2, asListOfUInts);
         Assert.AreEqual(0u, asListOfUInts[0]);
         Assert.AreEqual(uint.MaxValue, asListOfUInts[1]);
     }
@@ -318,7 +318,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfInts = d.RequireList().CastInt();
-        Assert.AreEqual(2, asListOfInts.Count);
+        Assert.HasCount(2, asListOfInts);
         Assert.AreEqual(int.MinValue, asListOfInts[0]);
         Assert.AreEqual(int.MaxValue, asListOfInts[1]);
     }
@@ -332,7 +332,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfULongs = d.RequireList().CastULong();
-        Assert.AreEqual(2, asListOfULongs.Count);
+        Assert.HasCount(2, asListOfULongs);
         Assert.AreEqual(0ul, asListOfULongs[0]);
         Assert.AreEqual(ulong.MaxValue, asListOfULongs[1]);
     }
@@ -347,7 +347,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfLongs = d.RequireList().CastLong();
-        Assert.AreEqual(2, asListOfLongs.Count);
+        Assert.HasCount(2, asListOfLongs);
         Assert.AreEqual(long.MinValue, asListOfLongs[0]);
         Assert.AreEqual(long.MaxValue, asListOfLongs[1]);
     }
@@ -362,7 +362,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfFloats = d.RequireList().CastFloat();
-        Assert.AreEqual(2, asListOfFloats.Count);
+        Assert.HasCount(2, asListOfFloats);
         Assert.AreEqual(float.NaN, asListOfFloats[0]);
         Assert.AreEqual(float.PositiveInfinity, asListOfFloats[1]);
     }
@@ -377,7 +377,7 @@ public class DeserializationTests
 
         DeserializerState d = ds;
         var asListOfDoubles = d.RequireList().CastDouble();
-        Assert.AreEqual(2, asListOfDoubles.Count);
+        Assert.HasCount(2, asListOfDoubles);
         Assert.AreEqual(double.NegativeInfinity, asListOfDoubles[0]);
         Assert.AreEqual(double.MaxValue, asListOfDoubles[1]);
     }
@@ -399,7 +399,7 @@ public class DeserializationTests
         var ld = d.RequireList();
         Assert.Throws<NotSupportedException>(() => ld.CastText());
         var result = ld.Cast2D<int>();
-        Assert.AreEqual(3, result.Count);
+        Assert.HasCount(3, result);
         for (var i = 0; i < result.Count; i++) CollectionAssert.AreEqual(expected[i], result[i].ToArray());
 
         Assert.Throws<NotSupportedException>(() => ld.Cast2D<decimal>());
@@ -442,11 +442,11 @@ public class DeserializationTests
         DeserializerState d = dss;
         var ld = d.RequireList();
         var result = ld.Cast3D<int>();
-        Assert.AreEqual(3, result.Count);
+        Assert.HasCount(3, result);
         for (var i = 0; i < result.Count; i++)
         {
             var inner = result[i];
-            Assert.AreEqual(expected[i].Length, inner.Count);
+            Assert.HasCount(expected[i].Length, inner);
 
             for (var j = 0; j < expected[i].Length; j++)
             {
@@ -481,11 +481,11 @@ public class DeserializationTests
         DeserializerState d = dss;
         var ld = d.RequireList();
         var result = (IReadOnlyList<object>)ld.CastND<int>(3);
-        Assert.AreEqual(3, result.Count);
+        Assert.HasCount(3, result);
         for (var i = 0; i < result.Count; i++)
         {
             var inner = (IReadOnlyList<object>)result[i];
-            Assert.AreEqual(expected[i].Length, inner.Count);
+            Assert.HasCount(expected[i].Length, inner);
 
             for (var j = 0; j < expected[i].Length; j++)
             {
@@ -523,16 +523,16 @@ public class DeserializationTests
         DeserializerState d = dss;
         var ld = d.RequireList();
         var result = ld.Cast3D(_ => new SomeStruct.READER(_));
-        Assert.AreEqual(3, result.Count);
+        Assert.HasCount(3, result);
         for (var i = 0; i < result.Count; i++)
         {
             var inner = result[i];
-            Assert.AreEqual(i + 1, inner.Count);
+            Assert.HasCount(i + 1, inner);
 
             for (var j = 0; j < inner.Count; j++)
             {
                 var inner2 = inner[j];
-                Assert.AreEqual(j + 1, inner2.Count);
+                Assert.HasCount(j + 1, inner2);
 
                 for (var k = 0; k < inner2.Count; k++) Assert.AreEqual($"{i}, {j}, {k}", inner2[k].SomeText);
             }
@@ -567,16 +567,16 @@ public class DeserializationTests
         DeserializerState d = dss;
         var ld = d.RequireList();
         var result = (IReadOnlyList<object>)ld.CastND(3, _ => new SomeStruct.READER(_));
-        Assert.AreEqual(3, result.Count);
+        Assert.HasCount(3, result);
         for (var i = 0; i < result.Count; i++)
         {
             var inner = (IReadOnlyList<object>)result[i];
-            Assert.AreEqual(i + 1, inner.Count);
+            Assert.HasCount(i + 1, inner);
 
             for (var j = 0; j < inner.Count; j++)
             {
                 var inner2 = (IReadOnlyList<SomeStruct.READER>)inner[j];
-                Assert.AreEqual(j + 1, inner2.Count);
+                Assert.HasCount(j + 1, inner2);
 
                 for (var k = 0; k < inner2.Count; k++) Assert.AreEqual($"{i}, {j}, {k}", inner2[k].SomeText);
             }
@@ -606,11 +606,11 @@ public class DeserializationTests
         DeserializerState d = dss;
         var ld = d.RequireList();
         var result = ld.Cast2D(_ => new SomeStruct.READER(_));
-        Assert.AreEqual(3, result.Count);
+        Assert.HasCount(3, result);
         for (var i = 0; i < result.Count; i++)
         {
             var inner = result[i];
-            Assert.AreEqual(i + 1, inner.Count);
+            Assert.HasCount(i + 1, inner);
 
             for (var j = 0; j < inner.Count; j++) Assert.AreEqual($"{i}, {j}", inner[j].SomeText);
         }
@@ -645,7 +645,7 @@ public class DeserializationTests
         DeserializerState d = dss;
         var ld = d.RequireList();
         var result = ld.CastEnums2D(_ => (TestEnum)_);
-        Assert.AreEqual(expected.Length, result.Count);
+        Assert.HasCount(expected.Length, result);
         for (var i = 0; i < result.Count; i++) CollectionAssert.AreEqual(expected[i], result[i].ToArray());
     }
 
@@ -674,11 +674,11 @@ public class DeserializationTests
         DeserializerState d = dss;
         var ld = d.RequireList();
         var result = ld.CastEnums3D(_ => (TestEnum)_);
-        Assert.AreEqual(3, result.Count);
+        Assert.HasCount(3, result);
         for (var i = 0; i < result.Count; i++)
         {
             var inner = result[i];
-            Assert.AreEqual(expected[i].Length, inner.Count);
+            Assert.HasCount(expected[i].Length, inner);
 
             for (var j = 0; j < expected[i].Length; j++)
             {
@@ -713,11 +713,11 @@ public class DeserializationTests
         DeserializerState d = dss;
         var ld = d.RequireList();
         var result = (IReadOnlyList<object>)ld.CastEnumsND(3, _ => (TestEnum)_);
-        Assert.AreEqual(3, result.Count);
+        Assert.HasCount(3, result);
         for (var i = 0; i < result.Count; i++)
         {
             var inner = (IReadOnlyList<object>)result[i];
-            Assert.AreEqual(expected[i].Length, inner.Count);
+            Assert.HasCount(expected[i].Length, inner);
 
             for (var j = 0; j < expected[i].Length; j++)
             {
@@ -757,7 +757,7 @@ public class DeserializationTests
         for (var i = 0; i < expected.Length; i++) s[i].Init(expected[i], (l, j) => l.Init(j));
         DeserializerState d = s;
         var voids = d.RequireList().CastVoid3D();
-        Assert.AreEqual(expected.Length, voids.Count);
+        Assert.HasCount(expected.Length, voids);
         for (var i = 0; i < expected.Length; i++) CollectionAssert.AreEqual(expected[i], voids[i].ToArray());
     }
 
