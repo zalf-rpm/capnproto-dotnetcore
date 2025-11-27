@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -55,7 +56,12 @@ public class TcpRpc : TestBase
     [TestMethod]
     public void ConnectNoServer()
     {
-        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        var (addr, _) = TcpManager.Instance.GetLocalAddressAndPort();
+        var listener = new TcpListener(addr, 0);
+        listener.Start();
+        int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        listener.Stop();
+
         using (var client = new TcpRpcClient(addr.ToString(), port))
         {
             Assert.IsTrue(Assert.ThrowsAsync<RpcException>(() => client.WhenConnected).Wait(10000));
@@ -735,7 +741,8 @@ public class TcpRpc : TestBase
 
         Assert.Throws<InvalidOperationException>(() => server.StopListening());
 
-        server.StartAccepting(addr, port);
+        server.StartAccepting(addr, 0);
+        port = server.Port;
         Assert.IsTrue(server.IsAlive);
         Assert.Throws<InvalidOperationException>(() => server.StartAccepting(addr, port));
 
@@ -798,7 +805,8 @@ public class TcpRpc : TestBase
         server.OnConnectionChanged += (s, a) => { server.Dispose(); };
 
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        server.StartAccepting(addr, port);
+        server.StartAccepting(addr, 0);
+        port = server.Port;
 
         var client1 = new TcpRpcClient(addr.ToString(), port);
         Assert.IsTrue(client1.WhenConnected.Wait(MediumNonDbgTimeout), "Did not connect");
@@ -816,7 +824,8 @@ public class TcpRpc : TestBase
             server.OnConnectionChanged += (s, a) => { a.Connection.Close(); };
 
             var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-            server.StartAccepting(addr, port);
+            server.StartAccepting(addr, 0);
+            port = server.Port;
 
             var client1 = new TcpRpcClient(addr.ToString(), port);
             Assert.IsTrue(client1.WhenConnected.Wait(MediumNonDbgTimeout));
@@ -838,7 +847,8 @@ public class TcpRpc : TestBase
             Assert.Throws<ArgumentNullException>(() => client.AttachTracer(null));
             Assert.Throws<ArgumentNullException>(() => client.InjectMidlayer(null));
             var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-            server.StartAccepting(addr, port);
+            server.StartAccepting(addr, 0);
+            port = server.Port;
             client.Connect(addr.ToString(), port);
             Assert.Throws<InvalidOperationException>(() => client.Connect(addr.ToString(), port));
             Assert.IsTrue(client.WhenConnected.Wait(MediumNonDbgTimeout));

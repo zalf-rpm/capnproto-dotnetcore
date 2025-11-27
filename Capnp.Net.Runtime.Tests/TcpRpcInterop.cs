@@ -41,7 +41,7 @@ public class TcpRpcInterop : TestBase
         return null;
     }
 
-    private bool TryLaunchCompatTestProcess(IPAddress addr, int port, string whichTest, Action<StreamReader> test)
+    private bool TryLaunchCompatTestProcess(IPAddress addr, int port, string whichTest, Action<StreamReader, int> test)
     {
         var myPath = Path.GetDirectoryName(typeof(TcpRpcInterop).Assembly.Location);
         string config;
@@ -68,6 +68,7 @@ public class TcpRpcInterop : TestBase
 
             try
             {
+                int actualPort = port;
                 try
                 {
                     _currentProcess.StandardError.ReadToEndAsync().ContinueWith(t => Console.Error.WriteLine(t.Result));
@@ -76,6 +77,15 @@ public class TcpRpcInterop : TestBase
                     Assert.IsNotNull(firstLine.Result, "Problem after launching test process");
                     Assert.IsTrue(firstLine.Result.StartsWith("Listening") || firstLine.Result.StartsWith("Connecting"),
                         "Problem after launching test process");
+
+                    if (firstLine.Result.StartsWith("Listening on port "))
+                    {
+                        var parts = firstLine.Result.Split(' ');
+                        if (parts.Length >= 4 && int.TryParse(parts[3].Trim('.'), out var p))
+                        {
+                            actualPort = p;
+                        }
+                    }
                 }
                 catch (AssertFailedException exception)
                 {
@@ -83,7 +93,7 @@ public class TcpRpcInterop : TestBase
                     return false;
                 }
 
-                test(_currentProcess.StandardOutput);
+                test(_currentProcess.StandardOutput, actualPort);
 
                 return true;
             }
@@ -100,7 +110,7 @@ public class TcpRpcInterop : TestBase
         }
     }
 
-    private void LaunchCompatTestProcess(string whichTest, IPAddress addr, int port, Action<StreamReader> test)
+    private void LaunchCompatTestProcess(string whichTest, IPAddress addr, int port, Action<StreamReader, int> test)
     {
         for (var retry = 0; retry < 5; retry++)
             if (TryLaunchCompatTestProcess(addr, port, whichTest, test))
@@ -125,9 +135,9 @@ public class TcpRpcInterop : TestBase
     public void BasicClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:Interface", addr, port, stdout =>
+        LaunchCompatTestProcess("server:Interface", addr, 0, (stdout, actualPort) =>
         {
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //client.WhenConnected.Wait();
 
@@ -157,12 +167,13 @@ public class TcpRpcInterop : TestBase
     public void BasicServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestInterfaceImpl(counters);
 
-            LaunchCompatTestProcess("client:Basic", addr, port, stdout =>
+            LaunchCompatTestProcess("client:Basic", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "Basic test start");
                 AssertOutput(stdout, "Basic test end");
@@ -175,11 +186,11 @@ public class TcpRpcInterop : TestBase
     public void PipelineClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:Pipeline", addr, port, stdout =>
+        LaunchCompatTestProcess("server:Pipeline", addr, 0, (stdout, actualPort) =>
         {
             stdout.ReadToEndAsync().ContinueWith(t => Console.WriteLine(t.Result));
 
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //client.WhenConnected.Wait();
 
@@ -214,12 +225,13 @@ public class TcpRpcInterop : TestBase
     public void PipelineServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestPipelineImpl(counters);
 
-            LaunchCompatTestProcess("client:Pipelining", addr, port, stdout =>
+            LaunchCompatTestProcess("client:Pipelining", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "Pipelining test start");
                 AssertOutput(stdout, "foo 123 1");
@@ -234,9 +246,9 @@ public class TcpRpcInterop : TestBase
     public void ReleaseClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (stdout, actualPort) =>
         {
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //client.WhenConnected.Wait();
 
@@ -268,12 +280,13 @@ public class TcpRpcInterop : TestBase
     public void ReleaseServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl(counters);
 
-            LaunchCompatTestProcess("client:Release", addr, port, stdout =>
+            LaunchCompatTestProcess("client:Release", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "Release test start");
                 AssertOutput(stdout, "sync");
@@ -302,9 +315,9 @@ public class TcpRpcInterop : TestBase
         var iterationCount = 5000;
 
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (stdout, actualPort) =>
         {
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //client.WhenConnected.Wait();
 
@@ -384,12 +397,13 @@ public class TcpRpcInterop : TestBase
     public void ReleaseOnCancelServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl(counters);
 
-            LaunchCompatTestProcess("client:ReleaseOnCancel", addr, port, stdout =>
+            LaunchCompatTestProcess("client:ReleaseOnCancel", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "ReleaseOnCancel test start");
                 AssertOutput(stdout, "ReleaseOnCancel test end");
@@ -404,14 +418,14 @@ public class TcpRpcInterop : TestBase
     public void TestTailCallClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:TailCaller", addr, port, stdout =>
+        LaunchCompatTestProcess("server:TailCaller", addr, 0, (stdout, actualPort) =>
         {
             using (var client = new TcpRpcClient())
             {
                 var tracer = new RpcFrameTracer(Console.Out);
 
                 client.AttachTracer(tracer);
-                client.Connect(addr.ToString(), port);
+                client.Connect(addr.ToString(), actualPort);
 
                 //client.WhenConnected.Wait();
 
@@ -450,8 +464,9 @@ public class TcpRpcInterop : TestBase
     public void TestTailCallServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var tracer = new RpcFrameTracer(Console.Out);
 
             server.OnConnectionChanged += (s, a) =>
@@ -463,7 +478,7 @@ public class TcpRpcInterop : TestBase
             var counters = new Counters();
             server.Main = new TestTailCallerImpl(counters);
 
-            LaunchCompatTestProcess("client:TailCall", addr, port, stdout =>
+            LaunchCompatTestProcess("client:TailCall", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "TailCall test start");
                 AssertOutput(stdout, "foo");
@@ -478,11 +493,11 @@ public class TcpRpcInterop : TestBase
     public void CancelationServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (stdout, actualPort) =>
         {
             stdout.ReadToEndAsync().ContinueWith(t => Console.WriteLine(t.Result));
 
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //client.WhenConnected.Wait();
 
@@ -510,12 +525,13 @@ public class TcpRpcInterop : TestBase
     public void CancelationClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl(counters);
 
-            LaunchCompatTestProcess("client:Cancelation", addr, port, stdout =>
+            LaunchCompatTestProcess("client:Cancelation", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "Cancelation test start");
                 AssertOutput(stdout, "~");
@@ -528,9 +544,9 @@ public class TcpRpcInterop : TestBase
     public void PromiseResolveServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (stdout, actualPort) =>
         {
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //client.WhenConnected.Wait();
 
@@ -572,12 +588,13 @@ public class TcpRpcInterop : TestBase
     public void PromiseResolveClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl(counters);
 
-            LaunchCompatTestProcess("client:PromiseResolve", addr, port, stdout =>
+            LaunchCompatTestProcess("client:PromiseResolve", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "PromiseResolve test start");
                 AssertOutput(stdout, "foo 123 1");
@@ -596,11 +613,11 @@ public class TcpRpcInterop : TestBase
         var destructionTask = destructionPromise.Task;
 
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (stdout, actualPort) =>
         {
             stdout.ReadToEndAsync().ContinueWith(t => Console.WriteLine(t.Result));
 
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //client.WhenConnected.Wait();
 
@@ -672,12 +689,13 @@ public class TcpRpcInterop : TestBase
     public void RetainAndReleaseClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl(counters);
 
-            LaunchCompatTestProcess("client:RetainAndRelease", addr, port, stdout =>
+            LaunchCompatTestProcess("client:RetainAndRelease", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "RetainAndRelease test start");
                 AssertOutput(stdout, "foo 123 1");
@@ -693,9 +711,9 @@ public class TcpRpcInterop : TestBase
     public void CancelServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (stdout, actualPort) =>
         {
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //client.WhenConnected.Wait();
 
@@ -735,12 +753,13 @@ public class TcpRpcInterop : TestBase
     public void CancelClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl(counters);
 
-            LaunchCompatTestProcess("client:Cancel", addr, port, stdout =>
+            LaunchCompatTestProcess("client:Cancel", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "Cancel test start");
                 AssertOutput(stdout, "~");
@@ -753,9 +772,9 @@ public class TcpRpcInterop : TestBase
     public void SendTwiceServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (stdout, actualPort) =>
         {
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //client.WhenConnected.Wait();
 
@@ -798,12 +817,13 @@ public class TcpRpcInterop : TestBase
     public void SendTwiceClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl(counters);
 
-            LaunchCompatTestProcess("client:SendTwice", addr, port, stdout =>
+            LaunchCompatTestProcess("client:SendTwice", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "SendTwice test start");
                 AssertOutput(stdout, "foo 123 1");
@@ -819,9 +839,9 @@ public class TcpRpcInterop : TestBase
     public void EmbargoServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (stdout, actualPort) =>
         {
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //Assert.IsTrue(client.WhenConnected.Wait(MediumNonDbgTimeout), "client connect");
 
@@ -884,12 +904,12 @@ public class TcpRpcInterop : TestBase
     public void EmbargoServer2()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (stdout, actualPort) =>
         {
             var retry = 0;
 
         label:
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //Assert.IsTrue(client.WhenConnected.Wait(MediumNonDbgTimeout), "client connect");
 
@@ -965,12 +985,13 @@ public class TcpRpcInterop : TestBase
     public void EmbargoClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl(counters);
 
-            LaunchCompatTestProcess("client:Embargo", addr, port, stdout =>
+            LaunchCompatTestProcess("client:Embargo", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "Embargo test start");
                 AssertOutput(stdout, "Embargo test end");
@@ -1035,7 +1056,7 @@ public class TcpRpcInterop : TestBase
     public void EmbargoErrorServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, r => EmbargoErrorImpl(addr, port, r));
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (r, actualPort) => EmbargoErrorImpl(addr, actualPort, r));
     }
 
     [TestMethod]
@@ -1043,9 +1064,9 @@ public class TcpRpcInterop : TestBase
     public void RepeatedEmbargoError()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (stdout, actualPort) =>
         {
-            for (var i = 0; i < 20; i++) EmbargoErrorImpl(addr, port, stdout);
+            for (var i = 0; i < 20; i++) EmbargoErrorImpl(addr, actualPort, stdout);
         });
     }
 
@@ -1053,12 +1074,13 @@ public class TcpRpcInterop : TestBase
     public void EmbargoErrorClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl(counters);
 
-            LaunchCompatTestProcess("client:EmbargoError", addr, port, stdout =>
+            LaunchCompatTestProcess("client:EmbargoError", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "EmbargoError test start");
                 AssertOutput(stdout, "EmbargoError test end");
@@ -1070,12 +1092,12 @@ public class TcpRpcInterop : TestBase
     public void EmbargoNullServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (stdout, actualPort) =>
         {
             var retry = 0;
 
         label:
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //client.WhenConnected.Wait();
 
@@ -1127,12 +1149,13 @@ public class TcpRpcInterop : TestBase
     public void EmbargoNullClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl(counters);
 
-            LaunchCompatTestProcess("client:EmbargoNull", addr, port, stdout =>
+            LaunchCompatTestProcess("client:EmbargoNull", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "EmbargoNull test start");
                 AssertOutput(stdout, "EmbargoNull test end");
@@ -1144,9 +1167,9 @@ public class TcpRpcInterop : TestBase
     public void CallBrokenPromiseServer()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        LaunchCompatTestProcess("server:MoreStuff", addr, 0, (stdout, actualPort) =>
         {
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            using (var client = new TcpRpcClient(addr.ToString(), actualPort))
             {
                 //client.WhenConnected.Wait();
 
@@ -1182,12 +1205,13 @@ public class TcpRpcInterop : TestBase
     public void CallBrokenPromiseClient()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl(counters);
 
-            LaunchCompatTestProcess("client:CallBrokenPromise", addr, port, stdout =>
+            LaunchCompatTestProcess("client:CallBrokenPromise", addr, port, (stdout, _) =>
             {
                 AssertOutput(stdout, "CallBrokenPromise test start");
                 AssertOutput(stdout, "CallBrokenPromise test end");

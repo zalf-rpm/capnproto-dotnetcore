@@ -100,9 +100,11 @@ public class TestBase
     protected static (TcpRpcServer, TcpRpcClient) SetupClientServerPair(
         TcpRpcTestOptions options = TcpRpcTestOptions.None)
     {
-        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        var (addr, _) = TcpManager.Instance.GetLocalAddressAndPort();
+        int port = 0;
 
         var server = SetupServer(addr, port);
+        port = server.Port;
         var client = SetupClient(addr, port, options);
 
         return (server, client);

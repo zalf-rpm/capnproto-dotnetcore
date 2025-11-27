@@ -99,12 +99,14 @@ public class TcpRpcStress : TestBase
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
 
-        using (var server = new TcpRpcServer(addr, port))
-        using (var client = new TcpRpcClient())
+        using (var server = new TcpRpcServer(addr, 0))
         {
-            server.InjectMidlayer(s => new ScatteringStream(s, 7));
-            client.InjectMidlayer(s => new ScatteringStream(s, 10));
-            client.Connect(addr.ToString(), port);
+            port = server.Port;
+            using (var client = new TcpRpcClient())
+            {
+                server.InjectMidlayer(s => new ScatteringStream(s, 7));
+                client.InjectMidlayer(s => new ScatteringStream(s, 10));
+                client.Connect(addr.ToString(), port);
             //client.WhenConnected.Wait();
 
             var counters = new Counters();
@@ -130,4 +132,5 @@ public class TcpRpcStress : TestBase
             }
         }
     }
+}
 }

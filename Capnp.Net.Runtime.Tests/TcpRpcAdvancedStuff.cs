@@ -17,8 +17,9 @@ public class TcpRpcAdvancedStuff : TestBase
     public void MultiConnect()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             var tcs = new TaskCompletionSource<int>();
             server.Main = new TestInterfaceImpl(counters, tcs);
@@ -56,8 +57,9 @@ public class TcpRpcAdvancedStuff : TestBase
     public void TwoClients()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl(counters);
 
@@ -98,7 +100,8 @@ public class TcpRpcAdvancedStuff : TestBase
         for (var i = 0; i < 100; i++)
         {
             var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-            var server = SetupServer(addr, port);
+            var server = SetupServer(addr, 0);
+            port = server.Port;
             var counters = new Counters();
             var tcs = new TaskCompletionSource<int>();
             server.Main = new TestInterfaceImpl(counters, tcs);
@@ -129,8 +132,9 @@ public class TcpRpcAdvancedStuff : TestBase
     public void InheritFromGenericInterface()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new B2Impl();
 
@@ -153,8 +157,9 @@ public class TcpRpcAdvancedStuff : TestBase
     public void Issue25()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             server.Main = new Issue25BImpl();
 
             using (var client = SetupClient(addr, port))
@@ -183,8 +188,9 @@ public class TcpRpcAdvancedStuff : TestBase
     public void ExportCapToThirdParty()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             var counters = new Counters();
             server.Main = new TestMoreStuffImpl3();
 
@@ -198,8 +204,9 @@ public class TcpRpcAdvancedStuff : TestBase
 
                     (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
 
-                    using (var server2 = SetupServer(addr, port))
+                    using (var server2 = SetupServer(addr, 0))
                     {
+                        port = server2.Port;
                         server2.Main = new TestMoreStuffImpl2();
 
                         using (var client2 = SetupClient(addr, port))
@@ -225,8 +232,9 @@ public class TcpRpcAdvancedStuff : TestBase
     public void ExportTailCallCapToThirdParty()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             server.Main = new TestTailCallerImpl2();
 
             using (var client = SetupClient(addr, port))
@@ -260,8 +268,9 @@ public class TcpRpcAdvancedStuff : TestBase
     public void SalamiTactics()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
-        using (var server = SetupServer(addr, port))
+        using (var server = SetupServer(addr, 0))
         {
+            port = server.Port;
             server.Main = new TestMoreStuffImpl3();
 
             using (var client = SetupClient(addr, port))
