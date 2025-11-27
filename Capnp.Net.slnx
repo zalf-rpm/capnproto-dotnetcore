@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="Capnp.Net.Runtime.Tests/Capnp.Net.Runtime.Tests.csproj" />
+  <Project Path="Capnp.Net.Runtime/Capnp.Net.Runtime.csproj" />
+  <Project Path="capnpc-csharp/capnpc-csharp.csproj" />
+  <Project Path="CapnpC.CSharp.Generator.Tests/CapnpC.CSharp.Generator.Tests.csproj" />
+  <Project Path="CapnpC.CSharp.Generator/CapnpC.CSharp.Generator.csproj" />
+  <Project Path="CapnpC.CSharp.MsBuild.Generation.Tests/CapnpC.CSharp.MsBuild.Generation.Tests.csproj" />
+  <Project Path="CapnpC.CSharp.MsBuild.Generation/CapnpC.CSharp.MsBuild.Generation.csproj" />
+</Solution>
