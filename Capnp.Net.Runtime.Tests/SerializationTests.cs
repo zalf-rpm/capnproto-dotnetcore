@@ -35,24 +35,24 @@ public class SerializationTests
 
         var b = MessageBuilder.Create();
         var list = b.CreateObject<ListOfBitsSerializer>();
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.Init(-1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.Init(-1));
         // Assert.AreEqual(0, list.Count); // Bug or feature? Uninitialized list's Count is -1
-        Assert.ThrowsException<InvalidOperationException>(() =>
+        Assert.Throws<InvalidOperationException>(() =>
         {
             var _ = list[0];
         });
-        Assert.ThrowsException<InvalidOperationException>(() => { list[0] = false; });
+        Assert.Throws<InvalidOperationException>(() => { list[0] = false; });
         list.Init(130);
         list[63] = true;
         list[65] = true;
         list[66] = true;
         list[65] = false;
         list[129] = true;
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var _ = list[130];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() => { list[130] = false; });
+        Assert.Throws<IndexOutOfRangeException>(() => { list[130] = false; });
         Assert.IsFalse(list[0]);
         Assert.IsTrue(list[63]);
         Assert.IsFalse(list[64]);
@@ -69,7 +69,7 @@ public class SerializationTests
         Assert.IsTrue(list2[66]);
         Assert.IsTrue(list2[129]);
         CheckList(list2);
-        Assert.ThrowsException<InvalidOperationException>(() => list.Init(4));
+        Assert.Throws<InvalidOperationException>(() => list.Init(4));
         DeserializerState d = list2;
         var list3 = d.RequireList().CastBool();
         CheckList(list3);
@@ -82,13 +82,13 @@ public class SerializationTests
         var wrong = b.CreateObject<DynamicSerializerState>();
         wrong.SetListOfValues(8, 7);
         wrong.Allocate();
-        Assert.ThrowsException<InvalidOperationException>(() => wrong.ListWriteValue(0, true));
-        Assert.ThrowsException<InvalidOperationException>(() => wrong.ListWriteValues(new bool[7]));
+        Assert.Throws<InvalidOperationException>(() => wrong.ListWriteValue(0, true));
+        Assert.Throws<InvalidOperationException>(() => wrong.ListWriteValues(new bool[7]));
         var list = b.CreateObject<DynamicSerializerState>();
         list.SetListOfValues(1, 70);
         list.ListWriteValue(0, true);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.ListWriteValue(-1, true));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.ListWriteValue(70, true));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValue(-1, true));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValue(70, true));
         var values = new bool[70];
         values[63] = true;
         values[65] = true;
@@ -98,9 +98,9 @@ public class SerializationTests
         Assert.IsFalse(!los[64]);
         Assert.IsTrue(!los[65]);
         Assert.IsFalse(!los[66]);
-        Assert.ThrowsException<ArgumentNullException>(() => list.ListWriteValues(null));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.ListWriteValues(new bool[1]));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.ListWriteValues(new bool[71]));
+        Assert.Throws<ArgumentNullException>(() => list.ListWriteValues(null));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValues(new bool[1]));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValues(new bool[71]));
     }
 
     [TestMethod]
@@ -109,19 +109,19 @@ public class SerializationTests
         var b = MessageBuilder.Create();
         b.InitCapTable();
         var list = b.CreateObject<ListOfCapsSerializer<ITestInterface>>();
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.Init(-1));
-        Assert.ThrowsException<InvalidOperationException>(() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.Init(-1));
+        Assert.Throws<InvalidOperationException>(() =>
         {
             var _ = list[0];
         });
-        Assert.ThrowsException<InvalidOperationException>(() => { list[0] = null; });
+        Assert.Throws<InvalidOperationException>(() => { list[0] = null; });
         list.Init(5);
-        Assert.ThrowsException<InvalidOperationException>(() => list.Init(1));
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<InvalidOperationException>(() => list.Init(1));
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var _ = list[5];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() => { list[-1] = null; });
+        Assert.Throws<IndexOutOfRangeException>(() => { list[-1] = null; });
         var c1 = new Counters();
         var cap1 = new TestInterfaceImpl(c1);
         var c2 = new Counters();
@@ -174,10 +174,10 @@ public class SerializationTests
     {
         var b = MessageBuilder.Create();
         var list = b.CreateObject<ListOfEmptySerializer>();
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.Init(-1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.Init(-1));
         list.Init(987654321);
         Assert.AreEqual(987654321, list.Count);
-        Assert.ThrowsException<InvalidOperationException>(() => list.Init(42));
+        Assert.Throws<InvalidOperationException>(() => list.Init(42));
         DeserializerState d = list;
         var list2 = d.RequireList().CastVoid();
         Assert.AreEqual(987654321, list2);
@@ -189,20 +189,20 @@ public class SerializationTests
         var b = MessageBuilder.Create();
         b.InitCapTable();
         var list = b.CreateObject<ListOfPointersSerializer<DynamicSerializerState>>();
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.Init(-1));
-        Assert.ThrowsException<InvalidOperationException>(() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.Init(-1));
+        Assert.Throws<InvalidOperationException>(() =>
         {
             var _ = list[0];
         });
-        Assert.ThrowsException<InvalidOperationException>(() => { list[0] = null; });
+        Assert.Throws<InvalidOperationException>(() => { list[0] = null; });
         list.Init(7);
-        Assert.ThrowsException<InvalidOperationException>(() => list.Init(1));
+        Assert.Throws<InvalidOperationException>(() => list.Init(1));
         Assert.AreEqual(7, list.Count);
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var _ = list[-1];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() => { list[7] = null; });
+        Assert.Throws<IndexOutOfRangeException>(() => { list[7] = null; });
         var c1 = new Counters();
         var cap1 = new TestInterfaceImpl(c1);
         var obj1 = b.CreateObject<DynamicSerializerState>();
@@ -242,14 +242,14 @@ public class SerializationTests
     {
         var b = MessageBuilder.Create();
         var list = b.CreateObject<ListOfPrimitivesSerializer<float>>();
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.Init(-1));
-        Assert.ThrowsException<InvalidOperationException>(() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.Init(-1));
+        Assert.Throws<InvalidOperationException>(() =>
         {
             var _ = list[0];
         });
-        Assert.ThrowsException<InvalidOperationException>(() => { list[0] = 1.0f; });
+        Assert.Throws<InvalidOperationException>(() => { list[0] = 1.0f; });
         list.Init(4);
-        Assert.ThrowsException<InvalidOperationException>(() => list.Init(1));
+        Assert.Throws<InvalidOperationException>(() => list.Init(1));
         Assert.AreEqual(4, list.Count);
         list[0] = 0.0f;
         list[1] = 1.0f;
@@ -285,12 +285,12 @@ public class SerializationTests
         var wrong = b.CreateObject<DynamicSerializerState>();
         wrong.SetListOfValues(1, 64);
         wrong.Allocate();
-        Assert.ThrowsException<InvalidOperationException>(() => wrong.ListWriteValue(0, (byte)1));
-        Assert.ThrowsException<InvalidOperationException>(() => wrong.ListGetBytes());
+        Assert.Throws<InvalidOperationException>(() => wrong.ListWriteValue(0, (byte)1));
+        Assert.Throws<InvalidOperationException>(() => wrong.ListGetBytes());
         var list = b.CreateObject<DynamicSerializerState>();
         list.SetListOfValues(8, 3);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.ListWriteValue(-1, (byte)1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.ListWriteValue(64, (byte)1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValue(-1, (byte)1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValue(64, (byte)1));
         list.ListWriteValue(1, (byte)1);
         list.ListWriteValue(2, (byte)2);
         CollectionAssert.AreEqual(new byte[] { 0, 1, 2 }, list.ListGetBytes().ToArray());
@@ -303,11 +303,11 @@ public class SerializationTests
         var wrong = b.CreateObject<DynamicSerializerState>();
         wrong.SetListOfValues(1, 64);
         wrong.Allocate();
-        Assert.ThrowsException<InvalidOperationException>(() => wrong.ListWriteValue(0, (ushort)1));
+        Assert.Throws<InvalidOperationException>(() => wrong.ListWriteValue(0, (ushort)1));
         var list = b.CreateObject<DynamicSerializerState>();
         list.SetListOfValues(16, 3);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.ListWriteValue(-1, (ushort)1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.ListWriteValue(64, (ushort)1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValue(-1, (ushort)1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValue(64, (ushort)1));
     }
 
     [TestMethod]
@@ -365,11 +365,11 @@ public class SerializationTests
         var wrong = b.CreateObject<DynamicSerializerState>();
         wrong.SetListOfValues(1, 64);
         wrong.Allocate();
-        Assert.ThrowsException<InvalidOperationException>(() => wrong.ListWriteValue(0, 1u));
+        Assert.Throws<InvalidOperationException>(() => wrong.ListWriteValue(0, 1u));
         var list = b.CreateObject<DynamicSerializerState>();
         list.SetListOfValues(32, 3);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.ListWriteValue(-1, 1u));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.ListWriteValue(64, 1u));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValue(-1, 1u));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValue(64, 1u));
     }
 
     [TestMethod]
@@ -379,11 +379,11 @@ public class SerializationTests
         var wrong = b.CreateObject<DynamicSerializerState>();
         wrong.SetListOfValues(1, 64);
         wrong.Allocate();
-        Assert.ThrowsException<InvalidOperationException>(() => wrong.ListWriteValue(0, 1ul));
+        Assert.Throws<InvalidOperationException>(() => wrong.ListWriteValue(0, 1ul));
         var list = b.CreateObject<DynamicSerializerState>();
         list.SetListOfValues(64, 3);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.ListWriteValue(-1, 1ul));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.ListWriteValue(64, 1ul));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValue(-1, 1ul));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValue(64, 1ul));
     }
 
     [TestMethod]
@@ -392,15 +392,15 @@ public class SerializationTests
         var b = MessageBuilder.Create();
         var list = b.CreateObject<ListOfStructsSerializer<SomeStruct.WRITER>>();
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.Init(-1));
-        Assert.ThrowsException<InvalidOperationException>(() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.Init(-1));
+        Assert.Throws<InvalidOperationException>(() =>
         {
             var _ = list[0];
         });
         list.Init(4);
-        Assert.ThrowsException<InvalidOperationException>(() => list.Init(1));
+        Assert.Throws<InvalidOperationException>(() => list.Init(1));
         Assert.AreEqual(4, list.Count);
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var _ = list[5];
         });
@@ -435,10 +435,10 @@ public class SerializationTests
         var list = b.CreateObject<DynamicSerializerState>();
         list.SetListOfStructs(3, 4, 5);
         list.SetListOfStructs(3, 4, 5);
-        Assert.ThrowsException<InvalidOperationException>(() => list.SetListOfStructs(1, 4, 5));
-        Assert.ThrowsException<InvalidOperationException>(() => list.SetListOfStructs(3, 1, 5));
-        Assert.ThrowsException<InvalidOperationException>(() => list.SetListOfStructs(3, 4, 1));
-        Assert.ThrowsException<InvalidOperationException>(() => list.StructWriteData(0, 1, 1));
+        Assert.Throws<InvalidOperationException>(() => list.SetListOfStructs(1, 4, 5));
+        Assert.Throws<InvalidOperationException>(() => list.SetListOfStructs(3, 1, 5));
+        Assert.Throws<InvalidOperationException>(() => list.SetListOfStructs(3, 4, 1));
+        Assert.Throws<InvalidOperationException>(() => list.StructWriteData(0, 1, 1));
     }
 
     [TestMethod]
@@ -446,7 +446,7 @@ public class SerializationTests
     {
         var b = MessageBuilder.Create();
         var list = b.CreateObject<ListOfStructsSerializer<SomeStruct.WRITER>>();
-        Assert.ThrowsException<InvalidOperationException>(() => list.Any());
+        Assert.Throws<InvalidOperationException>(() => list.Any());
         list.Init(3);
         var i = 0;
         foreach (var item in list)
@@ -466,20 +466,20 @@ public class SerializationTests
     {
         var b = MessageBuilder.Create();
         var list = b.CreateObject<ListOfTextSerializer>();
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.Init(-1));
-        Assert.ThrowsException<InvalidOperationException>(() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.Init(-1));
+        Assert.Throws<InvalidOperationException>(() =>
         {
             var _ = list[0];
         });
-        Assert.ThrowsException<InvalidOperationException>(() => { list[0] = "foo"; });
+        Assert.Throws<InvalidOperationException>(() => { list[0] = "foo"; });
         list.Init(4);
-        Assert.ThrowsException<InvalidOperationException>(() => list.Init(1));
+        Assert.Throws<InvalidOperationException>(() => list.Init(1));
         Assert.AreEqual(4, list.Count);
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var _ = list[5];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() => { list[-1] = null; });
+        Assert.Throws<IndexOutOfRangeException>(() => { list[-1] = null; });
         list[0] = "0";
         list[2] = null;
         list[3] = "3";
@@ -702,11 +702,11 @@ public class SerializationTests
     public void CapnpSerializableWrongUse()
     {
         var d = default(DeserializerState);
-        Assert.ThrowsException<ArgumentException>(() => CapnpSerializable.Create<SerializationTests>(d));
-        Assert.ThrowsException<ArgumentException>(() => CapnpSerializable.Create<IReadOnlyList<SerializationTests>>(d));
-        Assert.ThrowsException<ArgumentException>(() => CapnpSerializable.Create<IReadOnlyList<DeserializerState>>(d));
-        Assert.ThrowsException<ArgumentException>(() => CapnpSerializable.Create<Unconstructible1>(d));
-        Assert.ThrowsException<ArgumentException>(() => CapnpSerializable.Create<Unconstructible2>(d));
+        Assert.Throws<ArgumentException>(() => CapnpSerializable.Create<SerializationTests>(d));
+        Assert.Throws<ArgumentException>(() => CapnpSerializable.Create<IReadOnlyList<SerializationTests>>(d));
+        Assert.Throws<ArgumentException>(() => CapnpSerializable.Create<IReadOnlyList<DeserializerState>>(d));
+        Assert.Throws<ArgumentException>(() => CapnpSerializable.Create<Unconstructible1>(d));
+        Assert.Throws<ArgumentException>(() => CapnpSerializable.Create<Unconstructible2>(d));
     }
 
     [TestMethod]
@@ -908,11 +908,11 @@ public class SerializationTests
     {
         var list = new EmptyList<string>();
         Assert.AreEqual(0, list.Count);
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var _ = list[-1];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var _ = list[0];
         });
@@ -924,7 +924,7 @@ public class SerializationTests
     {
         var dss = new DynamicSerializerState(MessageBuilder.Create());
         dss.SetListOfValues(8, 1);
-        Assert.ThrowsException<InvalidOperationException>(() => dss.Rewrap<TestSerializerStateStruct11>());
+        Assert.Throws<InvalidOperationException>(() => dss.Rewrap<TestSerializerStateStruct11>());
     }
 
     [TestMethod]
@@ -932,7 +932,7 @@ public class SerializationTests
     {
         var dss = new DynamicSerializerState();
         dss.SetStruct(1, 0);
-        Assert.ThrowsException<InvalidOperationException>(() => dss.Rewrap<TestSerializerStateStruct11>());
+        Assert.Throws<InvalidOperationException>(() => dss.Rewrap<TestSerializerStateStruct11>());
     }
 
     [TestMethod]
@@ -940,7 +940,7 @@ public class SerializationTests
     {
         var dss = new DynamicSerializerState();
         dss.SetStruct(0, 1);
-        Assert.ThrowsException<InvalidOperationException>(() => dss.Rewrap<TestSerializerStateStruct11>());
+        Assert.Throws<InvalidOperationException>(() => dss.Rewrap<TestSerializerStateStruct11>());
     }
 
     [TestMethod]
@@ -948,7 +948,7 @@ public class SerializationTests
     {
         var dss = new DynamicSerializerState();
         dss.SetStruct(1, 0);
-        Assert.ThrowsException<InvalidOperationException>(() => dss.Rewrap<ListOfTextSerializer>());
+        Assert.Throws<InvalidOperationException>(() => dss.Rewrap<ListOfTextSerializer>());
     }
 
     [TestMethod]
@@ -956,7 +956,7 @@ public class SerializationTests
     {
         var dss = new DynamicSerializerState();
         dss.SetStruct(1, 0);
-        Assert.ThrowsException<InvalidOperationException>(() => dss.WriteData(0, 0));
+        Assert.Throws<InvalidOperationException>(() => dss.WriteData(0, 0));
     }
 
     [TestMethod]
@@ -965,11 +965,11 @@ public class SerializationTests
         var mb = MessageBuilder.Create();
         var dss = mb.CreateObject<DynamicSerializerState>();
         dss.SetStruct(0, 1);
-        Assert.ThrowsException<ArgumentNullException>(() => dss.Link(0, null));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss.Link(-1, dss));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss.Link(1, dss));
+        Assert.Throws<ArgumentNullException>(() => dss.Link(0, null));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss.Link(-1, dss));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss.Link(1, dss));
         dss.Link(0, dss);
-        Assert.ThrowsException<InvalidOperationException>(() => dss.Link(0, mb.CreateObject<DynamicSerializerState>()));
+        Assert.Throws<InvalidOperationException>(() => dss.Link(0, mb.CreateObject<DynamicSerializerState>()));
     }
 
     [TestMethod]
@@ -977,9 +977,9 @@ public class SerializationTests
     {
         var dss = new DynamicSerializerState(MessageBuilder.Create());
         dss.SetListOfPointers(1);
-        Assert.ThrowsException<ArgumentNullException>(() => dss.Link(0, null));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss.Link(-1, dss));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss.Link(1, dss));
+        Assert.Throws<ArgumentNullException>(() => dss.Link(0, null));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss.Link(-1, dss));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss.Link(1, dss));
     }
 
     [TestMethod]
@@ -987,9 +987,9 @@ public class SerializationTests
     {
         var dss = new DynamicSerializerState(MessageBuilder.Create());
         dss.SetStruct(0, 1);
-        Assert.ThrowsException<InvalidOperationException>(() => dss.ReadCap(0));
-        Assert.ThrowsException<InvalidOperationException>(() => dss.ProvideCapability(new TestInterfaceImpl2()));
-        Assert.ThrowsException<InvalidOperationException>(() => dss.ProvideCapability(new TestInterface_Skeleton()));
+        Assert.Throws<InvalidOperationException>(() => dss.ReadCap(0));
+        Assert.Throws<InvalidOperationException>(() => dss.ProvideCapability(new TestInterfaceImpl2()));
+        Assert.Throws<InvalidOperationException>(() => dss.ProvideCapability(new TestInterface_Skeleton()));
     }
 
     [TestMethod]
@@ -997,16 +997,16 @@ public class SerializationTests
     {
         var dss = DynamicSerializerState.CreateForRpc();
         dss.SetStruct(0, 3);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss.ReadCap(-1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss.ReadCap(100));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss.ReadCap(-1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss.ReadCap(100));
         Assert.IsTrue(dss.ReadCap(0).IsNull);
         dss.LinkToCapability(1, 99);
         dss.Link(2, dss);
         dss.Allocate();
         Assert.IsTrue(dss.ReadCap(0).IsNull);
         Assert.IsTrue(dss.ReadCap<ITestCallOrder>(0) is Proxy proxy && proxy.IsNull);
-        Assert.ThrowsException<RpcException>(() => dss.ReadCap(1));
-        Assert.ThrowsException<RpcException>(() => dss.ReadCap(2));
+        Assert.Throws<RpcException>(() => dss.ReadCap(1));
+        Assert.Throws<RpcException>(() => dss.ReadCap(2));
     }
 
     [TestMethod]
@@ -1015,7 +1015,7 @@ public class SerializationTests
         var dss = DynamicSerializerState.CreateForRpc();
         dss.SetListOfStructs(1, 1, 1);
         dss.Allocate();
-        Assert.ThrowsException<InvalidOperationException>(() => dss.ReadCap(0));
+        Assert.Throws<InvalidOperationException>(() => dss.ReadCap(0));
     }
 
     [TestMethod]
@@ -1026,10 +1026,10 @@ public class SerializationTests
         list1.Init(3);
         var list2 = list1.Rewrap<ListOfStructsSerializer<TestSerializerStateStruct11X>>();
         list2[0].WriteData(0, 0);
-        Assert.ThrowsException<InvalidOperationException>(() => list2.Rewrap<TestSerializerStateStruct11>());
+        Assert.Throws<InvalidOperationException>(() => list2.Rewrap<TestSerializerStateStruct11>());
         var obj = mb.CreateObject<TestSerializerStateStruct11>();
         var obj2 = obj.Rewrap<TestSerializerStateStruct11X>();
-        Assert.ThrowsException<InvalidOperationException>(() => obj2.Rewrap<TestSerializerStateStruct20>());
+        Assert.Throws<InvalidOperationException>(() => obj2.Rewrap<TestSerializerStateStruct20>());
     }
 
     [TestMethod]
@@ -1039,15 +1039,15 @@ public class SerializationTests
         mb.InitCapTable();
         var dss = mb.CreateObject<DynamicSerializerState>();
         dss.Allocate();
-        Assert.ThrowsException<InvalidOperationException>(() => dss.SetCapability(0));
+        Assert.Throws<InvalidOperationException>(() => dss.SetCapability(0));
         dss.SetCapability(null);
-        Assert.ThrowsException<InvalidOperationException>(() => dss.SetListOfPointers(1));
-        Assert.ThrowsException<InvalidOperationException>(() => dss.SetListOfStructs(1, 1, 1));
-        Assert.ThrowsException<InvalidOperationException>(() => dss.SetListOfValues(8, 1));
-        Assert.ThrowsException<InvalidOperationException>(() =>
+        Assert.Throws<InvalidOperationException>(() => dss.SetListOfPointers(1));
+        Assert.Throws<InvalidOperationException>(() => dss.SetListOfStructs(1, 1, 1));
+        Assert.Throws<InvalidOperationException>(() => dss.SetListOfValues(8, 1));
+        Assert.Throws<InvalidOperationException>(() =>
             dss.SetObject(mb.CreateObject<TestSerializerStateStruct11>()));
         dss.SetObject(null);
-        Assert.ThrowsException<InvalidOperationException>(() => dss.SetStruct(1, 1));
+        Assert.Throws<InvalidOperationException>(() => dss.SetStruct(1, 1));
     }
 
     [TestMethod]
@@ -1057,8 +1057,8 @@ public class SerializationTests
         mb.InitCapTable();
         var dss = mb.CreateObject<DynamicSerializerState>();
         dss.SetStruct(1, 1);
-        Assert.ThrowsException<InvalidOperationException>(() => dss.SetCapability(null));
-        Assert.ThrowsException<InvalidOperationException>(() => dss.SetCapability(0));
+        Assert.Throws<InvalidOperationException>(() => dss.SetCapability(null));
+        Assert.Throws<InvalidOperationException>(() => dss.SetCapability(0));
     }
 
     [TestMethod]
@@ -1069,8 +1069,8 @@ public class SerializationTests
         var dss = mb.CreateObject<DynamicSerializerState>();
         dss.SetCapability(7);
         dss.SetCapability(7);
-        Assert.ThrowsException<InvalidOperationException>(() => dss.SetCapability(8));
-        Assert.ThrowsException<InvalidOperationException>(() => dss.SetCapability(null));
+        Assert.Throws<InvalidOperationException>(() => dss.SetCapability(8));
+        Assert.Throws<InvalidOperationException>(() => dss.SetCapability(null));
     }
 
     [TestMethod]
@@ -1078,16 +1078,16 @@ public class SerializationTests
     {
         var mb = MessageBuilder.Create();
         var dss = mb.CreateObject<DynamicSerializerState>();
-        Assert.ThrowsException<InvalidOperationException>(() => dss.StructReadData(0, 1));
+        Assert.Throws<InvalidOperationException>(() => dss.StructReadData(0, 1));
         dss.SetStruct(2, 0);
         Assert.AreEqual(0ul, dss.StructReadData(0, 64));
         dss.Allocate();
         Assert.AreEqual(0ul, dss.StructReadData(0, 64));
         Assert.AreEqual(0ul, dss.StructReadData(256, 64));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss.StructReadData(0, -1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss.StructReadData(1, 64));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss.StructReadData(0, 65));
-        Assert.ThrowsException<OverflowException>(() => dss.StructReadData(ulong.MaxValue, 2));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss.StructReadData(0, -1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss.StructReadData(1, 64));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss.StructReadData(0, 65));
+        Assert.Throws<OverflowException>(() => dss.StructReadData(ulong.MaxValue, 2));
     }
 
     [TestMethod]
@@ -1095,10 +1095,10 @@ public class SerializationTests
     {
         var mb = MessageBuilder.Create();
         var dss = mb.CreateObject<DynamicSerializerState>();
-        Assert.ThrowsException<InvalidOperationException>(() => dss.TryGetPointer(0));
+        Assert.Throws<InvalidOperationException>(() => dss.TryGetPointer(0));
         dss.SetStruct(0, 1);
         Assert.IsNull(dss.TryGetPointer(0));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss.TryGetPointer(1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss.TryGetPointer(1));
     }
 
     [TestMethod]
@@ -1107,18 +1107,18 @@ public class SerializationTests
         var mb = MessageBuilder.Create();
         var dss1 = mb.CreateObject<DynamicSerializerState>();
         dss1.SetStruct(1, 1);
-        Assert.ThrowsException<InvalidOperationException>(() => dss1.ListBuildStruct(0));
+        Assert.Throws<InvalidOperationException>(() => dss1.ListBuildStruct(0));
         var dss2 = mb.CreateObject<DynamicSerializerState>();
         dss2.SetListOfStructs(2, 1, 1);
         var s0 = dss2.ListBuildStruct(0);
         Assert.AreEqual(s0, dss2.ListBuildStruct(0));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss2.ListBuildStruct(-1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss2.ListBuildStruct(2));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss2.ListBuildStruct(-1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss2.ListBuildStruct(2));
         var s1 = dss2.ListBuildStruct<TestSerializerStateStruct11>(1);
         Assert.AreEqual(s1, dss2.ListBuildStruct<TestSerializerStateStruct11>(1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
             dss2.ListBuildStruct<TestSerializerStateStruct11>(-1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => dss2.ListBuildStruct<TestSerializerStateStruct11>(2));
+        Assert.Throws<ArgumentOutOfRangeException>(() => dss2.ListBuildStruct<TestSerializerStateStruct11>(2));
     }
 
     [TestMethod]
@@ -1142,7 +1142,7 @@ public class SerializationTests
         s4.SomeText = "1";
         var arr = new[] { s3, s4 };
         dss.LinkObject(2, arr);
-        Assert.ThrowsException<InvalidOperationException>(() => dss.LinkObject(3, new object()));
+        Assert.Throws<InvalidOperationException>(() => dss.LinkObject(3, new object()));
         dss.LinkObject(3, new SomeStruct { SomeText = "corge" });
 
         var t1 = dss.BuildPointer(0).Rewrap<SomeStruct.WRITER>();

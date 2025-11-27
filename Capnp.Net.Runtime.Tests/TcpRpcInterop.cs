@@ -46,7 +46,7 @@ public class TcpRpcInterop : TestBase
         var myPath = Path.GetDirectoryName(typeof(TcpRpcInterop).Assembly.Location);
         string config;
 #if DEBUG
-            config = "Debug";
+        config = "Debug";
 #else
         config = "Release";
 #endif
@@ -134,7 +134,7 @@ public class TcpRpcInterop : TestBase
                 using (var main = client.GetMain<ITestInterface>())
                 {
                     var request1 = main.Foo(123, true);
-                    var request3 = Assert.ThrowsExceptionAsync<RpcException>(() => main.Bar());
+                    var request3 = Assert.ThrowsAsync<RpcException>(() => main.Bar());
                     var s = new TestAllTypes();
                     Common.InitTestMessage(s);
                     var request2 = main.Baz(s);
@@ -888,7 +888,7 @@ public class TcpRpcInterop : TestBase
         {
             var retry = 0;
 
-            label:
+        label:
             using (var client = new TcpRpcClient(addr.ToString(), port))
             {
                 //Assert.IsTrue(client.WhenConnected.Wait(MediumNonDbgTimeout), "client connect");
@@ -1074,7 +1074,7 @@ public class TcpRpcInterop : TestBase
         {
             var retry = 0;
 
-            label:
+        label:
             using (var client = new TcpRpcClient(addr.ToString(), port))
             {
                 //client.WhenConnected.Wait();

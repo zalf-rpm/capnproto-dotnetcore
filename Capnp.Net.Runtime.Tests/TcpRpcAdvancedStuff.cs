@@ -32,7 +32,7 @@ public class TcpRpcAdvancedStuff : TestBase
                     using (var main = client.GetMain<ITestInterface>())
                     {
                         var request1 = main.Foo(123, true);
-                        var request3 = Assert.ThrowsExceptionAsync<RpcException>(() => main.Bar());
+                        var request3 = Assert.ThrowsAsync<RpcException>(() => main.Bar());
                         var s = new TestAllTypes();
                         Common.InitTestMessage(s);
                         var request2 = main.Baz(s);

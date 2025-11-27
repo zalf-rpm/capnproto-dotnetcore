@@ -28,7 +28,7 @@ public class ImpatientTests
         tcs.SetResult(null);
         Assert.IsNull(await tcs.Task.Eager(true).Unwrap());
         var excepted = Task.FromException<ITestInterface>(new InvalidTimeZoneException("So annoying"));
-        await Assert.ThrowsExceptionAsync<RpcException>(async () => await excepted.Eager(true).Unwrap());
+        await Assert.ThrowsAsync<RpcException>(async () => await excepted.Eager(true).Unwrap());
     }
 
     [TestMethod]
@@ -141,7 +141,7 @@ public class ImpatientTests
     {
 #pragma warning disable CS0618
         var answer = new PromisedAnswerMock();
-        Assert.ThrowsException<ArgumentException>(() => Impatient.GetAnswer(Task.FromResult(new object())));
+        Assert.Throws<ArgumentException>(() => Impatient.GetAnswer(Task.FromResult(new object())));
         var t = Impatient.MakePipelineAware(answer, _ => _);
         Assert.AreEqual(answer, Impatient.GetAnswer(t));
 #pragma warning restore CS0618
@@ -178,8 +178,8 @@ public class ImpatientTests
     public void Eager()
     {
         var task = Task.FromResult<ITestInterface>(new TestInterfaceImpl2());
-        Assert.ThrowsException<ArgumentException>(() => task.Eager());
-        Assert.ThrowsException<ArgumentException>(() => task.Eager());
+        Assert.Throws<ArgumentException>(() => task.Eager());
+        Assert.Throws<ArgumentException>(() => task.Eager());
     }
 
     private class PromisedAnswerMock : IPromisedAnswer

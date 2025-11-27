@@ -235,16 +235,16 @@ public class LocalRpc : TestBase
     public void DisposedProxy()
     {
         var b = new BareProxy();
-        Assert.ThrowsException<ArgumentNullException>(() => b.Bind(null));
+        Assert.Throws<ArgumentNullException>(() => b.Bind(null));
         var impl = new TestInterfaceImpl2();
         var proxy = Proxy.Share<ITestInterface>(impl);
         var p = (Proxy)proxy;
-        Assert.ThrowsException<InvalidOperationException>(() => p.Bind(p.ConsumedCap));
+        Assert.Throws<InvalidOperationException>(() => p.Bind(p.ConsumedCap));
         Assert.IsFalse(p.IsDisposed);
         proxy.Dispose();
         Assert.IsTrue(p.IsDisposed);
-        Assert.ThrowsException<ObjectDisposedException>(() => p.ConsumedCap);
+        Assert.Throws<ObjectDisposedException>(() => p.ConsumedCap);
         var t = proxy.Foo(123, true);
-        Assert.IsTrue(Assert.ThrowsExceptionAsync<ObjectDisposedException>(() => t).Wait(MediumNonDbgTimeout));
+        Assert.IsTrue(Assert.ThrowsAsync<ObjectDisposedException>(() => t).Wait(MediumNonDbgTimeout));
     }
 }

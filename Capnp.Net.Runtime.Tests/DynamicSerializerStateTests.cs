@@ -18,10 +18,10 @@ public class DynamicSerializerStateTests
         var alloc = mb.Allocator;
         ds.SetStruct(3, 2);
         Assert.IsFalse(ds.IsAllocated);
-        Assert.ThrowsException<InvalidOperationException>(() => ds.SetListOfPointers(1));
-        Assert.ThrowsException<InvalidOperationException>(() => ds.SetListOfStructs(3, 2, 1));
-        Assert.ThrowsException<InvalidOperationException>(() => ds.SetListOfValues(8, 3));
-        Assert.ThrowsException<InvalidOperationException>(() => ds.SetStruct(2, 3));
+        Assert.Throws<InvalidOperationException>(() => ds.SetListOfPointers(1));
+        Assert.Throws<InvalidOperationException>(() => ds.SetListOfStructs(3, 2, 1));
+        Assert.Throws<InvalidOperationException>(() => ds.SetListOfValues(8, 3));
+        Assert.Throws<InvalidOperationException>(() => ds.SetStruct(2, 3));
         ds.SetStruct(3, 2);
         ds.Allocate();
         Assert.IsTrue(ds.IsAllocated);
@@ -29,13 +29,13 @@ public class DynamicSerializerStateTests
         ds.StructWriteData(0, 16, 0x4321);
         ds.StructWriteData(64, 32, 0x87654321);
         ds.StructWriteData(128, 64, 0x1234567812345678);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => ds.StructWriteData(191, 2, 1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ds.StructWriteData(191, 2, 1));
 
         var ds2 = ds.BuildPointer(0);
         ds2.SetStruct(1, 0);
         ds2.WriteData(0, 1.23);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => ds.Link(2, ds));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ds.Link(2, ds));
 
         Assert.AreEqual(1, alloc.Segments.Count);
         Assert.AreEqual(7, alloc.Segments[0].Length);
@@ -106,7 +106,7 @@ public class DynamicSerializerStateTests
         DeserializerState d = ds;
         Assert.AreEqual(123, d.ReadDataInt(0));
         Assert.AreEqual(123, d.StructReadPointer(0).ReadDataInt(0));
-        Assert.ThrowsException<DeserializationException>(() =>
+        Assert.Throws<DeserializationException>(() =>
         {
             for (var i = 0; i < 64000000; i++) d = d.StructReadPointer(0);
         });
@@ -176,7 +176,7 @@ public class DynamicSerializerStateTests
         var alloc = mb.Allocator;
         var ds = new DynamicSerializerState(mb);
         ds.SetListOfValues(0, int.MaxValue);
-        Assert.ThrowsException<InvalidOperationException>(
+        Assert.Throws<InvalidOperationException>(
             () => ds.ListWriteValue(0, 1));
 
         DeserializerState d = ds;
@@ -229,11 +229,11 @@ public class DynamicSerializerStateTests
                 Assert.AreEqual(expected, actual);
             }
 
-            Assert.ThrowsException<IndexOutOfRangeException>(() =>
+            Assert.Throws<IndexOutOfRangeException>(() =>
             {
                 var dummy = rlist[-1];
             });
-            Assert.ThrowsException<IndexOutOfRangeException>(() =>
+            Assert.Throws<IndexOutOfRangeException>(() =>
             {
                 var dummy = rlist[count];
             });
@@ -259,11 +259,11 @@ public class DynamicSerializerStateTests
         var sbytes = d.RequireList().CastSByte();
         for (var i = 0; i < count; i++) Assert.AreEqual((sbyte)i, sbytes[i]);
 
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = sbytes[-1];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = sbytes[count];
         });
@@ -284,11 +284,11 @@ public class DynamicSerializerStateTests
         var bytes = d.RequireList().CastByte();
         for (var i = 0; i < count; i++) Assert.AreEqual((byte)i, bytes[i]);
 
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = bytes[-1];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = bytes[count];
         });
@@ -309,11 +309,11 @@ public class DynamicSerializerStateTests
         var shorts = d.RequireList().CastShort();
         for (var i = 0; i < count; i++) Assert.AreEqual((short)i, shorts[i]);
 
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = shorts[-1];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = shorts[count];
         });
@@ -334,11 +334,11 @@ public class DynamicSerializerStateTests
         var ushorts = d.RequireList().CastUShort();
         for (var i = 0; i < count; i++) Assert.AreEqual((ushort)i, ushorts[i]);
 
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = ushorts[-1];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = ushorts[count];
         });
@@ -359,11 +359,11 @@ public class DynamicSerializerStateTests
         var ints = d.RequireList().CastInt();
         for (var i = 0; i < count; i++) Assert.AreEqual(i, ints[i]);
 
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = ints[-1];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = ints[count];
         });
@@ -384,11 +384,11 @@ public class DynamicSerializerStateTests
         var uints = d.RequireList().CastUInt();
         for (var i = 0; i < count; i++) Assert.AreEqual((uint)i, uints[i]);
 
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = uints[-1];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = uints[count];
         });
@@ -408,11 +408,11 @@ public class DynamicSerializerStateTests
         Assert.AreEqual(count, d.ListElementCount);
         var longs = d.RequireList().CastLong();
         for (var i = 0; i < count; i++) Assert.AreEqual(i, longs[i]);
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = longs[-1];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = longs[count];
         });
@@ -432,11 +432,11 @@ public class DynamicSerializerStateTests
         Assert.AreEqual(count, d.ListElementCount);
         var ulongs = d.RequireList().CastULong();
         for (var i = 0; i < count; i++) Assert.AreEqual((ulong)i, ulongs[i]);
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = ulongs[-1];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = ulongs[count];
         });
@@ -474,11 +474,11 @@ public class DynamicSerializerStateTests
         Assert.AreEqual(ObjectKind.ListOfInts, pointers[3].Kind);
         Assert.AreEqual(10, pointers[3].ListElementCount);
         Assert.AreEqual(ObjectKind.Nil, pointers[4].Kind);
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = pointers[-1];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = pointers[count];
         });
@@ -498,9 +498,9 @@ public class DynamicSerializerStateTests
         var dse1 = ds.ListBuildStruct(1);
         dse1.WriteData(0, 3);
         dse1.WriteData(64, 4);
-        Assert.ThrowsException<InvalidOperationException>(
+        Assert.Throws<InvalidOperationException>(
             () => ds.Link(2, ds));
-        Assert.ThrowsException<InvalidOperationException>(
+        Assert.Throws<InvalidOperationException>(
             () => ds.BuildPointer(2));
 
         DeserializerState d = ds;
@@ -516,11 +516,11 @@ public class DynamicSerializerStateTests
         Assert.AreEqual(ObjectKind.Struct, pointers[2].Kind);
         Assert.AreEqual(0, pointers[2].ReadDataInt(0));
         Assert.AreEqual(0, pointers[2].ReadDataInt(64));
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = pointers[-1];
         });
-        Assert.ThrowsException<IndexOutOfRangeException>(() =>
+        Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var dummy = pointers[count];
         });
@@ -549,15 +549,15 @@ public class DynamicSerializerStateTests
         var alloc = mb.Allocator;
         var ds = new DynamicSerializerState(mb);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
             ds.SetListOfPointers(-1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
             ds.SetListOfStructs(-10, 100, 200));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
             ds.SetListOfValues(2, 1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
             ds.SetListOfValues(1, -1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
             ds.SetListOfValues(65, 1));
     }
 
@@ -649,7 +649,7 @@ public class DynamicSerializerStateTests
         var alloc2 = mb2.Allocator;
         var ds2 = new DynamicSerializerState(mb2);
         ds2.SetStruct(0, 3);
-        Assert.ThrowsException<InvalidOperationException>(() =>
+        Assert.Throws<InvalidOperationException>(() =>
             ds2.Link(0, ds1, false));
         ds2.Link(0, ds1);
         var lop = ds2.BuildPointer(1);

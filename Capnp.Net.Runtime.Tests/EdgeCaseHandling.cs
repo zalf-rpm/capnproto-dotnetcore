@@ -1395,7 +1395,7 @@ public class EdgeCaseHandling : TestBase
         {
             Recv(_ => { Assert.AreEqual(Message.WHICH.Abort, _.which); });
             Assert.IsTrue(IsDismissed);
-            Assert.ThrowsException<InvalidOperationException>(
+            Assert.Throws<InvalidOperationException>(
                 () => Send(_ =>
                 {
                     _.which = Message.WHICH.Bootstrap;

@@ -58,7 +58,7 @@ public class TcpRpc : TestBase
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
         using (var client = new TcpRpcClient(addr.ToString(), port))
         {
-            Assert.IsTrue(Assert.ThrowsExceptionAsync<RpcException>(() => client.WhenConnected).Wait(10000));
+            Assert.IsTrue(Assert.ThrowsAsync<RpcException>(() => client.WhenConnected).Wait(10000));
         }
     }
 
@@ -95,7 +95,7 @@ public class TcpRpc : TestBase
 
             var main = client.GetMain<BareProxy>();
             var resolving = main as IResolvingCapability;
-            Assert.IsTrue(Assert.ThrowsExceptionAsync<RpcException>(() => resolving.WhenResolved.WrappedTask)
+            Assert.IsTrue(Assert.ThrowsAsync<RpcException>(() => resolving.WhenResolved.WrappedTask)
                 .Wait(MediumNonDbgTimeout));
         }
     }
@@ -171,7 +171,7 @@ public class TcpRpc : TestBase
 
                 mock.Return.SetCanceled();
 
-                Assert.IsTrue(Assert.ThrowsExceptionAsync<TaskCanceledException>(async () => await answer.WhenReturned)
+                Assert.IsTrue(Assert.ThrowsAsync<TaskCanceledException>(async () => await answer.WhenReturned)
                     .Wait(MediumNonDbgTimeout));
             }
         }
@@ -312,7 +312,7 @@ public class TcpRpc : TestBase
 
                 mock.Return.SetException(new MyTestException());
 
-                var exTask = Assert.ThrowsExceptionAsync<RpcException>(async () => await answer.WhenReturned);
+                var exTask = Assert.ThrowsAsync<RpcException>(async () => await answer.WhenReturned);
                 Assert.IsTrue(exTask.Wait(MediumNonDbgTimeout));
                 Assert.IsTrue(exTask.Result.Message.Contains(new MyTestException().Message));
             }
@@ -691,7 +691,7 @@ public class TcpRpc : TestBase
 
                 mock.Return.SetResult(result);
 
-                Assert.IsTrue(Assert.ThrowsExceptionAsync<TaskCanceledException>(
+                Assert.IsTrue(Assert.ThrowsAsync<TaskCanceledException>(
                     async () => await answer2.WhenReturned).Wait(MediumNonDbgTimeout));
             }
         }
@@ -711,9 +711,9 @@ public class TcpRpc : TestBase
             var c = a.Connection;
             if (init)
             {
-                Assert.ThrowsException<ArgumentNullException>(() => c.AttachTracer(null));
+                Assert.Throws<ArgumentNullException>(() => c.AttachTracer(null));
                 c.AttachTracer(tracer);
-                Assert.ThrowsException<ArgumentNullException>(() => c.InjectMidlayer(null));
+                Assert.Throws<ArgumentNullException>(() => c.InjectMidlayer(null));
                 c.InjectMidlayer(_ => _);
                 Assert.IsFalse(c.IsComputing);
                 Assert.IsFalse(c.IsWaitingForData);
@@ -725,22 +725,22 @@ public class TcpRpc : TestBase
             }
             else
             {
-                Assert.ThrowsException<InvalidOperationException>(() => c.AttachTracer(tracer));
-                Assert.ThrowsException<InvalidOperationException>(() => c.InjectMidlayer(_ => _));
+                Assert.Throws<InvalidOperationException>(() => c.AttachTracer(tracer));
+                Assert.Throws<InvalidOperationException>(() => c.InjectMidlayer(_ => _));
                 Assert.AreEqual(ConnectionState.Down, c.State);
             }
 
             cbb.Post(c);
         };
 
-        Assert.ThrowsException<InvalidOperationException>(() => server.StopListening());
+        Assert.Throws<InvalidOperationException>(() => server.StopListening());
 
         server.StartAccepting(addr, port);
         Assert.IsTrue(server.IsAlive);
-        Assert.ThrowsException<InvalidOperationException>(() => server.StartAccepting(addr, port));
+        Assert.Throws<InvalidOperationException>(() => server.StartAccepting(addr, port));
 
         var server2 = new TcpRpcServer();
-        Assert.ThrowsException<SocketException>(() => server2.StartAccepting(addr, port));
+        Assert.Throws<SocketException>(() => server2.StartAccepting(addr, port));
 
         var client1 = new TcpRpcClient(addr.ToString(), port);
         var c1 = cbb.Receive(TimeSpan.FromMilliseconds(MediumNonDbgTimeout));
@@ -776,7 +776,7 @@ public class TcpRpc : TestBase
 
         server.StopListening();
         Assert.IsFalse(server.IsAlive);
-        Assert.ThrowsException<InvalidOperationException>(() => server.StopListening());
+        Assert.Throws<InvalidOperationException>(() => server.StopListening());
 
         for (var i = 0; i < 100; i++)
         {
@@ -834,17 +834,17 @@ public class TcpRpc : TestBase
             Assert.IsFalse(client.IsWaitingForData);
             Assert.AreEqual(0L, client.SendCount);
             Assert.AreEqual(0L, client.RecvCount);
-            Assert.ThrowsException<InvalidOperationException>(() => client.GetMain<ITestInterface>());
-            Assert.ThrowsException<ArgumentNullException>(() => client.AttachTracer(null));
-            Assert.ThrowsException<ArgumentNullException>(() => client.InjectMidlayer(null));
+            Assert.Throws<InvalidOperationException>(() => client.GetMain<ITestInterface>());
+            Assert.Throws<ArgumentNullException>(() => client.AttachTracer(null));
+            Assert.Throws<ArgumentNullException>(() => client.InjectMidlayer(null));
             var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
             server.StartAccepting(addr, port);
             client.Connect(addr.ToString(), port);
-            Assert.ThrowsException<InvalidOperationException>(() => client.Connect(addr.ToString(), port));
+            Assert.Throws<InvalidOperationException>(() => client.Connect(addr.ToString(), port));
             Assert.IsTrue(client.WhenConnected.Wait(MediumNonDbgTimeout));
-            Assert.ThrowsException<InvalidOperationException>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
                 client.AttachTracer(new RpcFrameTracer(Console.Out, false)));
-            Assert.ThrowsException<InvalidOperationException>(() => client.InjectMidlayer(_ => _));
+            Assert.Throws<InvalidOperationException>(() => client.InjectMidlayer(_ => _));
             Assert.AreEqual(port, client.RemotePort);
             Assert.IsTrue(client.LocalPort != 0);
             Assert.AreEqual(0L, client.SendCount);

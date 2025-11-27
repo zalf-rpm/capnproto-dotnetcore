@@ -12,16 +12,16 @@ public class CapabilityReflectionTests
     [TestMethod]
     public void ValidateCapabilityInterface()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => CapabilityReflection.ValidateCapabilityInterface(null));
+        Assert.Throws<ArgumentNullException>(() => CapabilityReflection.ValidateCapabilityInterface(null));
         CapabilityReflection.ValidateCapabilityInterface(typeof(ITestInterface));
-        Assert.ThrowsException<InvalidCapabilityInterfaceException>(() =>
+        Assert.Throws<InvalidCapabilityInterfaceException>(() =>
             CapabilityReflection.ValidateCapabilityInterface(typeof(CapabilityReflectionTests)));
     }
 
     [TestMethod]
     public void IsValidCapabilityInterface()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => CapabilityReflection.IsValidCapabilityInterface(null));
+        Assert.Throws<ArgumentNullException>(() => CapabilityReflection.IsValidCapabilityInterface(null));
         Assert.IsTrue(CapabilityReflection.IsValidCapabilityInterface(typeof(ITestInterface)));
         Assert.IsFalse(CapabilityReflection.IsValidCapabilityInterface(typeof(CapabilityReflectionTests)));
     }

@@ -203,18 +203,18 @@ public class WirePointerTests
     {
         var wp = default(WirePointer);
         wp.BeginStruct(12345, 54321);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => wp.Offset = 1 << 30);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => wp.Offset = int.MinValue);
+        Assert.Throws<ArgumentOutOfRangeException>(() => wp.Offset = 1 << 30);
+        Assert.Throws<ArgumentOutOfRangeException>(() => wp.Offset = int.MinValue);
     }
 
     [TestMethod]
     public void ElementCountOutOfBounds()
     {
         var wp = default(WirePointer);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(
+        Assert.Throws<ArgumentOutOfRangeException>(
             () => wp.BeginList(ListKind.ListOfBytes, 1 << 29));
         wp.BeginList(ListKind.ListOfInts, 1 << (29 - 1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(
+        Assert.Throws<ArgumentOutOfRangeException>(
             () => wp.BeginList(ListKind.ListOfBytes, -1));
     }
 
@@ -222,7 +222,7 @@ public class WirePointerTests
     public void FarPointerOffsetOutOfBounds()
     {
         var wp = default(WirePointer);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(
+        Assert.Throws<ArgumentOutOfRangeException>(
             () => wp.SetFarPointer(1, 1 << 29, false));
     }
 }

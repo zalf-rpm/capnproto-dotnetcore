@@ -74,7 +74,7 @@ public class Interception : TestBase
                 Assert.IsTrue(fcc.Wait(MediumNonDbgTimeout));
                 var cc = fcc.Result;
 
-                Assert.ThrowsException<ArgumentNullException>(() => cc.Bob = null);
+                Assert.Throws<ArgumentNullException>(() => cc.Bob = null);
                 cc.Bob = redirTarget;
                 cc.ForwardToBob();
 
@@ -307,7 +307,7 @@ public class Interception : TestBase
                 cc.Exception = null;
 
                 cc.ReturnToAlice();
-                Assert.ThrowsException<InvalidOperationException>(() => cc.ReturnToAlice());
+                Assert.Throws<InvalidOperationException>(() => cc.ReturnToAlice());
 
                 Assert.IsTrue(request1.IsCompleted);
                 Assert.IsFalse(request1.IsFaulted);
@@ -694,16 +694,16 @@ public class Interception : TestBase
     public void AttachWrongUse()
     {
         var impl = new TestInterfaceImpl2();
-        Assert.ThrowsException<ArgumentNullException>(() => default(IInterceptionPolicy).Attach(impl));
-        Assert.ThrowsException<ArgumentNullException>(() => new MyPolicy("x").Attach(default(ITestInterface)));
+        Assert.Throws<ArgumentNullException>(() => default(IInterceptionPolicy).Attach(impl));
+        Assert.Throws<ArgumentNullException>(() => new MyPolicy("x").Attach(default(ITestInterface)));
     }
 
     [TestMethod]
     public void DetachWrongUse()
     {
         var impl = new TestInterfaceImpl2();
-        Assert.ThrowsException<ArgumentNullException>(() => default(IInterceptionPolicy).Detach(impl));
-        Assert.ThrowsException<ArgumentNullException>(() => new MyPolicy("x").Detach(default(ITestInterface)));
+        Assert.Throws<ArgumentNullException>(() => default(IInterceptionPolicy).Detach(impl));
+        Assert.Throws<ArgumentNullException>(() => new MyPolicy("x").Detach(default(ITestInterface)));
     }
 
     [TestMethod]
