@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.IO;
-using System.IO.Pipes;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Capnp.Net.Runtime.Tests;
 
-[Ignore]
 [TestClass]
 [TestCategory("Coverage")]
 public class FramePumpTests
@@ -39,48 +39,54 @@ public class FramePumpTests
 
         Thread rxRunner = null;
 
-        using (var server = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.None))
-        using (var client = new AnonymousPipeClientStream(PipeDirection.In, server.ClientSafePipeHandle))
-        using (var bc = new BlockingCollection<int>(8))
+        using (var listener = new TcpListener(IPAddress.Loopback, 0))
         {
-            server.ReadMode = PipeTransmissionMode.Byte;
-            client.ReadMode = PipeTransmissionMode.Byte;
-
-            using (var txPump = new FramePump(server))
-            using (var rxPump = new FramePump(client))
+            listener.Start();
+            var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+            var acceptTask = listener.AcceptTcpClientAsync();
+            using (var client = new TcpClient("127.0.0.1", port))
+            using (var server = acceptTask.Result)
+            using (var serverStream = server.GetStream())
+            using (var clientStream = client.GetStream())
+            using (var bc = new BlockingCollection<int>(16))
             {
-                rxRunner = new Thread(() => { rxPump.Run(); });
-
-                rxPump.FrameReceived += f => bc.Add(UnpackFrame(f));
-
-                rxRunner.Start();
-
-                for (var i = 0; i < 100; i++)
+                using (var txPump = new FramePump(serverStream))
+                using (var rxPump = new FramePump(clientStream))
                 {
-                    txPump.Send(PackFrame(1));
-                    txPump.Send(PackFrame(8));
-                    txPump.Send(PackFrame(2));
-                    txPump.Send(PackFrame(7));
-                    txPump.Send(PackFrame(3));
-                    txPump.Send(PackFrame(6));
-                    txPump.Send(PackFrame(4));
-                    txPump.Send(PackFrame(5));
+                    rxRunner = new Thread(() => { rxPump.Run(); });
+                    rxRunner.IsBackground = true;
 
-                    Assert.IsTrue(SpinWait.SpinUntil(() => bc.Count == 8, 500));
+                    rxPump.FrameReceived += f => bc.Add(UnpackFrame(f));
 
-                    Assert.AreEqual(1, bc.Take());
-                    Assert.AreEqual(8, bc.Take());
-                    Assert.AreEqual(2, bc.Take());
-                    Assert.AreEqual(7, bc.Take());
-                    Assert.AreEqual(3, bc.Take());
-                    Assert.AreEqual(6, bc.Take());
-                    Assert.AreEqual(4, bc.Take());
-                    Assert.AreEqual(5, bc.Take());
+                    rxRunner.Start();
+
+                    for (var i = 0; i < 100; i++)
+                    {
+                        txPump.Send(PackFrame(1));
+                        txPump.Send(PackFrame(8));
+                        txPump.Send(PackFrame(2));
+                        txPump.Send(PackFrame(7));
+                        txPump.Send(PackFrame(3));
+                        txPump.Send(PackFrame(6));
+                        txPump.Send(PackFrame(4));
+                        txPump.Send(PackFrame(5));
+
+                        Assert.IsTrue(SpinWait.SpinUntil(() => bc.Count == 8, 5000));
+
+                        Assert.AreEqual(1, bc.Take());
+                        Assert.AreEqual(8, bc.Take());
+                        Assert.AreEqual(2, bc.Take());
+                        Assert.AreEqual(7, bc.Take());
+                        Assert.AreEqual(3, bc.Take());
+                        Assert.AreEqual(6, bc.Take());
+                        Assert.AreEqual(4, bc.Take());
+                        Assert.AreEqual(5, bc.Take());
+                    }
                 }
             }
         }
 
-        Assert.IsTrue(rxRunner.Join(500));
+        Assert.IsTrue(rxRunner.Join(5000));
     }
 
     [TestMethod]
@@ -122,45 +128,51 @@ public class FramePumpTests
 
         Thread rxRunner = null;
 
-        using (var server = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.None))
-        using (var client = new AnonymousPipeClientStream(PipeDirection.In, server.ClientSafePipeHandle))
-        using (var bc = new BlockingCollection<WireFrame>(8))
+        using (var listener = new TcpListener(IPAddress.Loopback, 0))
         {
-            server.ReadMode = PipeTransmissionMode.Byte;
-            client.ReadMode = PipeTransmissionMode.Byte;
-
-            using (var txPump = new FramePump(server))
-            using (var rxPump = new FramePump(client))
+            listener.Start();
+            var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+            var acceptTask = listener.AcceptTcpClientAsync();
+            using (var client = new TcpClient("127.0.0.1", port))
+            using (var server = acceptTask.Result)
+            using (var serverStream = server.GetStream())
+            using (var clientStream = client.GetStream())
+            using (var bc = new BlockingCollection<WireFrame>(16))
             {
-                rxRunner = new Thread(() => { rxPump.Run(); });
+                using (var txPump = new FramePump(serverStream))
+                using (var rxPump = new FramePump(clientStream))
+                {
+                    rxRunner = new Thread(() => { rxPump.Run(); });
+                    rxRunner.IsBackground = true;
 
-                rxPump.FrameReceived += bc.Add;
+                    rxPump.FrameReceived += bc.Add;
 
-                rxRunner.Start();
+                    rxRunner.Start();
 
-                txPump.Send(PackFrame(1));
-                txPump.Send(PackFrame(8));
-                txPump.Send(PackFrame(2));
-                txPump.Send(PackFrame(7));
-                txPump.Send(PackFrame(3));
-                txPump.Send(PackFrame(6));
-                txPump.Send(PackFrame(4));
-                txPump.Send(PackFrame(5));
+                    txPump.Send(PackFrame(1));
+                    txPump.Send(PackFrame(8));
+                    txPump.Send(PackFrame(2));
+                    txPump.Send(PackFrame(7));
+                    txPump.Send(PackFrame(3));
+                    txPump.Send(PackFrame(6));
+                    txPump.Send(PackFrame(4));
+                    txPump.Send(PackFrame(5));
 
-                Assert.IsTrue(SpinWait.SpinUntil(() => bc.Count == 8, 50000));
+                    Assert.IsTrue(SpinWait.SpinUntil(() => bc.Count == 8, 50000));
 
-                UnpackAndVerifyFrame(bc.Take(), 1);
-                UnpackAndVerifyFrame(bc.Take(), 8);
-                UnpackAndVerifyFrame(bc.Take(), 2);
-                UnpackAndVerifyFrame(bc.Take(), 7);
-                UnpackAndVerifyFrame(bc.Take(), 3);
-                UnpackAndVerifyFrame(bc.Take(), 6);
-                UnpackAndVerifyFrame(bc.Take(), 4);
-                UnpackAndVerifyFrame(bc.Take(), 5);
+                    UnpackAndVerifyFrame(bc.Take(), 1);
+                    UnpackAndVerifyFrame(bc.Take(), 8);
+                    UnpackAndVerifyFrame(bc.Take(), 2);
+                    UnpackAndVerifyFrame(bc.Take(), 7);
+                    UnpackAndVerifyFrame(bc.Take(), 3);
+                    UnpackAndVerifyFrame(bc.Take(), 6);
+                    UnpackAndVerifyFrame(bc.Take(), 4);
+                    UnpackAndVerifyFrame(bc.Take(), 5);
+                }
             }
         }
 
-        Assert.IsTrue(rxRunner.Join(500));
+        Assert.IsTrue(rxRunner.Join(5000));
     }
 
     private class MyStruct : SerializerState

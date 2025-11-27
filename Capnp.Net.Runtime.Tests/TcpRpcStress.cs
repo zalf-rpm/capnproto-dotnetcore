@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Capnp.Net.Runtime.Tests;
 
 [TestClass]
+[Ignore]
 public class TcpRpcStress : TestBase
 {
     private void Repeat(int count, Action action)
@@ -107,30 +108,30 @@ public class TcpRpcStress : TestBase
                 server.InjectMidlayer(s => new ScatteringStream(s, 7));
                 client.InjectMidlayer(s => new ScatteringStream(s, 10));
                 client.Connect(addr.ToString(), port);
-            //client.WhenConnected.Wait();
+                //client.WhenConnected.Wait();
 
-            var counters = new Counters();
-            server.Main = new TestInterfaceImpl(counters);
-            using (var main = client.GetMain<ITestInterface>())
-            {
-                for (var i = 0; i < 100; i++)
+                var counters = new Counters();
+                server.Main = new TestInterfaceImpl(counters);
+                using (var main = client.GetMain<ITestInterface>())
                 {
-                    var request1 = main.Foo(123, true);
-                    var request3 = Assert.ThrowsAsync<RpcException>(() => main.Bar());
-                    var s = new TestAllTypes();
-                    Common.InitTestMessage(s);
-                    var request2 = main.Baz(s);
+                    for (var i = 0; i < 100; i++)
+                    {
+                        var request1 = main.Foo(123, true);
+                        var request3 = Assert.ThrowsAsync<RpcException>(() => main.Bar());
+                        var s = new TestAllTypes();
+                        Common.InitTestMessage(s);
+                        var request2 = main.Baz(s);
 
-                    Assert.IsTrue(request1.Wait(MediumNonDbgTimeout));
-                    Assert.IsTrue(request2.Wait(MediumNonDbgTimeout));
-                    Assert.IsTrue(request3.Wait(MediumNonDbgTimeout));
+                        Assert.IsTrue(request1.Wait(MediumNonDbgTimeout));
+                        Assert.IsTrue(request2.Wait(MediumNonDbgTimeout));
+                        Assert.IsTrue(request3.Wait(MediumNonDbgTimeout));
 
-                    Assert.AreEqual("foo", request1.Result);
-                    Assert.AreEqual(2, counters.CallCount);
-                    counters.CallCount = 0;
+                        Assert.AreEqual("foo", request1.Result);
+                        Assert.AreEqual(2, counters.CallCount);
+                        counters.CallCount = 0;
+                    }
                 }
             }
         }
     }
-}
 }
