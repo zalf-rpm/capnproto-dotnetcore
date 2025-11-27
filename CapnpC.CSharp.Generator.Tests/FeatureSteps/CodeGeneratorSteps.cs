@@ -7,7 +7,7 @@ using CapnpC.CSharp.Generator.CodeGen;
 using CapnpC.CSharp.Generator.Tests.Util;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TechTalk.SpecFlow;
+using Reqnroll;
 
 namespace CapnpC.CSharp.Generator.Tests;
 
