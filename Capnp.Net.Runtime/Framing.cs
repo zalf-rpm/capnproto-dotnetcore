@@ -81,27 +81,6 @@ public static class Framing
     {
         for (uint i = 0; i < segmentCount; i++)
         {
-#if NETSTANDARD2_0
-                var buffer = MemoryMarshal.Cast<ulong, byte>(buffers[i].Span.ToArray());
-                var tmpBuffer = reader.ReadBytes(buffer.Length);
-
-                if (tmpBuffer.Length != buffer.Length)
-                {
-                    // Note w.r.t. issue #37: If there are temporarily less bytes available, 
-                    // this will NOT cause ReadBytes to return a shorter buffer. 
-                    // Only if the end of the stream is reached will we enter this branch. And this will be an error condition,
-                    // since it would mean that the connection was closed in the middle of a frame transfer.
-
-                    throw StreamClosed();
-                }
-                
-                // Fastest way to do this without /unsafe
-                for (int j = 0; j < buffers[i].Length; j++)
-                {
-                    var value = BitConverter.ToUInt64(tmpBuffer, j*8);
-                    buffers[i].Span[j] = value;
-                }
-#else
             var buffer = MemoryMarshal.Cast<ulong, byte>(buffers[i].Span);
 
             do
@@ -111,7 +90,6 @@ public static class Framing
                     throw StreamClosed();
                 buffer = buffer.Slice(obtained);
             } while (buffer.Length > 0);
-#endif
         }
     }
 }

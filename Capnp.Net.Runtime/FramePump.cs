@@ -112,11 +112,7 @@ public class FramePump : IDisposable
 
             foreach (var segment in frame.Segments)
             {
-#if NETSTANDARD2_0
-                    var bytes = MemoryMarshal.Cast<ulong, byte>(segment.Span).ToArray();
-#else
                 var bytes = MemoryMarshal.Cast<ulong, byte>(segment.Span);
-#endif
                 _writer.Write(bytes);
             }
         }

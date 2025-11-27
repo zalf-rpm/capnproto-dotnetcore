@@ -57,7 +57,7 @@ internal class LazyCapability : RefCountingCapability, IResolvingCapability
 
     internal override Action? Export(IRpcEndpoint endpoint, CapDescriptor.WRITER writer)
     {
-        if (WhenResolved.IsCompleted && WhenResolved.WrappedTask.ReplacementTaskIsCompletedSuccessfully())
+        if (WhenResolved.IsCompleted && WhenResolved.WrappedTask.IsCompletedSuccessfully)
         {
             using var proxy = GetResolvedCapability<BareProxy>()!;
             return proxy.Export(endpoint, writer);

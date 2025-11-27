@@ -51,7 +51,7 @@ internal class PromisedCapability : RemoteResolvingCapability
     {
         lock (_reentrancyBlocker)
         {
-            if (_resolvedCap.Task.ReplacementTaskIsCompletedSuccessfully())
+            if (_resolvedCap.Task.IsCompletedSuccessfully)
             {
                 using var proxy = new Proxy(_resolvedCap.Task.Result);
                 proxy.Export(endpoint, writer);

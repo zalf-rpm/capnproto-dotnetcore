@@ -493,7 +493,7 @@ public class RpcEngine
             {
                 var id = NextId();
 
-                while (!_pendingDisembargos.ReplacementTryAdd(id, tcs)) id = NextId();
+                while (!_pendingDisembargos.TryAdd(id, tcs)) id = NextId();
 
                 return (tcs, id);
             }
@@ -536,7 +536,7 @@ public class RpcEngine
             bool added;
             lock (_reentrancyBlocker)
             {
-                added = _answerTable.ReplacementTryAdd(req.QuestionId, pendingAnswer);
+                added = _answerTable.TryAdd(req.QuestionId, pendingAnswer);
             }
 
             if (!added)
@@ -610,7 +610,7 @@ public class RpcEngine
                 bool added;
                 lock (_reentrancyBlocker)
                 {
-                    added = _answerTable.ReplacementTryAdd(req.QuestionId, pendingAnswer);
+                    added = _answerTable.TryAdd(req.QuestionId, pendingAnswer);
                 }
 
                 if (!added)
@@ -1086,11 +1086,11 @@ public class RpcEngine
         private void ProcessReceiverLoopback(Disembargo.READER disembargo)
         {
             bool exists;
-            TaskCompletionSource<int> tcs;
+            TaskCompletionSource<int>? tcs;
 
             lock (_reentrancyBlocker)
             {
-                exists = _pendingDisembargos.ReplacementTryRemove(disembargo.Context.ReceiverLoopback, out tcs);
+                exists = _pendingDisembargos.Remove(disembargo.Context.ReceiverLoopback, out tcs);
             }
 
             if (exists)
@@ -1104,7 +1104,7 @@ public class RpcEngine
                     Logger.LogDebug($"Receiver loopback disembargo, Thread = {Thread.CurrentThread.Name}");
 #endif
 
-                tcs.SetResult(0);
+                tcs!.SetResult(0);
             }
             else
             {
@@ -1166,19 +1166,19 @@ public class RpcEngine
         private void ProcessFinish(Finish.READER finish)
         {
             bool exists;
-            PendingAnswer answer;
+            PendingAnswer? answer;
 
             lock (_reentrancyBlocker)
             {
-                exists = _answerTable.ReplacementTryRemove(finish.QuestionId, out answer);
+                exists = _answerTable.Remove(finish.QuestionId, out answer);
             }
 
             if (exists)
             {
-                if (finish.ReleaseResultCaps) ReleaseResultCaps(answer);
+                if (finish.ReleaseResultCaps) ReleaseResultCaps(answer!);
 
-                answer.Cancel();
-                answer.Dispose();
+                answer!.Cancel();
+                answer!.Dispose();
             }
             else
             {
@@ -1206,7 +1206,7 @@ public class RpcEngine
                         if (rc.RefCount == 0)
                         {
                             _exportTable.Remove(id);
-                            _revExportTable.ReplacementTryRemove(rc.Cap, out _);
+                            _revExportTable.Remove(rc.Cap, out _);
                         }
                     }
                     catch (System.Exception exception)

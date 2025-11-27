@@ -152,7 +152,7 @@ public static class Impatient
                     "The task was not returned from a remote method invocation. See documentation for details.");
 
             var proxyTask = task.AsProxyTask();
-            if (proxyTask.ReplacementTaskIsCompletedSuccessfully()) return proxyTask.Result.Cast<TInterface>(true);
+            if (proxyTask.IsCompletedSuccessfully) return proxyTask.Result.Cast<TInterface>(true);
 
             var lazyCap = new LazyCapability(proxyTask);
             return (CapabilityReflection.CreateProxy<TInterface>(lazyCap) as TInterface)!;

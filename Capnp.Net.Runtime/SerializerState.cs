@@ -1195,11 +1195,7 @@ public class SerializerState : IStructSerializer, IDisposable
     {
         var bytes = ListGetBytes();
         if (bytes.Length == 0) return string.Empty;
-#if NETSTANDARD2_0
-            return Encoding.UTF8.GetString(bytes.Slice(0, bytes.Length - 1).ToArray());
-#else
         return Encoding.UTF8.GetString(bytes.Slice(0, bytes.Length - 1));
-#endif
     }
 
     /// <summary>
@@ -1295,8 +1291,8 @@ public class SerializerState : IStructSerializer, IDisposable
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="index" /> is out of bounds.</exception>
     public void ListWriteValue(int index, float value, float defaultValue = 0)
     {
-        var rcastValue = value.ReplacementSingleToInt32Bits();
-        var rcastDefaultValue = defaultValue.ReplacementSingleToInt32Bits();
+        var rcastValue = BitConverter.SingleToInt32Bits(value);
+        var rcastDefaultValue = BitConverter.SingleToInt32Bits(defaultValue);
         ListWriteValue(index, rcastValue, rcastDefaultValue);
     }
 

@@ -290,9 +290,9 @@ public static class SerializerExtensions
     public static float ReadDataFloat<T>(this T d, ulong bitOffset, float defaultValue = 0)
         where T : IStructDeserializer
     {
-        var defaultBits = defaultValue.ReplacementSingleToInt32Bits();
+        var defaultBits = BitConverter.SingleToInt32Bits(defaultValue);
         var bits = (int)d.StructReadData(bitOffset, 32) ^ defaultBits;
-        return bits.ReplacementInt32ToSingleBits();
+        return BitConverter.Int32BitsToSingle(bits);
     }
 
     /// <summary>
@@ -306,8 +306,8 @@ public static class SerializerExtensions
     public static void WriteData<T>(this T d, ulong bitOffset, float value, float defaultValue = 0.0f)
         where T : IStructSerializer
     {
-        var bits = value.ReplacementSingleToInt32Bits();
-        var defaultBits = defaultValue.ReplacementSingleToInt32Bits();
+        var bits = BitConverter.SingleToInt32Bits(value);
+        var defaultBits = BitConverter.SingleToInt32Bits(defaultValue);
         WriteData(d, bitOffset, bits, defaultBits);
     }
 
