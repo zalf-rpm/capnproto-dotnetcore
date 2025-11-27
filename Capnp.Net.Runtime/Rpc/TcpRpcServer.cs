@@ -243,7 +243,7 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
 
         var listener = new TcpListener(localAddr, port)
         {
-            ExclusiveAddressUse = false
+            ExclusiveAddressUse = true
         };
 
         var attempt = 0;
