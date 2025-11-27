@@ -9,6 +9,7 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <TargetFramework>net9.0</TargetFramework>
         <InvariantGlobalization>true</InvariantGlobalization>
+        <LangVersion>13.0</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0|AnyCPU'">
@@ -20,7 +21,7 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
         <PackageReference Update="Nerdbank.GitVersioning">
-            <Version>3.7.115</Version>
+            <Version>3.9.50</Version>
         </PackageReference>
     </ItemGroup>
 

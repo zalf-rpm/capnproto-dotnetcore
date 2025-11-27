@@ -11,9 +11,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.70.0"/>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
         <PackageReference Update="Nerdbank.GitVersioning">
-            <Version>3.7.115</Version>
+            <Version>3.9.50</Version>
         </PackageReference>
     </ItemGroup>
 
