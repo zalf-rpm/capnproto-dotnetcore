@@ -14,35 +14,35 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-        <PackageReference Include="Mono.Cecil" Version="0.11.6"/>
-        <PackageReference Include="MSTest.TestAdapter" Version="3.10.4" />
-        <PackageReference Include="MSTest.TestFramework" Version="3.10.4" />
-        <PackageReference Include="SpecFlow" Version="3.9.74"/>
-        <PackageReference Include="SpecFlow.MsTest" Version="3.9.74"/>
-        <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.74"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.0.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+        <PackageReference Include="Mono.Cecil" Version="0.11.6" />
+        <PackageReference Include="MSTest.TestAdapter" Version="4.0.2" />
+        <PackageReference Include="MSTest.TestFramework" Version="4.0.2" />
+        <PackageReference Include="SpecFlow" Version="3.9.74" />
+        <PackageReference Include="SpecFlow.MsTest" Version="3.9.74" />
+        <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.74" />
         <PackageReference Update="Nerdbank.GitVersioning">
             <Version>3.7.115</Version>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Remove="Embedded Resources\*.cs"/>
-        <Compile Remove="CodeGenerator.feature.cs"/>
+        <Compile Remove="Embedded Resources\*.cs" />
+        <Compile Remove="CodeGenerator.feature.cs" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Embedded Resources\*"/>
+        <EmbeddedResource Include="Embedded Resources\*" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="No Resources\UnitTest1.capnp"/>
+        <EmbeddedResource Include="No Resources\UnitTest1.capnp" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CapnpC.CSharp.Generator\CapnpC.CSharp.Generator.csproj"/>
+        <ProjectReference Include="..\CapnpC.CSharp.Generator\CapnpC.CSharp.Generator.csproj" />
     </ItemGroup>
 
     <ItemGroup>
