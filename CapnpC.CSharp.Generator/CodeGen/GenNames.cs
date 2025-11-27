@@ -222,7 +222,38 @@ internal class GenNames
         return name.IdentifierName;
     }
 
-    public SimpleNameSyntax MakeGenericTypeNameForAttribute(TypeDefinition def, NameUsage usage)
+    public NameSyntax MakeGenericTypeNameForAttribute(TypeDefinition def, NameUsage usage)
+    {
+        var parts = new Stack<SimpleNameSyntax>();
+        parts.Push(MakeGenericTypeNameForAttributeSimple(def, usage));
+
+        var currentDef = def;
+        while (currentDef.DeclaringElement is TypeDefinition parentDef)
+        {
+            parts.Push(MakeGenericTypeNameForAttributeSimple(parentDef, NameUsage.Namespace));
+            currentDef = parentDef;
+        }
+
+        NameSyntax result = null;
+        var ns = GetNamespaceFor(currentDef);
+        if (ns != null)
+        {
+            result = ns;
+        }
+
+        while (parts.Count > 0)
+        {
+            var part = parts.Pop();
+            if (result == null)
+                result = part;
+            else
+                result = QualifiedName(result, part);
+        }
+
+        return result;
+    }
+
+    private SimpleNameSyntax MakeGenericTypeNameForAttributeSimple(TypeDefinition def, NameUsage usage)
     {
         var name = MakeTypeName(def, usage);
 
@@ -667,14 +698,14 @@ internal class GenNames
             switch (cur)
             {
                 case TypeDefinition def:
-                    nameList.Push(def.Name);
+                    nameList.Push(def.Name.Replace(".", "_"));
                     cur = def.DeclaringElement;
                     break;
 
                 case GenFile file:
                     if (file.Namespace != null)
                         foreach (var id in file.Namespace.Reverse())
-                            nameList.Push(id);
+                            nameList.Push(id.Replace(".", "_"));
 
                     cur = null;
                     break;
@@ -686,9 +717,9 @@ internal class GenNames
         } while (cur != null);
 
         return new Name(string.Format(MemberAccessPathNameFormat,
-            string.Join("_", nameList),
-            method.DeclaringInterface.Name,
-            method.Name,
+            string.Join("_", nameList).Replace(".", "_"),
+            method.DeclaringInterface.Name.Replace(".", "_"),
+            method.Name.Replace(".", "_"),
             MakePipeliningSupportExtensionMethodName(path)));
     }
 

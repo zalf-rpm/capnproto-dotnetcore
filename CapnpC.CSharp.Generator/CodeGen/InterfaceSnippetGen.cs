@@ -870,6 +870,11 @@ internal class InterfaceSnippetGen
                                                         InvocationExpression(
                                                             _names.AwaitProxy.IdentifierName))))))));
 
+                if (type.GenericParameters.Count > 0)
+                    methodDecl = methodDecl
+                        .AddTypeParameterListParameters(MakeTypeParameters(type).ToArray())
+                        .AddConstraintClauses(MakeTypeParameterConstraints(type).ToArray());
+
                 yield return pathDecl;
                 yield return methodDecl;
             }

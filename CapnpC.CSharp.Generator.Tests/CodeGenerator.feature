@@ -71,6 +71,7 @@ Examples:
     | Issue19.capnp.bin           | false       | false        | success  |
     | Issue21.capnp.bin           | false       | false        | success  |
     | Issue22.capnp.bin           | false       | false        | success  |
+    | IssueGenGeneric.capnp.bin   | false       | false        | success  |
     | NullableDisable.capnp.bin   | true        | false        | success  |
     | NullableDisable.capnp.bin   | true        | true         | warnings |
     | NullableEnable.capnp.bin    | false       | true         | success  |

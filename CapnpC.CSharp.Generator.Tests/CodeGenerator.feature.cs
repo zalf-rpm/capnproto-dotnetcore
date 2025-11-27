@@ -119,7 +119,7 @@ namespace CapnpC.CSharp.Generator.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("CodeGenerator.feature.ndjson", 26);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("CodeGenerator.feature.ndjson", 27);
         }
         
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(DisplayName="Comparing backend output with reference")]
@@ -391,16 +391,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Issue19.capnp.bin", "false", "false", "success", "11", null, DisplayName="Valid generator output(Issue19.capnp.bin,false,false,success,11)")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Issue21.capnp.bin", "false", "false", "success", "12", null, DisplayName="Valid generator output(Issue21.capnp.bin,false,false,success,12)")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("Issue22.capnp.bin", "false", "false", "success", "13", null, DisplayName="Valid generator output(Issue22.capnp.bin,false,false,success,13)")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableDisable.capnp.bin", "true", "false", "success", "14", null, DisplayName="Valid generator output(NullableDisable.capnp.bin,true,false,success,14)")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableDisable.capnp.bin", "true", "true", "warnings", "15", null, DisplayName="Valid generator output(NullableDisable.capnp.bin,true,true,warnings,15)")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableEnable.capnp.bin", "false", "true", "success", "16", null, DisplayName="Valid generator output(NullableEnable.capnp.bin,false,true,success,16)")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableEnable.capnp.bin", "false", "false", "errors", "17", null, DisplayName="Valid generator output(NullableEnable.capnp.bin,false,false,errors,17)")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableDisable2.capnp.bin", "false", "false", "errors", "18", null, DisplayName="Valid generator output(NullableDisable2.capnp.bin,false,false,errors,18)")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableDisable2.capnp.bin", "false", "true", "success", "19", null, DisplayName="Valid generator output(NullableDisable2.capnp.bin,false,true,success,19)")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableEnable2.capnp.bin", "false", "false", "errors", "20", null, DisplayName="Valid generator output(NullableEnable2.capnp.bin,false,false,errors,20)")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableEnable2.capnp.bin", "false", "true", "success", "21", null, DisplayName="Valid generator output(NullableEnable2.capnp.bin,false,true,success,21)")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("rpc-csharp.capnp.bin", "true", "true", "warnings", "22", null, DisplayName="Valid generator output(rpc-csharp.capnp.bin,true,true,warnings,22)")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("schema-csharp.capnp.bin", "false", "false", "success", "23", null, DisplayName="Valid generator output(schema-csharp.capnp.bin,false,false,success,23)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("IssueGenGeneric.capnp.bin", "false", "false", "success", "14", null, DisplayName="Valid generator output(IssueGenGeneric.capnp.bin,false,false,success,14)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableDisable.capnp.bin", "true", "false", "success", "15", null, DisplayName="Valid generator output(NullableDisable.capnp.bin,true,false,success,15)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableDisable.capnp.bin", "true", "true", "warnings", "16", null, DisplayName="Valid generator output(NullableDisable.capnp.bin,true,true,warnings,16)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableEnable.capnp.bin", "false", "true", "success", "17", null, DisplayName="Valid generator output(NullableEnable.capnp.bin,false,true,success,17)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableEnable.capnp.bin", "false", "false", "errors", "18", null, DisplayName="Valid generator output(NullableEnable.capnp.bin,false,false,errors,18)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableDisable2.capnp.bin", "false", "false", "errors", "19", null, DisplayName="Valid generator output(NullableDisable2.capnp.bin,false,false,errors,19)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableDisable2.capnp.bin", "false", "true", "success", "20", null, DisplayName="Valid generator output(NullableDisable2.capnp.bin,false,true,success,20)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableEnable2.capnp.bin", "false", "false", "errors", "21", null, DisplayName="Valid generator output(NullableEnable2.capnp.bin,false,false,errors,21)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("NullableEnable2.capnp.bin", "false", "true", "success", "22", null, DisplayName="Valid generator output(NullableEnable2.capnp.bin,false,true,success,22)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("rpc-csharp.capnp.bin", "true", "true", "warnings", "23", null, DisplayName="Valid generator output(rpc-csharp.capnp.bin,true,true,warnings,23)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("schema-csharp.capnp.bin", "false", "false", "success", "24", null, DisplayName="Valid generator output(schema-csharp.capnp.bin,false,false,success,24)")]
         public async global::System.Threading.Tasks.Task ValidGeneratorOutput(string bin, string nullablegen, string nullablesupp, string outcome, string @__pickleIndex, string[] exampleTags)
         {
             string[] @__tags = new string[] {

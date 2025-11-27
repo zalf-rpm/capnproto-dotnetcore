@@ -19,6 +19,7 @@
 
 	<ItemGroup>
 		<CapnpFiles Include="Issue25.capnp" />
+		<CapnpFiles Include="IssueGenGeneric.capnp" />
 	</ItemGroup>
 
 	<ItemGroup>

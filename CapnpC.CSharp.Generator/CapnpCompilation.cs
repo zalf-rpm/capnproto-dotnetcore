@@ -18,11 +18,16 @@ namespace CapnpC.CSharp.Generator;
 /// </summary>
 public static class CapnpCompilation
 {
+    private static string _capnpCompilerFilename;
+
     /// <summary>
     ///     Returns the basename of the capnp executable
     /// </summary>
-    public static string CapnpCompilerFilename =>
-        RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "capnp.exe" : "capnp";
+    public static string CapnpCompilerFilename
+    {
+        get => _capnpCompilerFilename ?? (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "capnp.exe" : "capnp");
+        set => _capnpCompilerFilename = value;
+    }
 
     /// <summary>
     ///     Generates C# code from given input stream
@@ -63,6 +68,11 @@ public static class CapnpCompilation
     }
 
     /// <summary>
+    ///     Hook to intercept capnp invocation for testing purposes.
+    /// </summary>
+    public static Func<IEnumerable<string>, string, GenerationResult> ExternalCapnpInvoker;
+
+    /// <summary>
     ///     Invokes "capnp.exe -o-" with given additional arguments and redirects the output to the C# generator backend.
     /// </summary>
     /// <param name="arguments">additional command line arguments</param>
@@ -73,6 +83,9 @@ public static class CapnpCompilation
     {
         if (arguments == null)
             throw new ArgumentNullException(nameof(arguments));
+
+        if (ExternalCapnpInvoker != null)
+            return ExternalCapnpInvoker(arguments, workingDirectory);
 
         using (var compiler = new Process())
         {

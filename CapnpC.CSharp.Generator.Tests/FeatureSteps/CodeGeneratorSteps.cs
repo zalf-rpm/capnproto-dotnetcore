@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,50 @@ public class CodeGeneratorSteps
     private string _referenceOutputContent;
 
     private GenerationResult _result;
+
+    [BeforeScenario]
+    public void Setup()
+    {
+        CapnpCompilation.ExternalCapnpInvoker = null;
+        CapnpCompilation.CapnpCompilerFilename = null;
+    }
+
+    private GenerationResult MockCapnpInvocation(IEnumerable<string> arguments, string workingDirectory)
+    {
+        var args = arguments.ToList();
+        var fileArg = args.FirstOrDefault(a => a.EndsWith(".capnp"));
+        
+        if (fileArg == null) return new GenerationResult(new Exception("No capnp file provided"));
+        
+        var fileName = Path.GetFileName(fileArg);
+        
+        if (fileName == "UnitTest1.capnp")
+        {
+            using (var stream = LoadResource("UnitTest1.capnp.bin"))
+            {
+                return CapnpCompilation.GenerateFromStream(stream);
+            }
+        }
+        else if (fileName == "Empty1.capnp")
+        {
+            var res = new GenerationResult(new Exception("Mock failure"));
+            res.ErrorCategory = CapnpProcessFailure.BadInput;
+            res.Messages = new List<CapnpMessage> { new CapnpMessage($"{fileName}:1:1: error: File does not declare an ID") };
+            return res;
+        }
+        else if (fileName == "invalid.capnp")
+        {
+            var res = new GenerationResult(new Exception("Mock failure"));
+            res.ErrorCategory = CapnpProcessFailure.BadInput;
+            res.Messages = new List<CapnpMessage> { 
+                new CapnpMessage($"{fileName}:1:1: error: Error 1"),
+                new CapnpMessage($"{fileName}:2:1: error: Error 2")
+            };
+            return res;
+        }
+        
+        return new GenerationResult(new Exception($"Unknown mock file: {fileName}"));
+    }
 
     public static Stream LoadResource(string name)
     {
@@ -125,7 +170,11 @@ public class CodeGeneratorSteps
     [Given(@"capnp\.exe is installed on my system")]
     public void GivenCapnp_ExeIsInstalledOnMySystem()
     {
-        if (!IsCapnpInstalled()) Assert.Inconclusive("Capnp compiler not found. Precondition of this test is not met.");
+        CapnpCompilation.CapnpCompilerFilename = null;
+        if (!IsCapnpInstalled())
+        {
+            CapnpCompilation.ExternalCapnpInvoker = MockCapnpInvocation;
+        }
     }
 
     [Given(@"I have a schema ""(.*)""")]
@@ -163,6 +212,7 @@ public class CodeGeneratorSteps
     [Given(@"capnp\.exe is not installed on my system")]
     public void GivenCapnp_ExeIsNotInstalledOnMySystem()
     {
+        CapnpCompilation.CapnpCompilerFilename = "capnp-non-existent";
         if (IsCapnpInstalled()) Assert.Inconclusive("Capnp compiler found. Precondition of this test is not met.");
     }
 

@@ -108,197 +108,38 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public bool BoolField
-        {
-            get;
-            set;
-        }
-
-        public sbyte Int8Field
-        {
-            get;
-            set;
-        }
-
-        public short Int16Field
-        {
-            get;
-            set;
-        }
-
-        public int Int32Field
-        {
-            get;
-            set;
-        }
-
-        public long Int64Field
-        {
-            get;
-            set;
-        }
-
-        public byte UInt8Field
-        {
-            get;
-            set;
-        }
-
-        public ushort UInt16Field
-        {
-            get;
-            set;
-        }
-
-        public uint UInt32Field
-        {
-            get;
-            set;
-        }
-
-        public ulong UInt64Field
-        {
-            get;
-            set;
-        }
-
-        public float Float32Field
-        {
-            get;
-            set;
-        }
-
-        public double Float64Field
-        {
-            get;
-            set;
-        }
-
-        public string TextField
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<byte> DataField
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestAllTypes StructField
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestEnum EnumField
-        {
-            get;
-            set;
-        }
-
-        public int VoidList
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<bool> BoolList
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<sbyte> Int8List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<short> Int16List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<int> Int32List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<long> Int64List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<byte> UInt8List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<ushort> UInt16List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<uint> UInt32List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<ulong> UInt64List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<float> Float32List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<double> Float64List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<string> TextList
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<IReadOnlyList<byte>> DataList
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestAllTypes> StructList
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestEnum> EnumList
-        {
-            get;
-            set;
-        }
-
-        public int InterfaceList
-        {
-            get;
-            set;
-        }
+        public bool BoolField { get; set; }
+        public sbyte Int8Field { get; set; }
+        public short Int16Field { get; set; }
+        public int Int32Field { get; set; }
+        public long Int64Field { get; set; }
+        public byte UInt8Field { get; set; }
+        public ushort UInt16Field { get; set; }
+        public uint UInt32Field { get; set; }
+        public ulong UInt64Field { get; set; }
+        public float Float32Field { get; set; }
+        public double Float64Field { get; set; }
+        public string TextField { get; set; }
+        public IReadOnlyList<byte> DataField { get; set; }
+        public Capnproto_test.Capnp.Test.TestAllTypes StructField { get; set; }
+        public Capnproto_test.Capnp.Test.TestEnum EnumField { get; set; }
+        public int VoidList { get; set; }
+        public IReadOnlyList<bool> BoolList { get; set; }
+        public IReadOnlyList<sbyte> Int8List { get; set; }
+        public IReadOnlyList<short> Int16List { get; set; }
+        public IReadOnlyList<int> Int32List { get; set; }
+        public IReadOnlyList<long> Int64List { get; set; }
+        public IReadOnlyList<byte> UInt8List { get; set; }
+        public IReadOnlyList<ushort> UInt16List { get; set; }
+        public IReadOnlyList<uint> UInt32List { get; set; }
+        public IReadOnlyList<ulong> UInt64List { get; set; }
+        public IReadOnlyList<float> Float32List { get; set; }
+        public IReadOnlyList<double> Float64List { get; set; }
+        public IReadOnlyList<string> TextList { get; set; }
+        public IReadOnlyList<IReadOnlyList<byte>> DataList { get; set; }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestAllTypes> StructList { get; set; }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestEnum> EnumList { get; set; }
+        public int InterfaceList { get; set; }
 
         public struct READER
         {
@@ -370,197 +211,38 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(6, 20);
             }
 
-            public bool BoolField
-            {
-                get => this.ReadDataBool(0UL, false);
-                set => this.WriteData(0UL, value, false);
-            }
-
-            public sbyte Int8Field
-            {
-                get => this.ReadDataSByte(8UL, (sbyte)0);
-                set => this.WriteData(8UL, value, (sbyte)0);
-            }
-
-            public short Int16Field
-            {
-                get => this.ReadDataShort(16UL, (short)0);
-                set => this.WriteData(16UL, value, (short)0);
-            }
-
-            public int Int32Field
-            {
-                get => this.ReadDataInt(32UL, 0);
-                set => this.WriteData(32UL, value, 0);
-            }
-
-            public long Int64Field
-            {
-                get => this.ReadDataLong(64UL, 0L);
-                set => this.WriteData(64UL, value, 0L);
-            }
-
-            public byte UInt8Field
-            {
-                get => this.ReadDataByte(128UL, (byte)0);
-                set => this.WriteData(128UL, value, (byte)0);
-            }
-
-            public ushort UInt16Field
-            {
-                get => this.ReadDataUShort(144UL, (ushort)0);
-                set => this.WriteData(144UL, value, (ushort)0);
-            }
-
-            public uint UInt32Field
-            {
-                get => this.ReadDataUInt(160UL, 0U);
-                set => this.WriteData(160UL, value, 0U);
-            }
-
-            public ulong UInt64Field
-            {
-                get => this.ReadDataULong(192UL, 0UL);
-                set => this.WriteData(192UL, value, 0UL);
-            }
-
-            public float Float32Field
-            {
-                get => this.ReadDataFloat(256UL, 0F);
-                set => this.WriteData(256UL, value, 0F);
-            }
-
-            public double Float64Field
-            {
-                get => this.ReadDataDouble(320UL, 0);
-                set => this.WriteData(320UL, value, 0);
-            }
-
-            public string TextField
-            {
-                get => this.ReadText(0, null);
-                set => this.WriteText(0, value, null);
-            }
-
-            public ListOfPrimitivesSerializer<byte> DataField
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<byte>>(1);
-                set => Link(1, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestAllTypes.WRITER StructField
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>(2);
-                set => Link(2, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestEnum EnumField
-            {
-                get => (Capnproto_test.Capnp.Test.TestEnum)this.ReadDataUShort(288UL, (ushort)0);
-                set => this.WriteData(288UL, (ushort)value, (ushort)0);
-            }
-
-            public ListOfEmptySerializer VoidList
-            {
-                get => BuildPointer<ListOfEmptySerializer>(3);
-                set => Link(3, value);
-            }
-
-            public ListOfBitsSerializer BoolList
-            {
-                get => BuildPointer<ListOfBitsSerializer>(4);
-                set => Link(4, value);
-            }
-
-            public ListOfPrimitivesSerializer<sbyte> Int8List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<sbyte>>(5);
-                set => Link(5, value);
-            }
-
-            public ListOfPrimitivesSerializer<short> Int16List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<short>>(6);
-                set => Link(6, value);
-            }
-
-            public ListOfPrimitivesSerializer<int> Int32List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<int>>(7);
-                set => Link(7, value);
-            }
-
-            public ListOfPrimitivesSerializer<long> Int64List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<long>>(8);
-                set => Link(8, value);
-            }
-
-            public ListOfPrimitivesSerializer<byte> UInt8List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<byte>>(9);
-                set => Link(9, value);
-            }
-
-            public ListOfPrimitivesSerializer<ushort> UInt16List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<ushort>>(10);
-                set => Link(10, value);
-            }
-
-            public ListOfPrimitivesSerializer<uint> UInt32List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<uint>>(11);
-                set => Link(11, value);
-            }
-
-            public ListOfPrimitivesSerializer<ulong> UInt64List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<ulong>>(12);
-                set => Link(12, value);
-            }
-
-            public ListOfPrimitivesSerializer<float> Float32List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<float>>(13);
-                set => Link(13, value);
-            }
-
-            public ListOfPrimitivesSerializer<double> Float64List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<double>>(14);
-                set => Link(14, value);
-            }
-
-            public ListOfTextSerializer TextList
-            {
-                get => BuildPointer<ListOfTextSerializer>(15);
-                set => Link(15, value);
-            }
-
-            public ListOfPointersSerializer<ListOfPrimitivesSerializer<byte>> DataList
-            {
-                get => BuildPointer<ListOfPointersSerializer<ListOfPrimitivesSerializer<byte>>>(16);
-                set => Link(16, value);
-            }
-
-            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER> StructList
-            {
-                get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>>(17);
-                set => Link(17, value);
-            }
-
-            public ListOfPrimitivesSerializer<Capnproto_test.Capnp.Test.TestEnum> EnumList
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<Capnproto_test.Capnp.Test.TestEnum>>(18);
-                set => Link(18, value);
-            }
-
-            public ListOfEmptySerializer InterfaceList
-            {
-                get => BuildPointer<ListOfEmptySerializer>(19);
-                set => Link(19, value);
-            }
+            public bool BoolField { get => this.ReadDataBool(0UL, false); set => this.WriteData(0UL, value, false); }
+            public sbyte Int8Field { get => this.ReadDataSByte(8UL, (sbyte)0); set => this.WriteData(8UL, value, (sbyte)0); }
+            public short Int16Field { get => this.ReadDataShort(16UL, (short)0); set => this.WriteData(16UL, value, (short)0); }
+            public int Int32Field { get => this.ReadDataInt(32UL, 0); set => this.WriteData(32UL, value, 0); }
+            public long Int64Field { get => this.ReadDataLong(64UL, 0L); set => this.WriteData(64UL, value, 0L); }
+            public byte UInt8Field { get => this.ReadDataByte(128UL, (byte)0); set => this.WriteData(128UL, value, (byte)0); }
+            public ushort UInt16Field { get => this.ReadDataUShort(144UL, (ushort)0); set => this.WriteData(144UL, value, (ushort)0); }
+            public uint UInt32Field { get => this.ReadDataUInt(160UL, 0U); set => this.WriteData(160UL, value, 0U); }
+            public ulong UInt64Field { get => this.ReadDataULong(192UL, 0UL); set => this.WriteData(192UL, value, 0UL); }
+            public float Float32Field { get => this.ReadDataFloat(256UL, 0F); set => this.WriteData(256UL, value, 0F); }
+            public double Float64Field { get => this.ReadDataDouble(320UL, 0); set => this.WriteData(320UL, value, 0); }
+            public string TextField { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+            public ListOfPrimitivesSerializer<byte> DataField { get => BuildPointer<ListOfPrimitivesSerializer<byte>>(1); set => Link(1, value); }
+            public Capnproto_test.Capnp.Test.TestAllTypes.WRITER StructField { get => BuildPointer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>(2); set => Link(2, value); }
+            public Capnproto_test.Capnp.Test.TestEnum EnumField { get => (Capnproto_test.Capnp.Test.TestEnum)this.ReadDataUShort(288UL, (ushort)0); set => this.WriteData(288UL, (ushort)value, (ushort)0); }
+            public ListOfEmptySerializer VoidList { get => BuildPointer<ListOfEmptySerializer>(3); set => Link(3, value); }
+            public ListOfBitsSerializer BoolList { get => BuildPointer<ListOfBitsSerializer>(4); set => Link(4, value); }
+            public ListOfPrimitivesSerializer<sbyte> Int8List { get => BuildPointer<ListOfPrimitivesSerializer<sbyte>>(5); set => Link(5, value); }
+            public ListOfPrimitivesSerializer<short> Int16List { get => BuildPointer<ListOfPrimitivesSerializer<short>>(6); set => Link(6, value); }
+            public ListOfPrimitivesSerializer<int> Int32List { get => BuildPointer<ListOfPrimitivesSerializer<int>>(7); set => Link(7, value); }
+            public ListOfPrimitivesSerializer<long> Int64List { get => BuildPointer<ListOfPrimitivesSerializer<long>>(8); set => Link(8, value); }
+            public ListOfPrimitivesSerializer<byte> UInt8List { get => BuildPointer<ListOfPrimitivesSerializer<byte>>(9); set => Link(9, value); }
+            public ListOfPrimitivesSerializer<ushort> UInt16List { get => BuildPointer<ListOfPrimitivesSerializer<ushort>>(10); set => Link(10, value); }
+            public ListOfPrimitivesSerializer<uint> UInt32List { get => BuildPointer<ListOfPrimitivesSerializer<uint>>(11); set => Link(11, value); }
+            public ListOfPrimitivesSerializer<ulong> UInt64List { get => BuildPointer<ListOfPrimitivesSerializer<ulong>>(12); set => Link(12, value); }
+            public ListOfPrimitivesSerializer<float> Float32List { get => BuildPointer<ListOfPrimitivesSerializer<float>>(13); set => Link(13, value); }
+            public ListOfPrimitivesSerializer<double> Float64List { get => BuildPointer<ListOfPrimitivesSerializer<double>>(14); set => Link(14, value); }
+            public ListOfTextSerializer TextList { get => BuildPointer<ListOfTextSerializer>(15); set => Link(15, value); }
+            public ListOfPointersSerializer<ListOfPrimitivesSerializer<byte>> DataList { get => BuildPointer<ListOfPointersSerializer<ListOfPrimitivesSerializer<byte>>>(16); set => Link(16, value); }
+            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER> StructList { get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>>(17); set => Link(17, value); }
+            public ListOfPrimitivesSerializer<Capnproto_test.Capnp.Test.TestEnum> EnumList { get => BuildPointer<ListOfPrimitivesSerializer<Capnproto_test.Capnp.Test.TestEnum>>(18); set => Link(18, value); }
+            public ListOfEmptySerializer InterfaceList { get => BuildPointer<ListOfEmptySerializer>(19); set => Link(19, value); }
         }
     }
 
@@ -650,245 +332,848 @@ namespace Capnproto_test.Capnp.Test
         public void applyDefaults()
         {
             TextField = TextField ?? "foo";
-            DataField = DataField ?? new byte[]{98, 97, 114};
+            DataField = DataField ?? new byte[]
+            {
+                98,
+                97,
+                114
+            };
             StructField = StructField ?? new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = true, Int8Field = -12, Int16Field = 3456, Int32Field = -78901234, Int64Field = 56789012345678L, UInt8Field = 90, UInt16Field = 1234, UInt32Field = 56789012U, UInt64Field = 345678901234567890UL, Float32Field = -1.25E-10F, Float64Field = 345, TextField = "baz", DataField = new byte[]{113, 117, 120}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 0, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = "nested", DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 0, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = "really nested", DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 3, BoolList = new bool[]{false, true, false, true, true}, Int8List = new sbyte[]{12, -34, -128, 127}, Int16List = new short[]{1234, -5678, -32768, 32767}, Int32List = new int[]{12345678, -90123456, -2147483648, 2147483647}, Int64List = new long[]{123456789012345L, -678901234567890L, -9223372036854775808L, 9223372036854775807L}, UInt8List = new byte[]{12, 34, 0, 255}, UInt16List = new ushort[]{1234, 5678, 0, 65535}, UInt32List = new uint[]{12345678U, 90123456U, 0U, 4294967295U}, UInt64List = new ulong[]{123456789012345UL, 678901234567890UL, 0UL, 18446744073709551615UL}, Float32List = new float[]{0F, 1234567F, 1E+37F, -1E+37F, 1E-37F, -1E-37F}, Float64List = new double[]{0, 123456789012345, 1E+306, -1E+306, 1E-306, -1E-306}, TextList = new string[]{"quux", "corge", "grault"}, DataList = new IReadOnlyList<byte>[]{new byte[]{103, 97, 114, 112, 108, 121}, new byte[]{119, 97, 108, 100, 111}, new byte[]{102, 114, 101, 100}}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 0, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = "x structlist 1", DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 0, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = "x structlist 2", DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 0, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = "x structlist 3", DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{Capnproto_test.Capnp.Test.TestEnum.qux, Capnproto_test.Capnp.Test.TestEnum.bar, Capnproto_test.Capnp.Test.TestEnum.grault}, InterfaceList = 0};
-            BoolList = BoolList ?? new bool[]{true, false, false, true};
-            Int8List = Int8List ?? new sbyte[]{111, -111};
-            Int16List = Int16List ?? new short[]{11111, -11111};
-            Int32List = Int32List ?? new int[]{111111111, -111111111};
-            Int64List = Int64List ?? new long[]{1111111111111111111L, -1111111111111111111L};
-            UInt8List = UInt8List ?? new byte[]{111, 222};
-            UInt16List = UInt16List ?? new ushort[]{33333, 44444};
-            UInt32List = UInt32List ?? new uint[]{3333333333U};
-            UInt64List = UInt64List ?? new ulong[]{11111111111111111111UL};
-            Float32List = Float32List ?? new float[]{5555.5F, float.PositiveInfinity, float.NegativeInfinity, float.NaN};
-            Float64List = Float64List ?? new double[]{7777.75, double.PositiveInfinity, double.NegativeInfinity, double.NaN};
-            TextList = TextList ?? new string[]{"plugh", "xyzzy", "thud"};
-            DataList = DataList ?? new IReadOnlyList<byte>[]{new byte[]{111, 111, 112, 115}, new byte[]{101, 120, 104, 97, 117, 115, 116, 101, 100}, new byte[]{114, 102, 99, 51, 48, 57, 50}};
-            StructList = StructList ?? new Capnproto_test.Capnp.Test.TestAllTypes[]{new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 0, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = "structlist 1", DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 0, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = "structlist 2", DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 0, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = "structlist 3", DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}};
-            EnumList = EnumList ?? new Capnproto_test.Capnp.Test.TestEnum[]{Capnproto_test.Capnp.Test.TestEnum.foo, Capnproto_test.Capnp.Test.TestEnum.garply};
+            {
+                BoolField = true,
+                Int8Field = -12,
+                Int16Field = 3456,
+                Int32Field = -78901234,
+                Int64Field = 56789012345678L,
+                UInt8Field = 90,
+                UInt16Field = 1234,
+                UInt32Field = 56789012U,
+                UInt64Field = 345678901234567890UL,
+                Float32Field = -1.25E-10F,
+                Float64Field = 345,
+                TextField = "baz",
+                DataField = new byte[]
+                {
+                    113,
+                    117,
+                    120
+                },
+                StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                {
+                    BoolField = false,
+                    Int8Field = 0,
+                    Int16Field = 0,
+                    Int32Field = 0,
+                    Int64Field = 0L,
+                    UInt8Field = 0,
+                    UInt16Field = 0,
+                    UInt32Field = 0U,
+                    UInt64Field = 0UL,
+                    Float32Field = 0F,
+                    Float64Field = 0,
+                    TextField = "nested",
+                    DataField = new byte[]
+                    {
+                    },
+                    StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                        BoolField = false,
+                        Int8Field = 0,
+                        Int16Field = 0,
+                        Int32Field = 0,
+                        Int64Field = 0L,
+                        UInt8Field = 0,
+                        UInt16Field = 0,
+                        UInt32Field = 0U,
+                        UInt64Field = 0UL,
+                        Float32Field = 0F,
+                        Float64Field = 0,
+                        TextField = "really nested",
+                        DataField = new byte[]
+                        {
+                        },
+                        StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                        },
+                        EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                        VoidList = 0,
+                        BoolList = new bool[]
+                        {
+                        },
+                        Int8List = new sbyte[]
+                        {
+                        },
+                        Int16List = new short[]
+                        {
+                        },
+                        Int32List = new int[]
+                        {
+                        },
+                        Int64List = new long[]
+                        {
+                        },
+                        UInt8List = new byte[]
+                        {
+                        },
+                        UInt16List = new ushort[]
+                        {
+                        },
+                        UInt32List = new uint[]
+                        {
+                        },
+                        UInt64List = new ulong[]
+                        {
+                        },
+                        Float32List = new float[]
+                        {
+                        },
+                        Float64List = new double[]
+                        {
+                        },
+                        TextList = new string[]
+                        {
+                        },
+                        DataList = new IReadOnlyList<byte>[]
+                        {
+                        },
+                        StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                        {
+                        },
+                        EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                        {
+                        },
+                        InterfaceList = 0
+                    },
+                    EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                    VoidList = 0,
+                    BoolList = new bool[]
+                    {
+                    },
+                    Int8List = new sbyte[]
+                    {
+                    },
+                    Int16List = new short[]
+                    {
+                    },
+                    Int32List = new int[]
+                    {
+                    },
+                    Int64List = new long[]
+                    {
+                    },
+                    UInt8List = new byte[]
+                    {
+                    },
+                    UInt16List = new ushort[]
+                    {
+                    },
+                    UInt32List = new uint[]
+                    {
+                    },
+                    UInt64List = new ulong[]
+                    {
+                    },
+                    Float32List = new float[]
+                    {
+                    },
+                    Float64List = new double[]
+                    {
+                    },
+                    TextList = new string[]
+                    {
+                    },
+                    DataList = new IReadOnlyList<byte>[]
+                    {
+                    },
+                    StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                    {
+                    },
+                    EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                    {
+                    },
+                    InterfaceList = 0
+                },
+                EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                VoidList = 3,
+                BoolList = new bool[]
+                {
+                    false,
+                    true,
+                    false,
+                    true,
+                    true
+                },
+                Int8List = new sbyte[]
+                {
+                    12,
+                    -34,
+                    -128,
+                    127
+                },
+                Int16List = new short[]
+                {
+                    1234,
+                    -5678,
+                    -32768,
+                    32767
+                },
+                Int32List = new int[]
+                {
+                    12345678,
+                    -90123456,
+                    -2147483648,
+                    2147483647
+                },
+                Int64List = new long[]
+                {
+                    123456789012345L,
+                    -678901234567890L,
+                    -9223372036854775808L,
+                    9223372036854775807L
+                },
+                UInt8List = new byte[]
+                {
+                    12,
+                    34,
+                    0,
+                    255
+                },
+                UInt16List = new ushort[]
+                {
+                    1234,
+                    5678,
+                    0,
+                    65535
+                },
+                UInt32List = new uint[]
+                {
+                    12345678U,
+                    90123456U,
+                    0U,
+                    4294967295U
+                },
+                UInt64List = new ulong[]
+                {
+                    123456789012345UL,
+                    678901234567890UL,
+                    0UL,
+                    18446744073709551615UL
+                },
+                Float32List = new float[]
+                {
+                    0F,
+                    1234567F,
+                    1E+37F,
+                    -1E+37F,
+                    1E-37F,
+                    -1E-37F
+                },
+                Float64List = new double[]
+                {
+                    0,
+                    123456789012345,
+                    1E+306,
+                    -1E+306,
+                    1E-306,
+                    -1E-306
+                },
+                TextList = new string[]
+                {
+                    "quux",
+                    "corge",
+                    "grault"
+                },
+                DataList = new IReadOnlyList<byte>[]
+                {
+                    new byte[]
+                    {
+                        103,
+                        97,
+                        114,
+                        112,
+                        108,
+                        121
+                    },
+                    new byte[]
+                    {
+                        119,
+                        97,
+                        108,
+                        100,
+                        111
+                    },
+                    new byte[]
+                    {
+                        102,
+                        114,
+                        101,
+                        100
+                    }
+                },
+                StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                {
+                    new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                        BoolField = false,
+                        Int8Field = 0,
+                        Int16Field = 0,
+                        Int32Field = 0,
+                        Int64Field = 0L,
+                        UInt8Field = 0,
+                        UInt16Field = 0,
+                        UInt32Field = 0U,
+                        UInt64Field = 0UL,
+                        Float32Field = 0F,
+                        Float64Field = 0,
+                        TextField = "x structlist 1",
+                        DataField = new byte[]
+                        {
+                        },
+                        StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                        },
+                        EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                        VoidList = 0,
+                        BoolList = new bool[]
+                        {
+                        },
+                        Int8List = new sbyte[]
+                        {
+                        },
+                        Int16List = new short[]
+                        {
+                        },
+                        Int32List = new int[]
+                        {
+                        },
+                        Int64List = new long[]
+                        {
+                        },
+                        UInt8List = new byte[]
+                        {
+                        },
+                        UInt16List = new ushort[]
+                        {
+                        },
+                        UInt32List = new uint[]
+                        {
+                        },
+                        UInt64List = new ulong[]
+                        {
+                        },
+                        Float32List = new float[]
+                        {
+                        },
+                        Float64List = new double[]
+                        {
+                        },
+                        TextList = new string[]
+                        {
+                        },
+                        DataList = new IReadOnlyList<byte>[]
+                        {
+                        },
+                        StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                        {
+                        },
+                        EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                        {
+                        },
+                        InterfaceList = 0
+                    },
+                    new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                        BoolField = false,
+                        Int8Field = 0,
+                        Int16Field = 0,
+                        Int32Field = 0,
+                        Int64Field = 0L,
+                        UInt8Field = 0,
+                        UInt16Field = 0,
+                        UInt32Field = 0U,
+                        UInt64Field = 0UL,
+                        Float32Field = 0F,
+                        Float64Field = 0,
+                        TextField = "x structlist 2",
+                        DataField = new byte[]
+                        {
+                        },
+                        StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                        },
+                        EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                        VoidList = 0,
+                        BoolList = new bool[]
+                        {
+                        },
+                        Int8List = new sbyte[]
+                        {
+                        },
+                        Int16List = new short[]
+                        {
+                        },
+                        Int32List = new int[]
+                        {
+                        },
+                        Int64List = new long[]
+                        {
+                        },
+                        UInt8List = new byte[]
+                        {
+                        },
+                        UInt16List = new ushort[]
+                        {
+                        },
+                        UInt32List = new uint[]
+                        {
+                        },
+                        UInt64List = new ulong[]
+                        {
+                        },
+                        Float32List = new float[]
+                        {
+                        },
+                        Float64List = new double[]
+                        {
+                        },
+                        TextList = new string[]
+                        {
+                        },
+                        DataList = new IReadOnlyList<byte>[]
+                        {
+                        },
+                        StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                        {
+                        },
+                        EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                        {
+                        },
+                        InterfaceList = 0
+                    },
+                    new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                        BoolField = false,
+                        Int8Field = 0,
+                        Int16Field = 0,
+                        Int32Field = 0,
+                        Int64Field = 0L,
+                        UInt8Field = 0,
+                        UInt16Field = 0,
+                        UInt32Field = 0U,
+                        UInt64Field = 0UL,
+                        Float32Field = 0F,
+                        Float64Field = 0,
+                        TextField = "x structlist 3",
+                        DataField = new byte[]
+                        {
+                        },
+                        StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                        },
+                        EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                        VoidList = 0,
+                        BoolList = new bool[]
+                        {
+                        },
+                        Int8List = new sbyte[]
+                        {
+                        },
+                        Int16List = new short[]
+                        {
+                        },
+                        Int32List = new int[]
+                        {
+                        },
+                        Int64List = new long[]
+                        {
+                        },
+                        UInt8List = new byte[]
+                        {
+                        },
+                        UInt16List = new ushort[]
+                        {
+                        },
+                        UInt32List = new uint[]
+                        {
+                        },
+                        UInt64List = new ulong[]
+                        {
+                        },
+                        Float32List = new float[]
+                        {
+                        },
+                        Float64List = new double[]
+                        {
+                        },
+                        TextList = new string[]
+                        {
+                        },
+                        DataList = new IReadOnlyList<byte>[]
+                        {
+                        },
+                        StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                        {
+                        },
+                        EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                        {
+                        },
+                        InterfaceList = 0
+                    }
+                },
+                EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                {
+                    Capnproto_test.Capnp.Test.TestEnum.qux,
+                    Capnproto_test.Capnp.Test.TestEnum.bar,
+                    Capnproto_test.Capnp.Test.TestEnum.grault
+                },
+                InterfaceList = 0
+            };
+            BoolList = BoolList ?? new bool[]
+            {
+                true,
+                false,
+                false,
+                true
+            };
+            Int8List = Int8List ?? new sbyte[]
+            {
+                111,
+                -111
+            };
+            Int16List = Int16List ?? new short[]
+            {
+                11111,
+                -11111
+            };
+            Int32List = Int32List ?? new int[]
+            {
+                111111111,
+                -111111111
+            };
+            Int64List = Int64List ?? new long[]
+            {
+                1111111111111111111L,
+                -1111111111111111111L
+            };
+            UInt8List = UInt8List ?? new byte[]
+            {
+                111,
+                222
+            };
+            UInt16List = UInt16List ?? new ushort[]
+            {
+                33333,
+                44444
+            };
+            UInt32List = UInt32List ?? new uint[]
+            {
+                3333333333U
+            };
+            UInt64List = UInt64List ?? new ulong[]
+            {
+                11111111111111111111UL
+            };
+            Float32List = Float32List ?? new float[]
+            {
+                5555.5F,
+                float.PositiveInfinity,
+                float.NegativeInfinity,
+                float.NaN
+            };
+            Float64List = Float64List ?? new double[]
+            {
+                7777.75,
+                double.PositiveInfinity,
+                double.NegativeInfinity,
+                double.NaN
+            };
+            TextList = TextList ?? new string[]
+            {
+                "plugh",
+                "xyzzy",
+                "thud"
+            };
+            DataList = DataList ?? new IReadOnlyList<byte>[]
+            {
+                new byte[]
+                {
+                    111,
+                    111,
+                    112,
+                    115
+                },
+                new byte[]
+                {
+                    101,
+                    120,
+                    104,
+                    97,
+                    117,
+                    115,
+                    116,
+                    101,
+                    100
+                },
+                new byte[]
+                {
+                    114,
+                    102,
+                    99,
+                    51,
+                    48,
+                    57,
+                    50
+                }
+            };
+            StructList = StructList ?? new Capnproto_test.Capnp.Test.TestAllTypes[]
+            {
+                new Capnproto_test.Capnp.Test.TestAllTypes()
+                {
+                    BoolField = false,
+                    Int8Field = 0,
+                    Int16Field = 0,
+                    Int32Field = 0,
+                    Int64Field = 0L,
+                    UInt8Field = 0,
+                    UInt16Field = 0,
+                    UInt32Field = 0U,
+                    UInt64Field = 0UL,
+                    Float32Field = 0F,
+                    Float64Field = 0,
+                    TextField = "structlist 1",
+                    DataField = new byte[]
+                    {
+                    },
+                    StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                    },
+                    EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                    VoidList = 0,
+                    BoolList = new bool[]
+                    {
+                    },
+                    Int8List = new sbyte[]
+                    {
+                    },
+                    Int16List = new short[]
+                    {
+                    },
+                    Int32List = new int[]
+                    {
+                    },
+                    Int64List = new long[]
+                    {
+                    },
+                    UInt8List = new byte[]
+                    {
+                    },
+                    UInt16List = new ushort[]
+                    {
+                    },
+                    UInt32List = new uint[]
+                    {
+                    },
+                    UInt64List = new ulong[]
+                    {
+                    },
+                    Float32List = new float[]
+                    {
+                    },
+                    Float64List = new double[]
+                    {
+                    },
+                    TextList = new string[]
+                    {
+                    },
+                    DataList = new IReadOnlyList<byte>[]
+                    {
+                    },
+                    StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                    {
+                    },
+                    EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                    {
+                    },
+                    InterfaceList = 0
+                },
+                new Capnproto_test.Capnp.Test.TestAllTypes()
+                {
+                    BoolField = false,
+                    Int8Field = 0,
+                    Int16Field = 0,
+                    Int32Field = 0,
+                    Int64Field = 0L,
+                    UInt8Field = 0,
+                    UInt16Field = 0,
+                    UInt32Field = 0U,
+                    UInt64Field = 0UL,
+                    Float32Field = 0F,
+                    Float64Field = 0,
+                    TextField = "structlist 2",
+                    DataField = new byte[]
+                    {
+                    },
+                    StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                    },
+                    EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                    VoidList = 0,
+                    BoolList = new bool[]
+                    {
+                    },
+                    Int8List = new sbyte[]
+                    {
+                    },
+                    Int16List = new short[]
+                    {
+                    },
+                    Int32List = new int[]
+                    {
+                    },
+                    Int64List = new long[]
+                    {
+                    },
+                    UInt8List = new byte[]
+                    {
+                    },
+                    UInt16List = new ushort[]
+                    {
+                    },
+                    UInt32List = new uint[]
+                    {
+                    },
+                    UInt64List = new ulong[]
+                    {
+                    },
+                    Float32List = new float[]
+                    {
+                    },
+                    Float64List = new double[]
+                    {
+                    },
+                    TextList = new string[]
+                    {
+                    },
+                    DataList = new IReadOnlyList<byte>[]
+                    {
+                    },
+                    StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                    {
+                    },
+                    EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                    {
+                    },
+                    InterfaceList = 0
+                },
+                new Capnproto_test.Capnp.Test.TestAllTypes()
+                {
+                    BoolField = false,
+                    Int8Field = 0,
+                    Int16Field = 0,
+                    Int32Field = 0,
+                    Int64Field = 0L,
+                    UInt8Field = 0,
+                    UInt16Field = 0,
+                    UInt32Field = 0U,
+                    UInt64Field = 0UL,
+                    Float32Field = 0F,
+                    Float64Field = 0,
+                    TextField = "structlist 3",
+                    DataField = new byte[]
+                    {
+                    },
+                    StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                    },
+                    EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                    VoidList = 0,
+                    BoolList = new bool[]
+                    {
+                    },
+                    Int8List = new sbyte[]
+                    {
+                    },
+                    Int16List = new short[]
+                    {
+                    },
+                    Int32List = new int[]
+                    {
+                    },
+                    Int64List = new long[]
+                    {
+                    },
+                    UInt8List = new byte[]
+                    {
+                    },
+                    UInt16List = new ushort[]
+                    {
+                    },
+                    UInt32List = new uint[]
+                    {
+                    },
+                    UInt64List = new ulong[]
+                    {
+                    },
+                    Float32List = new float[]
+                    {
+                    },
+                    Float64List = new double[]
+                    {
+                    },
+                    TextList = new string[]
+                    {
+                    },
+                    DataList = new IReadOnlyList<byte>[]
+                    {
+                    },
+                    StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                    {
+                    },
+                    EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                    {
+                    },
+                    InterfaceList = 0
+                }
+            };
+            EnumList = EnumList ?? new Capnproto_test.Capnp.Test.TestEnum[]
+            {
+                Capnproto_test.Capnp.Test.TestEnum.foo,
+                Capnproto_test.Capnp.Test.TestEnum.garply
+            };
         }
 
-        public bool BoolField
-        {
-            get;
-            set;
-        }
-
-        = true;
-        public sbyte Int8Field
-        {
-            get;
-            set;
-        }
-
-        = -123;
-        public short Int16Field
-        {
-            get;
-            set;
-        }
-
-        = -12345;
-        public int Int32Field
-        {
-            get;
-            set;
-        }
-
-        = -12345678;
-        public long Int64Field
-        {
-            get;
-            set;
-        }
-
-        = -123456789012345L;
-        public byte UInt8Field
-        {
-            get;
-            set;
-        }
-
-        = 234;
-        public ushort UInt16Field
-        {
-            get;
-            set;
-        }
-
-        = 45678;
-        public uint UInt32Field
-        {
-            get;
-            set;
-        }
-
-        = 3456789012U;
-        public ulong UInt64Field
-        {
-            get;
-            set;
-        }
-
-        = 12345678901234567890UL;
-        public float Float32Field
-        {
-            get;
-            set;
-        }
-
-        = 1234.5F;
-        public double Float64Field
-        {
-            get;
-            set;
-        }
-
-        = -1.23E+47;
-        public string TextField
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<byte> DataField
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestAllTypes StructField
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestEnum EnumField
-        {
-            get;
-            set;
-        }
-
-        = Capnproto_test.Capnp.Test.TestEnum.corge;
-        public int VoidList
-        {
-            get;
-            set;
-        }
-
-        = 6;
-        public IReadOnlyList<bool> BoolList
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<sbyte> Int8List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<short> Int16List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<int> Int32List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<long> Int64List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<byte> UInt8List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<ushort> UInt16List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<uint> UInt32List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<ulong> UInt64List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<float> Float32List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<double> Float64List
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<string> TextList
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<IReadOnlyList<byte>> DataList
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestAllTypes> StructList
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestEnum> EnumList
-        {
-            get;
-            set;
-        }
-
-        public int InterfaceList
-        {
-            get;
-            set;
-        }
+        public bool BoolField { get; set; } = true;
+        public sbyte Int8Field { get; set; } = -123;
+        public short Int16Field { get; set; } = -12345;
+        public int Int32Field { get; set; } = -12345678;
+        public long Int64Field { get; set; } = -123456789012345L;
+        public byte UInt8Field { get; set; } = 234;
+        public ushort UInt16Field { get; set; } = 45678;
+        public uint UInt32Field { get; set; } = 3456789012U;
+        public ulong UInt64Field { get; set; } = 12345678901234567890UL;
+        public float Float32Field { get; set; } = 1234.5F;
+        public double Float64Field { get; set; } = -1.23E+47;
+        public string TextField { get; set; }
+        public IReadOnlyList<byte> DataField { get; set; }
+        public Capnproto_test.Capnp.Test.TestAllTypes StructField { get; set; }
+        public Capnproto_test.Capnp.Test.TestEnum EnumField { get; set; } = Capnproto_test.Capnp.Test.TestEnum.corge;
+        public int VoidList { get; set; } = 6;
+        public IReadOnlyList<bool> BoolList { get; set; }
+        public IReadOnlyList<sbyte> Int8List { get; set; }
+        public IReadOnlyList<short> Int16List { get; set; }
+        public IReadOnlyList<int> Int32List { get; set; }
+        public IReadOnlyList<long> Int64List { get; set; }
+        public IReadOnlyList<byte> UInt8List { get; set; }
+        public IReadOnlyList<ushort> UInt16List { get; set; }
+        public IReadOnlyList<uint> UInt32List { get; set; }
+        public IReadOnlyList<ulong> UInt64List { get; set; }
+        public IReadOnlyList<float> Float32List { get; set; }
+        public IReadOnlyList<double> Float64List { get; set; }
+        public IReadOnlyList<string> TextList { get; set; }
+        public IReadOnlyList<IReadOnlyList<byte>> DataList { get; set; }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestAllTypes> StructList { get; set; }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestEnum> EnumList { get; set; }
+        public int InterfaceList { get; set; }
 
         public struct READER
         {
@@ -960,197 +1245,38 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(6, 20);
             }
 
-            public bool BoolField
-            {
-                get => this.ReadDataBool(0UL, true);
-                set => this.WriteData(0UL, value, true);
-            }
-
-            public sbyte Int8Field
-            {
-                get => this.ReadDataSByte(8UL, (sbyte)-123);
-                set => this.WriteData(8UL, value, (sbyte)-123);
-            }
-
-            public short Int16Field
-            {
-                get => this.ReadDataShort(16UL, (short)-12345);
-                set => this.WriteData(16UL, value, (short)-12345);
-            }
-
-            public int Int32Field
-            {
-                get => this.ReadDataInt(32UL, -12345678);
-                set => this.WriteData(32UL, value, -12345678);
-            }
-
-            public long Int64Field
-            {
-                get => this.ReadDataLong(64UL, -123456789012345L);
-                set => this.WriteData(64UL, value, -123456789012345L);
-            }
-
-            public byte UInt8Field
-            {
-                get => this.ReadDataByte(128UL, (byte)234);
-                set => this.WriteData(128UL, value, (byte)234);
-            }
-
-            public ushort UInt16Field
-            {
-                get => this.ReadDataUShort(144UL, (ushort)45678);
-                set => this.WriteData(144UL, value, (ushort)45678);
-            }
-
-            public uint UInt32Field
-            {
-                get => this.ReadDataUInt(160UL, 3456789012U);
-                set => this.WriteData(160UL, value, 3456789012U);
-            }
-
-            public ulong UInt64Field
-            {
-                get => this.ReadDataULong(192UL, 12345678901234567890UL);
-                set => this.WriteData(192UL, value, 12345678901234567890UL);
-            }
-
-            public float Float32Field
-            {
-                get => this.ReadDataFloat(256UL, 1234.5F);
-                set => this.WriteData(256UL, value, 1234.5F);
-            }
-
-            public double Float64Field
-            {
-                get => this.ReadDataDouble(320UL, -1.23E+47);
-                set => this.WriteData(320UL, value, -1.23E+47);
-            }
-
-            public string TextField
-            {
-                get => this.ReadText(0, "foo");
-                set => this.WriteText(0, value, "foo");
-            }
-
-            public ListOfPrimitivesSerializer<byte> DataField
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<byte>>(1);
-                set => Link(1, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestAllTypes.WRITER StructField
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>(2);
-                set => Link(2, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestEnum EnumField
-            {
-                get => (Capnproto_test.Capnp.Test.TestEnum)this.ReadDataUShort(288UL, (ushort)5);
-                set => this.WriteData(288UL, (ushort)value, (ushort)5);
-            }
-
-            public ListOfEmptySerializer VoidList
-            {
-                get => BuildPointer<ListOfEmptySerializer>(3);
-                set => Link(3, value);
-            }
-
-            public ListOfBitsSerializer BoolList
-            {
-                get => BuildPointer<ListOfBitsSerializer>(4);
-                set => Link(4, value);
-            }
-
-            public ListOfPrimitivesSerializer<sbyte> Int8List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<sbyte>>(5);
-                set => Link(5, value);
-            }
-
-            public ListOfPrimitivesSerializer<short> Int16List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<short>>(6);
-                set => Link(6, value);
-            }
-
-            public ListOfPrimitivesSerializer<int> Int32List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<int>>(7);
-                set => Link(7, value);
-            }
-
-            public ListOfPrimitivesSerializer<long> Int64List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<long>>(8);
-                set => Link(8, value);
-            }
-
-            public ListOfPrimitivesSerializer<byte> UInt8List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<byte>>(9);
-                set => Link(9, value);
-            }
-
-            public ListOfPrimitivesSerializer<ushort> UInt16List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<ushort>>(10);
-                set => Link(10, value);
-            }
-
-            public ListOfPrimitivesSerializer<uint> UInt32List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<uint>>(11);
-                set => Link(11, value);
-            }
-
-            public ListOfPrimitivesSerializer<ulong> UInt64List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<ulong>>(12);
-                set => Link(12, value);
-            }
-
-            public ListOfPrimitivesSerializer<float> Float32List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<float>>(13);
-                set => Link(13, value);
-            }
-
-            public ListOfPrimitivesSerializer<double> Float64List
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<double>>(14);
-                set => Link(14, value);
-            }
-
-            public ListOfTextSerializer TextList
-            {
-                get => BuildPointer<ListOfTextSerializer>(15);
-                set => Link(15, value);
-            }
-
-            public ListOfPointersSerializer<ListOfPrimitivesSerializer<byte>> DataList
-            {
-                get => BuildPointer<ListOfPointersSerializer<ListOfPrimitivesSerializer<byte>>>(16);
-                set => Link(16, value);
-            }
-
-            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER> StructList
-            {
-                get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>>(17);
-                set => Link(17, value);
-            }
-
-            public ListOfPrimitivesSerializer<Capnproto_test.Capnp.Test.TestEnum> EnumList
-            {
-                get => BuildPointer<ListOfPrimitivesSerializer<Capnproto_test.Capnp.Test.TestEnum>>(18);
-                set => Link(18, value);
-            }
-
-            public ListOfEmptySerializer InterfaceList
-            {
-                get => BuildPointer<ListOfEmptySerializer>(19);
-                set => Link(19, value);
-            }
+            public bool BoolField { get => this.ReadDataBool(0UL, true); set => this.WriteData(0UL, value, true); }
+            public sbyte Int8Field { get => this.ReadDataSByte(8UL, (sbyte)-123); set => this.WriteData(8UL, value, (sbyte)-123); }
+            public short Int16Field { get => this.ReadDataShort(16UL, (short)-12345); set => this.WriteData(16UL, value, (short)-12345); }
+            public int Int32Field { get => this.ReadDataInt(32UL, -12345678); set => this.WriteData(32UL, value, -12345678); }
+            public long Int64Field { get => this.ReadDataLong(64UL, -123456789012345L); set => this.WriteData(64UL, value, -123456789012345L); }
+            public byte UInt8Field { get => this.ReadDataByte(128UL, (byte)234); set => this.WriteData(128UL, value, (byte)234); }
+            public ushort UInt16Field { get => this.ReadDataUShort(144UL, (ushort)45678); set => this.WriteData(144UL, value, (ushort)45678); }
+            public uint UInt32Field { get => this.ReadDataUInt(160UL, 3456789012U); set => this.WriteData(160UL, value, 3456789012U); }
+            public ulong UInt64Field { get => this.ReadDataULong(192UL, 12345678901234567890UL); set => this.WriteData(192UL, value, 12345678901234567890UL); }
+            public float Float32Field { get => this.ReadDataFloat(256UL, 1234.5F); set => this.WriteData(256UL, value, 1234.5F); }
+            public double Float64Field { get => this.ReadDataDouble(320UL, -1.23E+47); set => this.WriteData(320UL, value, -1.23E+47); }
+            public string TextField { get => this.ReadText(0, "foo"); set => this.WriteText(0, value, "foo"); }
+            public ListOfPrimitivesSerializer<byte> DataField { get => BuildPointer<ListOfPrimitivesSerializer<byte>>(1); set => Link(1, value); }
+            public Capnproto_test.Capnp.Test.TestAllTypes.WRITER StructField { get => BuildPointer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>(2); set => Link(2, value); }
+            public Capnproto_test.Capnp.Test.TestEnum EnumField { get => (Capnproto_test.Capnp.Test.TestEnum)this.ReadDataUShort(288UL, (ushort)5); set => this.WriteData(288UL, (ushort)value, (ushort)5); }
+            public ListOfEmptySerializer VoidList { get => BuildPointer<ListOfEmptySerializer>(3); set => Link(3, value); }
+            public ListOfBitsSerializer BoolList { get => BuildPointer<ListOfBitsSerializer>(4); set => Link(4, value); }
+            public ListOfPrimitivesSerializer<sbyte> Int8List { get => BuildPointer<ListOfPrimitivesSerializer<sbyte>>(5); set => Link(5, value); }
+            public ListOfPrimitivesSerializer<short> Int16List { get => BuildPointer<ListOfPrimitivesSerializer<short>>(6); set => Link(6, value); }
+            public ListOfPrimitivesSerializer<int> Int32List { get => BuildPointer<ListOfPrimitivesSerializer<int>>(7); set => Link(7, value); }
+            public ListOfPrimitivesSerializer<long> Int64List { get => BuildPointer<ListOfPrimitivesSerializer<long>>(8); set => Link(8, value); }
+            public ListOfPrimitivesSerializer<byte> UInt8List { get => BuildPointer<ListOfPrimitivesSerializer<byte>>(9); set => Link(9, value); }
+            public ListOfPrimitivesSerializer<ushort> UInt16List { get => BuildPointer<ListOfPrimitivesSerializer<ushort>>(10); set => Link(10, value); }
+            public ListOfPrimitivesSerializer<uint> UInt32List { get => BuildPointer<ListOfPrimitivesSerializer<uint>>(11); set => Link(11, value); }
+            public ListOfPrimitivesSerializer<ulong> UInt64List { get => BuildPointer<ListOfPrimitivesSerializer<ulong>>(12); set => Link(12, value); }
+            public ListOfPrimitivesSerializer<float> Float32List { get => BuildPointer<ListOfPrimitivesSerializer<float>>(13); set => Link(13, value); }
+            public ListOfPrimitivesSerializer<double> Float64List { get => BuildPointer<ListOfPrimitivesSerializer<double>>(14); set => Link(14, value); }
+            public ListOfTextSerializer TextList { get => BuildPointer<ListOfTextSerializer>(15); set => Link(15, value); }
+            public ListOfPointersSerializer<ListOfPrimitivesSerializer<byte>> DataList { get => BuildPointer<ListOfPointersSerializer<ListOfPrimitivesSerializer<byte>>>(16); set => Link(16, value); }
+            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER> StructList { get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>>(17); set => Link(17, value); }
+            public ListOfPrimitivesSerializer<Capnproto_test.Capnp.Test.TestEnum> EnumList { get => BuildPointer<ListOfPrimitivesSerializer<Capnproto_test.Capnp.Test.TestEnum>>(18); set => Link(18, value); }
+            public ListOfEmptySerializer InterfaceList { get => BuildPointer<ListOfEmptySerializer>(19); set => Link(19, value); }
         }
     }
 
@@ -1179,11 +1305,7 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public object AnyPointerField
-        {
-            get;
-            set;
-        }
+        public object AnyPointerField { get; set; }
 
         public struct READER
         {
@@ -1206,11 +1328,7 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 1);
             }
 
-            public DynamicSerializerState AnyPointerField
-            {
-                get => BuildPointer<DynamicSerializerState>(0);
-                set => Link(0, value);
-            }
+            public DynamicSerializerState AnyPointerField { get => BuildPointer<DynamicSerializerState>(0); set => Link(0, value); }
         }
     }
 
@@ -1243,23 +1361,9 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public object AnyStructField
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<object> AnyListField
-        {
-            get;
-            set;
-        }
-
-        public BareProxy CapabilityField
-        {
-            get;
-            set;
-        }
+        public object AnyStructField { get; set; }
+        public IReadOnlyList<object> AnyListField { get; set; }
+        public BareProxy CapabilityField { get; set; }
 
         public struct READER
         {
@@ -1284,23 +1388,9 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 3);
             }
 
-            public DynamicSerializerState AnyStructField
-            {
-                get => BuildPointer<DynamicSerializerState>(0);
-                set => Link(0, value);
-            }
-
-            public DynamicSerializerState AnyListField
-            {
-                get => BuildPointer<DynamicSerializerState>(1);
-                set => Link(1, value);
-            }
-
-            public BareProxy CapabilityField
-            {
-                get => ReadCap<BareProxy>(2);
-                set => LinkObject(2, value);
-            }
+            public DynamicSerializerState AnyStructField { get => BuildPointer<DynamicSerializerState>(0); set => Link(0, value); }
+            public DynamicSerializerState AnyListField { get => BuildPointer<DynamicSerializerState>(1); set => Link(1, value); }
+            public BareProxy CapabilityField { get => ReadCap<BareProxy>(2); set => LinkObject(2, value); }
         }
     }
 
@@ -1345,59 +1435,15 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public string Qux
-        {
-            get;
-            set;
-        }
-
-        public string Grault
-        {
-            get;
-            set;
-        }
-
-        public string Bar
-        {
-            get;
-            set;
-        }
-
-        public string Foo
-        {
-            get;
-            set;
-        }
-
-        public string Corge
-        {
-            get;
-            set;
-        }
-
-        public string Waldo
-        {
-            get;
-            set;
-        }
-
-        public string Quux
-        {
-            get;
-            set;
-        }
-
-        public string Garply
-        {
-            get;
-            set;
-        }
-
-        public string Baz
-        {
-            get;
-            set;
-        }
+        public string Qux { get; set; }
+        public string Grault { get; set; }
+        public string Bar { get; set; }
+        public string Foo { get; set; }
+        public string Corge { get; set; }
+        public string Waldo { get; set; }
+        public string Quux { get; set; }
+        public string Garply { get; set; }
+        public string Baz { get; set; }
 
         public struct READER
         {
@@ -1428,59 +1474,15 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 9);
             }
 
-            public string Qux
-            {
-                get => this.ReadText(0, null);
-                set => this.WriteText(0, value, null);
-            }
-
-            public string Grault
-            {
-                get => this.ReadText(1, null);
-                set => this.WriteText(1, value, null);
-            }
-
-            public string Bar
-            {
-                get => this.ReadText(2, null);
-                set => this.WriteText(2, value, null);
-            }
-
-            public string Foo
-            {
-                get => this.ReadText(3, null);
-                set => this.WriteText(3, value, null);
-            }
-
-            public string Corge
-            {
-                get => this.ReadText(4, null);
-                set => this.WriteText(4, value, null);
-            }
-
-            public string Waldo
-            {
-                get => this.ReadText(5, null);
-                set => this.WriteText(5, value, null);
-            }
-
-            public string Quux
-            {
-                get => this.ReadText(6, null);
-                set => this.WriteText(6, value, null);
-            }
-
-            public string Garply
-            {
-                get => this.ReadText(7, null);
-                set => this.WriteText(7, value, null);
-            }
-
-            public string Baz
-            {
-                get => this.ReadText(8, null);
-                set => this.WriteText(8, value, null);
-            }
+            public string Qux { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+            public string Grault { get => this.ReadText(1, null); set => this.WriteText(1, value, null); }
+            public string Bar { get => this.ReadText(2, null); set => this.WriteText(2, value, null); }
+            public string Foo { get => this.ReadText(3, null); set => this.WriteText(3, value, null); }
+            public string Corge { get => this.ReadText(4, null); set => this.WriteText(4, value, null); }
+            public string Waldo { get => this.ReadText(5, null); set => this.WriteText(5, value, null); }
+            public string Quux { get => this.ReadText(6, null); set => this.WriteText(6, value, null); }
+            public string Garply { get => this.ReadText(7, null); set => this.WriteText(7, value, null); }
+            public string Baz { get => this.ReadText(8, null); set => this.WriteText(8, value, null); }
         }
     }
 
@@ -1531,77 +1533,18 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public Capnproto_test.Capnp.Test.TestUnion.union0 Union0
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestUnion.union1 Union1
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestUnion.union2 Union2
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestUnion.union3 Union3
-        {
-            get;
-            set;
-        }
-
-        public bool Bit0
-        {
-            get;
-            set;
-        }
-
-        public bool Bit2
-        {
-            get;
-            set;
-        }
-
-        public bool Bit3
-        {
-            get;
-            set;
-        }
-
-        public bool Bit4
-        {
-            get;
-            set;
-        }
-
-        public bool Bit5
-        {
-            get;
-            set;
-        }
-
-        public bool Bit6
-        {
-            get;
-            set;
-        }
-
-        public bool Bit7
-        {
-            get;
-            set;
-        }
-
-        public byte Byte0
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestUnion.union0 Union0 { get; set; }
+        public Capnproto_test.Capnp.Test.TestUnion.union1 Union1 { get; set; }
+        public Capnproto_test.Capnp.Test.TestUnion.union2 Union2 { get; set; }
+        public Capnproto_test.Capnp.Test.TestUnion.union3 Union3 { get; set; }
+        public bool Bit0 { get; set; }
+        public bool Bit2 { get; set; }
+        public bool Bit3 { get; set; }
+        public bool Bit4 { get; set; }
+        public bool Bit5 { get; set; }
+        public bool Bit6 { get; set; }
+        public bool Bit7 { get; set; }
+        public byte Byte0 { get; set; }
 
         public struct READER
         {
@@ -1635,73 +1578,18 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(8, 2);
             }
 
-            public union0.WRITER Union0
-            {
-                get => Rewrap<union0.WRITER>();
-            }
-
-            public union1.WRITER Union1
-            {
-                get => Rewrap<union1.WRITER>();
-            }
-
-            public union2.WRITER Union2
-            {
-                get => Rewrap<union2.WRITER>();
-            }
-
-            public union3.WRITER Union3
-            {
-                get => Rewrap<union3.WRITER>();
-            }
-
-            public bool Bit0
-            {
-                get => this.ReadDataBool(128UL, false);
-                set => this.WriteData(128UL, value, false);
-            }
-
-            public bool Bit2
-            {
-                get => this.ReadDataBool(130UL, false);
-                set => this.WriteData(130UL, value, false);
-            }
-
-            public bool Bit3
-            {
-                get => this.ReadDataBool(131UL, false);
-                set => this.WriteData(131UL, value, false);
-            }
-
-            public bool Bit4
-            {
-                get => this.ReadDataBool(132UL, false);
-                set => this.WriteData(132UL, value, false);
-            }
-
-            public bool Bit5
-            {
-                get => this.ReadDataBool(133UL, false);
-                set => this.WriteData(133UL, value, false);
-            }
-
-            public bool Bit6
-            {
-                get => this.ReadDataBool(134UL, false);
-                set => this.WriteData(134UL, value, false);
-            }
-
-            public bool Bit7
-            {
-                get => this.ReadDataBool(135UL, false);
-                set => this.WriteData(135UL, value, false);
-            }
-
-            public byte Byte0
-            {
-                get => this.ReadDataByte(280UL, (byte)0);
-                set => this.WriteData(280UL, value, (byte)0);
-            }
+            public union0.WRITER Union0 { get => Rewrap<union0.WRITER>(); }
+            public union1.WRITER Union1 { get => Rewrap<union1.WRITER>(); }
+            public union2.WRITER Union2 { get => Rewrap<union2.WRITER>(); }
+            public union3.WRITER Union3 { get => Rewrap<union3.WRITER>(); }
+            public bool Bit0 { get => this.ReadDataBool(128UL, false); set => this.WriteData(128UL, value, false); }
+            public bool Bit2 { get => this.ReadDataBool(130UL, false); set => this.WriteData(130UL, value, false); }
+            public bool Bit3 { get => this.ReadDataBool(131UL, false); set => this.WriteData(131UL, value, false); }
+            public bool Bit4 { get => this.ReadDataBool(132UL, false); set => this.WriteData(132UL, value, false); }
+            public bool Bit5 { get => this.ReadDataBool(133UL, false); set => this.WriteData(133UL, value, false); }
+            public bool Bit6 { get => this.ReadDataBool(134UL, false); set => this.WriteData(134UL, value, false); }
+            public bool Bit7 { get => this.ReadDataBool(135UL, false); set => this.WriteData(135UL, value, false); }
+            public byte Byte0 { get => this.ReadDataByte(280UL, (byte)0); set => this.WriteData(280UL, value, (byte)0); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xfc76a82eecb7a718UL)]
@@ -2044,83 +1932,19 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(0U, (ushort)0);
-                    set => this.WriteData(0U, (ushort)value, (ushort)0);
-                }
-
-                public bool U0f0s1
-                {
-                    get => which == WHICH.U0f0s1 ? this.ReadDataBool(64UL, false) : default;
-                    set => this.WriteData(64UL, value, false);
-                }
-
-                public sbyte U0f0s8
-                {
-                    get => which == WHICH.U0f0s8 ? this.ReadDataSByte(64UL, (sbyte)0) : default;
-                    set => this.WriteData(64UL, value, (sbyte)0);
-                }
-
-                public short U0f0s16
-                {
-                    get => which == WHICH.U0f0s16 ? this.ReadDataShort(64UL, (short)0) : default;
-                    set => this.WriteData(64UL, value, (short)0);
-                }
-
-                public int U0f0s32
-                {
-                    get => which == WHICH.U0f0s32 ? this.ReadDataInt(64UL, 0) : default;
-                    set => this.WriteData(64UL, value, 0);
-                }
-
-                public long U0f0s64
-                {
-                    get => which == WHICH.U0f0s64 ? this.ReadDataLong(64UL, 0L) : default;
-                    set => this.WriteData(64UL, value, 0L);
-                }
-
-                public string U0f0sp
-                {
-                    get => which == WHICH.U0f0sp ? this.ReadText(0, null) : default;
-                    set => this.WriteText(0, value, null);
-                }
-
-                public bool U0f1s1
-                {
-                    get => which == WHICH.U0f1s1 ? this.ReadDataBool(64UL, false) : default;
-                    set => this.WriteData(64UL, value, false);
-                }
-
-                public sbyte U0f1s8
-                {
-                    get => which == WHICH.U0f1s8 ? this.ReadDataSByte(64UL, (sbyte)0) : default;
-                    set => this.WriteData(64UL, value, (sbyte)0);
-                }
-
-                public short U0f1s16
-                {
-                    get => which == WHICH.U0f1s16 ? this.ReadDataShort(64UL, (short)0) : default;
-                    set => this.WriteData(64UL, value, (short)0);
-                }
-
-                public int U0f1s32
-                {
-                    get => which == WHICH.U0f1s32 ? this.ReadDataInt(64UL, 0) : default;
-                    set => this.WriteData(64UL, value, 0);
-                }
-
-                public long U0f1s64
-                {
-                    get => which == WHICH.U0f1s64 ? this.ReadDataLong(64UL, 0L) : default;
-                    set => this.WriteData(64UL, value, 0L);
-                }
-
-                public string U0f1sp
-                {
-                    get => which == WHICH.U0f1sp ? this.ReadText(0, null) : default;
-                    set => this.WriteText(0, value, null);
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(0U, (ushort)0); set => this.WriteData(0U, (ushort)value, (ushort)0); }
+                public bool U0f0s1 { get => which == WHICH.U0f0s1 ? this.ReadDataBool(64UL, false) : default; set => this.WriteData(64UL, value, false); }
+                public sbyte U0f0s8 { get => which == WHICH.U0f0s8 ? this.ReadDataSByte(64UL, (sbyte)0) : default; set => this.WriteData(64UL, value, (sbyte)0); }
+                public short U0f0s16 { get => which == WHICH.U0f0s16 ? this.ReadDataShort(64UL, (short)0) : default; set => this.WriteData(64UL, value, (short)0); }
+                public int U0f0s32 { get => which == WHICH.U0f0s32 ? this.ReadDataInt(64UL, 0) : default; set => this.WriteData(64UL, value, 0); }
+                public long U0f0s64 { get => which == WHICH.U0f0s64 ? this.ReadDataLong(64UL, 0L) : default; set => this.WriteData(64UL, value, 0L); }
+                public string U0f0sp { get => which == WHICH.U0f0sp ? this.ReadText(0, null) : default; set => this.WriteText(0, value, null); }
+                public bool U0f1s1 { get => which == WHICH.U0f1s1 ? this.ReadDataBool(64UL, false) : default; set => this.WriteData(64UL, value, false); }
+                public sbyte U0f1s8 { get => which == WHICH.U0f1s8 ? this.ReadDataSByte(64UL, (sbyte)0) : default; set => this.WriteData(64UL, value, (sbyte)0); }
+                public short U0f1s16 { get => which == WHICH.U0f1s16 ? this.ReadDataShort(64UL, (short)0) : default; set => this.WriteData(64UL, value, (short)0); }
+                public int U0f1s32 { get => which == WHICH.U0f1s32 ? this.ReadDataInt(64UL, 0) : default; set => this.WriteData(64UL, value, 0); }
+                public long U0f1s64 { get => which == WHICH.U0f1s64 ? this.ReadDataLong(64UL, 0L) : default; set => this.WriteData(64UL, value, 0L); }
+                public string U0f1sp { get => which == WHICH.U0f1sp ? this.ReadText(0, null) : default; set => this.WriteText(0, value, null); }
             }
         }
 
@@ -2590,119 +2414,25 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(16U, (ushort)0);
-                    set => this.WriteData(16U, (ushort)value, (ushort)0);
-                }
-
-                public bool U1f0s1
-                {
-                    get => which == WHICH.U1f0s1 ? this.ReadDataBool(129UL, false) : default;
-                    set => this.WriteData(129UL, value, false);
-                }
-
-                public bool U1f1s1
-                {
-                    get => which == WHICH.U1f1s1 ? this.ReadDataBool(129UL, false) : default;
-                    set => this.WriteData(129UL, value, false);
-                }
-
-                public sbyte U1f0s8
-                {
-                    get => which == WHICH.U1f0s8 ? this.ReadDataSByte(136UL, (sbyte)0) : default;
-                    set => this.WriteData(136UL, value, (sbyte)0);
-                }
-
-                public sbyte U1f1s8
-                {
-                    get => which == WHICH.U1f1s8 ? this.ReadDataSByte(136UL, (sbyte)0) : default;
-                    set => this.WriteData(136UL, value, (sbyte)0);
-                }
-
-                public short U1f0s16
-                {
-                    get => which == WHICH.U1f0s16 ? this.ReadDataShort(144UL, (short)0) : default;
-                    set => this.WriteData(144UL, value, (short)0);
-                }
-
-                public short U1f1s16
-                {
-                    get => which == WHICH.U1f1s16 ? this.ReadDataShort(144UL, (short)0) : default;
-                    set => this.WriteData(144UL, value, (short)0);
-                }
-
-                public int U1f0s32
-                {
-                    get => which == WHICH.U1f0s32 ? this.ReadDataInt(160UL, 0) : default;
-                    set => this.WriteData(160UL, value, 0);
-                }
-
-                public int U1f1s32
-                {
-                    get => which == WHICH.U1f1s32 ? this.ReadDataInt(160UL, 0) : default;
-                    set => this.WriteData(160UL, value, 0);
-                }
-
-                public long U1f0s64
-                {
-                    get => which == WHICH.U1f0s64 ? this.ReadDataLong(192UL, 0L) : default;
-                    set => this.WriteData(192UL, value, 0L);
-                }
-
-                public long U1f1s64
-                {
-                    get => which == WHICH.U1f1s64 ? this.ReadDataLong(192UL, 0L) : default;
-                    set => this.WriteData(192UL, value, 0L);
-                }
-
-                public string U1f0sp
-                {
-                    get => which == WHICH.U1f0sp ? this.ReadText(1, null) : default;
-                    set => this.WriteText(1, value, null);
-                }
-
-                public string U1f1sp
-                {
-                    get => which == WHICH.U1f1sp ? this.ReadText(1, null) : default;
-                    set => this.WriteText(1, value, null);
-                }
-
-                public bool U1f2s1
-                {
-                    get => which == WHICH.U1f2s1 ? this.ReadDataBool(129UL, false) : default;
-                    set => this.WriteData(129UL, value, false);
-                }
-
-                public sbyte U1f2s8
-                {
-                    get => which == WHICH.U1f2s8 ? this.ReadDataSByte(136UL, (sbyte)0) : default;
-                    set => this.WriteData(136UL, value, (sbyte)0);
-                }
-
-                public short U1f2s16
-                {
-                    get => which == WHICH.U1f2s16 ? this.ReadDataShort(144UL, (short)0) : default;
-                    set => this.WriteData(144UL, value, (short)0);
-                }
-
-                public int U1f2s32
-                {
-                    get => which == WHICH.U1f2s32 ? this.ReadDataInt(160UL, 0) : default;
-                    set => this.WriteData(160UL, value, 0);
-                }
-
-                public long U1f2s64
-                {
-                    get => which == WHICH.U1f2s64 ? this.ReadDataLong(192UL, 0L) : default;
-                    set => this.WriteData(192UL, value, 0L);
-                }
-
-                public string U1f2sp
-                {
-                    get => which == WHICH.U1f2sp ? this.ReadText(1, null) : default;
-                    set => this.WriteText(1, value, null);
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(16U, (ushort)0); set => this.WriteData(16U, (ushort)value, (ushort)0); }
+                public bool U1f0s1 { get => which == WHICH.U1f0s1 ? this.ReadDataBool(129UL, false) : default; set => this.WriteData(129UL, value, false); }
+                public bool U1f1s1 { get => which == WHICH.U1f1s1 ? this.ReadDataBool(129UL, false) : default; set => this.WriteData(129UL, value, false); }
+                public sbyte U1f0s8 { get => which == WHICH.U1f0s8 ? this.ReadDataSByte(136UL, (sbyte)0) : default; set => this.WriteData(136UL, value, (sbyte)0); }
+                public sbyte U1f1s8 { get => which == WHICH.U1f1s8 ? this.ReadDataSByte(136UL, (sbyte)0) : default; set => this.WriteData(136UL, value, (sbyte)0); }
+                public short U1f0s16 { get => which == WHICH.U1f0s16 ? this.ReadDataShort(144UL, (short)0) : default; set => this.WriteData(144UL, value, (short)0); }
+                public short U1f1s16 { get => which == WHICH.U1f1s16 ? this.ReadDataShort(144UL, (short)0) : default; set => this.WriteData(144UL, value, (short)0); }
+                public int U1f0s32 { get => which == WHICH.U1f0s32 ? this.ReadDataInt(160UL, 0) : default; set => this.WriteData(160UL, value, 0); }
+                public int U1f1s32 { get => which == WHICH.U1f1s32 ? this.ReadDataInt(160UL, 0) : default; set => this.WriteData(160UL, value, 0); }
+                public long U1f0s64 { get => which == WHICH.U1f0s64 ? this.ReadDataLong(192UL, 0L) : default; set => this.WriteData(192UL, value, 0L); }
+                public long U1f1s64 { get => which == WHICH.U1f1s64 ? this.ReadDataLong(192UL, 0L) : default; set => this.WriteData(192UL, value, 0L); }
+                public string U1f0sp { get => which == WHICH.U1f0sp ? this.ReadText(1, null) : default; set => this.WriteText(1, value, null); }
+                public string U1f1sp { get => which == WHICH.U1f1sp ? this.ReadText(1, null) : default; set => this.WriteText(1, value, null); }
+                public bool U1f2s1 { get => which == WHICH.U1f2s1 ? this.ReadDataBool(129UL, false) : default; set => this.WriteData(129UL, value, false); }
+                public sbyte U1f2s8 { get => which == WHICH.U1f2s8 ? this.ReadDataSByte(136UL, (sbyte)0) : default; set => this.WriteData(136UL, value, (sbyte)0); }
+                public short U1f2s16 { get => which == WHICH.U1f2s16 ? this.ReadDataShort(144UL, (short)0) : default; set => this.WriteData(144UL, value, (short)0); }
+                public int U1f2s32 { get => which == WHICH.U1f2s32 ? this.ReadDataInt(160UL, 0) : default; set => this.WriteData(160UL, value, 0); }
+                public long U1f2s64 { get => which == WHICH.U1f2s64 ? this.ReadDataLong(192UL, 0L) : default; set => this.WriteData(192UL, value, 0L); }
+                public string U1f2sp { get => which == WHICH.U1f2sp ? this.ReadText(1, null) : default; set => this.WriteText(1, value, null); }
             }
         }
 
@@ -2883,41 +2613,12 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(32U, (ushort)0);
-                    set => this.WriteData(32U, (ushort)value, (ushort)0);
-                }
-
-                public bool U2f0s1
-                {
-                    get => which == WHICH.U2f0s1 ? this.ReadDataBool(256UL, false) : default;
-                    set => this.WriteData(256UL, value, false);
-                }
-
-                public sbyte U2f0s8
-                {
-                    get => which == WHICH.U2f0s8 ? this.ReadDataSByte(264UL, (sbyte)0) : default;
-                    set => this.WriteData(264UL, value, (sbyte)0);
-                }
-
-                public short U2f0s16
-                {
-                    get => which == WHICH.U2f0s16 ? this.ReadDataShort(288UL, (short)0) : default;
-                    set => this.WriteData(288UL, value, (short)0);
-                }
-
-                public int U2f0s32
-                {
-                    get => which == WHICH.U2f0s32 ? this.ReadDataInt(320UL, 0) : default;
-                    set => this.WriteData(320UL, value, 0);
-                }
-
-                public long U2f0s64
-                {
-                    get => which == WHICH.U2f0s64 ? this.ReadDataLong(384UL, 0L) : default;
-                    set => this.WriteData(384UL, value, 0L);
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(32U, (ushort)0); set => this.WriteData(32U, (ushort)value, (ushort)0); }
+                public bool U2f0s1 { get => which == WHICH.U2f0s1 ? this.ReadDataBool(256UL, false) : default; set => this.WriteData(256UL, value, false); }
+                public sbyte U2f0s8 { get => which == WHICH.U2f0s8 ? this.ReadDataSByte(264UL, (sbyte)0) : default; set => this.WriteData(264UL, value, (sbyte)0); }
+                public short U2f0s16 { get => which == WHICH.U2f0s16 ? this.ReadDataShort(288UL, (short)0) : default; set => this.WriteData(288UL, value, (short)0); }
+                public int U2f0s32 { get => which == WHICH.U2f0s32 ? this.ReadDataInt(320UL, 0) : default; set => this.WriteData(320UL, value, 0); }
+                public long U2f0s64 { get => which == WHICH.U2f0s64 ? this.ReadDataLong(384UL, 0L) : default; set => this.WriteData(384UL, value, 0L); }
             }
         }
 
@@ -3098,41 +2799,12 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(48U, (ushort)0);
-                    set => this.WriteData(48U, (ushort)value, (ushort)0);
-                }
-
-                public bool U3f0s1
-                {
-                    get => which == WHICH.U3f0s1 ? this.ReadDataBool(257UL, false) : default;
-                    set => this.WriteData(257UL, value, false);
-                }
-
-                public sbyte U3f0s8
-                {
-                    get => which == WHICH.U3f0s8 ? this.ReadDataSByte(272UL, (sbyte)0) : default;
-                    set => this.WriteData(272UL, value, (sbyte)0);
-                }
-
-                public short U3f0s16
-                {
-                    get => which == WHICH.U3f0s16 ? this.ReadDataShort(304UL, (short)0) : default;
-                    set => this.WriteData(304UL, value, (short)0);
-                }
-
-                public int U3f0s32
-                {
-                    get => which == WHICH.U3f0s32 ? this.ReadDataInt(352UL, 0) : default;
-                    set => this.WriteData(352UL, value, 0);
-                }
-
-                public long U3f0s64
-                {
-                    get => which == WHICH.U3f0s64 ? this.ReadDataLong(448UL, 0L) : default;
-                    set => this.WriteData(448UL, value, 0L);
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(48U, (ushort)0); set => this.WriteData(48U, (ushort)value, (ushort)0); }
+                public bool U3f0s1 { get => which == WHICH.U3f0s1 ? this.ReadDataBool(257UL, false) : default; set => this.WriteData(257UL, value, false); }
+                public sbyte U3f0s8 { get => which == WHICH.U3f0s8 ? this.ReadDataSByte(272UL, (sbyte)0) : default; set => this.WriteData(272UL, value, (sbyte)0); }
+                public short U3f0s16 { get => which == WHICH.U3f0s16 ? this.ReadDataShort(304UL, (short)0) : default; set => this.WriteData(304UL, value, (short)0); }
+                public int U3f0s32 { get => which == WHICH.U3f0s32 ? this.ReadDataInt(352UL, 0) : default; set => this.WriteData(352UL, value, 0); }
+                public long U3f0s64 { get => which == WHICH.U3f0s64 ? this.ReadDataLong(448UL, 0L) : default; set => this.WriteData(448UL, value, 0L); }
             }
         }
     }
@@ -3216,11 +2888,7 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public string Before
-        {
-            get;
-            set;
-        }
+        public string Before { get; set; }
 
         public ushort? Foo
         {
@@ -3232,11 +2900,7 @@ namespace Capnproto_test.Capnp.Test
             }
         }
 
-        public ushort Middle
-        {
-            get;
-            set;
-        }
+        public ushort Middle { get; set; }
 
         public uint? Bar
         {
@@ -3248,11 +2912,7 @@ namespace Capnproto_test.Capnp.Test
             }
         }
 
-        public string After
-        {
-            get;
-            set;
-        }
+        public string After { get; set; }
 
         public struct READER
         {
@@ -3280,41 +2940,12 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(2, 2);
             }
 
-            public WHICH which
-            {
-                get => (WHICH)this.ReadDataUShort(32U, (ushort)0);
-                set => this.WriteData(32U, (ushort)value, (ushort)0);
-            }
-
-            public string Before
-            {
-                get => this.ReadText(0, null);
-                set => this.WriteText(0, value, null);
-            }
-
-            public ushort Foo
-            {
-                get => which == WHICH.Foo ? this.ReadDataUShort(0UL, (ushort)0) : default;
-                set => this.WriteData(0UL, value, (ushort)0);
-            }
-
-            public ushort Middle
-            {
-                get => this.ReadDataUShort(16UL, (ushort)0);
-                set => this.WriteData(16UL, value, (ushort)0);
-            }
-
-            public uint Bar
-            {
-                get => which == WHICH.Bar ? this.ReadDataUInt(64UL, 0U) : default;
-                set => this.WriteData(64UL, value, 0U);
-            }
-
-            public string After
-            {
-                get => this.ReadText(1, null);
-                set => this.WriteText(1, value, null);
-            }
+            public WHICH which { get => (WHICH)this.ReadDataUShort(32U, (ushort)0); set => this.WriteData(32U, (ushort)value, (ushort)0); }
+            public string Before { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+            public ushort Foo { get => which == WHICH.Foo ? this.ReadDataUShort(0UL, (ushort)0) : default; set => this.WriteData(0UL, value, (ushort)0); }
+            public ushort Middle { get => this.ReadDataUShort(16UL, (ushort)0); set => this.WriteData(16UL, value, (ushort)0); }
+            public uint Bar { get => which == WHICH.Bar ? this.ReadDataUInt(64UL, 0U) : default; set => this.WriteData(64UL, value, 0U); }
+            public string After { get => this.ReadText(1, null); set => this.WriteText(1, value, null); }
         }
     }
 
@@ -3343,11 +2974,7 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public Capnproto_test.Capnp.Test.TestUnionInUnion.outer Outer
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestUnionInUnion.outer Outer { get; set; }
 
         public struct READER
         {
@@ -3370,10 +2997,7 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(2, 0);
             }
 
-            public outer.WRITER Outer
-            {
-                get => Rewrap<outer.WRITER>();
-            }
+            public outer.WRITER Outer { get => Rewrap<outer.WRITER>(); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xd005f6c63707670cUL)]
@@ -3490,22 +3114,9 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(64U, (ushort)0);
-                    set => this.WriteData(64U, (ushort)value, (ushort)0);
-                }
-
-                public inner.WRITER Inner
-                {
-                    get => which == WHICH.Inner ? Rewrap<inner.WRITER>() : default;
-                }
-
-                public int Baz
-                {
-                    get => which == WHICH.Baz ? this.ReadDataInt(0UL, 0) : default;
-                    set => this.WriteData(0UL, value, 0);
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(64U, (ushort)0); set => this.WriteData(64U, (ushort)value, (ushort)0); }
+                public inner.WRITER Inner { get => which == WHICH.Inner ? Rewrap<inner.WRITER>() : default; }
+                public int Baz { get => which == WHICH.Baz ? this.ReadDataInt(0UL, 0) : default; set => this.WriteData(0UL, value, 0); }
             }
 
             [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xff9ce111c6f8e5dbUL)]
@@ -3622,23 +3233,9 @@ namespace Capnproto_test.Capnp.Test
                     {
                     }
 
-                    public WHICH which
-                    {
-                        get => (WHICH)this.ReadDataUShort(32U, (ushort)0);
-                        set => this.WriteData(32U, (ushort)value, (ushort)0);
-                    }
-
-                    public int Foo
-                    {
-                        get => which == WHICH.Foo ? this.ReadDataInt(0UL, 0) : default;
-                        set => this.WriteData(0UL, value, 0);
-                    }
-
-                    public int Bar
-                    {
-                        get => which == WHICH.Bar ? this.ReadDataInt(0UL, 0) : default;
-                        set => this.WriteData(0UL, value, 0);
-                    }
+                    public WHICH which { get => (WHICH)this.ReadDataUShort(32U, (ushort)0); set => this.WriteData(32U, (ushort)value, (ushort)0); }
+                    public int Foo { get => which == WHICH.Foo ? this.ReadDataInt(0UL, 0) : default; set => this.WriteData(0UL, value, 0); }
+                    public int Bar { get => which == WHICH.Bar ? this.ReadDataInt(0UL, 0) : default; set => this.WriteData(0UL, value, 0); }
                 }
             }
         }
@@ -3669,11 +3266,7 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public Capnproto_test.Capnp.Test.TestGroups.groups Groups
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestGroups.groups Groups { get; set; }
 
         public struct READER
         {
@@ -3696,10 +3289,7 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(2, 2);
             }
 
-            public groups.WRITER Groups
-            {
-                get => Rewrap<groups.WRITER>();
-            }
+            public groups.WRITER Groups { get => Rewrap<groups.WRITER>(); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xe22ae74ff9113268UL)]
@@ -3837,26 +3427,10 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(32U, (ushort)0);
-                    set => this.WriteData(32U, (ushort)value, (ushort)0);
-                }
-
-                public foo.WRITER Foo
-                {
-                    get => which == WHICH.Foo ? Rewrap<foo.WRITER>() : default;
-                }
-
-                public baz.WRITER Baz
-                {
-                    get => which == WHICH.Baz ? Rewrap<baz.WRITER>() : default;
-                }
-
-                public bar.WRITER Bar
-                {
-                    get => which == WHICH.Bar ? Rewrap<bar.WRITER>() : default;
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(32U, (ushort)0); set => this.WriteData(32U, (ushort)value, (ushort)0); }
+                public foo.WRITER Foo { get => which == WHICH.Foo ? Rewrap<foo.WRITER>() : default; }
+                public baz.WRITER Baz { get => which == WHICH.Baz ? Rewrap<baz.WRITER>() : default; }
+                public bar.WRITER Bar { get => which == WHICH.Bar ? Rewrap<bar.WRITER>() : default; }
             }
 
             [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xf5fcba89c0c1196fUL)]
@@ -3888,23 +3462,9 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public int Corge
-                {
-                    get;
-                    set;
-                }
-
-                public long Grault
-                {
-                    get;
-                    set;
-                }
-
-                public string Garply
-                {
-                    get;
-                    set;
-                }
+                public int Corge { get; set; }
+                public long Grault { get; set; }
+                public string Garply { get; set; }
 
                 public struct READER
                 {
@@ -3928,23 +3488,9 @@ namespace Capnproto_test.Capnp.Test
                     {
                     }
 
-                    public int Corge
-                    {
-                        get => this.ReadDataInt(0UL, 0);
-                        set => this.WriteData(0UL, value, 0);
-                    }
-
-                    public long Grault
-                    {
-                        get => this.ReadDataLong(64UL, 0L);
-                        set => this.WriteData(64UL, value, 0L);
-                    }
-
-                    public string Garply
-                    {
-                        get => this.ReadText(0, null);
-                        set => this.WriteText(0, value, null);
-                    }
+                    public int Corge { get => this.ReadDataInt(0UL, 0); set => this.WriteData(0UL, value, 0); }
+                    public long Grault { get => this.ReadDataLong(64UL, 0L); set => this.WriteData(64UL, value, 0L); }
+                    public string Garply { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
                 }
             }
 
@@ -3977,23 +3523,9 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public int Corge
-                {
-                    get;
-                    set;
-                }
-
-                public string Grault
-                {
-                    get;
-                    set;
-                }
-
-                public string Garply
-                {
-                    get;
-                    set;
-                }
+                public int Corge { get; set; }
+                public string Grault { get; set; }
+                public string Garply { get; set; }
 
                 public struct READER
                 {
@@ -4017,23 +3549,9 @@ namespace Capnproto_test.Capnp.Test
                     {
                     }
 
-                    public int Corge
-                    {
-                        get => this.ReadDataInt(0UL, 0);
-                        set => this.WriteData(0UL, value, 0);
-                    }
-
-                    public string Grault
-                    {
-                        get => this.ReadText(0, null);
-                        set => this.WriteText(0, value, null);
-                    }
-
-                    public string Garply
-                    {
-                        get => this.ReadText(1, null);
-                        set => this.WriteText(1, value, null);
-                    }
+                    public int Corge { get => this.ReadDataInt(0UL, 0); set => this.WriteData(0UL, value, 0); }
+                    public string Grault { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+                    public string Garply { get => this.ReadText(1, null); set => this.WriteText(1, value, null); }
                 }
             }
 
@@ -4066,23 +3584,9 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public int Corge
-                {
-                    get;
-                    set;
-                }
-
-                public string Grault
-                {
-                    get;
-                    set;
-                }
-
-                public long Garply
-                {
-                    get;
-                    set;
-                }
+                public int Corge { get; set; }
+                public string Grault { get; set; }
+                public long Garply { get; set; }
 
                 public struct READER
                 {
@@ -4106,23 +3610,9 @@ namespace Capnproto_test.Capnp.Test
                     {
                     }
 
-                    public int Corge
-                    {
-                        get => this.ReadDataInt(0UL, 0);
-                        set => this.WriteData(0UL, value, 0);
-                    }
-
-                    public string Grault
-                    {
-                        get => this.ReadText(0, null);
-                        set => this.WriteText(0, value, null);
-                    }
-
-                    public long Garply
-                    {
-                        get => this.ReadDataLong(64UL, 0L);
-                        set => this.WriteData(64UL, value, 0L);
-                    }
+                    public int Corge { get => this.ReadDataInt(0UL, 0); set => this.WriteData(0UL, value, 0); }
+                    public string Grault { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+                    public long Garply { get => this.ReadDataLong(64UL, 0L); set => this.WriteData(64UL, value, 0L); }
                 }
             }
         }
@@ -4155,17 +3645,8 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public Capnproto_test.Capnp.Test.TestInterleavedGroups.group1 Group1
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestInterleavedGroups.group2 Group2
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestInterleavedGroups.group1 Group1 { get; set; }
+        public Capnproto_test.Capnp.Test.TestInterleavedGroups.group2 Group2 { get; set; }
 
         public struct READER
         {
@@ -4189,15 +3670,8 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(6, 6);
             }
 
-            public group1.WRITER Group1
-            {
-                get => Rewrap<group1.WRITER>();
-            }
-
-            public group2.WRITER Group2
-            {
-                get => Rewrap<group2.WRITER>();
-            }
+            public group1.WRITER Group1 { get => Rewrap<group1.WRITER>(); }
+            public group2.WRITER Group2 { get => Rewrap<group2.WRITER>(); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xc7485a3516c7d3c8UL)]
@@ -4289,17 +3763,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public uint Foo
-            {
-                get;
-                set;
-            }
-
-            public ulong Bar
-            {
-                get;
-                set;
-            }
+            public uint Foo { get; set; }
+            public ulong Bar { get; set; }
 
             public ushort? Qux
             {
@@ -4321,11 +3786,7 @@ namespace Capnproto_test.Capnp.Test
                 }
             }
 
-            public string Waldo
-            {
-                get;
-                set;
-            }
+            public string Waldo { get; set; }
 
             public string Fred
             {
@@ -4363,46 +3824,13 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(224U, (ushort)0);
-                    set => this.WriteData(224U, (ushort)value, (ushort)0);
-                }
-
-                public uint Foo
-                {
-                    get => this.ReadDataUInt(0UL, 0U);
-                    set => this.WriteData(0UL, value, 0U);
-                }
-
-                public ulong Bar
-                {
-                    get => this.ReadDataULong(64UL, 0UL);
-                    set => this.WriteData(64UL, value, 0UL);
-                }
-
-                public ushort Qux
-                {
-                    get => which == WHICH.Qux ? this.ReadDataUShort(192UL, (ushort)0) : default;
-                    set => this.WriteData(192UL, value, (ushort)0);
-                }
-
-                public corge.WRITER Corge
-                {
-                    get => which == WHICH.Corge ? Rewrap<corge.WRITER>() : default;
-                }
-
-                public string Waldo
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
-
-                public string Fred
-                {
-                    get => which == WHICH.Fred ? this.ReadText(2, null) : default;
-                    set => this.WriteText(2, value, null);
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(224U, (ushort)0); set => this.WriteData(224U, (ushort)value, (ushort)0); }
+                public uint Foo { get => this.ReadDataUInt(0UL, 0U); set => this.WriteData(0UL, value, 0U); }
+                public ulong Bar { get => this.ReadDataULong(64UL, 0UL); set => this.WriteData(64UL, value, 0UL); }
+                public ushort Qux { get => which == WHICH.Qux ? this.ReadDataUShort(192UL, (ushort)0) : default; set => this.WriteData(192UL, value, (ushort)0); }
+                public corge.WRITER Corge { get => which == WHICH.Corge ? Rewrap<corge.WRITER>() : default; }
+                public string Waldo { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+                public string Fred { get => which == WHICH.Fred ? this.ReadText(2, null) : default; set => this.WriteText(2, value, null); }
             }
 
             [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xdb0afd413f4a313aUL)]
@@ -4436,29 +3864,10 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public ulong Grault
-                {
-                    get;
-                    set;
-                }
-
-                public ushort Garply
-                {
-                    get;
-                    set;
-                }
-
-                public string Plugh
-                {
-                    get;
-                    set;
-                }
-
-                public string Xyzzy
-                {
-                    get;
-                    set;
-                }
+                public ulong Grault { get; set; }
+                public ushort Garply { get; set; }
+                public string Plugh { get; set; }
+                public string Xyzzy { get; set; }
 
                 public struct READER
                 {
@@ -4483,29 +3892,10 @@ namespace Capnproto_test.Capnp.Test
                     {
                     }
 
-                    public ulong Grault
-                    {
-                        get => this.ReadDataULong(256UL, 0UL);
-                        set => this.WriteData(256UL, value, 0UL);
-                    }
-
-                    public ushort Garply
-                    {
-                        get => this.ReadDataUShort(192UL, (ushort)0);
-                        set => this.WriteData(192UL, value, (ushort)0);
-                    }
-
-                    public string Plugh
-                    {
-                        get => this.ReadText(2, null);
-                        set => this.WriteText(2, value, null);
-                    }
-
-                    public string Xyzzy
-                    {
-                        get => this.ReadText(4, null);
-                        set => this.WriteText(4, value, null);
-                    }
+                    public ulong Grault { get => this.ReadDataULong(256UL, 0UL); set => this.WriteData(256UL, value, 0UL); }
+                    public ushort Garply { get => this.ReadDataUShort(192UL, (ushort)0); set => this.WriteData(192UL, value, (ushort)0); }
+                    public string Plugh { get => this.ReadText(2, null); set => this.WriteText(2, value, null); }
+                    public string Xyzzy { get => this.ReadText(4, null); set => this.WriteText(4, value, null); }
                 }
             }
         }
@@ -4599,17 +3989,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public uint Foo
-            {
-                get;
-                set;
-            }
-
-            public ulong Bar
-            {
-                get;
-                set;
-            }
+            public uint Foo { get; set; }
+            public ulong Bar { get; set; }
 
             public ushort? Qux
             {
@@ -4631,11 +4012,7 @@ namespace Capnproto_test.Capnp.Test
                 }
             }
 
-            public string Waldo
-            {
-                get;
-                set;
-            }
+            public string Waldo { get; set; }
 
             public string Fred
             {
@@ -4673,46 +4050,13 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(240U, (ushort)0);
-                    set => this.WriteData(240U, (ushort)value, (ushort)0);
-                }
-
-                public uint Foo
-                {
-                    get => this.ReadDataUInt(32UL, 0U);
-                    set => this.WriteData(32UL, value, 0U);
-                }
-
-                public ulong Bar
-                {
-                    get => this.ReadDataULong(128UL, 0UL);
-                    set => this.WriteData(128UL, value, 0UL);
-                }
-
-                public ushort Qux
-                {
-                    get => which == WHICH.Qux ? this.ReadDataUShort(208UL, (ushort)0) : default;
-                    set => this.WriteData(208UL, value, (ushort)0);
-                }
-
-                public corge.WRITER Corge
-                {
-                    get => which == WHICH.Corge ? Rewrap<corge.WRITER>() : default;
-                }
-
-                public string Waldo
-                {
-                    get => this.ReadText(1, null);
-                    set => this.WriteText(1, value, null);
-                }
-
-                public string Fred
-                {
-                    get => which == WHICH.Fred ? this.ReadText(3, null) : default;
-                    set => this.WriteText(3, value, null);
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(240U, (ushort)0); set => this.WriteData(240U, (ushort)value, (ushort)0); }
+                public uint Foo { get => this.ReadDataUInt(32UL, 0U); set => this.WriteData(32UL, value, 0U); }
+                public ulong Bar { get => this.ReadDataULong(128UL, 0UL); set => this.WriteData(128UL, value, 0UL); }
+                public ushort Qux { get => which == WHICH.Qux ? this.ReadDataUShort(208UL, (ushort)0) : default; set => this.WriteData(208UL, value, (ushort)0); }
+                public corge.WRITER Corge { get => which == WHICH.Corge ? Rewrap<corge.WRITER>() : default; }
+                public string Waldo { get => this.ReadText(1, null); set => this.WriteText(1, value, null); }
+                public string Fred { get => which == WHICH.Fred ? this.ReadText(3, null) : default; set => this.WriteText(3, value, null); }
             }
 
             [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xa017f0366827ee37UL)]
@@ -4746,29 +4090,10 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public ulong Grault
-                {
-                    get;
-                    set;
-                }
-
-                public ushort Garply
-                {
-                    get;
-                    set;
-                }
-
-                public string Plugh
-                {
-                    get;
-                    set;
-                }
-
-                public string Xyzzy
-                {
-                    get;
-                    set;
-                }
+                public ulong Grault { get; set; }
+                public ushort Garply { get; set; }
+                public string Plugh { get; set; }
+                public string Xyzzy { get; set; }
 
                 public struct READER
                 {
@@ -4793,29 +4118,10 @@ namespace Capnproto_test.Capnp.Test
                     {
                     }
 
-                    public ulong Grault
-                    {
-                        get => this.ReadDataULong(320UL, 0UL);
-                        set => this.WriteData(320UL, value, 0UL);
-                    }
-
-                    public ushort Garply
-                    {
-                        get => this.ReadDataUShort(208UL, (ushort)0);
-                        set => this.WriteData(208UL, value, (ushort)0);
-                    }
-
-                    public string Plugh
-                    {
-                        get => this.ReadText(3, null);
-                        set => this.WriteText(3, value, null);
-                    }
-
-                    public string Xyzzy
-                    {
-                        get => this.ReadText(5, null);
-                        set => this.WriteText(5, value, null);
-                    }
+                    public ulong Grault { get => this.ReadDataULong(320UL, 0UL); set => this.WriteData(320UL, value, 0UL); }
+                    public ushort Garply { get => this.ReadDataUShort(208UL, (ushort)0); set => this.WriteData(208UL, value, (ushort)0); }
+                    public string Plugh { get => this.ReadText(3, null); set => this.WriteText(3, value, null); }
+                    public string Xyzzy { get => this.ReadText(5, null); set => this.WriteText(5, value, null); }
                 }
             }
         }
@@ -4851,46 +4157,69 @@ namespace Capnproto_test.Capnp.Test
         public void applyDefaults()
         {
             S16s8s64s8Set = S16s8s64s8Set ?? new Capnproto_test.Capnp.Test.TestUnion()
-            {Union0 = new Capnproto_test.Capnp.Test.TestUnion.union0()
-            {}, Union1 = new Capnproto_test.Capnp.Test.TestUnion.union1()
-            {}, Union2 = new Capnproto_test.Capnp.Test.TestUnion.union2()
-            {}, Union3 = new Capnproto_test.Capnp.Test.TestUnion.union3()
-            {}, Bit0 = false, Bit2 = false, Bit3 = false, Bit4 = false, Bit5 = false, Bit6 = false, Bit7 = false, Byte0 = 0};
+            {
+                Union0 = new Capnproto_test.Capnp.Test.TestUnion.union0()
+                {
+                },
+                Union1 = new Capnproto_test.Capnp.Test.TestUnion.union1()
+                {
+                },
+                Union2 = new Capnproto_test.Capnp.Test.TestUnion.union2()
+                {
+                },
+                Union3 = new Capnproto_test.Capnp.Test.TestUnion.union3()
+                {
+                },
+                Bit0 = false,
+                Bit2 = false,
+                Bit3 = false,
+                Bit4 = false,
+                Bit5 = false,
+                Bit6 = false,
+                Bit7 = false,
+                Byte0 = 0
+            };
             S0sps1s32Set = S0sps1s32Set ?? new Capnproto_test.Capnp.Test.TestUnion()
-            {Union0 = new Capnproto_test.Capnp.Test.TestUnion.union0()
-            {}, Union1 = new Capnproto_test.Capnp.Test.TestUnion.union1()
-            {}, Union2 = new Capnproto_test.Capnp.Test.TestUnion.union2()
-            {}, Union3 = new Capnproto_test.Capnp.Test.TestUnion.union3()
-            {}, Bit0 = false, Bit2 = false, Bit3 = false, Bit4 = false, Bit5 = false, Bit6 = false, Bit7 = false, Byte0 = 0};
+            {
+                Union0 = new Capnproto_test.Capnp.Test.TestUnion.union0()
+                {
+                },
+                Union1 = new Capnproto_test.Capnp.Test.TestUnion.union1()
+                {
+                },
+                Union2 = new Capnproto_test.Capnp.Test.TestUnion.union2()
+                {
+                },
+                Union3 = new Capnproto_test.Capnp.Test.TestUnion.union3()
+                {
+                },
+                Bit0 = false,
+                Bit2 = false,
+                Bit3 = false,
+                Bit4 = false,
+                Bit5 = false,
+                Bit6 = false,
+                Bit7 = false,
+                Byte0 = 0
+            };
             Unnamed1 = Unnamed1 ?? new Capnproto_test.Capnp.Test.TestUnnamedUnion()
-            {Before = null, Middle = 0, After = null};
+            {
+                Before = null,
+                Middle = 0,
+                After = null
+            };
             Unnamed2 = Unnamed2 ?? new Capnproto_test.Capnp.Test.TestUnnamedUnion()
-            {Before = "foo", Middle = 0, After = "bar"};
+            {
+                Before = "foo",
+                Middle = 0,
+                After = "bar"
+            };
         }
 
-        public Capnproto_test.Capnp.Test.TestUnion S16s8s64s8Set
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestUnion S0sps1s32Set
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestUnnamedUnion Unnamed1
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestUnnamedUnion Unnamed2
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestUnion S16s8s64s8Set { get; set; }
+        public Capnproto_test.Capnp.Test.TestUnion S0sps1s32Set { get; set; }
+        public Capnproto_test.Capnp.Test.TestUnnamedUnion Unnamed1 { get; set; }
+        public Capnproto_test.Capnp.Test.TestUnnamedUnion Unnamed2 { get; set; }
 
         public struct READER
         {
@@ -4920,29 +4249,10 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 4);
             }
 
-            public Capnproto_test.Capnp.Test.TestUnion.WRITER S16s8s64s8Set
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestUnion.WRITER>(0);
-                set => Link(0, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestUnion.WRITER S0sps1s32Set
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestUnion.WRITER>(1);
-                set => Link(1, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestUnnamedUnion.WRITER Unnamed1
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestUnnamedUnion.WRITER>(2);
-                set => Link(2, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestUnnamedUnion.WRITER Unnamed2
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestUnnamedUnion.WRITER>(3);
-                set => Link(3, value);
-            }
+            public Capnproto_test.Capnp.Test.TestUnion.WRITER S16s8s64s8Set { get => BuildPointer<Capnproto_test.Capnp.Test.TestUnion.WRITER>(0); set => Link(0, value); }
+            public Capnproto_test.Capnp.Test.TestUnion.WRITER S0sps1s32Set { get => BuildPointer<Capnproto_test.Capnp.Test.TestUnion.WRITER>(1); set => Link(1, value); }
+            public Capnproto_test.Capnp.Test.TestUnnamedUnion.WRITER Unnamed1 { get => BuildPointer<Capnproto_test.Capnp.Test.TestUnnamedUnion.WRITER>(2); set => Link(2, value); }
+            public Capnproto_test.Capnp.Test.TestUnnamedUnion.WRITER Unnamed2 { get => BuildPointer<Capnproto_test.Capnp.Test.TestUnnamedUnion.WRITER>(3); set => Link(3, value); }
         }
     }
 
@@ -4975,26 +4285,10 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct TheNestedStruct
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct TheNestedStruct { get; set; }
+        public Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum OuterNestedEnum { get; set; } = Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum.bar;
+        public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum InnerNestedEnum { get; set; } = Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum.quux;
 
-        public Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum OuterNestedEnum
-        {
-            get;
-            set;
-        }
-
-        = Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum.bar;
-        public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum InnerNestedEnum
-        {
-            get;
-            set;
-        }
-
-        = Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum.quux;
         public struct READER
         {
             readonly DeserializerState ctx;
@@ -5019,23 +4313,9 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(1, 1);
             }
 
-            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.WRITER TheNestedStruct
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.WRITER>(0);
-                set => Link(0, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum OuterNestedEnum
-            {
-                get => (Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum)this.ReadDataUShort(0UL, (ushort)1);
-                set => this.WriteData(0UL, (ushort)value, (ushort)1);
-            }
-
-            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum InnerNestedEnum
-            {
-                get => (Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum)this.ReadDataUShort(16UL, (ushort)2);
-                set => this.WriteData(16UL, (ushort)value, (ushort)2);
-            }
+            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.WRITER TheNestedStruct { get => BuildPointer<Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.WRITER>(0); set => Link(0, value); }
+            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum OuterNestedEnum { get => (Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum)this.ReadDataUShort(0UL, (ushort)1); set => this.WriteData(0UL, (ushort)value, (ushort)1); }
+            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum InnerNestedEnum { get => (Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum)this.ReadDataUShort(16UL, (ushort)2); set => this.WriteData(16UL, (ushort)value, (ushort)2); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xb651d2fba42056d4UL)]
@@ -5072,20 +4352,9 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum OuterNestedEnum
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum OuterNestedEnum { get; set; } = Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum.bar;
+            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum InnerNestedEnum { get; set; } = Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum.quux;
 
-            = Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum.bar;
-            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum InnerNestedEnum
-            {
-                get;
-                set;
-            }
-
-            = Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum.quux;
             public struct READER
             {
                 readonly DeserializerState ctx;
@@ -5108,17 +4377,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 0);
                 }
 
-                public Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum OuterNestedEnum
-                {
-                    get => (Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum)this.ReadDataUShort(0UL, (ushort)1);
-                    set => this.WriteData(0UL, (ushort)value, (ushort)1);
-                }
-
-                public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum InnerNestedEnum
-                {
-                    get => (Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum)this.ReadDataUShort(16UL, (ushort)2);
-                    set => this.WriteData(16UL, (ushort)value, (ushort)2);
-                }
+                public Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum OuterNestedEnum { get => (Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum)this.ReadDataUShort(0UL, (ushort)1); set => this.WriteData(0UL, (ushort)value, (ushort)1); }
+                public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum InnerNestedEnum { get => (Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum)this.ReadDataUShort(16UL, (ushort)2); set => this.WriteData(16UL, (ushort)value, (ushort)2); }
             }
 
             [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xcfa0d546993a3df3UL)]
@@ -5158,20 +4418,9 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum InnerNestedEnum
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum InnerNestedEnum { get; set; } = Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum.quux;
+        public Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum OuterNestedEnum { get; set; } = Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum.bar;
 
-        = Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum.quux;
-        public Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum OuterNestedEnum
-        {
-            get;
-            set;
-        }
-
-        = Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum.bar;
         public struct READER
         {
             readonly DeserializerState ctx;
@@ -5194,17 +4443,8 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(1, 0);
             }
 
-            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum InnerNestedEnum
-            {
-                get => (Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum)this.ReadDataUShort(0UL, (ushort)2);
-                set => this.WriteData(0UL, (ushort)value, (ushort)2);
-            }
-
-            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum OuterNestedEnum
-            {
-                get => (Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum)this.ReadDataUShort(16UL, (ushort)1);
-                set => this.WriteData(16UL, (ushort)value, (ushort)1);
-            }
+            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum InnerNestedEnum { get => (Capnproto_test.Capnp.Test.TestNestedTypes.NestedStruct.NestedEnum)this.ReadDataUShort(0UL, (ushort)2); set => this.WriteData(0UL, (ushort)value, (ushort)2); }
+            public Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum OuterNestedEnum { get => (Capnproto_test.Capnp.Test.TestNestedTypes.NestedEnum)this.ReadDataUShort(16UL, (ushort)1); set => this.WriteData(16UL, (ushort)value, (ushort)1); }
         }
     }
 
@@ -5251,65 +4491,16 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.Struct0> List0
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.Struct1> List1
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.Struct8> List8
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.Struct16> List16
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.Struct32> List32
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.Struct64> List64
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.StructP> ListP
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<IReadOnlyList<int>> Int32ListList
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<IReadOnlyList<string>> TextListList
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<IReadOnlyList<Capnproto_test.Capnp.Test.TestAllTypes>> StructListList
-        {
-            get;
-            set;
-        }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.Struct0> List0 { get; set; }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.Struct1> List1 { get; set; }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.Struct8> List8 { get; set; }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.Struct16> List16 { get; set; }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.Struct32> List32 { get; set; }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.Struct64> List64 { get; set; }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestLists.StructP> ListP { get; set; }
+        public IReadOnlyList<IReadOnlyList<int>> Int32ListList { get; set; }
+        public IReadOnlyList<IReadOnlyList<string>> TextListList { get; set; }
+        public IReadOnlyList<IReadOnlyList<Capnproto_test.Capnp.Test.TestAllTypes>> StructListList { get; set; }
 
         public struct READER
         {
@@ -5351,65 +4542,16 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 10);
             }
 
-            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct0.WRITER> List0
-            {
-                get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct0.WRITER>>(0);
-                set => Link(0, value);
-            }
-
-            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct1.WRITER> List1
-            {
-                get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct1.WRITER>>(1);
-                set => Link(1, value);
-            }
-
-            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct8.WRITER> List8
-            {
-                get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct8.WRITER>>(2);
-                set => Link(2, value);
-            }
-
-            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct16.WRITER> List16
-            {
-                get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct16.WRITER>>(3);
-                set => Link(3, value);
-            }
-
-            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct32.WRITER> List32
-            {
-                get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct32.WRITER>>(4);
-                set => Link(4, value);
-            }
-
-            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct64.WRITER> List64
-            {
-                get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct64.WRITER>>(5);
-                set => Link(5, value);
-            }
-
-            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.StructP.WRITER> ListP
-            {
-                get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.StructP.WRITER>>(6);
-                set => Link(6, value);
-            }
-
-            public ListOfPointersSerializer<ListOfPrimitivesSerializer<int>> Int32ListList
-            {
-                get => BuildPointer<ListOfPointersSerializer<ListOfPrimitivesSerializer<int>>>(7);
-                set => Link(7, value);
-            }
-
-            public ListOfPointersSerializer<ListOfTextSerializer> TextListList
-            {
-                get => BuildPointer<ListOfPointersSerializer<ListOfTextSerializer>>(8);
-                set => Link(8, value);
-            }
-
-            public ListOfPointersSerializer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>> StructListList
-            {
-                get => BuildPointer<ListOfPointersSerializer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>>>(9);
-                set => Link(9, value);
-            }
+            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct0.WRITER> List0 { get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct0.WRITER>>(0); set => Link(0, value); }
+            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct1.WRITER> List1 { get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct1.WRITER>>(1); set => Link(1, value); }
+            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct8.WRITER> List8 { get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct8.WRITER>>(2); set => Link(2, value); }
+            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct16.WRITER> List16 { get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct16.WRITER>>(3); set => Link(3, value); }
+            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct32.WRITER> List32 { get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct32.WRITER>>(4); set => Link(4, value); }
+            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct64.WRITER> List64 { get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.Struct64.WRITER>>(5); set => Link(5, value); }
+            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.StructP.WRITER> ListP { get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestLists.StructP.WRITER>>(6); set => Link(6, value); }
+            public ListOfPointersSerializer<ListOfPrimitivesSerializer<int>> Int32ListList { get => BuildPointer<ListOfPointersSerializer<ListOfPrimitivesSerializer<int>>>(7); set => Link(7, value); }
+            public ListOfPointersSerializer<ListOfTextSerializer> TextListList { get => BuildPointer<ListOfPointersSerializer<ListOfTextSerializer>>(8); set => Link(8, value); }
+            public ListOfPointersSerializer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>> StructListList { get => BuildPointer<ListOfPointersSerializer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>>>(9); set => Link(9, value); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x8412c03b75b2cfeeUL)]
@@ -5482,11 +4624,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public bool F
-            {
-                get;
-                set;
-            }
+            public bool F { get; set; }
 
             public struct READER
             {
@@ -5509,11 +4647,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 0);
                 }
 
-                public bool F
-                {
-                    get => this.ReadDataBool(0UL, false);
-                    set => this.WriteData(0UL, value, false);
-                }
+                public bool F { get => this.ReadDataBool(0UL, false); set => this.WriteData(0UL, value, false); }
             }
         }
 
@@ -5542,11 +4676,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public byte F
-            {
-                get;
-                set;
-            }
+            public byte F { get; set; }
 
             public struct READER
             {
@@ -5569,11 +4699,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 0);
                 }
 
-                public byte F
-                {
-                    get => this.ReadDataByte(0UL, (byte)0);
-                    set => this.WriteData(0UL, value, (byte)0);
-                }
+                public byte F { get => this.ReadDataByte(0UL, (byte)0); set => this.WriteData(0UL, value, (byte)0); }
             }
         }
 
@@ -5602,11 +4728,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public ushort F
-            {
-                get;
-                set;
-            }
+            public ushort F { get; set; }
 
             public struct READER
             {
@@ -5629,11 +4751,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 0);
                 }
 
-                public ushort F
-                {
-                    get => this.ReadDataUShort(0UL, (ushort)0);
-                    set => this.WriteData(0UL, value, (ushort)0);
-                }
+                public ushort F { get => this.ReadDataUShort(0UL, (ushort)0); set => this.WriteData(0UL, value, (ushort)0); }
             }
         }
 
@@ -5662,11 +4780,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public uint F
-            {
-                get;
-                set;
-            }
+            public uint F { get; set; }
 
             public struct READER
             {
@@ -5689,11 +4803,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 0);
                 }
 
-                public uint F
-                {
-                    get => this.ReadDataUInt(0UL, 0U);
-                    set => this.WriteData(0UL, value, 0U);
-                }
+                public uint F { get => this.ReadDataUInt(0UL, 0U); set => this.WriteData(0UL, value, 0U); }
             }
         }
 
@@ -5722,11 +4832,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public ulong F
-            {
-                get;
-                set;
-            }
+            public ulong F { get; set; }
 
             public struct READER
             {
@@ -5749,11 +4855,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 0);
                 }
 
-                public ulong F
-                {
-                    get => this.ReadDataULong(0UL, 0UL);
-                    set => this.WriteData(0UL, value, 0UL);
-                }
+                public ulong F { get => this.ReadDataULong(0UL, 0UL); set => this.WriteData(0UL, value, 0UL); }
             }
         }
 
@@ -5782,11 +4884,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string F
-            {
-                get;
-                set;
-            }
+            public string F { get; set; }
 
             public struct READER
             {
@@ -5809,11 +4907,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public string F
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public string F { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -5842,11 +4936,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string Pad
-            {
-                get;
-                set;
-            }
+            public string Pad { get; set; }
 
             public struct READER
             {
@@ -5869,11 +4959,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public string Pad
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public string Pad { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -5904,17 +4990,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public bool F
-            {
-                get;
-                set;
-            }
-
-            public string Pad
-            {
-                get;
-                set;
-            }
+            public bool F { get; set; }
+            public string Pad { get; set; }
 
             public struct READER
             {
@@ -5938,17 +5015,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public bool F
-                {
-                    get => this.ReadDataBool(0UL, false);
-                    set => this.WriteData(0UL, value, false);
-                }
-
-                public string Pad
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public bool F { get => this.ReadDataBool(0UL, false); set => this.WriteData(0UL, value, false); }
+                public string Pad { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -5979,17 +5047,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public byte F
-            {
-                get;
-                set;
-            }
-
-            public string Pad
-            {
-                get;
-                set;
-            }
+            public byte F { get; set; }
+            public string Pad { get; set; }
 
             public struct READER
             {
@@ -6013,17 +5072,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public byte F
-                {
-                    get => this.ReadDataByte(0UL, (byte)0);
-                    set => this.WriteData(0UL, value, (byte)0);
-                }
-
-                public string Pad
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public byte F { get => this.ReadDataByte(0UL, (byte)0); set => this.WriteData(0UL, value, (byte)0); }
+                public string Pad { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -6054,17 +5104,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public ushort F
-            {
-                get;
-                set;
-            }
-
-            public string Pad
-            {
-                get;
-                set;
-            }
+            public ushort F { get; set; }
+            public string Pad { get; set; }
 
             public struct READER
             {
@@ -6088,17 +5129,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public ushort F
-                {
-                    get => this.ReadDataUShort(0UL, (ushort)0);
-                    set => this.WriteData(0UL, value, (ushort)0);
-                }
-
-                public string Pad
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public ushort F { get => this.ReadDataUShort(0UL, (ushort)0); set => this.WriteData(0UL, value, (ushort)0); }
+                public string Pad { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -6129,17 +5161,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public uint F
-            {
-                get;
-                set;
-            }
-
-            public string Pad
-            {
-                get;
-                set;
-            }
+            public uint F { get; set; }
+            public string Pad { get; set; }
 
             public struct READER
             {
@@ -6163,17 +5186,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public uint F
-                {
-                    get => this.ReadDataUInt(0UL, 0U);
-                    set => this.WriteData(0UL, value, 0U);
-                }
-
-                public string Pad
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public uint F { get => this.ReadDataUInt(0UL, 0U); set => this.WriteData(0UL, value, 0U); }
+                public string Pad { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -6204,17 +5218,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public ulong F
-            {
-                get;
-                set;
-            }
-
-            public string Pad
-            {
-                get;
-                set;
-            }
+            public ulong F { get; set; }
+            public string Pad { get; set; }
 
             public struct READER
             {
@@ -6238,17 +5243,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public ulong F
-                {
-                    get => this.ReadDataULong(0UL, 0UL);
-                    set => this.WriteData(0UL, value, 0UL);
-                }
-
-                public string Pad
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public ulong F { get => this.ReadDataULong(0UL, 0UL); set => this.WriteData(0UL, value, 0UL); }
+                public string Pad { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -6279,17 +5275,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string F
-            {
-                get;
-                set;
-            }
-
-            public ulong Pad
-            {
-                get;
-                set;
-            }
+            public string F { get; set; }
+            public ulong Pad { get; set; }
 
             public struct READER
             {
@@ -6313,17 +5300,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public string F
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
-
-                public ulong Pad
-                {
-                    get => this.ReadDataULong(0UL, 0UL);
-                    set => this.WriteData(0UL, value, 0UL);
-                }
+                public string F { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+                public ulong Pad { get => this.ReadDataULong(0UL, 0UL); set => this.WriteData(0UL, value, 0UL); }
             }
         }
     }
@@ -6357,26 +5335,10 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public bool Bit
-        {
-            get;
-            set;
-        }
+        public bool Bit { get; set; }
+        public bool SecondBit { get; set; } = true;
+        public byte ThirdField { get; set; } = 123;
 
-        public bool SecondBit
-        {
-            get;
-            set;
-        }
-
-        = true;
-        public byte ThirdField
-        {
-            get;
-            set;
-        }
-
-        = 123;
         public struct READER
         {
             readonly DeserializerState ctx;
@@ -6400,23 +5362,9 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(1, 0);
             }
 
-            public bool Bit
-            {
-                get => this.ReadDataBool(0UL, false);
-                set => this.WriteData(0UL, value, false);
-            }
-
-            public bool SecondBit
-            {
-                get => this.ReadDataBool(1UL, true);
-                set => this.WriteData(1UL, value, true);
-            }
-
-            public byte ThirdField
-            {
-                get => this.ReadDataByte(8UL, (byte)123);
-                set => this.WriteData(8UL, value, (byte)123);
-            }
+            public bool Bit { get => this.ReadDataBool(0UL, false); set => this.WriteData(0UL, value, false); }
+            public bool SecondBit { get => this.ReadDataBool(1UL, true); set => this.WriteData(1UL, value, true); }
+            public byte ThirdField { get => this.ReadDataByte(8UL, (byte)123); set => this.WriteData(8UL, value, (byte)123); }
         }
     }
 
@@ -6444,36 +5392,345 @@ namespace Capnproto_test.Capnp.Test
         public void applyDefaults()
         {
             Lists = Lists ?? new Capnproto_test.Capnp.Test.TestLists()
-            {List0 = new Capnproto_test.Capnp.Test.TestLists.Struct0[]{new Capnproto_test.Capnp.Test.TestLists.Struct0()
-            {}, new Capnproto_test.Capnp.Test.TestLists.Struct0()
-            {}}, List1 = new Capnproto_test.Capnp.Test.TestLists.Struct1[]{new Capnproto_test.Capnp.Test.TestLists.Struct1()
-            {F = true}, new Capnproto_test.Capnp.Test.TestLists.Struct1()
-            {F = false}, new Capnproto_test.Capnp.Test.TestLists.Struct1()
-            {F = true}, new Capnproto_test.Capnp.Test.TestLists.Struct1()
-            {F = true}}, List8 = new Capnproto_test.Capnp.Test.TestLists.Struct8[]{new Capnproto_test.Capnp.Test.TestLists.Struct8()
-            {F = 123}, new Capnproto_test.Capnp.Test.TestLists.Struct8()
-            {F = 45}}, List16 = new Capnproto_test.Capnp.Test.TestLists.Struct16[]{new Capnproto_test.Capnp.Test.TestLists.Struct16()
-            {F = 12345}, new Capnproto_test.Capnp.Test.TestLists.Struct16()
-            {F = 6789}}, List32 = new Capnproto_test.Capnp.Test.TestLists.Struct32[]{new Capnproto_test.Capnp.Test.TestLists.Struct32()
-            {F = 123456789U}, new Capnproto_test.Capnp.Test.TestLists.Struct32()
-            {F = 234567890U}}, List64 = new Capnproto_test.Capnp.Test.TestLists.Struct64[]{new Capnproto_test.Capnp.Test.TestLists.Struct64()
-            {F = 1234567890123456UL}, new Capnproto_test.Capnp.Test.TestLists.Struct64()
-            {F = 2345678901234567UL}}, ListP = new Capnproto_test.Capnp.Test.TestLists.StructP[]{new Capnproto_test.Capnp.Test.TestLists.StructP()
-            {F = "foo"}, new Capnproto_test.Capnp.Test.TestLists.StructP()
-            {F = "bar"}}, Int32ListList = new IReadOnlyList<int>[]{new int[]{1, 2, 3}, new int[]{4, 5}, new int[]{12341234}}, TextListList = new IReadOnlyList<string>[]{new string[]{"foo", "bar"}, new string[]{"baz"}, new string[]{"qux", "corge"}}, StructListList = new IReadOnlyList<Capnproto_test.Capnp.Test.TestAllTypes>[]{new Capnproto_test.Capnp.Test.TestAllTypes[]{new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 0, Int32Field = 123, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 0, Int32Field = 456, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}}, new Capnproto_test.Capnp.Test.TestAllTypes[]{new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 0, Int32Field = 789, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}}}};
+            {
+                List0 = new Capnproto_test.Capnp.Test.TestLists.Struct0[]
+                {
+                    new Capnproto_test.Capnp.Test.TestLists.Struct0()
+                    {
+                    },
+                    new Capnproto_test.Capnp.Test.TestLists.Struct0()
+                    {
+                    }
+                },
+                List1 = new Capnproto_test.Capnp.Test.TestLists.Struct1[]
+                {
+                    new Capnproto_test.Capnp.Test.TestLists.Struct1()
+                    {
+                        F = true
+                    },
+                    new Capnproto_test.Capnp.Test.TestLists.Struct1()
+                    {
+                        F = false
+                    },
+                    new Capnproto_test.Capnp.Test.TestLists.Struct1()
+                    {
+                        F = true
+                    },
+                    new Capnproto_test.Capnp.Test.TestLists.Struct1()
+                    {
+                        F = true
+                    }
+                },
+                List8 = new Capnproto_test.Capnp.Test.TestLists.Struct8[]
+                {
+                    new Capnproto_test.Capnp.Test.TestLists.Struct8()
+                    {
+                        F = 123
+                    },
+                    new Capnproto_test.Capnp.Test.TestLists.Struct8()
+                    {
+                        F = 45
+                    }
+                },
+                List16 = new Capnproto_test.Capnp.Test.TestLists.Struct16[]
+                {
+                    new Capnproto_test.Capnp.Test.TestLists.Struct16()
+                    {
+                        F = 12345
+                    },
+                    new Capnproto_test.Capnp.Test.TestLists.Struct16()
+                    {
+                        F = 6789
+                    }
+                },
+                List32 = new Capnproto_test.Capnp.Test.TestLists.Struct32[]
+                {
+                    new Capnproto_test.Capnp.Test.TestLists.Struct32()
+                    {
+                        F = 123456789U
+                    },
+                    new Capnproto_test.Capnp.Test.TestLists.Struct32()
+                    {
+                        F = 234567890U
+                    }
+                },
+                List64 = new Capnproto_test.Capnp.Test.TestLists.Struct64[]
+                {
+                    new Capnproto_test.Capnp.Test.TestLists.Struct64()
+                    {
+                        F = 1234567890123456UL
+                    },
+                    new Capnproto_test.Capnp.Test.TestLists.Struct64()
+                    {
+                        F = 2345678901234567UL
+                    }
+                },
+                ListP = new Capnproto_test.Capnp.Test.TestLists.StructP[]
+                {
+                    new Capnproto_test.Capnp.Test.TestLists.StructP()
+                    {
+                        F = "foo"
+                    },
+                    new Capnproto_test.Capnp.Test.TestLists.StructP()
+                    {
+                        F = "bar"
+                    }
+                },
+                Int32ListList = new IReadOnlyList<int>[]
+                {
+                    new int[]
+                    {
+                        1,
+                        2,
+                        3
+                    },
+                    new int[]
+                    {
+                        4,
+                        5
+                    },
+                    new int[]
+                    {
+                        12341234
+                    }
+                },
+                TextListList = new IReadOnlyList<string>[]
+                {
+                    new string[]
+                    {
+                        "foo",
+                        "bar"
+                    },
+                    new string[]
+                    {
+                        "baz"
+                    },
+                    new string[]
+                    {
+                        "qux",
+                        "corge"
+                    }
+                },
+                StructListList = new IReadOnlyList<Capnproto_test.Capnp.Test.TestAllTypes>[]
+                {
+                    new Capnproto_test.Capnp.Test.TestAllTypes[]
+                    {
+                        new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                            BoolField = false,
+                            Int8Field = 0,
+                            Int16Field = 0,
+                            Int32Field = 123,
+                            Int64Field = 0L,
+                            UInt8Field = 0,
+                            UInt16Field = 0,
+                            UInt32Field = 0U,
+                            UInt64Field = 0UL,
+                            Float32Field = 0F,
+                            Float64Field = 0,
+                            TextField = null,
+                            DataField = new byte[]
+                            {
+                            },
+                            StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                            {
+                            },
+                            EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                            VoidList = 0,
+                            BoolList = new bool[]
+                            {
+                            },
+                            Int8List = new sbyte[]
+                            {
+                            },
+                            Int16List = new short[]
+                            {
+                            },
+                            Int32List = new int[]
+                            {
+                            },
+                            Int64List = new long[]
+                            {
+                            },
+                            UInt8List = new byte[]
+                            {
+                            },
+                            UInt16List = new ushort[]
+                            {
+                            },
+                            UInt32List = new uint[]
+                            {
+                            },
+                            UInt64List = new ulong[]
+                            {
+                            },
+                            Float32List = new float[]
+                            {
+                            },
+                            Float64List = new double[]
+                            {
+                            },
+                            TextList = new string[]
+                            {
+                            },
+                            DataList = new IReadOnlyList<byte>[]
+                            {
+                            },
+                            StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                            {
+                            },
+                            EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                            {
+                            },
+                            InterfaceList = 0
+                        },
+                        new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                            BoolField = false,
+                            Int8Field = 0,
+                            Int16Field = 0,
+                            Int32Field = 456,
+                            Int64Field = 0L,
+                            UInt8Field = 0,
+                            UInt16Field = 0,
+                            UInt32Field = 0U,
+                            UInt64Field = 0UL,
+                            Float32Field = 0F,
+                            Float64Field = 0,
+                            TextField = null,
+                            DataField = new byte[]
+                            {
+                            },
+                            StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                            {
+                            },
+                            EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                            VoidList = 0,
+                            BoolList = new bool[]
+                            {
+                            },
+                            Int8List = new sbyte[]
+                            {
+                            },
+                            Int16List = new short[]
+                            {
+                            },
+                            Int32List = new int[]
+                            {
+                            },
+                            Int64List = new long[]
+                            {
+                            },
+                            UInt8List = new byte[]
+                            {
+                            },
+                            UInt16List = new ushort[]
+                            {
+                            },
+                            UInt32List = new uint[]
+                            {
+                            },
+                            UInt64List = new ulong[]
+                            {
+                            },
+                            Float32List = new float[]
+                            {
+                            },
+                            Float64List = new double[]
+                            {
+                            },
+                            TextList = new string[]
+                            {
+                            },
+                            DataList = new IReadOnlyList<byte>[]
+                            {
+                            },
+                            StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                            {
+                            },
+                            EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                            {
+                            },
+                            InterfaceList = 0
+                        }
+                    },
+                    new Capnproto_test.Capnp.Test.TestAllTypes[]
+                    {
+                        new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                            BoolField = false,
+                            Int8Field = 0,
+                            Int16Field = 0,
+                            Int32Field = 789,
+                            Int64Field = 0L,
+                            UInt8Field = 0,
+                            UInt16Field = 0,
+                            UInt32Field = 0U,
+                            UInt64Field = 0UL,
+                            Float32Field = 0F,
+                            Float64Field = 0,
+                            TextField = null,
+                            DataField = new byte[]
+                            {
+                            },
+                            StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                            {
+                            },
+                            EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                            VoidList = 0,
+                            BoolList = new bool[]
+                            {
+                            },
+                            Int8List = new sbyte[]
+                            {
+                            },
+                            Int16List = new short[]
+                            {
+                            },
+                            Int32List = new int[]
+                            {
+                            },
+                            Int64List = new long[]
+                            {
+                            },
+                            UInt8List = new byte[]
+                            {
+                            },
+                            UInt16List = new ushort[]
+                            {
+                            },
+                            UInt32List = new uint[]
+                            {
+                            },
+                            UInt64List = new ulong[]
+                            {
+                            },
+                            Float32List = new float[]
+                            {
+                            },
+                            Float64List = new double[]
+                            {
+                            },
+                            TextList = new string[]
+                            {
+                            },
+                            DataList = new IReadOnlyList<byte>[]
+                            {
+                            },
+                            StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                            {
+                            },
+                            EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                            {
+                            },
+                            InterfaceList = 0
+                        }
+                    }
+                }
+            };
         }
 
-        public Capnproto_test.Capnp.Test.TestLists Lists
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestLists Lists { get; set; }
 
         public struct READER
         {
@@ -6497,11 +5754,7 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 1);
             }
 
-            public Capnproto_test.Capnp.Test.TestLists.WRITER Lists
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestLists.WRITER>(0);
-                set => Link(0, value);
-            }
+            public Capnproto_test.Capnp.Test.TestLists.WRITER Lists { get => BuildPointer<Capnproto_test.Capnp.Test.TestLists.WRITER>(0); set => Link(0, value); }
         }
     }
 
@@ -6538,35 +5791,11 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public int Foo
-        {
-            get;
-            set;
-        }
-
-        public string Bar
-        {
-            get;
-            set;
-        }
-
-        public short Baz
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestLateUnion.theUnion TheUnion
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestLateUnion.anotherUnion AnotherUnion
-        {
-            get;
-            set;
-        }
+        public int Foo { get; set; }
+        public string Bar { get; set; }
+        public short Baz { get; set; }
+        public Capnproto_test.Capnp.Test.TestLateUnion.theUnion TheUnion { get; set; }
+        public Capnproto_test.Capnp.Test.TestLateUnion.anotherUnion AnotherUnion { get; set; }
 
         public struct READER
         {
@@ -6593,33 +5822,11 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(3, 3);
             }
 
-            public int Foo
-            {
-                get => this.ReadDataInt(0UL, 0);
-                set => this.WriteData(0UL, value, 0);
-            }
-
-            public string Bar
-            {
-                get => this.ReadText(0, null);
-                set => this.WriteText(0, value, null);
-            }
-
-            public short Baz
-            {
-                get => this.ReadDataShort(32UL, (short)0);
-                set => this.WriteData(32UL, value, (short)0);
-            }
-
-            public theUnion.WRITER TheUnion
-            {
-                get => Rewrap<theUnion.WRITER>();
-            }
-
-            public anotherUnion.WRITER AnotherUnion
-            {
-                get => Rewrap<anotherUnion.WRITER>();
-            }
+            public int Foo { get => this.ReadDataInt(0UL, 0); set => this.WriteData(0UL, value, 0); }
+            public string Bar { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+            public short Baz { get => this.ReadDataShort(32UL, (short)0); set => this.WriteData(32UL, value, (short)0); }
+            public theUnion.WRITER TheUnion { get => Rewrap<theUnion.WRITER>(); }
+            public anotherUnion.WRITER AnotherUnion { get => Rewrap<anotherUnion.WRITER>(); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x807280a2901aa079UL)]
@@ -6758,29 +5965,10 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(48U, (ushort)0);
-                    set => this.WriteData(48U, (ushort)value, (ushort)0);
-                }
-
-                public string Qux
-                {
-                    get => which == WHICH.Qux ? this.ReadText(1, null) : default;
-                    set => this.WriteText(1, value, null);
-                }
-
-                public ListOfPrimitivesSerializer<int> Corge
-                {
-                    get => which == WHICH.Corge ? BuildPointer<ListOfPrimitivesSerializer<int>>(1) : default;
-                    set => Link(1, value);
-                }
-
-                public float Grault
-                {
-                    get => which == WHICH.Grault ? this.ReadDataFloat(64UL, 0F) : default;
-                    set => this.WriteData(64UL, value, 0F);
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(48U, (ushort)0); set => this.WriteData(48U, (ushort)value, (ushort)0); }
+                public string Qux { get => which == WHICH.Qux ? this.ReadText(1, null) : default; set => this.WriteText(1, value, null); }
+                public ListOfPrimitivesSerializer<int> Corge { get => which == WHICH.Corge ? BuildPointer<ListOfPrimitivesSerializer<int>>(1) : default; set => Link(1, value); }
+                public float Grault { get => which == WHICH.Grault ? this.ReadDataFloat(64UL, 0F) : default; set => this.WriteData(64UL, value, 0F); }
             }
         }
 
@@ -6920,29 +6108,10 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(96U, (ushort)0);
-                    set => this.WriteData(96U, (ushort)value, (ushort)0);
-                }
-
-                public string Qux
-                {
-                    get => which == WHICH.Qux ? this.ReadText(2, null) : default;
-                    set => this.WriteText(2, value, null);
-                }
-
-                public ListOfPrimitivesSerializer<int> Corge
-                {
-                    get => which == WHICH.Corge ? BuildPointer<ListOfPrimitivesSerializer<int>>(2) : default;
-                    set => Link(2, value);
-                }
-
-                public float Grault
-                {
-                    get => which == WHICH.Grault ? this.ReadDataFloat(128UL, 0F) : default;
-                    set => this.WriteData(128UL, value, 0F);
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(96U, (ushort)0); set => this.WriteData(96U, (ushort)value, (ushort)0); }
+                public string Qux { get => which == WHICH.Qux ? this.ReadText(2, null) : default; set => this.WriteText(2, value, null); }
+                public ListOfPrimitivesSerializer<int> Corge { get => which == WHICH.Corge ? BuildPointer<ListOfPrimitivesSerializer<int>>(2) : default; set => Link(2, value); }
+                public float Grault { get => which == WHICH.Grault ? this.ReadDataFloat(128UL, 0F) : default; set => this.WriteData(128UL, value, 0F); }
             }
         }
     }
@@ -6976,23 +6145,9 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public long Old1
-        {
-            get;
-            set;
-        }
-
-        public string Old2
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestOldVersion Old3
-        {
-            get;
-            set;
-        }
+        public long Old1 { get; set; }
+        public string Old2 { get; set; }
+        public Capnproto_test.Capnp.Test.TestOldVersion Old3 { get; set; }
 
         public struct READER
         {
@@ -7018,23 +6173,9 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(1, 2);
             }
 
-            public long Old1
-            {
-                get => this.ReadDataLong(0UL, 0L);
-                set => this.WriteData(0UL, value, 0L);
-            }
-
-            public string Old2
-            {
-                get => this.ReadText(0, null);
-                set => this.WriteText(0, value, null);
-            }
-
-            public Capnproto_test.Capnp.Test.TestOldVersion.WRITER Old3
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestOldVersion.WRITER>(1);
-                set => Link(1, value);
-            }
+            public long Old1 { get => this.ReadDataLong(0UL, 0L); set => this.WriteData(0UL, value, 0L); }
+            public string Old2 { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+            public Capnproto_test.Capnp.Test.TestOldVersion.WRITER Old3 { get => BuildPointer<Capnproto_test.Capnp.Test.TestOldVersion.WRITER>(1); set => Link(1, value); }
         }
     }
 
@@ -7072,36 +6213,11 @@ namespace Capnproto_test.Capnp.Test
             New2 = New2 ?? "baz";
         }
 
-        public long Old1
-        {
-            get;
-            set;
-        }
-
-        public string Old2
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestNewVersion Old3
-        {
-            get;
-            set;
-        }
-
-        public long New1
-        {
-            get;
-            set;
-        }
-
-        = 987L;
-        public string New2
-        {
-            get;
-            set;
-        }
+        public long Old1 { get; set; }
+        public string Old2 { get; set; }
+        public Capnproto_test.Capnp.Test.TestNewVersion Old3 { get; set; }
+        public long New1 { get; set; } = 987L;
+        public string New2 { get; set; }
 
         public struct READER
         {
@@ -7129,35 +6245,11 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(2, 3);
             }
 
-            public long Old1
-            {
-                get => this.ReadDataLong(0UL, 0L);
-                set => this.WriteData(0UL, value, 0L);
-            }
-
-            public string Old2
-            {
-                get => this.ReadText(0, null);
-                set => this.WriteText(0, value, null);
-            }
-
-            public Capnproto_test.Capnp.Test.TestNewVersion.WRITER Old3
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestNewVersion.WRITER>(1);
-                set => Link(1, value);
-            }
-
-            public long New1
-            {
-                get => this.ReadDataLong(64UL, 987L);
-                set => this.WriteData(64UL, value, 987L);
-            }
-
-            public string New2
-            {
-                get => this.ReadText(2, "baz");
-                set => this.WriteText(2, value, "baz");
-            }
+            public long Old1 { get => this.ReadDataLong(0UL, 0L); set => this.WriteData(0UL, value, 0L); }
+            public string Old2 { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+            public Capnproto_test.Capnp.Test.TestNewVersion.WRITER Old3 { get => BuildPointer<Capnproto_test.Capnp.Test.TestNewVersion.WRITER>(1); set => Link(1, value); }
+            public long New1 { get => this.ReadDataLong(64UL, 987L); set => this.WriteData(64UL, value, 987L); }
+            public string New2 { get => this.ReadText(2, "baz"); set => this.WriteText(2, value, "baz"); }
         }
     }
 
@@ -7263,17 +6355,8 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(2, 0);
             }
 
-            public WHICH which
-            {
-                get => (WHICH)this.ReadDataUShort(0U, (ushort)0);
-                set => this.WriteData(0U, (ushort)value, (ushort)0);
-            }
-
-            public ulong B
-            {
-                get => which == WHICH.B ? this.ReadDataULong(64UL, 0UL) : default;
-                set => this.WriteData(64UL, value, 0UL);
-            }
+            public WHICH which { get => (WHICH)this.ReadDataUShort(0U, (ushort)0); set => this.WriteData(0U, (ushort)value, (ushort)0); }
+            public ulong B { get => which == WHICH.B ? this.ReadDataULong(64UL, 0UL) : default; set => this.WriteData(64UL, value, 0UL); }
         }
     }
 
@@ -7392,22 +6475,9 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(3, 0);
             }
 
-            public WHICH which
-            {
-                get => (WHICH)this.ReadDataUShort(0U, (ushort)0);
-                set => this.WriteData(0U, (ushort)value, (ushort)0);
-            }
-
-            public a.WRITER A
-            {
-                get => which == WHICH.A ? Rewrap<a.WRITER>() : default;
-            }
-
-            public ulong B
-            {
-                get => which == WHICH.B ? this.ReadDataULong(64UL, 0UL) : default;
-                set => this.WriteData(64UL, value, 0UL);
-            }
+            public WHICH which { get => (WHICH)this.ReadDataUShort(0U, (ushort)0); set => this.WriteData(0U, (ushort)value, (ushort)0); }
+            public a.WRITER A { get => which == WHICH.A ? Rewrap<a.WRITER>() : default; }
+            public ulong B { get => which == WHICH.B ? this.ReadDataULong(64UL, 0UL) : default; set => this.WriteData(64UL, value, 0UL); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x86232c1de4513e84UL)]
@@ -7511,17 +6581,8 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(64U, (ushort)0);
-                    set => this.WriteData(64U, (ushort)value, (ushort)0);
-                }
-
-                public ulong A1
-                {
-                    get => which == WHICH.A1 ? this.ReadDataULong(128UL, 0UL) : default;
-                    set => this.WriteData(128UL, value, 0UL);
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(64U, (ushort)0); set => this.WriteData(64U, (ushort)value, (ushort)0); }
+                public ulong A1 { get => which == WHICH.A1 ? this.ReadDataULong(128UL, 0UL) : default; set => this.WriteData(128UL, value, 0UL); }
             }
         }
     }
@@ -7551,11 +6612,7 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public Capnproto_test.Capnp.Test.TestStructUnion.un Un
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestStructUnion.un Un { get; set; }
 
         public struct READER
         {
@@ -7578,10 +6635,7 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(1, 1);
             }
 
-            public un.WRITER Un
-            {
-                get => Rewrap<un.WRITER>();
-            }
+            public un.WRITER Un { get => Rewrap<un.WRITER>(); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x992edc677bef5a3cUL)]
@@ -7700,23 +6754,9 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(0U, (ushort)0);
-                    set => this.WriteData(0U, (ushort)value, (ushort)0);
-                }
-
-                public Capnproto_test.Capnp.Test.TestStructUnion.SomeStruct.WRITER Struct
-                {
-                    get => which == WHICH.Struct ? BuildPointer<Capnproto_test.Capnp.Test.TestStructUnion.SomeStruct.WRITER>(0) : default;
-                    set => Link(0, value);
-                }
-
-                public Capnproto_test.Capnp.Test.TestAnyPointer.WRITER Object
-                {
-                    get => which == WHICH.Object ? BuildPointer<Capnproto_test.Capnp.Test.TestAnyPointer.WRITER>(0) : default;
-                    set => Link(0, value);
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(0U, (ushort)0); set => this.WriteData(0U, (ushort)value, (ushort)0); }
+                public Capnproto_test.Capnp.Test.TestStructUnion.SomeStruct.WRITER Struct { get => which == WHICH.Struct ? BuildPointer<Capnproto_test.Capnp.Test.TestStructUnion.SomeStruct.WRITER>(0) : default; set => Link(0, value); }
+                public Capnproto_test.Capnp.Test.TestAnyPointer.WRITER Object { get => which == WHICH.Object ? BuildPointer<Capnproto_test.Capnp.Test.TestAnyPointer.WRITER>(0) : default; set => Link(0, value); }
             }
         }
 
@@ -7747,17 +6787,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string SomeText
-            {
-                get;
-                set;
-            }
-
-            public string MoreText
-            {
-                get;
-                set;
-            }
+            public string SomeText { get; set; }
+            public string MoreText { get; set; }
 
             public struct READER
             {
@@ -7781,17 +6812,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 2);
                 }
 
-                public string SomeText
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
-
-                public string MoreText
-                {
-                    get => this.ReadText(1, null);
-                    set => this.WriteText(1, value, null);
-                }
+                public string SomeText { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+                public string MoreText { get => this.ReadText(1, null); set => this.WriteText(1, value, null); }
             }
         }
     }
@@ -7823,17 +6845,8 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public string SomeText
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestPrintInlineStructs.InlineStruct> StructList
-        {
-            get;
-            set;
-        }
+        public string SomeText { get; set; }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestPrintInlineStructs.InlineStruct> StructList { get; set; }
 
         public struct READER
         {
@@ -7858,17 +6871,8 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 2);
             }
 
-            public string SomeText
-            {
-                get => this.ReadText(0, null);
-                set => this.WriteText(0, value, null);
-            }
-
-            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestPrintInlineStructs.InlineStruct.WRITER> StructList
-            {
-                get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestPrintInlineStructs.InlineStruct.WRITER>>(1);
-                set => Link(1, value);
-            }
+            public string SomeText { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestPrintInlineStructs.InlineStruct.WRITER> StructList { get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestPrintInlineStructs.InlineStruct.WRITER>>(1); set => Link(1, value); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x8e4936003708dac2UL)]
@@ -7898,17 +6902,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public int Int32Field
-            {
-                get;
-                set;
-            }
-
-            public string TextField
-            {
-                get;
-                set;
-            }
+            public int Int32Field { get; set; }
+            public string TextField { get; set; }
 
             public struct READER
             {
@@ -7932,17 +6927,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public int Int32Field
-                {
-                    get => this.ReadDataInt(0UL, 0);
-                    set => this.WriteData(0UL, value, 0);
-                }
-
-                public string TextField
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public int Int32Field { get => this.ReadDataInt(0UL, 0); set => this.WriteData(0UL, value, 0); }
+                public string TextField { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
     }
@@ -7974,20 +6960,9 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public float Field
-        {
-            get;
-            set;
-        }
+        public float Field { get; set; } = 123F;
+        public float BigField { get; set; } = 2E+30F;
 
-        = 123F;
-        public float BigField
-        {
-            get;
-            set;
-        }
-
-        = 2E+30F;
         public struct READER
         {
             readonly DeserializerState ctx;
@@ -8010,17 +6985,8 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(1, 0);
             }
 
-            public float Field
-            {
-                get => this.ReadDataFloat(0UL, 123F);
-                set => this.WriteData(0UL, value, 123F);
-            }
-
-            public float BigField
-            {
-                get => this.ReadDataFloat(32UL, 2E+30F);
-                set => this.WriteData(32UL, value, 2E+30F);
-            }
+            public float Field { get => this.ReadDataFloat(0UL, 123F); set => this.WriteData(0UL, value, 123F); }
+            public float BigField { get => this.ReadDataFloat(32UL, 2E+30F); set => this.WriteData(32UL, value, 2E+30F); }
         }
     }
 
@@ -8101,17 +7067,8 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public TFoo Foo
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<TBar, TFoo> Rev
-        {
-            get;
-            set;
-        }
+        public TFoo Foo { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<TBar, TFoo> Rev { get; set; }
 
         public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.ug Ug
         {
@@ -8123,11 +7080,7 @@ namespace Capnproto_test.Capnp.Test
             }
         }
 
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner> List
-        {
-            get;
-            set;
-        }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner> List { get; set; }
 
         public struct READER
         {
@@ -8156,34 +7109,11 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(1, 3);
             }
 
-            public WHICH which
-            {
-                get => (WHICH)this.ReadDataUShort(0U, (ushort)0);
-                set => this.WriteData(0U, (ushort)value, (ushort)0);
-            }
-
-            public DynamicSerializerState Foo
-            {
-                get => BuildPointer<DynamicSerializerState>(0);
-                set => Link(0, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<TBar, TFoo>.WRITER Rev
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TBar, TFoo>.WRITER>(1);
-                set => Link(1, value);
-            }
-
-            public ug.WRITER Ug
-            {
-                get => which == WHICH.Ug ? Rewrap<ug.WRITER>() : default;
-            }
-
-            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER> List
-            {
-                get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER>>(2);
-                set => Link(2, value);
-            }
+            public WHICH which { get => (WHICH)this.ReadDataUShort(0U, (ushort)0); set => this.WriteData(0U, (ushort)value, (ushort)0); }
+            public DynamicSerializerState Foo { get => BuildPointer<DynamicSerializerState>(0); set => Link(0, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<TBar, TFoo>.WRITER Rev { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TBar, TFoo>.WRITER>(1); set => Link(1, value); }
+            public ug.WRITER Ug { get => which == WHICH.Ug ? Rewrap<ug.WRITER>() : default; }
+            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER> List { get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER>>(2); set => Link(2, value); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xb46a779beaf3384eUL)]
@@ -8211,11 +7141,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public int Ugfoo
-            {
-                get;
-                set;
-            }
+            public int Ugfoo { get; set; }
 
             public struct READER
             {
@@ -8237,11 +7163,7 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public int Ugfoo
-                {
-                    get => this.ReadDataInt(32UL, 0);
-                    set => this.WriteData(32UL, value, 0);
-                }
+                public int Ugfoo { get => this.ReadDataInt(32UL, 0); set => this.WriteData(32UL, value, 0); }
             }
         }
 
@@ -8272,17 +7194,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public TFoo Foo
-            {
-                get;
-                set;
-            }
-
-            public TBar Bar
-            {
-                get;
-                set;
-            }
+            public TFoo Foo { get; set; }
+            public TBar Bar { get; set; }
 
             public struct READER
             {
@@ -8306,17 +7219,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 2);
                 }
 
-                public DynamicSerializerState Foo
-                {
-                    get => BuildPointer<DynamicSerializerState>(0);
-                    set => Link(0, value);
-                }
-
-                public DynamicSerializerState Bar
-                {
-                    get => BuildPointer<DynamicSerializerState>(1);
-                    set => Link(1, value);
-                }
+                public DynamicSerializerState Foo { get => BuildPointer<DynamicSerializerState>(0); set => Link(0, value); }
+                public DynamicSerializerState Bar { get => BuildPointer<DynamicSerializerState>(1); set => Link(1, value); }
             }
         }
 
@@ -8351,29 +7255,10 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public TBar Bar
-            {
-                get;
-                set;
-            }
-
-            public TBaz Baz
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner InnerBound
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner InnerUnbound
-            {
-                get;
-                set;
-            }
+            public TBar Bar { get; set; }
+            public TBaz Baz { get; set; }
+            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner InnerBound { get; set; }
+            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner InnerUnbound { get; set; }
 
             public struct READER
             {
@@ -8401,29 +7286,10 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 4);
                 }
 
-                public DynamicSerializerState Bar
-                {
-                    get => BuildPointer<DynamicSerializerState>(0);
-                    set => Link(0, value);
-                }
-
-                public DynamicSerializerState Baz
-                {
-                    get => BuildPointer<DynamicSerializerState>(1);
-                    set => Link(1, value);
-                }
-
-                public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER InnerBound
-                {
-                    get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER>(2);
-                    set => Link(2, value);
-                }
-
-                public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER InnerUnbound
-                {
-                    get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER>(3);
-                    set => Link(3, value);
-                }
+                public DynamicSerializerState Bar { get => BuildPointer<DynamicSerializerState>(0); set => Link(0, value); }
+                public DynamicSerializerState Baz { get => BuildPointer<DynamicSerializerState>(1); set => Link(1, value); }
+                public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER InnerBound { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER>(2); set => Link(2, value); }
+                public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER InnerUnbound { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER>(3); set => Link(3, value); }
             }
 
             [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xb6a0829c762b06f3UL)]
@@ -8457,29 +7323,10 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public TFoo Foo
-                {
-                    get;
-                    set;
-                }
-
-                public TBar Bar
-                {
-                    get;
-                    set;
-                }
-
-                public TBaz Baz
-                {
-                    get;
-                    set;
-                }
-
-                public TQux Qux
-                {
-                    get;
-                    set;
-                }
+                public TFoo Foo { get; set; }
+                public TBar Bar { get; set; }
+                public TBaz Baz { get; set; }
+                public TQux Qux { get; set; }
 
                 public struct READER
                 {
@@ -8505,32 +7352,13 @@ namespace Capnproto_test.Capnp.Test
                         this.SetStruct(0, 4);
                     }
 
-                    public DynamicSerializerState Foo
-                    {
-                        get => BuildPointer<DynamicSerializerState>(0);
-                        set => Link(0, value);
-                    }
-
-                    public DynamicSerializerState Bar
-                    {
-                        get => BuildPointer<DynamicSerializerState>(1);
-                        set => Link(1, value);
-                    }
-
-                    public DynamicSerializerState Baz
-                    {
-                        get => BuildPointer<DynamicSerializerState>(2);
-                        set => Link(2, value);
-                    }
-
-                    public DynamicSerializerState Qux
-                    {
-                        get => BuildPointer<DynamicSerializerState>(3);
-                        set => Link(3, value);
-                    }
+                    public DynamicSerializerState Foo { get => BuildPointer<DynamicSerializerState>(0); set => Link(0, value); }
+                    public DynamicSerializerState Bar { get => BuildPointer<DynamicSerializerState>(1); set => Link(1, value); }
+                    public DynamicSerializerState Baz { get => BuildPointer<DynamicSerializerState>(2); set => Link(2, value); }
+                    public DynamicSerializerState Qux { get => BuildPointer<DynamicSerializerState>(3); set => Link(3, value); }
                 }
 
-                [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x8839ed86c9794287UL), Proxy(typeof(DeepNestInterface_Proxy<>)), Skeleton(typeof(DeepNestInterface_Skeleton<>))]
+                [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x8839ed86c9794287UL), Proxy(typeof(Capnproto_test.Capnp.Test.TestGenerics<, >.Inner2<>.DeepNest<>.DeepNestInterface_Proxy<>)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestGenerics<, >.Inner2<>.DeepNest<>.DeepNestInterface_Skeleton<>))]
                 public interface IDeepNestInterface<TQuux> : IDisposable where TQuux : class
                 {
                     Task Call(CancellationToken cancellationToken_ = default);
@@ -8543,7 +7371,8 @@ namespace Capnproto_test.Capnp.Test
                     {
                         var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<TBaz>.DeepNest<TQux>.DeepNestInterface<TQuux>.Params_Call.WRITER>();
                         var arg_ = new Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<TBaz>.DeepNest<TQux>.DeepNestInterface<TQuux>.Params_Call()
-                        {};
+                        {
+                        };
                         arg_?.serialize(in_);
                         using (var d_ = await Call(9816138025992274567UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
                         {
@@ -8562,6 +7391,7 @@ namespace Capnproto_test.Capnp.Test
                     }
 
                     public override ulong InterfaceId => 9816138025992274567UL;
+
                     async Task<AnswerOrCounterquestion> Call(DeserializerState d_, CancellationToken cancellationToken_)
                     {
                         using (d_)
@@ -8669,7 +7499,7 @@ namespace Capnproto_test.Capnp.Test
             }
         }
 
-        [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xc9e749e8dd54da5cUL), Proxy(typeof(Interface_Proxy<>)), Skeleton(typeof(Interface_Skeleton<>))]
+        [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xc9e749e8dd54da5cUL), Proxy(typeof(Capnproto_test.Capnp.Test.TestGenerics<, >.Interface_Proxy<>)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestGenerics<, >.Interface_Skeleton<>))]
         public interface IInterface<TQux> : IDisposable where TQux : class
         {
             Task<(TQux, Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>)> Call(Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string> arg_, CancellationToken cancellationToken_ = default);
@@ -8689,9 +7519,7 @@ namespace Capnproto_test.Capnp.Test
                         var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Interface<TQux>.Result_Call>(d_);
                         return (r_.Qux, r_.Gen);
                     }
-                }
-
-                );
+                });
             }
         }
 
@@ -8704,6 +7532,7 @@ namespace Capnproto_test.Capnp.Test
             }
 
             public override ulong InterfaceId => 14548678385738242652UL;
+
             Task<AnswerOrCounterquestion> Call(DeserializerState d_, CancellationToken cancellationToken_)
             {
                 using (d_)
@@ -8711,12 +7540,14 @@ namespace Capnproto_test.Capnp.Test
                     return Impatient.MaybeTailCall(Impl.Call(CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string>>(d_), cancellationToken_), (qux, gen) =>
                     {
                         var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Interface<TQux>.Result_Call.WRITER>();
-                        var r_ = new Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Interface<TQux>.Result_Call{Qux = qux, Gen = gen};
+                        var r_ = new Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Interface<TQux>.Result_Call
+                        {
+                            Qux = qux,
+                            Gen = gen
+                        };
                         r_.serialize(s_);
                         return s_;
-                    }
-
-                    );
+                    });
                 }
             }
         }
@@ -8751,17 +7582,8 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public TQux Qux
-                {
-                    get;
-                    set;
-                }
-
-                public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer> Gen
-                {
-                    get;
-                    set;
-                }
+                public TQux Qux { get; set; }
+                public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer> Gen { get; set; }
 
                 public struct READER
                 {
@@ -8786,17 +7608,8 @@ namespace Capnproto_test.Capnp.Test
                         this.SetStruct(0, 2);
                     }
 
-                    public DynamicSerializerState Qux
-                    {
-                        get => BuildPointer<DynamicSerializerState>(0);
-                        set => Link(0, value);
-                    }
-
-                    public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.WRITER Gen
-                    {
-                        get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.WRITER>(1);
-                        set => Link(1, value);
-                    }
+                    public DynamicSerializerState Qux { get => BuildPointer<DynamicSerializerState>(0); set => Link(0, value); }
+                    public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.WRITER Gen { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.WRITER>(1); set => Link(1, value); }
                 }
             }
         }
@@ -8836,41 +7649,12 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public TFoo Foo
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner Inner
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<object> Inner2
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string> Inner2Bind
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string> Inner2Text
-            {
-                get;
-                set;
-            }
-
-            public TBar RevFoo
-            {
-                get;
-                set;
-            }
+            public TFoo Foo { get; set; }
+            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner Inner { get; set; }
+            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<object> Inner2 { get; set; }
+            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string> Inner2Bind { get; set; }
+            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string> Inner2Text { get; set; }
+            public TBar RevFoo { get; set; }
 
             public struct READER
             {
@@ -8902,41 +7686,12 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 6);
                 }
 
-                public DynamicSerializerState Foo
-                {
-                    get => BuildPointer<DynamicSerializerState>(0);
-                    set => Link(0, value);
-                }
-
-                public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER Inner
-                {
-                    get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER>(1);
-                    set => Link(1, value);
-                }
-
-                public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<object>.WRITER Inner2
-                {
-                    get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<object>.WRITER>(2);
-                    set => Link(2, value);
-                }
-
-                public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string>.WRITER Inner2Bind
-                {
-                    get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string>.WRITER>(3);
-                    set => Link(3, value);
-                }
-
-                public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string>.WRITER Inner2Text
-                {
-                    get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string>.WRITER>(4);
-                    set => Link(4, value);
-                }
-
-                public DynamicSerializerState RevFoo
-                {
-                    get => BuildPointer<DynamicSerializerState>(5);
-                    set => Link(5, value);
-                }
+                public DynamicSerializerState Foo { get => BuildPointer<DynamicSerializerState>(0); set => Link(0, value); }
+                public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER Inner { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner.WRITER>(1); set => Link(1, value); }
+                public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<object>.WRITER Inner2 { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<object>.WRITER>(2); set => Link(2, value); }
+                public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string>.WRITER Inner2Bind { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string>.WRITER>(3); set => Link(3, value); }
+                public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string>.WRITER Inner2Text { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.Inner2<string>.WRITER>(4); set => Link(4, value); }
+                public DynamicSerializerState RevFoo { get => BuildPointer<DynamicSerializerState>(5); set => Link(5, value); }
             }
         }
     }
@@ -8966,11 +7721,7 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar> Value
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar> Value { get; set; }
 
         public struct READER
         {
@@ -8994,11 +7745,7 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 1);
             }
 
-            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.WRITER Value
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.WRITER>(0);
-                set => Link(0, value);
-            }
+            public Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.WRITER Value { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<TFoo, TBar>.WRITER>(0); set => Link(0, value); }
         }
     }
 
@@ -9027,11 +7774,7 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes> Value
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes> Value { get; set; }
 
         public struct READER
         {
@@ -9055,15 +7798,11 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 1);
             }
 
-            public Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>.WRITER Value
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>.WRITER>(0);
-                set => Link(0, value);
-            }
+            public Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>.WRITER Value { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>.WRITER>(0); set => Link(0, value); }
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x8b9717a3f8d85a9aUL), Proxy(typeof(TestImplicitMethodParams_Proxy)), Skeleton(typeof(TestImplicitMethodParams_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x8b9717a3f8d85a9aUL), Proxy(typeof(Capnproto_test.Capnp.Test.TestImplicitMethodParams_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestImplicitMethodParams_Skeleton))]
     public interface ITestImplicitMethodParams : IDisposable
     {
         Task<Capnproto_test.Capnp.Test.TestGenerics<TT, TU>> Call<TT, TU>(TT foo, TU bar, CancellationToken cancellationToken_ = default)
@@ -9078,7 +7817,10 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestImplicitMethodParams.Params_Call<TT, TU>.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestImplicitMethodParams.Params_Call<TT, TU>()
-            {Foo = foo, Bar = bar};
+            {
+                Foo = foo,
+                Bar = bar
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(10058534285777328794UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -9087,9 +7829,7 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestGenerics<TT, TU>>(d_);
                     return r_;
                 }
-            }
-
-            );
+            });
         }
     }
 
@@ -9102,6 +7842,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 10058534285777328794UL;
+
         Task<AnswerOrCounterquestion> Call<TT, TU>(DeserializerState d_, CancellationToken cancellationToken_)
             where TT : class where TU : class
         {
@@ -9113,9 +7854,7 @@ namespace Capnproto_test.Capnp.Test
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestGenerics<TT, TU>.WRITER>();
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
     }
@@ -9149,17 +7888,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public TT Foo
-            {
-                get;
-                set;
-            }
-
-            public TU Bar
-            {
-                get;
-                set;
-            }
+            public TT Foo { get; set; }
+            public TU Bar { get; set; }
 
             public struct READER
             {
@@ -9183,22 +7913,13 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 2);
                 }
 
-                public DynamicSerializerState Foo
-                {
-                    get => BuildPointer<DynamicSerializerState>(0);
-                    set => Link(0, value);
-                }
-
-                public DynamicSerializerState Bar
-                {
-                    get => BuildPointer<DynamicSerializerState>(1);
-                    set => Link(1, value);
-                }
+                public DynamicSerializerState Foo { get => BuildPointer<DynamicSerializerState>(0); set => Link(0, value); }
+                public DynamicSerializerState Bar { get => BuildPointer<DynamicSerializerState>(1); set => Link(1, value); }
             }
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xdf9ccdeb81a704c9UL), Proxy(typeof(TestImplicitMethodParamsInGeneric_Proxy<>)), Skeleton(typeof(TestImplicitMethodParamsInGeneric_Skeleton<>))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xdf9ccdeb81a704c9UL), Proxy(typeof(Capnproto_test.Capnp.Test.TestImplicitMethodParamsInGeneric_Proxy<>)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestImplicitMethodParamsInGeneric_Skeleton<>))]
     public interface ITestImplicitMethodParamsInGeneric<TV> : IDisposable where TV : class
     {
         Task<Capnproto_test.Capnp.Test.TestGenerics<TT, TU>> Call<TT, TU>(TT foo, TU bar, CancellationToken cancellationToken_ = default)
@@ -9213,7 +7934,10 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestImplicitMethodParamsInGeneric<TV>.Params_Call<TT, TU>.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestImplicitMethodParamsInGeneric<TV>.Params_Call<TT, TU>()
-            {Foo = foo, Bar = bar};
+            {
+                Foo = foo,
+                Bar = bar
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(16112979978201007305UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -9222,9 +7946,7 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestGenerics<TT, TU>>(d_);
                     return r_;
                 }
-            }
-
-            );
+            });
         }
     }
 
@@ -9237,6 +7959,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 16112979978201007305UL;
+
         Task<AnswerOrCounterquestion> Call<TT, TU>(DeserializerState d_, CancellationToken cancellationToken_)
             where TT : class where TU : class
         {
@@ -9248,9 +7971,7 @@ namespace Capnproto_test.Capnp.Test
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestGenerics<TT, TU>.WRITER>();
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
     }
@@ -9285,17 +8006,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public TT Foo
-            {
-                get;
-                set;
-            }
-
-            public TU Bar
-            {
-                get;
-                set;
-            }
+            public TT Foo { get; set; }
+            public TU Bar { get; set; }
 
             public struct READER
             {
@@ -9319,17 +8031,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 2);
                 }
 
-                public DynamicSerializerState Foo
-                {
-                    get => BuildPointer<DynamicSerializerState>(0);
-                    set => Link(0, value);
-                }
-
-                public DynamicSerializerState Bar
-                {
-                    get => BuildPointer<DynamicSerializerState>(1);
-                    set => Link(1, value);
-                }
+                public DynamicSerializerState Foo { get => BuildPointer<DynamicSerializerState>(0); set => Link(0, value); }
+                public DynamicSerializerState Bar { get => BuildPointer<DynamicSerializerState>(1); set => Link(1, value); }
             }
         }
     }
@@ -9449,23 +8152,9 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(1, 1);
             }
 
-            public WHICH which
-            {
-                get => (WHICH)this.ReadDataUShort(0U, (ushort)0);
-                set => this.WriteData(0U, (ushort)value, (ushort)0);
-            }
-
-            public DynamicSerializerState Foo
-            {
-                get => which == WHICH.Foo ? BuildPointer<DynamicSerializerState>(0) : default;
-                set => Link(0, value);
-            }
-
-            public DynamicSerializerState Bar
-            {
-                get => which == WHICH.Bar ? BuildPointer<DynamicSerializerState>(0) : default;
-                set => Link(0, value);
-            }
+            public WHICH which { get => (WHICH)this.ReadDataUShort(0U, (ushort)0); set => this.WriteData(0U, (ushort)value, (ushort)0); }
+            public DynamicSerializerState Foo { get => which == WHICH.Foo ? BuildPointer<DynamicSerializerState>(0) : default; set => Link(0, value); }
+            public DynamicSerializerState Bar { get => which == WHICH.Bar ? BuildPointer<DynamicSerializerState>(0) : default; set => Link(0, value); }
         }
     }
 
@@ -9531,232 +8220,1382 @@ namespace Capnproto_test.Capnp.Test
         public void applyDefaults()
         {
             Default = Default ?? new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Rev = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>()
-            {Foo = "text", Rev = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 321, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Rev = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>()
-            {}, List = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner[]{}}, List = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>.Inner[]{}}, List = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner[]{}};
+            {
+                Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                {
+                    BoolField = false,
+                    Int8Field = 0,
+                    Int16Field = 123,
+                    Int32Field = 0,
+                    Int64Field = 0L,
+                    UInt8Field = 0,
+                    UInt16Field = 0,
+                    UInt32Field = 0U,
+                    UInt64Field = 0UL,
+                    Float32Field = 0F,
+                    Float64Field = 0,
+                    TextField = null,
+                    DataField = new byte[]
+                    {
+                    },
+                    StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                    },
+                    EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                    VoidList = 0,
+                    BoolList = new bool[]
+                    {
+                    },
+                    Int8List = new sbyte[]
+                    {
+                    },
+                    Int16List = new short[]
+                    {
+                    },
+                    Int32List = new int[]
+                    {
+                    },
+                    Int64List = new long[]
+                    {
+                    },
+                    UInt8List = new byte[]
+                    {
+                    },
+                    UInt16List = new ushort[]
+                    {
+                    },
+                    UInt32List = new uint[]
+                    {
+                    },
+                    UInt64List = new ulong[]
+                    {
+                    },
+                    Float32List = new float[]
+                    {
+                    },
+                    Float64List = new double[]
+                    {
+                    },
+                    TextList = new string[]
+                    {
+                    },
+                    DataList = new IReadOnlyList<byte>[]
+                    {
+                    },
+                    StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                    {
+                    },
+                    EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                    {
+                    },
+                    InterfaceList = 0
+                },
+                Rev = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>()
+                {
+                    Foo = "text",
+                    Rev = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>()
+                    {
+                        Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                            BoolField = false,
+                            Int8Field = 0,
+                            Int16Field = 321,
+                            Int32Field = 0,
+                            Int64Field = 0L,
+                            UInt8Field = 0,
+                            UInt16Field = 0,
+                            UInt32Field = 0U,
+                            UInt64Field = 0UL,
+                            Float32Field = 0F,
+                            Float64Field = 0,
+                            TextField = null,
+                            DataField = new byte[]
+                            {
+                            },
+                            StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                            {
+                            },
+                            EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                            VoidList = 0,
+                            BoolList = new bool[]
+                            {
+                            },
+                            Int8List = new sbyte[]
+                            {
+                            },
+                            Int16List = new short[]
+                            {
+                            },
+                            Int32List = new int[]
+                            {
+                            },
+                            Int64List = new long[]
+                            {
+                            },
+                            UInt8List = new byte[]
+                            {
+                            },
+                            UInt16List = new ushort[]
+                            {
+                            },
+                            UInt32List = new uint[]
+                            {
+                            },
+                            UInt64List = new ulong[]
+                            {
+                            },
+                            Float32List = new float[]
+                            {
+                            },
+                            Float64List = new double[]
+                            {
+                            },
+                            TextList = new string[]
+                            {
+                            },
+                            DataList = new IReadOnlyList<byte>[]
+                            {
+                            },
+                            StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                            {
+                            },
+                            EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                            {
+                            },
+                            InterfaceList = 0
+                        },
+                        Rev = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>()
+                        {
+                        },
+                        List = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner[]
+                        {
+                        }
+                    },
+                    List = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>.Inner[]
+                    {
+                    }
+                },
+                List = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner[]
+                {
+                }
+            };
             DefaultInner = DefaultInner ?? new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Bar = "text"};
+            {
+                Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                {
+                    BoolField = false,
+                    Int8Field = 0,
+                    Int16Field = 123,
+                    Int32Field = 0,
+                    Int64Field = 0L,
+                    UInt8Field = 0,
+                    UInt16Field = 0,
+                    UInt32Field = 0U,
+                    UInt64Field = 0UL,
+                    Float32Field = 0F,
+                    Float64Field = 0,
+                    TextField = null,
+                    DataField = new byte[]
+                    {
+                    },
+                    StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                    },
+                    EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                    VoidList = 0,
+                    BoolList = new bool[]
+                    {
+                    },
+                    Int8List = new sbyte[]
+                    {
+                    },
+                    Int16List = new short[]
+                    {
+                    },
+                    Int32List = new int[]
+                    {
+                    },
+                    Int64List = new long[]
+                    {
+                    },
+                    UInt8List = new byte[]
+                    {
+                    },
+                    UInt16List = new ushort[]
+                    {
+                    },
+                    UInt32List = new uint[]
+                    {
+                    },
+                    UInt64List = new ulong[]
+                    {
+                    },
+                    Float32List = new float[]
+                    {
+                    },
+                    Float64List = new double[]
+                    {
+                    },
+                    TextList = new string[]
+                    {
+                    },
+                    DataList = new IReadOnlyList<byte>[]
+                    {
+                    },
+                    StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                    {
+                    },
+                    EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                    {
+                    },
+                    InterfaceList = 0
+                },
+                Bar = "text"
+            };
             DefaultUser = DefaultUser ?? new Capnproto_test.Capnp.Test.TestUseGenerics()
-            {Basic = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Rev = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAnyPointer, Capnproto_test.Capnp.Test.TestAllTypes>()
-            {}, List = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner[]{}}, Inner = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
-            {}, Inner2 = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>()
-            {}, Unspecified = new Capnproto_test.Capnp.Test.TestGenerics<object, object>()
-            {}, UnspecifiedInner = new Capnproto_test.Capnp.Test.TestGenerics<object, object>.Inner2<string>()
-            {}, Default = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>()
-            {}, DefaultInner = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner()
-            {}, DefaultUser = new Capnproto_test.Capnp.Test.TestUseGenerics()
-            {}, Wrapper = new Capnproto_test.Capnp.Test.TestGenericsWrapper<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>()
-            {}, DefaultWrapper = new Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>()
-            {}, DefaultWrapper2 = new Capnproto_test.Capnp.Test.TestGenericsWrapper2()
-            {}, AliasFoo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, AliasInner = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
-            {}, AliasInner2 = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<object>()
-            {}, AliasInner2Bind = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<IReadOnlyList<uint>>()
-            {}, AliasInner2Text = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>()
-            {}, AliasRev = null, UseAliases = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.UseAliases()
-            {}, Cap = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.ITestInterface, string>()
-            {}};
+            {
+                Basic = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>()
+                {
+                    Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                        BoolField = false,
+                        Int8Field = 0,
+                        Int16Field = 123,
+                        Int32Field = 0,
+                        Int64Field = 0L,
+                        UInt8Field = 0,
+                        UInt16Field = 0,
+                        UInt32Field = 0U,
+                        UInt64Field = 0UL,
+                        Float32Field = 0F,
+                        Float64Field = 0,
+                        TextField = null,
+                        DataField = new byte[]
+                        {
+                        },
+                        StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                        },
+                        EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                        VoidList = 0,
+                        BoolList = new bool[]
+                        {
+                        },
+                        Int8List = new sbyte[]
+                        {
+                        },
+                        Int16List = new short[]
+                        {
+                        },
+                        Int32List = new int[]
+                        {
+                        },
+                        Int64List = new long[]
+                        {
+                        },
+                        UInt8List = new byte[]
+                        {
+                        },
+                        UInt16List = new ushort[]
+                        {
+                        },
+                        UInt32List = new uint[]
+                        {
+                        },
+                        UInt64List = new ulong[]
+                        {
+                        },
+                        Float32List = new float[]
+                        {
+                        },
+                        Float64List = new double[]
+                        {
+                        },
+                        TextList = new string[]
+                        {
+                        },
+                        DataList = new IReadOnlyList<byte>[]
+                        {
+                        },
+                        StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                        {
+                        },
+                        EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                        {
+                        },
+                        InterfaceList = 0
+                    },
+                    Rev = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAnyPointer, Capnproto_test.Capnp.Test.TestAllTypes>()
+                    {
+                    },
+                    List = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner[]
+                    {
+                    }
+                },
+                Inner = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
+                {
+                },
+                Inner2 = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>()
+                {
+                },
+                Unspecified = new Capnproto_test.Capnp.Test.TestGenerics<object, object>()
+                {
+                },
+                UnspecifiedInner = new Capnproto_test.Capnp.Test.TestGenerics<object, object>.Inner2<string>()
+                {
+                },
+                Default = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>()
+                {
+                },
+                DefaultInner = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner()
+                {
+                },
+                DefaultUser = new Capnproto_test.Capnp.Test.TestUseGenerics()
+                {
+                },
+                Wrapper = new Capnproto_test.Capnp.Test.TestGenericsWrapper<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>()
+                {
+                },
+                DefaultWrapper = new Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>()
+                {
+                },
+                DefaultWrapper2 = new Capnproto_test.Capnp.Test.TestGenericsWrapper2()
+                {
+                },
+                AliasFoo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                {
+                },
+                AliasInner = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
+                {
+                },
+                AliasInner2 = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<object>()
+                {
+                },
+                AliasInner2Bind = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<IReadOnlyList<uint>>()
+                {
+                },
+                AliasInner2Text = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>()
+                {
+                },
+                AliasRev = null,
+                UseAliases = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.UseAliases()
+                {
+                },
+                Cap = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.ITestInterface, string>()
+                {
+                }
+            };
             DefaultWrapper = DefaultWrapper ?? new Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>()
-            {Value = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>()
-            {Foo = "text", Rev = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 321, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Rev = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>()
-            {}, List = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner[]{}}, List = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>.Inner[]{}}};
+            {
+                Value = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>()
+                {
+                    Foo = "text",
+                    Rev = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>()
+                    {
+                        Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                            BoolField = false,
+                            Int8Field = 0,
+                            Int16Field = 321,
+                            Int32Field = 0,
+                            Int64Field = 0L,
+                            UInt8Field = 0,
+                            UInt16Field = 0,
+                            UInt32Field = 0U,
+                            UInt64Field = 0UL,
+                            Float32Field = 0F,
+                            Float64Field = 0,
+                            TextField = null,
+                            DataField = new byte[]
+                            {
+                            },
+                            StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                            {
+                            },
+                            EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                            VoidList = 0,
+                            BoolList = new bool[]
+                            {
+                            },
+                            Int8List = new sbyte[]
+                            {
+                            },
+                            Int16List = new short[]
+                            {
+                            },
+                            Int32List = new int[]
+                            {
+                            },
+                            Int64List = new long[]
+                            {
+                            },
+                            UInt8List = new byte[]
+                            {
+                            },
+                            UInt16List = new ushort[]
+                            {
+                            },
+                            UInt32List = new uint[]
+                            {
+                            },
+                            UInt64List = new ulong[]
+                            {
+                            },
+                            Float32List = new float[]
+                            {
+                            },
+                            Float64List = new double[]
+                            {
+                            },
+                            TextList = new string[]
+                            {
+                            },
+                            DataList = new IReadOnlyList<byte>[]
+                            {
+                            },
+                            StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                            {
+                            },
+                            EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                            {
+                            },
+                            InterfaceList = 0
+                        },
+                        Rev = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>()
+                        {
+                        },
+                        List = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner[]
+                        {
+                        }
+                    },
+                    List = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>.Inner[]
+                    {
+                    }
+                }
+            };
             DefaultWrapper2 = DefaultWrapper2 ?? new Capnproto_test.Capnp.Test.TestGenericsWrapper2()
-            {Value = new Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>()
-            {Value = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>()
-            {Foo = "text", Rev = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 321, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Rev = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>()
-            {}, List = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner[]{}}, List = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>.Inner[]{}}}};
+            {
+                Value = new Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>()
+                {
+                    Value = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>()
+                    {
+                        Foo = "text",
+                        Rev = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>()
+                        {
+                            Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                            {
+                                BoolField = false,
+                                Int8Field = 0,
+                                Int16Field = 321,
+                                Int32Field = 0,
+                                Int64Field = 0L,
+                                UInt8Field = 0,
+                                UInt16Field = 0,
+                                UInt32Field = 0U,
+                                UInt64Field = 0UL,
+                                Float32Field = 0F,
+                                Float64Field = 0,
+                                TextField = null,
+                                DataField = new byte[]
+                                {
+                                },
+                                StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                                {
+                                },
+                                EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                                VoidList = 0,
+                                BoolList = new bool[]
+                                {
+                                },
+                                Int8List = new sbyte[]
+                                {
+                                },
+                                Int16List = new short[]
+                                {
+                                },
+                                Int32List = new int[]
+                                {
+                                },
+                                Int64List = new long[]
+                                {
+                                },
+                                UInt8List = new byte[]
+                                {
+                                },
+                                UInt16List = new ushort[]
+                                {
+                                },
+                                UInt32List = new uint[]
+                                {
+                                },
+                                UInt64List = new ulong[]
+                                {
+                                },
+                                Float32List = new float[]
+                                {
+                                },
+                                Float64List = new double[]
+                                {
+                                },
+                                TextList = new string[]
+                                {
+                                },
+                                DataList = new IReadOnlyList<byte>[]
+                                {
+                                },
+                                StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                                {
+                                },
+                                EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                                {
+                                },
+                                InterfaceList = 0
+                            },
+                            Rev = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>()
+                            {
+                            },
+                            List = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner[]
+                            {
+                            }
+                        },
+                        List = new Capnproto_test.Capnp.Test.TestGenerics<string, Capnproto_test.Capnp.Test.TestAllTypes>.Inner[]
+                        {
+                        }
+                    }
+                }
+            };
             AliasFoo = AliasFoo ?? new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0};
+            {
+                BoolField = false,
+                Int8Field = 0,
+                Int16Field = 123,
+                Int32Field = 0,
+                Int64Field = 0L,
+                UInt8Field = 0,
+                UInt16Field = 0,
+                UInt32Field = 0U,
+                UInt64Field = 0UL,
+                Float32Field = 0F,
+                Float64Field = 0,
+                TextField = null,
+                DataField = new byte[]
+                {
+                },
+                StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                {
+                },
+                EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                VoidList = 0,
+                BoolList = new bool[]
+                {
+                },
+                Int8List = new sbyte[]
+                {
+                },
+                Int16List = new short[]
+                {
+                },
+                Int32List = new int[]
+                {
+                },
+                Int64List = new long[]
+                {
+                },
+                UInt8List = new byte[]
+                {
+                },
+                UInt16List = new ushort[]
+                {
+                },
+                UInt32List = new uint[]
+                {
+                },
+                UInt64List = new ulong[]
+                {
+                },
+                Float32List = new float[]
+                {
+                },
+                Float64List = new double[]
+                {
+                },
+                TextList = new string[]
+                {
+                },
+                DataList = new IReadOnlyList<byte>[]
+                {
+                },
+                StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                {
+                },
+                EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                {
+                },
+                InterfaceList = 0
+            };
             AliasInner = AliasInner ?? new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
-            {}};
+            {
+                Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                {
+                    BoolField = false,
+                    Int8Field = 0,
+                    Int16Field = 123,
+                    Int32Field = 0,
+                    Int64Field = 0L,
+                    UInt8Field = 0,
+                    UInt16Field = 0,
+                    UInt32Field = 0U,
+                    UInt64Field = 0UL,
+                    Float32Field = 0F,
+                    Float64Field = 0,
+                    TextField = null,
+                    DataField = new byte[]
+                    {
+                    },
+                    StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                    },
+                    EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                    VoidList = 0,
+                    BoolList = new bool[]
+                    {
+                    },
+                    Int8List = new sbyte[]
+                    {
+                    },
+                    Int16List = new short[]
+                    {
+                    },
+                    Int32List = new int[]
+                    {
+                    },
+                    Int64List = new long[]
+                    {
+                    },
+                    UInt8List = new byte[]
+                    {
+                    },
+                    UInt16List = new ushort[]
+                    {
+                    },
+                    UInt32List = new uint[]
+                    {
+                    },
+                    UInt64List = new ulong[]
+                    {
+                    },
+                    Float32List = new float[]
+                    {
+                    },
+                    Float64List = new double[]
+                    {
+                    },
+                    TextList = new string[]
+                    {
+                    },
+                    DataList = new IReadOnlyList<byte>[]
+                    {
+                    },
+                    StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                    {
+                    },
+                    EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                    {
+                    },
+                    InterfaceList = 0
+                },
+                Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
+                {
+                }
+            };
             AliasInner2 = AliasInner2 ?? new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<object>()
-            {Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
-            {}, InnerBound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
-            {}}, InnerUnbound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
-            {}};
+            {
+                Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
+                {
+                },
+                InnerBound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
+                {
+                    Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                        BoolField = false,
+                        Int8Field = 0,
+                        Int16Field = 123,
+                        Int32Field = 0,
+                        Int64Field = 0L,
+                        UInt8Field = 0,
+                        UInt16Field = 0,
+                        UInt32Field = 0U,
+                        UInt64Field = 0UL,
+                        Float32Field = 0F,
+                        Float64Field = 0,
+                        TextField = null,
+                        DataField = new byte[]
+                        {
+                        },
+                        StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                        },
+                        EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                        VoidList = 0,
+                        BoolList = new bool[]
+                        {
+                        },
+                        Int8List = new sbyte[]
+                        {
+                        },
+                        Int16List = new short[]
+                        {
+                        },
+                        Int32List = new int[]
+                        {
+                        },
+                        Int64List = new long[]
+                        {
+                        },
+                        UInt8List = new byte[]
+                        {
+                        },
+                        UInt16List = new ushort[]
+                        {
+                        },
+                        UInt32List = new uint[]
+                        {
+                        },
+                        UInt64List = new ulong[]
+                        {
+                        },
+                        Float32List = new float[]
+                        {
+                        },
+                        Float64List = new double[]
+                        {
+                        },
+                        TextList = new string[]
+                        {
+                        },
+                        DataList = new IReadOnlyList<byte>[]
+                        {
+                        },
+                        StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                        {
+                        },
+                        EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                        {
+                        },
+                        InterfaceList = 0
+                    },
+                    Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
+                    {
+                    }
+                },
+                InnerUnbound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
+                {
+                }
+            };
             AliasInner2Bind = AliasInner2Bind ?? new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<IReadOnlyList<uint>>()
-            {Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
-            {}, Baz = new uint[]{12U, 34U}, InnerBound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
-            {}}, InnerUnbound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
-            {}};
+            {
+                Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
+                {
+                },
+                Baz = new uint[]
+                {
+                    12U,
+                    34U
+                },
+                InnerBound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
+                {
+                    Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                        BoolField = false,
+                        Int8Field = 0,
+                        Int16Field = 123,
+                        Int32Field = 0,
+                        Int64Field = 0L,
+                        UInt8Field = 0,
+                        UInt16Field = 0,
+                        UInt32Field = 0U,
+                        UInt64Field = 0UL,
+                        Float32Field = 0F,
+                        Float64Field = 0,
+                        TextField = null,
+                        DataField = new byte[]
+                        {
+                        },
+                        StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                        },
+                        EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                        VoidList = 0,
+                        BoolList = new bool[]
+                        {
+                        },
+                        Int8List = new sbyte[]
+                        {
+                        },
+                        Int16List = new short[]
+                        {
+                        },
+                        Int32List = new int[]
+                        {
+                        },
+                        Int64List = new long[]
+                        {
+                        },
+                        UInt8List = new byte[]
+                        {
+                        },
+                        UInt16List = new ushort[]
+                        {
+                        },
+                        UInt32List = new uint[]
+                        {
+                        },
+                        UInt64List = new ulong[]
+                        {
+                        },
+                        Float32List = new float[]
+                        {
+                        },
+                        Float64List = new double[]
+                        {
+                        },
+                        TextList = new string[]
+                        {
+                        },
+                        DataList = new IReadOnlyList<byte>[]
+                        {
+                        },
+                        StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                        {
+                        },
+                        EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                        {
+                        },
+                        InterfaceList = 0
+                    },
+                    Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
+                    {
+                    }
+                },
+                InnerUnbound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
+                {
+                }
+            };
             AliasInner2Text = AliasInner2Text ?? new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>()
-            {Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
-            {}, Baz = "text", InnerBound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
-            {}}, InnerUnbound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
-            {}};
+            {
+                Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
+                {
+                },
+                Baz = "text",
+                InnerBound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
+                {
+                    Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                        BoolField = false,
+                        Int8Field = 0,
+                        Int16Field = 123,
+                        Int32Field = 0,
+                        Int64Field = 0L,
+                        UInt8Field = 0,
+                        UInt16Field = 0,
+                        UInt32Field = 0U,
+                        UInt64Field = 0UL,
+                        Float32Field = 0F,
+                        Float64Field = 0,
+                        TextField = null,
+                        DataField = new byte[]
+                        {
+                        },
+                        StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                        },
+                        EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                        VoidList = 0,
+                        BoolList = new bool[]
+                        {
+                        },
+                        Int8List = new sbyte[]
+                        {
+                        },
+                        Int16List = new short[]
+                        {
+                        },
+                        Int32List = new int[]
+                        {
+                        },
+                        Int64List = new long[]
+                        {
+                        },
+                        UInt8List = new byte[]
+                        {
+                        },
+                        UInt16List = new ushort[]
+                        {
+                        },
+                        UInt32List = new uint[]
+                        {
+                        },
+                        UInt64List = new ulong[]
+                        {
+                        },
+                        Float32List = new float[]
+                        {
+                        },
+                        Float64List = new double[]
+                        {
+                        },
+                        TextList = new string[]
+                        {
+                        },
+                        DataList = new IReadOnlyList<byte>[]
+                        {
+                        },
+                        StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                        {
+                        },
+                        EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                        {
+                        },
+                        InterfaceList = 0
+                    },
+                    Bar = new Capnproto_test.Capnp.Test.TestAnyPointer()
+                    {
+                    }
+                },
+                InnerUnbound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner()
+                {
+                }
+            };
             AliasRev = AliasRev ?? "text";
             UseAliases = UseAliases ?? new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.UseAliases()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Inner = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Bar = new uint[]{}}, Inner2 = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner2<object>()
-            {Bar = new uint[]{}, InnerBound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Bar = new uint[]{}}, InnerUnbound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
-            {}}, Inner2Bind = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner2<string>()
-            {Bar = new uint[]{}, Baz = "text", InnerBound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Bar = new uint[]{}}, InnerUnbound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
-            {}}, Inner2Text = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner2<string>()
-            {Bar = new uint[]{}, Baz = "text", InnerBound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
-            {Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {BoolField = false, Int8Field = 0, Int16Field = 123, Int32Field = 0, Int64Field = 0L, UInt8Field = 0, UInt16Field = 0, UInt32Field = 0U, UInt64Field = 0UL, Float32Field = 0F, Float64Field = 0, TextField = null, DataField = new byte[]{}, StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
-            {}, EnumField = Capnproto_test.Capnp.Test.TestEnum.foo, VoidList = 0, BoolList = new bool[]{}, Int8List = new sbyte[]{}, Int16List = new short[]{}, Int32List = new int[]{}, Int64List = new long[]{}, UInt8List = new byte[]{}, UInt16List = new ushort[]{}, UInt32List = new uint[]{}, UInt64List = new ulong[]{}, Float32List = new float[]{}, Float64List = new double[]{}, TextList = new string[]{}, DataList = new IReadOnlyList<byte>[]{}, StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]{}, EnumList = new Capnproto_test.Capnp.Test.TestEnum[]{}, InterfaceList = 0}, Bar = new uint[]{}}, InnerUnbound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
-            {}}, RevFoo = new uint[]{12U, 34U, 56U}};
+            {
+                Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                {
+                    BoolField = false,
+                    Int8Field = 0,
+                    Int16Field = 123,
+                    Int32Field = 0,
+                    Int64Field = 0L,
+                    UInt8Field = 0,
+                    UInt16Field = 0,
+                    UInt32Field = 0U,
+                    UInt64Field = 0UL,
+                    Float32Field = 0F,
+                    Float64Field = 0,
+                    TextField = null,
+                    DataField = new byte[]
+                    {
+                    },
+                    StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                    },
+                    EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                    VoidList = 0,
+                    BoolList = new bool[]
+                    {
+                    },
+                    Int8List = new sbyte[]
+                    {
+                    },
+                    Int16List = new short[]
+                    {
+                    },
+                    Int32List = new int[]
+                    {
+                    },
+                    Int64List = new long[]
+                    {
+                    },
+                    UInt8List = new byte[]
+                    {
+                    },
+                    UInt16List = new ushort[]
+                    {
+                    },
+                    UInt32List = new uint[]
+                    {
+                    },
+                    UInt64List = new ulong[]
+                    {
+                    },
+                    Float32List = new float[]
+                    {
+                    },
+                    Float64List = new double[]
+                    {
+                    },
+                    TextList = new string[]
+                    {
+                    },
+                    DataList = new IReadOnlyList<byte>[]
+                    {
+                    },
+                    StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                    {
+                    },
+                    EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                    {
+                    },
+                    InterfaceList = 0
+                },
+                Inner = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
+                {
+                    Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                    {
+                        BoolField = false,
+                        Int8Field = 0,
+                        Int16Field = 123,
+                        Int32Field = 0,
+                        Int64Field = 0L,
+                        UInt8Field = 0,
+                        UInt16Field = 0,
+                        UInt32Field = 0U,
+                        UInt64Field = 0UL,
+                        Float32Field = 0F,
+                        Float64Field = 0,
+                        TextField = null,
+                        DataField = new byte[]
+                        {
+                        },
+                        StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                        },
+                        EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                        VoidList = 0,
+                        BoolList = new bool[]
+                        {
+                        },
+                        Int8List = new sbyte[]
+                        {
+                        },
+                        Int16List = new short[]
+                        {
+                        },
+                        Int32List = new int[]
+                        {
+                        },
+                        Int64List = new long[]
+                        {
+                        },
+                        UInt8List = new byte[]
+                        {
+                        },
+                        UInt16List = new ushort[]
+                        {
+                        },
+                        UInt32List = new uint[]
+                        {
+                        },
+                        UInt64List = new ulong[]
+                        {
+                        },
+                        Float32List = new float[]
+                        {
+                        },
+                        Float64List = new double[]
+                        {
+                        },
+                        TextList = new string[]
+                        {
+                        },
+                        DataList = new IReadOnlyList<byte>[]
+                        {
+                        },
+                        StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                        {
+                        },
+                        EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                        {
+                        },
+                        InterfaceList = 0
+                    },
+                    Bar = new uint[]
+                    {
+                    }
+                },
+                Inner2 = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner2<object>()
+                {
+                    Bar = new uint[]
+                    {
+                    },
+                    InnerBound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
+                    {
+                        Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                            BoolField = false,
+                            Int8Field = 0,
+                            Int16Field = 123,
+                            Int32Field = 0,
+                            Int64Field = 0L,
+                            UInt8Field = 0,
+                            UInt16Field = 0,
+                            UInt32Field = 0U,
+                            UInt64Field = 0UL,
+                            Float32Field = 0F,
+                            Float64Field = 0,
+                            TextField = null,
+                            DataField = new byte[]
+                            {
+                            },
+                            StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                            {
+                            },
+                            EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                            VoidList = 0,
+                            BoolList = new bool[]
+                            {
+                            },
+                            Int8List = new sbyte[]
+                            {
+                            },
+                            Int16List = new short[]
+                            {
+                            },
+                            Int32List = new int[]
+                            {
+                            },
+                            Int64List = new long[]
+                            {
+                            },
+                            UInt8List = new byte[]
+                            {
+                            },
+                            UInt16List = new ushort[]
+                            {
+                            },
+                            UInt32List = new uint[]
+                            {
+                            },
+                            UInt64List = new ulong[]
+                            {
+                            },
+                            Float32List = new float[]
+                            {
+                            },
+                            Float64List = new double[]
+                            {
+                            },
+                            TextList = new string[]
+                            {
+                            },
+                            DataList = new IReadOnlyList<byte>[]
+                            {
+                            },
+                            StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                            {
+                            },
+                            EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                            {
+                            },
+                            InterfaceList = 0
+                        },
+                        Bar = new uint[]
+                        {
+                        }
+                    },
+                    InnerUnbound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
+                    {
+                    }
+                },
+                Inner2Bind = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner2<string>()
+                {
+                    Bar = new uint[]
+                    {
+                    },
+                    Baz = "text",
+                    InnerBound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
+                    {
+                        Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                            BoolField = false,
+                            Int8Field = 0,
+                            Int16Field = 123,
+                            Int32Field = 0,
+                            Int64Field = 0L,
+                            UInt8Field = 0,
+                            UInt16Field = 0,
+                            UInt32Field = 0U,
+                            UInt64Field = 0UL,
+                            Float32Field = 0F,
+                            Float64Field = 0,
+                            TextField = null,
+                            DataField = new byte[]
+                            {
+                            },
+                            StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                            {
+                            },
+                            EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                            VoidList = 0,
+                            BoolList = new bool[]
+                            {
+                            },
+                            Int8List = new sbyte[]
+                            {
+                            },
+                            Int16List = new short[]
+                            {
+                            },
+                            Int32List = new int[]
+                            {
+                            },
+                            Int64List = new long[]
+                            {
+                            },
+                            UInt8List = new byte[]
+                            {
+                            },
+                            UInt16List = new ushort[]
+                            {
+                            },
+                            UInt32List = new uint[]
+                            {
+                            },
+                            UInt64List = new ulong[]
+                            {
+                            },
+                            Float32List = new float[]
+                            {
+                            },
+                            Float64List = new double[]
+                            {
+                            },
+                            TextList = new string[]
+                            {
+                            },
+                            DataList = new IReadOnlyList<byte>[]
+                            {
+                            },
+                            StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                            {
+                            },
+                            EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                            {
+                            },
+                            InterfaceList = 0
+                        },
+                        Bar = new uint[]
+                        {
+                        }
+                    },
+                    InnerUnbound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
+                    {
+                    }
+                },
+                Inner2Text = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner2<string>()
+                {
+                    Bar = new uint[]
+                    {
+                    },
+                    Baz = "text",
+                    InnerBound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
+                    {
+                        Foo = new Capnproto_test.Capnp.Test.TestAllTypes()
+                        {
+                            BoolField = false,
+                            Int8Field = 0,
+                            Int16Field = 123,
+                            Int32Field = 0,
+                            Int64Field = 0L,
+                            UInt8Field = 0,
+                            UInt16Field = 0,
+                            UInt32Field = 0U,
+                            UInt64Field = 0UL,
+                            Float32Field = 0F,
+                            Float64Field = 0,
+                            TextField = null,
+                            DataField = new byte[]
+                            {
+                            },
+                            StructField = new Capnproto_test.Capnp.Test.TestAllTypes()
+                            {
+                            },
+                            EnumField = Capnproto_test.Capnp.Test.TestEnum.foo,
+                            VoidList = 0,
+                            BoolList = new bool[]
+                            {
+                            },
+                            Int8List = new sbyte[]
+                            {
+                            },
+                            Int16List = new short[]
+                            {
+                            },
+                            Int32List = new int[]
+                            {
+                            },
+                            Int64List = new long[]
+                            {
+                            },
+                            UInt8List = new byte[]
+                            {
+                            },
+                            UInt16List = new ushort[]
+                            {
+                            },
+                            UInt32List = new uint[]
+                            {
+                            },
+                            UInt64List = new ulong[]
+                            {
+                            },
+                            Float32List = new float[]
+                            {
+                            },
+                            Float64List = new double[]
+                            {
+                            },
+                            TextList = new string[]
+                            {
+                            },
+                            DataList = new IReadOnlyList<byte>[]
+                            {
+                            },
+                            StructList = new Capnproto_test.Capnp.Test.TestAllTypes[]
+                            {
+                            },
+                            EnumList = new Capnproto_test.Capnp.Test.TestEnum[]
+                            {
+                            },
+                            InterfaceList = 0
+                        },
+                        Bar = new uint[]
+                        {
+                        }
+                    },
+                    InnerUnbound = new Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.Inner()
+                    {
+                    }
+                },
+                RevFoo = new uint[]
+                {
+                    12U,
+                    34U,
+                    56U
+                }
+            };
         }
 
-        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer> Basic
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner Inner
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string> Inner2
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<object, object> Unspecified
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<object, object>.Inner2<string> UnspecifiedInner
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string> Default
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner DefaultInner
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestUseGenerics DefaultUser
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenericsWrapper<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer> Wrapper
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes> DefaultWrapper
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenericsWrapper2 DefaultWrapper2
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestAllTypes AliasFoo
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner AliasInner
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<object> AliasInner2
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<IReadOnlyList<uint>> AliasInner2Bind
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string> AliasInner2Text
-        {
-            get;
-            set;
-        }
-
-        public string AliasRev
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.UseAliases UseAliases
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.ITestInterface, string> Cap
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.IInterface<IReadOnlyList<byte>> GenericCap
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer> Basic { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner Inner { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string> Inner2 { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<object, object> Unspecified { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<object, object>.Inner2<string> UnspecifiedInner { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string> Default { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner DefaultInner { get; set; }
+        public Capnproto_test.Capnp.Test.TestUseGenerics DefaultUser { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenericsWrapper<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer> Wrapper { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes> DefaultWrapper { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenericsWrapper2 DefaultWrapper2 { get; set; }
+        public Capnproto_test.Capnp.Test.TestAllTypes AliasFoo { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner AliasInner { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<object> AliasInner2 { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<IReadOnlyList<uint>> AliasInner2Bind { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string> AliasInner2Text { get; set; }
+        public string AliasRev { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.UseAliases UseAliases { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.ITestInterface, string> Cap { get; set; }
+        public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.IInterface<IReadOnlyList<byte>> GenericCap { get; set; }
 
         public struct READER
         {
@@ -9816,125 +9655,26 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 20);
             }
 
-            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.WRITER Basic
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.WRITER>(0);
-                set => Link(0, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner.WRITER Inner
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner.WRITER>(1);
-                set => Link(1, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>.WRITER Inner2
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>.WRITER>(2);
-                set => Link(2, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<object, object>.WRITER Unspecified
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<object, object>.WRITER>(3);
-                set => Link(3, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<object, object>.Inner2<string>.WRITER UnspecifiedInner
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<object, object>.Inner2<string>.WRITER>(4);
-                set => Link(4, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.WRITER Default
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.WRITER>(5);
-                set => Link(5, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner.WRITER DefaultInner
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner.WRITER>(6);
-                set => Link(6, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestUseGenerics.WRITER DefaultUser
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestUseGenerics.WRITER>(7);
-                set => Link(7, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenericsWrapper<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.WRITER Wrapper
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenericsWrapper<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.WRITER>(8);
-                set => Link(8, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>.WRITER DefaultWrapper
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>.WRITER>(9);
-                set => Link(9, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenericsWrapper2.WRITER DefaultWrapper2
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenericsWrapper2.WRITER>(10);
-                set => Link(10, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestAllTypes.WRITER AliasFoo
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>(11);
-                set => Link(11, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner.WRITER AliasInner
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner.WRITER>(12);
-                set => Link(12, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<object>.WRITER AliasInner2
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<object>.WRITER>(13);
-                set => Link(13, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<IReadOnlyList<uint>>.WRITER AliasInner2Bind
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<IReadOnlyList<uint>>.WRITER>(14);
-                set => Link(14, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>.WRITER AliasInner2Text
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>.WRITER>(15);
-                set => Link(15, value);
-            }
-
-            public string AliasRev
-            {
-                get => this.ReadText(16, "text");
-                set => this.WriteText(16, value, "text");
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.UseAliases.WRITER UseAliases
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.UseAliases.WRITER>(17);
-                set => Link(17, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.ITestInterface, string>.WRITER Cap
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.ITestInterface, string>.WRITER>(18);
-                set => Link(18, value);
-            }
-
-            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.IInterface<IReadOnlyList<byte>> GenericCap
-            {
-                get => ReadCap<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.IInterface<IReadOnlyList<byte>>>(19);
-                set => LinkObject(19, value);
-            }
+            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.WRITER Basic { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.WRITER>(0); set => Link(0, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner.WRITER Inner { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner.WRITER>(1); set => Link(1, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>.WRITER Inner2 { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>.WRITER>(2); set => Link(2, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<object, object>.WRITER Unspecified { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<object, object>.WRITER>(3); set => Link(3, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<object, object>.Inner2<string>.WRITER UnspecifiedInner { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<object, object>.Inner2<string>.WRITER>(4); set => Link(4, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.WRITER Default { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.WRITER>(5); set => Link(5, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner.WRITER DefaultInner { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, string>.Inner.WRITER>(6); set => Link(6, value); }
+            public Capnproto_test.Capnp.Test.TestUseGenerics.WRITER DefaultUser { get => BuildPointer<Capnproto_test.Capnp.Test.TestUseGenerics.WRITER>(7); set => Link(7, value); }
+            public Capnproto_test.Capnp.Test.TestGenericsWrapper<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.WRITER Wrapper { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenericsWrapper<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.WRITER>(8); set => Link(8, value); }
+            public Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>.WRITER DefaultWrapper { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenericsWrapper<string, Capnproto_test.Capnp.Test.TestAllTypes>.WRITER>(9); set => Link(9, value); }
+            public Capnproto_test.Capnp.Test.TestGenericsWrapper2.WRITER DefaultWrapper2 { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenericsWrapper2.WRITER>(10); set => Link(10, value); }
+            public Capnproto_test.Capnp.Test.TestAllTypes.WRITER AliasFoo { get => BuildPointer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>(11); set => Link(11, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner.WRITER AliasInner { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner.WRITER>(12); set => Link(12, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<object>.WRITER AliasInner2 { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<object>.WRITER>(13); set => Link(13, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<IReadOnlyList<uint>>.WRITER AliasInner2Bind { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<IReadOnlyList<uint>>.WRITER>(14); set => Link(14, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>.WRITER AliasInner2Text { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, Capnproto_test.Capnp.Test.TestAnyPointer>.Inner2<string>.WRITER>(15); set => Link(15, value); }
+            public string AliasRev { get => this.ReadText(16, "text"); set => this.WriteText(16, value, "text"); }
+            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.UseAliases.WRITER UseAliases { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.UseAliases.WRITER>(17); set => Link(17, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.ITestInterface, string>.WRITER Cap { get => BuildPointer<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.ITestInterface, string>.WRITER>(18); set => Link(18, value); }
+            public Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.IInterface<IReadOnlyList<byte>> GenericCap { get => ReadCap<Capnproto_test.Capnp.Test.TestGenerics<Capnproto_test.Capnp.Test.TestAllTypes, IReadOnlyList<uint>>.IInterface<IReadOnlyList<byte>>>(19); set => LinkObject(19, value); }
         }
     }
 
@@ -10059,29 +9799,10 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public object AnyKindAsStruct
-        {
-            get;
-            set;
-        }
-
-        public object AnyStructAsStruct
-        {
-            get;
-            set;
-        }
-
-        public object AnyKindAsList
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<object> AnyListAsList
-        {
-            get;
-            set;
-        }
+        public object AnyKindAsStruct { get; set; }
+        public object AnyStructAsStruct { get; set; }
+        public object AnyKindAsList { get; set; }
+        public IReadOnlyList<object> AnyListAsList { get; set; }
 
         public struct READER
         {
@@ -10107,33 +9828,14 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 4);
             }
 
-            public DynamicSerializerState AnyKindAsStruct
-            {
-                get => BuildPointer<DynamicSerializerState>(0);
-                set => Link(0, value);
-            }
-
-            public DynamicSerializerState AnyStructAsStruct
-            {
-                get => BuildPointer<DynamicSerializerState>(1);
-                set => Link(1, value);
-            }
-
-            public DynamicSerializerState AnyKindAsList
-            {
-                get => BuildPointer<DynamicSerializerState>(2);
-                set => Link(2, value);
-            }
-
-            public DynamicSerializerState AnyListAsList
-            {
-                get => BuildPointer<DynamicSerializerState>(3);
-                set => Link(3, value);
-            }
+            public DynamicSerializerState AnyKindAsStruct { get => BuildPointer<DynamicSerializerState>(0); set => Link(0, value); }
+            public DynamicSerializerState AnyStructAsStruct { get => BuildPointer<DynamicSerializerState>(1); set => Link(1, value); }
+            public DynamicSerializerState AnyKindAsList { get => BuildPointer<DynamicSerializerState>(2); set => Link(2, value); }
+            public DynamicSerializerState AnyListAsList { get => BuildPointer<DynamicSerializerState>(3); set => Link(3, value); }
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x88eb12a0e0af92b2UL), Proxy(typeof(TestInterface_Proxy)), Skeleton(typeof(TestInterface_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x88eb12a0e0af92b2UL), Proxy(typeof(Capnproto_test.Capnp.Test.TestInterface_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestInterface_Skeleton))]
     public interface ITestInterface : IDisposable
     {
         Task<string> Foo(uint i, bool j, CancellationToken cancellationToken_ = default);
@@ -10148,7 +9850,10 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestInterface.Params_Foo.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestInterface.Params_Foo()
-            {I = i, J = j};
+            {
+                I = i,
+                J = j
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(9865999890858873522UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10161,7 +9866,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestInterface.Params_Bar.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestInterface.Params_Bar()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(9865999890858873522UL, 1, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10174,7 +9880,9 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestInterface.Params_Baz.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestInterface.Params_Baz()
-            {S = s};
+            {
+                S = s
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(9865999890858873522UL, 2, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10193,6 +9901,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 9865999890858873522UL;
+
         Task<AnswerOrCounterquestion> Foo(DeserializerState d_, CancellationToken cancellationToken_)
         {
             using (d_)
@@ -10201,12 +9910,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.Foo(in_.I, in_.J, cancellationToken_), x =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestInterface.Result_Foo.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestInterface.Result_Foo{X = x};
+                    var r_ = new Capnproto_test.Capnp.Test.TestInterface.Result_Foo
+                    {
+                        X = x
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -10261,17 +9971,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public uint I
-            {
-                get;
-                set;
-            }
-
-            public bool J
-            {
-                get;
-                set;
-            }
+            public uint I { get; set; }
+            public bool J { get; set; }
 
             public struct READER
             {
@@ -10295,17 +9996,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 0);
                 }
 
-                public uint I
-                {
-                    get => this.ReadDataUInt(0UL, 0U);
-                    set => this.WriteData(0UL, value, 0U);
-                }
-
-                public bool J
-                {
-                    get => this.ReadDataBool(32UL, false);
-                    set => this.WriteData(32UL, value, false);
-                }
+                public uint I { get => this.ReadDataUInt(0UL, 0U); set => this.WriteData(0UL, value, 0U); }
+                public bool J { get => this.ReadDataBool(32UL, false); set => this.WriteData(32UL, value, false); }
             }
         }
 
@@ -10334,11 +10026,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string X
-            {
-                get;
-                set;
-            }
+            public string X { get; set; }
 
             public struct READER
             {
@@ -10361,11 +10049,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public string X
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public string X { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -10484,11 +10168,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.TestAllTypes S
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.TestAllTypes S { get; set; }
 
             public struct READER
             {
@@ -10512,11 +10192,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.TestAllTypes.WRITER S
-                {
-                    get => BuildPointer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>(0);
-                    set => Link(0, value);
-                }
+                public Capnproto_test.Capnp.Test.TestAllTypes.WRITER S { get => BuildPointer<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>(0); set => Link(0, value); }
             }
         }
 
@@ -10566,7 +10242,7 @@ namespace Capnproto_test.Capnp.Test
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xe4e9bac98670b748UL), Proxy(typeof(TestExtends_Proxy)), Skeleton(typeof(TestExtends_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xe4e9bac98670b748UL), Proxy(typeof(Capnproto_test.Capnp.Test.TestExtends_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestExtends_Skeleton))]
     public interface ITestExtends : Capnproto_test.Capnp.Test.ITestInterface
     {
         Task Qux(CancellationToken cancellationToken_ = default);
@@ -10581,7 +10257,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestExtends.Params_Qux.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestExtends.Params_Qux()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(16494920484927878984UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10605,7 +10282,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestExtends.Params_Grault.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestExtends.Params_Grault()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(16494920484927878984UL, 2, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10618,7 +10296,10 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestInterface.Params_Foo.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestInterface.Params_Foo()
-            {I = i, J = j};
+            {
+                I = i,
+                J = j
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(9865999890858873522UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10631,7 +10312,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestInterface.Params_Bar.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestInterface.Params_Bar()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(9865999890858873522UL, 1, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10644,7 +10326,9 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestInterface.Params_Baz.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestInterface.Params_Baz()
-            {S = s};
+            {
+                S = s
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(9865999890858873522UL, 2, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10663,6 +10347,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 16494920484927878984UL;
+
         async Task<AnswerOrCounterquestion> Qux(DeserializerState d_, CancellationToken cancellationToken_)
         {
             using (d_)
@@ -10692,9 +10377,7 @@ namespace Capnproto_test.Capnp.Test
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestAllTypes.WRITER>();
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
     }
@@ -10882,7 +10565,7 @@ namespace Capnproto_test.Capnp.Test
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x98d7e0ef61488783UL), Proxy(typeof(TestExtends2_Proxy)), Skeleton(typeof(TestExtends2_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x98d7e0ef61488783UL), Proxy(typeof(Capnproto_test.Capnp.Test.TestExtends2_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestExtends2_Skeleton))]
     public interface ITestExtends2 : Capnproto_test.Capnp.Test.ITestExtends
     {
     }
@@ -10894,7 +10577,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestExtends.Params_Qux.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestExtends.Params_Qux()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(16494920484927878984UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10918,7 +10602,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestExtends.Params_Grault.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestExtends.Params_Grault()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(16494920484927878984UL, 2, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10931,7 +10616,10 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestInterface.Params_Foo.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestInterface.Params_Foo()
-            {I = i, J = j};
+            {
+                I = i,
+                J = j
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(9865999890858873522UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10944,7 +10632,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestInterface.Params_Bar.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestInterface.Params_Bar()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(9865999890858873522UL, 1, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10957,7 +10646,9 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestInterface.Params_Baz.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestInterface.Params_Baz()
-            {S = s};
+            {
+                S = s
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(9865999890858873522UL, 2, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -10978,7 +10669,7 @@ namespace Capnproto_test.Capnp.Test
         public override ulong InterfaceId => 11013518732491786115UL;
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xa5a404caa61d4cd0UL), Proxy(typeof(TestPipeline_Proxy)), Skeleton(typeof(TestPipeline_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xa5a404caa61d4cd0UL), Proxy(typeof(Capnproto_test.Capnp.Test.TestPipeline_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestPipeline_Skeleton))]
     public interface ITestPipeline : IDisposable
     {
         Task<(string, Capnproto_test.Capnp.Test.TestPipeline.Box)> GetCap(uint n, Capnproto_test.Capnp.Test.ITestInterface inCap, CancellationToken cancellationToken_ = default);
@@ -10993,7 +10684,10 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestPipeline.Params_GetCap.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestPipeline.Params_GetCap()
-            {N = n, InCap = inCap};
+            {
+                N = n,
+                InCap = inCap
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(11935670180855499984UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -11002,16 +10696,18 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestPipeline.Result_GetCap>(d_);
                     return (r_.S, r_.OutBox);
                 }
-            }
-
-            );
+            });
         }
 
         public async Task TestPointers(Capnproto_test.Capnp.Test.ITestInterface cap, object obj, IReadOnlyList<Capnproto_test.Capnp.Test.ITestInterface> list, CancellationToken cancellationToken_ = default)
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestPipeline.Params_TestPointers.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestPipeline.Params_TestPointers()
-            {Cap = cap, Obj = obj, List = list};
+            {
+                Cap = cap,
+                Obj = obj,
+                List = list
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(11935670180855499984UL, 1, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -11024,7 +10720,10 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestPipeline.Params_GetAnyCap.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestPipeline.Params_GetAnyCap()
-            {N = n, InCap = inCap};
+            {
+                N = n,
+                InCap = inCap
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(11935670180855499984UL, 2, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -11033,9 +10732,7 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestPipeline.Result_GetAnyCap>(d_);
                     return (r_.S, r_.OutBox);
                 }
-            }
-
-            );
+            });
         }
     }
 
@@ -11048,6 +10745,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 11935670180855499984UL;
+
         Task<AnswerOrCounterquestion> GetCap(DeserializerState d_, CancellationToken cancellationToken_)
         {
             using (d_)
@@ -11056,12 +10754,14 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.GetCap(in_.N, in_.InCap, cancellationToken_), (s, outBox) =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestPipeline.Result_GetCap.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestPipeline.Result_GetCap{S = s, OutBox = outBox};
+                    var r_ = new Capnproto_test.Capnp.Test.TestPipeline.Result_GetCap
+                    {
+                        S = s,
+                        OutBox = outBox
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -11084,12 +10784,14 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.GetAnyCap(in_.N, in_.InCap, cancellationToken_), (s, outBox) =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestPipeline.Result_GetAnyCap.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestPipeline.Result_GetAnyCap{S = s, OutBox = outBox};
+                    var r_ = new Capnproto_test.Capnp.Test.TestPipeline.Result_GetAnyCap
+                    {
+                        S = s,
+                        OutBox = outBox
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
     }
@@ -11121,11 +10823,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestInterface Cap
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestInterface Cap { get; set; }
 
             public struct READER
             {
@@ -11148,11 +10846,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestInterface Cap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestInterface Cap { get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -11181,11 +10875,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public BareProxy Cap
-            {
-                get;
-                set;
-            }
+            public BareProxy Cap { get; set; }
 
             public struct READER
             {
@@ -11208,11 +10898,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public BareProxy Cap
-                {
-                    get => ReadCap<BareProxy>(0);
-                    set => LinkObject(0, value);
-                }
+                public BareProxy Cap { get => ReadCap<BareProxy>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -11243,17 +10929,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public uint N
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.ITestInterface InCap
-            {
-                get;
-                set;
-            }
+            public uint N { get; set; }
+            public Capnproto_test.Capnp.Test.ITestInterface InCap { get; set; }
 
             public struct READER
             {
@@ -11277,17 +10954,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public uint N
-                {
-                    get => this.ReadDataUInt(0UL, 0U);
-                    set => this.WriteData(0UL, value, 0U);
-                }
-
-                public Capnproto_test.Capnp.Test.ITestInterface InCap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0);
-                    set => LinkObject(0, value);
-                }
+                public uint N { get => this.ReadDataUInt(0UL, 0U); set => this.WriteData(0UL, value, 0U); }
+                public Capnproto_test.Capnp.Test.ITestInterface InCap { get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -11318,17 +10986,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string S
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.TestPipeline.Box OutBox
-            {
-                get;
-                set;
-            }
+            public string S { get; set; }
+            public Capnproto_test.Capnp.Test.TestPipeline.Box OutBox { get; set; }
 
             public struct READER
             {
@@ -11353,17 +11012,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 2);
                 }
 
-                public string S
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
-
-                public Capnproto_test.Capnp.Test.TestPipeline.Box.WRITER OutBox
-                {
-                    get => BuildPointer<Capnproto_test.Capnp.Test.TestPipeline.Box.WRITER>(1);
-                    set => Link(1, value);
-                }
+                public string S { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+                public Capnproto_test.Capnp.Test.TestPipeline.Box.WRITER OutBox { get => BuildPointer<Capnproto_test.Capnp.Test.TestPipeline.Box.WRITER>(1); set => Link(1, value); }
             }
         }
 
@@ -11396,23 +11046,9 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestInterface Cap
-            {
-                get;
-                set;
-            }
-
-            public object Obj
-            {
-                get;
-                set;
-            }
-
-            public IReadOnlyList<Capnproto_test.Capnp.Test.ITestInterface> List
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestInterface Cap { get; set; }
+            public object Obj { get; set; }
+            public IReadOnlyList<Capnproto_test.Capnp.Test.ITestInterface> List { get; set; }
 
             public struct READER
             {
@@ -11438,23 +11074,9 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 3);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestInterface Cap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0);
-                    set => LinkObject(0, value);
-                }
-
-                public DynamicSerializerState Obj
-                {
-                    get => BuildPointer<DynamicSerializerState>(1);
-                    set => Link(1, value);
-                }
-
-                public ListOfCapsSerializer<Capnproto_test.Capnp.Test.ITestInterface> List
-                {
-                    get => BuildPointer<ListOfCapsSerializer<Capnproto_test.Capnp.Test.ITestInterface>>(2);
-                    set => Link(2, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestInterface Cap { get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0); set => LinkObject(0, value); }
+                public DynamicSerializerState Obj { get => BuildPointer<DynamicSerializerState>(1); set => Link(1, value); }
+                public ListOfCapsSerializer<Capnproto_test.Capnp.Test.ITestInterface> List { get => BuildPointer<ListOfCapsSerializer<Capnproto_test.Capnp.Test.ITestInterface>>(2); set => Link(2, value); }
             }
         }
 
@@ -11530,17 +11152,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public uint N
-            {
-                get;
-                set;
-            }
-
-            public BareProxy InCap
-            {
-                get;
-                set;
-            }
+            public uint N { get; set; }
+            public BareProxy InCap { get; set; }
 
             public struct READER
             {
@@ -11564,17 +11177,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public uint N
-                {
-                    get => this.ReadDataUInt(0UL, 0U);
-                    set => this.WriteData(0UL, value, 0U);
-                }
-
-                public BareProxy InCap
-                {
-                    get => ReadCap<BareProxy>(0);
-                    set => LinkObject(0, value);
-                }
+                public uint N { get => this.ReadDataUInt(0UL, 0U); set => this.WriteData(0UL, value, 0U); }
+                public BareProxy InCap { get => ReadCap<BareProxy>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -11605,17 +11209,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string S
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.TestPipeline.AnyBox OutBox
-            {
-                get;
-                set;
-            }
+            public string S { get; set; }
+            public Capnproto_test.Capnp.Test.TestPipeline.AnyBox OutBox { get; set; }
 
             public struct READER
             {
@@ -11640,22 +11235,13 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 2);
                 }
 
-                public string S
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
-
-                public Capnproto_test.Capnp.Test.TestPipeline.AnyBox.WRITER OutBox
-                {
-                    get => BuildPointer<Capnproto_test.Capnp.Test.TestPipeline.AnyBox.WRITER>(1);
-                    set => Link(1, value);
-                }
+                public string S { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+                public Capnproto_test.Capnp.Test.TestPipeline.AnyBox.WRITER OutBox { get => BuildPointer<Capnproto_test.Capnp.Test.TestPipeline.AnyBox.WRITER>(1); set => Link(1, value); }
             }
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xa0e77035bdff0051UL), Proxy(typeof(TestCallOrder_Proxy)), Skeleton(typeof(TestCallOrder_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xa0e77035bdff0051UL), Proxy(typeof(Capnproto_test.Capnp.Test.TestCallOrder_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestCallOrder_Skeleton))]
     public interface ITestCallOrder : IDisposable
     {
         Task<uint> GetCallSequence(uint expected, CancellationToken cancellationToken_ = default);
@@ -11668,7 +11254,9 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestCallOrder.Params_GetCallSequence.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestCallOrder.Params_GetCallSequence()
-            {Expected = expected};
+            {
+                Expected = expected
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(11594359141811814481UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -11687,6 +11275,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 11594359141811814481UL;
+
         Task<AnswerOrCounterquestion> GetCallSequence(DeserializerState d_, CancellationToken cancellationToken_)
         {
             using (d_)
@@ -11695,12 +11284,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.GetCallSequence(in_.Expected, cancellationToken_), n =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestCallOrder.Result_GetCallSequence.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestCallOrder.Result_GetCallSequence{N = n};
+                    var r_ = new Capnproto_test.Capnp.Test.TestCallOrder.Result_GetCallSequence
+                    {
+                        N = n
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
     }
@@ -11732,11 +11322,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public uint Expected
-            {
-                get;
-                set;
-            }
+            public uint Expected { get; set; }
 
             public struct READER
             {
@@ -11759,11 +11345,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 0);
                 }
 
-                public uint Expected
-                {
-                    get => this.ReadDataUInt(0UL, 0U);
-                    set => this.WriteData(0UL, value, 0U);
-                }
+                public uint Expected { get => this.ReadDataUInt(0UL, 0U); set => this.WriteData(0UL, value, 0U); }
             }
         }
 
@@ -11792,11 +11374,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public uint N
-            {
-                get;
-                set;
-            }
+            public uint N { get; set; }
 
             public struct READER
             {
@@ -11819,16 +11397,12 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 0);
                 }
 
-                public uint N
-                {
-                    get => this.ReadDataUInt(0UL, 0U);
-                    set => this.WriteData(0UL, value, 0U);
-                }
+                public uint N { get => this.ReadDataUInt(0UL, 0U); set => this.WriteData(0UL, value, 0U); }
             }
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xddd699207eb8e23bUL), Proxy(typeof(TestTailCallee_Proxy)), Skeleton(typeof(TestTailCallee_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xddd699207eb8e23bUL), Proxy(typeof(Capnproto_test.Capnp.Test.TestTailCallee_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestTailCallee_Skeleton))]
     public interface ITestTailCallee : IDisposable
     {
         Task<Capnproto_test.Capnp.Test.TestTailCallee.TailResult> Foo(int i, string t, CancellationToken cancellationToken_ = default);
@@ -11841,7 +11415,10 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestTailCallee.Params_Foo.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestTailCallee.Params_Foo()
-            {I = i, T = t};
+            {
+                I = i,
+                T = t
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(15985132292242203195UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -11850,9 +11427,7 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestTailCallee.TailResult>(d_);
                     return r_;
                 }
-            }
-
-            );
+            });
         }
     }
 
@@ -11865,6 +11440,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 15985132292242203195UL;
+
         Task<AnswerOrCounterquestion> Foo(DeserializerState d_, CancellationToken cancellationToken_)
         {
             using (d_)
@@ -11875,9 +11451,7 @@ namespace Capnproto_test.Capnp.Test
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestTailCallee.TailResult.WRITER>();
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
     }
@@ -11913,23 +11487,9 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public uint I
-            {
-                get;
-                set;
-            }
-
-            public string T
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.ITestCallOrder C
-            {
-                get;
-                set;
-            }
+            public uint I { get; set; }
+            public string T { get; set; }
+            public Capnproto_test.Capnp.Test.ITestCallOrder C { get; set; }
 
             public struct READER
             {
@@ -11954,23 +11514,9 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 2);
                 }
 
-                public uint I
-                {
-                    get => this.ReadDataUInt(0UL, 0U);
-                    set => this.WriteData(0UL, value, 0U);
-                }
-
-                public string T
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
-
-                public Capnproto_test.Capnp.Test.ITestCallOrder C
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestCallOrder>(1);
-                    set => LinkObject(1, value);
-                }
+                public uint I { get => this.ReadDataUInt(0UL, 0U); set => this.WriteData(0UL, value, 0U); }
+                public string T { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+                public Capnproto_test.Capnp.Test.ITestCallOrder C { get => ReadCap<Capnproto_test.Capnp.Test.ITestCallOrder>(1); set => LinkObject(1, value); }
             }
         }
 
@@ -12001,17 +11547,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public int I
-            {
-                get;
-                set;
-            }
-
-            public string T
-            {
-                get;
-                set;
-            }
+            public int I { get; set; }
+            public string T { get; set; }
 
             public struct READER
             {
@@ -12035,22 +11572,13 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public int I
-                {
-                    get => this.ReadDataInt(0UL, 0);
-                    set => this.WriteData(0UL, value, 0);
-                }
-
-                public string T
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public int I { get => this.ReadDataInt(0UL, 0); set => this.WriteData(0UL, value, 0); }
+                public string T { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x870bf40110ce3035UL), Proxy(typeof(TestTailCaller_Proxy)), Skeleton(typeof(TestTailCaller_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x870bf40110ce3035UL), Proxy(typeof(Capnproto_test.Capnp.Test.TestTailCaller_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestTailCaller_Skeleton))]
     public interface ITestTailCaller : IDisposable
     {
         Task<Capnproto_test.Capnp.Test.TestTailCallee.TailResult> Foo(int i, Capnproto_test.Capnp.Test.ITestTailCallee callee, CancellationToken cancellationToken_ = default);
@@ -12063,7 +11591,10 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestTailCaller.Params_Foo.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestTailCaller.Params_Foo()
-            {I = i, Callee = callee};
+            {
+                I = i,
+                Callee = callee
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(9731139705278181429UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -12072,9 +11603,7 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestTailCallee.TailResult>(d_);
                     return r_;
                 }
-            }
-
-            );
+            });
         }
     }
 
@@ -12087,6 +11616,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 9731139705278181429UL;
+
         Task<AnswerOrCounterquestion> Foo(DeserializerState d_, CancellationToken cancellationToken_)
         {
             using (d_)
@@ -12097,9 +11627,7 @@ namespace Capnproto_test.Capnp.Test
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestTailCallee.TailResult.WRITER>();
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
     }
@@ -12133,17 +11661,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public int I
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.ITestTailCallee Callee
-            {
-                get;
-                set;
-            }
+            public int I { get; set; }
+            public Capnproto_test.Capnp.Test.ITestTailCallee Callee { get; set; }
 
             public struct READER
             {
@@ -12167,22 +11686,13 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public int I
-                {
-                    get => this.ReadDataInt(0UL, 0);
-                    set => this.WriteData(0UL, value, 0);
-                }
-
-                public Capnproto_test.Capnp.Test.ITestTailCallee Callee
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestTailCallee>(0);
-                    set => LinkObject(0, value);
-                }
+                public int I { get => this.ReadDataInt(0UL, 0); set => this.WriteData(0UL, value, 0); }
+                public Capnproto_test.Capnp.Test.ITestTailCallee Callee { get => ReadCap<Capnproto_test.Capnp.Test.ITestTailCallee>(0); set => LinkObject(0, value); }
             }
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xa38e5efe41e53a15UL), Proxy(typeof(TestHandle_Proxy)), Skeleton(typeof(TestHandle_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xa38e5efe41e53a15UL), Proxy(typeof(Capnproto_test.Capnp.Test.TestHandle_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestHandle_Skeleton))]
     public interface ITestHandle : IDisposable
     {
     }
@@ -12203,7 +11713,7 @@ namespace Capnproto_test.Capnp.Test
         public override ulong InterfaceId => 11785461720995412501UL;
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xddc70bf9784133cfUL), Proxy(typeof(TestMoreStuff_Proxy)), Skeleton(typeof(TestMoreStuff_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xddc70bf9784133cfUL), Proxy(typeof(Capnproto_test.Capnp.Test.TestMoreStuff_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestMoreStuff_Skeleton))]
     public interface ITestMoreStuff : Capnproto_test.Capnp.Test.ITestCallOrder
     {
         Task<string> CallFoo(Capnproto_test.Capnp.Test.ITestInterface cap, CancellationToken cancellationToken_ = default);
@@ -12228,7 +11738,9 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_CallFoo.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_CallFoo()
-            {Cap = cap};
+            {
+                Cap = cap
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(15980754968839795663UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -12241,7 +11753,9 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_CallFooWhenResolved.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_CallFooWhenResolved()
-            {Cap = cap};
+            {
+                Cap = cap
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(15980754968839795663UL, 1, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -12254,7 +11768,9 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_NeverReturn.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_NeverReturn()
-            {Cap = cap};
+            {
+                Cap = cap
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(15980754968839795663UL, 2, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -12263,16 +11779,16 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestMoreStuff.Result_NeverReturn>(d_);
                     return (r_.CapCopy);
                 }
-            }
-
-            );
+            });
         }
 
         public async Task Hold(Capnproto_test.Capnp.Test.ITestInterface cap, CancellationToken cancellationToken_ = default)
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_Hold.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_Hold()
-            {Cap = cap};
+            {
+                Cap = cap
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(15980754968839795663UL, 3, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -12285,7 +11801,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_CallHeld.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_CallHeld()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(15980754968839795663UL, 4, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -12298,7 +11815,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_GetHeld.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_GetHeld()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(15980754968839795663UL, 5, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -12307,16 +11825,16 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetHeld>(d_);
                     return (r_.Cap);
                 }
-            }
-
-            );
+            });
         }
 
         public Task<Capnproto_test.Capnp.Test.ITestCallOrder> Echo(Capnproto_test.Capnp.Test.ITestCallOrder cap, CancellationToken cancellationToken_ = default)
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_Echo.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_Echo()
-            {Cap = cap};
+            {
+                Cap = cap
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(15980754968839795663UL, 6, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -12325,16 +11843,16 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestMoreStuff.Result_Echo>(d_);
                     return (r_.Cap);
                 }
-            }
-
-            );
+            });
         }
 
         public async Task ExpectCancel(Capnproto_test.Capnp.Test.ITestInterface cap, CancellationToken cancellationToken_ = default)
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_ExpectCancel.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_ExpectCancel()
-            {Cap = cap};
+            {
+                Cap = cap
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(15980754968839795663UL, 7, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -12347,7 +11865,11 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_MethodWithDefaults.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_MethodWithDefaults()
-            {A = a, B = b, C = c};
+            {
+                A = a,
+                B = b,
+                C = c
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(15980754968839795663UL, 8, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -12360,7 +11882,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_GetHandle.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_GetHandle()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(15980754968839795663UL, 9, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -12369,16 +11892,15 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetHandle>(d_);
                     return (r_.Handle);
                 }
-            }
-
-            );
+            });
         }
 
         public Task<Capnproto_test.Capnp.Test.ITestMoreStuff> GetNull(CancellationToken cancellationToken_ = default)
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_GetNull.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_GetNull()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(15980754968839795663UL, 10, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -12387,16 +11909,15 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetNull>(d_);
                     return (r_.NullCap);
                 }
-            }
-
-            );
+            });
         }
 
         public async Task<string> GetEnormousString(CancellationToken cancellationToken_ = default)
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_GetEnormousString.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_GetEnormousString()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(15980754968839795663UL, 11, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -12409,7 +11930,10 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Params_MethodWithNullDefault.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Params_MethodWithNullDefault()
-            {A = a, B = b};
+            {
+                A = a,
+                B = b
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(15980754968839795663UL, 12, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -12422,7 +11946,9 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestCallOrder.Params_GetCallSequence.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestCallOrder.Params_GetCallSequence()
-            {Expected = expected};
+            {
+                Expected = expected
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(11594359141811814481UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -12441,6 +11967,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 15980754968839795663UL;
+
         Task<AnswerOrCounterquestion> CallFoo(DeserializerState d_, CancellationToken cancellationToken_)
         {
             using (d_)
@@ -12449,12 +11976,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.CallFoo(in_.Cap, cancellationToken_), s =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Result_CallFoo.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_CallFoo{S = s};
+                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_CallFoo
+                    {
+                        S = s
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -12466,12 +11994,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.CallFooWhenResolved(in_.Cap, cancellationToken_), s =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Result_CallFooWhenResolved.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_CallFooWhenResolved{S = s};
+                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_CallFooWhenResolved
+                    {
+                        S = s
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -12483,12 +12012,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.NeverReturn(in_.Cap, cancellationToken_), capCopy =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Result_NeverReturn.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_NeverReturn{CapCopy = capCopy};
+                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_NeverReturn
+                    {
+                        CapCopy = capCopy
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -12510,12 +12040,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.CallHeld(cancellationToken_), s =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Result_CallHeld.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_CallHeld{S = s};
+                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_CallHeld
+                    {
+                        S = s
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -12526,12 +12057,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.GetHeld(cancellationToken_), cap =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetHeld.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetHeld{Cap = cap};
+                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetHeld
+                    {
+                        Cap = cap
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -12543,12 +12075,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.Echo(in_.Cap, cancellationToken_), cap =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Result_Echo.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_Echo{Cap = cap};
+                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_Echo
+                    {
+                        Cap = cap
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -12571,12 +12104,14 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.MethodWithDefaults(in_.A, in_.B, in_.C, cancellationToken_), (d, e) =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Result_MethodWithDefaults.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_MethodWithDefaults{D = d, E = e};
+                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_MethodWithDefaults
+                    {
+                        D = d,
+                        E = e
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -12587,12 +12122,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.GetHandle(cancellationToken_), handle =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetHandle.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetHandle{Handle = handle};
+                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetHandle
+                    {
+                        Handle = handle
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -12603,12 +12139,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.GetNull(cancellationToken_), nullCap =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetNull.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetNull{NullCap = nullCap};
+                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetNull
+                    {
+                        NullCap = nullCap
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -12619,12 +12156,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.GetEnormousString(cancellationToken_), str =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetEnormousString.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetEnormousString{Str = str};
+                    var r_ = new Capnproto_test.Capnp.Test.TestMoreStuff.Result_GetEnormousString
+                    {
+                        Str = str
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -12667,11 +12205,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestInterface Cap
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestInterface Cap { get; set; }
 
             public struct READER
             {
@@ -12694,11 +12228,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestInterface Cap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestInterface Cap { get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -12727,11 +12257,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string S
-            {
-                get;
-                set;
-            }
+            public string S { get; set; }
 
             public struct READER
             {
@@ -12754,11 +12280,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public string S
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public string S { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -12787,11 +12309,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestInterface Cap
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestInterface Cap { get; set; }
 
             public struct READER
             {
@@ -12814,11 +12332,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestInterface Cap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestInterface Cap { get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -12847,11 +12361,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string S
-            {
-                get;
-                set;
-            }
+            public string S { get; set; }
 
             public struct READER
             {
@@ -12874,11 +12384,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public string S
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public string S { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -12907,11 +12413,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestInterface Cap
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestInterface Cap { get; set; }
 
             public struct READER
             {
@@ -12934,11 +12436,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestInterface Cap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestInterface Cap { get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -12967,11 +12465,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestInterface CapCopy
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestInterface CapCopy { get; set; }
 
             public struct READER
             {
@@ -12994,11 +12488,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestInterface CapCopy
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestInterface CapCopy { get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -13027,11 +12517,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestInterface Cap
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestInterface Cap { get; set; }
 
             public struct READER
             {
@@ -13054,11 +12540,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestInterface Cap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestInterface Cap { get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -13177,11 +12659,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string S
-            {
-                get;
-                set;
-            }
+            public string S { get; set; }
 
             public struct READER
             {
@@ -13204,11 +12682,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public string S
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public string S { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -13282,11 +12756,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestInterface Cap
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestInterface Cap { get; set; }
 
             public struct READER
             {
@@ -13309,11 +12779,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestInterface Cap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestInterface Cap { get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -13342,11 +12808,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestCallOrder Cap
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestCallOrder Cap { get; set; }
 
             public struct READER
             {
@@ -13369,11 +12831,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestCallOrder Cap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestCallOrder>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestCallOrder Cap { get => ReadCap<Capnproto_test.Capnp.Test.ITestCallOrder>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -13402,11 +12860,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestCallOrder Cap
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestCallOrder Cap { get; set; }
 
             public struct READER
             {
@@ -13429,11 +12883,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestCallOrder Cap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestCallOrder>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestCallOrder Cap { get => ReadCap<Capnproto_test.Capnp.Test.ITestCallOrder>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -13462,11 +12912,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestInterface Cap
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestInterface Cap { get; set; }
 
             public struct READER
             {
@@ -13489,11 +12935,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestInterface Cap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestInterface Cap { get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -13572,24 +13014,9 @@ namespace Capnproto_test.Capnp.Test
                 C = C ?? "foo";
             }
 
-            public string A
-            {
-                get;
-                set;
-            }
-
-            public uint B
-            {
-                get;
-                set;
-            }
-
-            = 123U;
-            public string C
-            {
-                get;
-                set;
-            }
+            public string A { get; set; }
+            public uint B { get; set; } = 123U;
+            public string C { get; set; }
 
             public struct READER
             {
@@ -13614,23 +13041,9 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 2);
                 }
 
-                public string A
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
-
-                public uint B
-                {
-                    get => this.ReadDataUInt(0UL, 123U);
-                    set => this.WriteData(0UL, value, 123U);
-                }
-
-                public string C
-                {
-                    get => this.ReadText(1, "foo");
-                    set => this.WriteText(1, value, "foo");
-                }
+                public string A { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+                public uint B { get => this.ReadDataUInt(0UL, 123U); set => this.WriteData(0UL, value, 123U); }
+                public string C { get => this.ReadText(1, "foo"); set => this.WriteText(1, value, "foo"); }
             }
         }
 
@@ -13662,17 +13075,8 @@ namespace Capnproto_test.Capnp.Test
                 E = E ?? "bar";
             }
 
-            public string D
-            {
-                get;
-                set;
-            }
-
-            public string E
-            {
-                get;
-                set;
-            }
+            public string D { get; set; }
+            public string E { get; set; }
 
             public struct READER
             {
@@ -13696,17 +13100,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 2);
                 }
 
-                public string D
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
-
-                public string E
-                {
-                    get => this.ReadText(1, "bar");
-                    set => this.WriteText(1, value, "bar");
-                }
+                public string D { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+                public string E { get => this.ReadText(1, "bar"); set => this.WriteText(1, value, "bar"); }
             }
         }
 
@@ -13780,11 +13175,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestHandle Handle
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestHandle Handle { get; set; }
 
             public struct READER
             {
@@ -13807,11 +13198,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestHandle Handle
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestHandle>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestHandle Handle { get => ReadCap<Capnproto_test.Capnp.Test.ITestHandle>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -13885,11 +13272,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.ITestMoreStuff NullCap
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.ITestMoreStuff NullCap { get; set; }
 
             public struct READER
             {
@@ -13912,11 +13295,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.ITestMoreStuff NullCap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestMoreStuff>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.ITestMoreStuff NullCap { get => ReadCap<Capnproto_test.Capnp.Test.ITestMoreStuff>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -13990,11 +13369,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string Str
-            {
-                get;
-                set;
-            }
+            public string Str { get; set; }
 
             public struct READER
             {
@@ -14017,11 +13392,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public string Str
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public string Str { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -14052,17 +13423,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string A
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.ITestInterface B
-            {
-                get;
-                set;
-            }
+            public string A { get; set; }
+            public Capnproto_test.Capnp.Test.ITestInterface B { get; set; }
 
             public struct READER
             {
@@ -14086,17 +13448,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 2);
                 }
 
-                public string A
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
-
-                public Capnproto_test.Capnp.Test.ITestInterface B
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(1);
-                    set => LinkObject(1, value);
-                }
+                public string A { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+                public Capnproto_test.Capnp.Test.ITestInterface B { get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(1); set => LinkObject(1, value); }
             }
         }
 
@@ -14146,7 +13499,7 @@ namespace Capnproto_test.Capnp.Test
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xc07d8dcd80a69c0cUL), Proxy(typeof(TestMembrane_Proxy)), Skeleton(typeof(TestMembrane_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xc07d8dcd80a69c0cUL), Proxy(typeof(Capnproto_test.Capnp.Test.TestMembrane_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestMembrane_Skeleton))]
     public interface ITestMembrane : IDisposable
     {
         Task<Capnproto_test.Capnp.Test.TestMembrane.IThing> MakeThing(CancellationToken cancellationToken_ = default);
@@ -14163,7 +13516,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Params_MakeThing.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMembrane.Params_MakeThing()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(13870398341137210380UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -14172,16 +13526,17 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestMembrane.Result_MakeThing>(d_);
                     return (r_.Thing);
                 }
-            }
-
-            );
+            });
         }
 
         public async Task<Capnproto_test.Capnp.Test.TestMembrane.Result> CallPassThrough(Capnproto_test.Capnp.Test.TestMembrane.IThing thing, bool tailCall, CancellationToken cancellationToken_ = default)
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Params_CallPassThrough.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMembrane.Params_CallPassThrough()
-            {Thing = thing, TailCall = tailCall};
+            {
+                Thing = thing,
+                TailCall = tailCall
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(13870398341137210380UL, 1, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -14194,7 +13549,10 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Params_CallIntercept.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMembrane.Params_CallIntercept()
-            {Thing = thing, TailCall = tailCall};
+            {
+                Thing = thing,
+                TailCall = tailCall
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(13870398341137210380UL, 2, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -14207,7 +13565,9 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Params_Loopback.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMembrane.Params_Loopback()
-            {Thing = thing};
+            {
+                Thing = thing
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(13870398341137210380UL, 3, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -14216,16 +13576,15 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestMembrane.Result_Loopback>(d_);
                     return (r_.Thing);
                 }
-            }
-
-            );
+            });
         }
 
         public async Task WaitForever(CancellationToken cancellationToken_ = default)
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Params_WaitForever.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestMembrane.Params_WaitForever()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(13870398341137210380UL, 4, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -14244,6 +13603,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 13870398341137210380UL;
+
         Task<AnswerOrCounterquestion> MakeThing(DeserializerState d_, CancellationToken cancellationToken_)
         {
             using (d_)
@@ -14251,12 +13611,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.MakeThing(cancellationToken_), thing =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Result_MakeThing.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestMembrane.Result_MakeThing{Thing = thing};
+                    var r_ = new Capnproto_test.Capnp.Test.TestMembrane.Result_MakeThing
+                    {
+                        Thing = thing
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -14270,9 +13631,7 @@ namespace Capnproto_test.Capnp.Test
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Result.WRITER>();
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -14286,9 +13645,7 @@ namespace Capnproto_test.Capnp.Test
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Result.WRITER>();
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -14300,12 +13657,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.Loopback(in_.Thing, cancellationToken_), thing =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Result_Loopback.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestMembrane.Result_Loopback{Thing = thing};
+                    var r_ = new Capnproto_test.Capnp.Test.TestMembrane.Result_Loopback
+                    {
+                        Thing = thing
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
 
@@ -14322,7 +13680,7 @@ namespace Capnproto_test.Capnp.Test
 
     public static class TestMembrane
     {
-        [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x9352e4e41f173917UL), Proxy(typeof(Thing_Proxy)), Skeleton(typeof(Thing_Skeleton))]
+        [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x9352e4e41f173917UL), Proxy(typeof(Capnproto_test.Capnp.Test.TestMembrane.Thing_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestMembrane.Thing_Skeleton))]
         public interface IThing : IDisposable
         {
             Task<Capnproto_test.Capnp.Test.TestMembrane.Result> PassThrough(CancellationToken cancellationToken_ = default);
@@ -14336,7 +13694,8 @@ namespace Capnproto_test.Capnp.Test
             {
                 var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Thing.Params_PassThrough.WRITER>();
                 var arg_ = new Capnproto_test.Capnp.Test.TestMembrane.Thing.Params_PassThrough()
-                {};
+                {
+                };
                 arg_?.serialize(in_);
                 using (var d_ = await Call(10615798940090972439UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
                 {
@@ -14349,7 +13708,8 @@ namespace Capnproto_test.Capnp.Test
             {
                 var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Thing.Params_Intercept.WRITER>();
                 var arg_ = new Capnproto_test.Capnp.Test.TestMembrane.Thing.Params_Intercept()
-                {};
+                {
+                };
                 arg_?.serialize(in_);
                 using (var d_ = await Call(10615798940090972439UL, 1, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
                 {
@@ -14368,6 +13728,7 @@ namespace Capnproto_test.Capnp.Test
             }
 
             public override ulong InterfaceId => 10615798940090972439UL;
+
             Task<AnswerOrCounterquestion> PassThrough(DeserializerState d_, CancellationToken cancellationToken_)
             {
                 using (d_)
@@ -14377,9 +13738,7 @@ namespace Capnproto_test.Capnp.Test
                         var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Result.WRITER>();
                         r_.serialize(s_);
                         return s_;
-                    }
-
-                    );
+                    });
                 }
             }
 
@@ -14392,9 +13751,7 @@ namespace Capnproto_test.Capnp.Test
                         var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestMembrane.Result.WRITER>();
                         r_.serialize(s_);
                         return s_;
-                    }
-
-                    );
+                    });
                 }
             }
         }
@@ -14517,11 +13874,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string Text
-            {
-                get;
-                set;
-            }
+            public string Text { get; set; }
 
             public struct READER
             {
@@ -14544,11 +13897,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public string Text
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
+                public string Text { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
             }
         }
 
@@ -14622,11 +13971,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing { get; set; }
 
             public struct READER
             {
@@ -14649,11 +13994,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.TestMembrane.IThing>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing { get => ReadCap<Capnproto_test.Capnp.Test.TestMembrane.IThing>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -14684,17 +14025,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing
-            {
-                get;
-                set;
-            }
-
-            public bool TailCall
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing { get; set; }
+            public bool TailCall { get; set; }
 
             public struct READER
             {
@@ -14718,17 +14050,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.TestMembrane.IThing>(0);
-                    set => LinkObject(0, value);
-                }
-
-                public bool TailCall
-                {
-                    get => this.ReadDataBool(0UL, false);
-                    set => this.WriteData(0UL, value, false);
-                }
+                public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing { get => ReadCap<Capnproto_test.Capnp.Test.TestMembrane.IThing>(0); set => LinkObject(0, value); }
+                public bool TailCall { get => this.ReadDataBool(0UL, false); set => this.WriteData(0UL, value, false); }
             }
         }
 
@@ -14759,17 +14082,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing
-            {
-                get;
-                set;
-            }
-
-            public bool TailCall
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing { get; set; }
+            public bool TailCall { get; set; }
 
             public struct READER
             {
@@ -14793,17 +14107,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.TestMembrane.IThing>(0);
-                    set => LinkObject(0, value);
-                }
-
-                public bool TailCall
-                {
-                    get => this.ReadDataBool(0UL, false);
-                    set => this.WriteData(0UL, value, false);
-                }
+                public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing { get => ReadCap<Capnproto_test.Capnp.Test.TestMembrane.IThing>(0); set => LinkObject(0, value); }
+                public bool TailCall { get => this.ReadDataBool(0UL, false); set => this.WriteData(0UL, value, false); }
             }
         }
 
@@ -14832,11 +14137,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing { get; set; }
 
             public struct READER
             {
@@ -14859,11 +14160,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.TestMembrane.IThing>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing { get => ReadCap<Capnproto_test.Capnp.Test.TestMembrane.IThing>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -14892,11 +14189,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing
-            {
-                get;
-                set;
-            }
+            public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing { get; set; }
 
             public struct READER
             {
@@ -14919,11 +14212,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.TestMembrane.IThing>(0);
-                    set => LinkObject(0, value);
-                }
+                public Capnproto_test.Capnp.Test.TestMembrane.IThing Thing { get => ReadCap<Capnproto_test.Capnp.Test.TestMembrane.IThing>(0); set => LinkObject(0, value); }
             }
         }
 
@@ -15045,17 +14334,8 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public Capnproto_test.Capnp.Test.TestMembrane.IThing Cap
-        {
-            get;
-            set;
-        }
-
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestMembrane.IThing> List
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestMembrane.IThing Cap { get; set; }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestMembrane.IThing> List { get; set; }
 
         public struct READER
         {
@@ -15080,17 +14360,8 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 2);
             }
 
-            public Capnproto_test.Capnp.Test.TestMembrane.IThing Cap
-            {
-                get => ReadCap<Capnproto_test.Capnp.Test.TestMembrane.IThing>(0);
-                set => LinkObject(0, value);
-            }
-
-            public ListOfCapsSerializer<Capnproto_test.Capnp.Test.TestMembrane.IThing> List
-            {
-                get => BuildPointer<ListOfCapsSerializer<Capnproto_test.Capnp.Test.TestMembrane.IThing>>(1);
-                set => Link(1, value);
-            }
+            public Capnproto_test.Capnp.Test.TestMembrane.IThing Cap { get => ReadCap<Capnproto_test.Capnp.Test.TestMembrane.IThing>(0); set => LinkObject(0, value); }
+            public ListOfCapsSerializer<Capnproto_test.Capnp.Test.TestMembrane.IThing> List { get => BuildPointer<ListOfCapsSerializer<Capnproto_test.Capnp.Test.TestMembrane.IThing>>(1); set => Link(1, value); }
         }
     }
 
@@ -15119,11 +14390,7 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public IReadOnlyList<Capnproto_test.Capnp.Test.TestTransferCap.Element> List
-        {
-            get;
-            set;
-        }
+        public IReadOnlyList<Capnproto_test.Capnp.Test.TestTransferCap.Element> List { get; set; }
 
         public struct READER
         {
@@ -15147,11 +14414,7 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 1);
             }
 
-            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestTransferCap.Element.WRITER> List
-            {
-                get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestTransferCap.Element.WRITER>>(0);
-                set => Link(0, value);
-            }
+            public ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestTransferCap.Element.WRITER> List { get => BuildPointer<ListOfStructsSerializer<Capnproto_test.Capnp.Test.TestTransferCap.Element.WRITER>>(0); set => Link(0, value); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xc7263e8f88844abcUL)]
@@ -15181,17 +14444,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public string Text
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.ITestInterface Cap
-            {
-                get;
-                set;
-            }
+            public string Text { get; set; }
+            public Capnproto_test.Capnp.Test.ITestInterface Cap { get; set; }
 
             public struct READER
             {
@@ -15215,22 +14469,13 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 2);
                 }
 
-                public string Text
-                {
-                    get => this.ReadText(0, null);
-                    set => this.WriteText(0, value, null);
-                }
-
-                public Capnproto_test.Capnp.Test.ITestInterface Cap
-                {
-                    get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(1);
-                    set => LinkObject(1, value);
-                }
+                public string Text { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
+                public Capnproto_test.Capnp.Test.ITestInterface Cap { get => ReadCap<Capnproto_test.Capnp.Test.ITestInterface>(1); set => LinkObject(1, value); }
             }
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x9ae342d394247cfcUL), Proxy(typeof(TestKeywordMethods_Proxy)), Skeleton(typeof(TestKeywordMethods_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x9ae342d394247cfcUL), Proxy(typeof(Capnproto_test.Capnp.Test.TestKeywordMethods_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestKeywordMethods_Skeleton))]
     public interface ITestKeywordMethods : IDisposable
     {
         Task Delete(CancellationToken cancellationToken_ = default);
@@ -15246,7 +14491,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestKeywordMethods.Params_Delete.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestKeywordMethods.Params_Delete()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(11160837778045172988UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -15259,7 +14505,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestKeywordMethods.Params_Class.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestKeywordMethods.Params_Class()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(11160837778045172988UL, 1, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -15272,7 +14519,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestKeywordMethods.Params_Void.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestKeywordMethods.Params_Void()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(11160837778045172988UL, 2, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -15285,7 +14533,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestKeywordMethods.Params_Return.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestKeywordMethods.Params_Return()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(11160837778045172988UL, 3, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -15304,6 +14553,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 11160837778045172988UL;
+
         async Task<AnswerOrCounterquestion> Delete(DeserializerState d_, CancellationToken cancellationToken_)
         {
             using (d_)
@@ -15708,7 +14958,7 @@ namespace Capnproto_test.Capnp.Test
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xea72cc77253798cdUL), Proxy(typeof(TestAuthenticatedBootstrap_Proxy<>)), Skeleton(typeof(TestAuthenticatedBootstrap_Skeleton<>))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xea72cc77253798cdUL), Proxy(typeof(Capnproto_test.Capnp.Test.TestAuthenticatedBootstrap_Proxy<>)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestAuthenticatedBootstrap_Skeleton<>))]
     public interface ITestAuthenticatedBootstrap<TVatId> : IDisposable where TVatId : class
     {
         Task<TVatId> GetCallerId(CancellationToken cancellationToken_ = default);
@@ -15721,7 +14971,8 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestAuthenticatedBootstrap<TVatId>.Params_GetCallerId.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestAuthenticatedBootstrap<TVatId>.Params_GetCallerId()
-            {};
+            {
+            };
             arg_?.serialize(in_);
             return Impatient.MakePipelineAware(Call(16893789964317726925UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_), d_ =>
             {
@@ -15730,9 +14981,7 @@ namespace Capnproto_test.Capnp.Test
                     var r_ = CapnpSerializable.Create<Capnproto_test.Capnp.Test.TestAuthenticatedBootstrap<TVatId>.Result_GetCallerId>(d_);
                     return (r_.Caller);
                 }
-            }
-
-            );
+            });
         }
     }
 
@@ -15745,6 +14994,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 16893789964317726925UL;
+
         Task<AnswerOrCounterquestion> GetCallerId(DeserializerState d_, CancellationToken cancellationToken_)
         {
             using (d_)
@@ -15752,12 +15002,13 @@ namespace Capnproto_test.Capnp.Test
                 return Impatient.MaybeTailCall(Impl.GetCallerId(cancellationToken_), caller =>
                 {
                     var s_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestAuthenticatedBootstrap<TVatId>.Result_GetCallerId.WRITER>();
-                    var r_ = new Capnproto_test.Capnp.Test.TestAuthenticatedBootstrap<TVatId>.Result_GetCallerId{Caller = caller};
+                    var r_ = new Capnproto_test.Capnp.Test.TestAuthenticatedBootstrap<TVatId>.Result_GetCallerId
+                    {
+                        Caller = caller
+                    };
                     r_.serialize(s_);
                     return s_;
-                }
-
-                );
+                });
             }
         }
     }
@@ -15835,11 +15086,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public TVatId Caller
-            {
-                get;
-                set;
-            }
+            public TVatId Caller { get; set; }
 
             public struct READER
             {
@@ -15862,11 +15109,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(0, 1);
                 }
 
-                public DynamicSerializerState Caller
-                {
-                    get => BuildPointer<DynamicSerializerState>(0);
-                    set => Link(0, value);
-                }
+                public DynamicSerializerState Caller { get => BuildPointer<DynamicSerializerState>(0); set => Link(0, value); }
             }
         }
     }
@@ -15898,17 +15141,8 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public Capnproto_test.Capnp.Test.TestSturdyRefHostId HostId
-        {
-            get;
-            set;
-        }
-
-        public object ObjectId
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestSturdyRefHostId HostId { get; set; }
+        public object ObjectId { get; set; }
 
         public struct READER
         {
@@ -15933,17 +15167,8 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 2);
             }
 
-            public Capnproto_test.Capnp.Test.TestSturdyRefHostId.WRITER HostId
-            {
-                get => BuildPointer<Capnproto_test.Capnp.Test.TestSturdyRefHostId.WRITER>(0);
-                set => Link(0, value);
-            }
-
-            public DynamicSerializerState ObjectId
-            {
-                get => BuildPointer<DynamicSerializerState>(1);
-                set => Link(1, value);
-            }
+            public Capnproto_test.Capnp.Test.TestSturdyRefHostId.WRITER HostId { get => BuildPointer<Capnproto_test.Capnp.Test.TestSturdyRefHostId.WRITER>(0); set => Link(0, value); }
+            public DynamicSerializerState ObjectId { get => BuildPointer<DynamicSerializerState>(1); set => Link(1, value); }
         }
     }
 
@@ -15972,11 +15197,7 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public string Host
-        {
-            get;
-            set;
-        }
+        public string Host { get; set; }
 
         public struct READER
         {
@@ -15999,11 +15220,7 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(0, 1);
             }
 
-            public string Host
-            {
-                get => this.ReadText(0, null);
-                set => this.WriteText(0, value, null);
-            }
+            public string Host { get => this.ReadText(0, null); set => this.WriteText(0, value, null); }
         }
     }
 
@@ -16032,11 +15249,7 @@ namespace Capnproto_test.Capnp.Test
         {
         }
 
-        public Capnproto_test.Capnp.Test.TestSturdyRefObjectId.Tag TheTag
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestSturdyRefObjectId.Tag TheTag { get; set; }
 
         public struct READER
         {
@@ -16059,11 +15272,7 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(1, 0);
             }
 
-            public Capnproto_test.Capnp.Test.TestSturdyRefObjectId.Tag TheTag
-            {
-                get => (Capnproto_test.Capnp.Test.TestSturdyRefObjectId.Tag)this.ReadDataUShort(0UL, (ushort)0);
-                set => this.WriteData(0UL, (ushort)value, (ushort)0);
-            }
+            public Capnproto_test.Capnp.Test.TestSturdyRefObjectId.Tag TheTag { get => (Capnproto_test.Capnp.Test.TestSturdyRefObjectId.Tag)this.ReadDataUShort(0UL, (ushort)0); set => this.WriteData(0UL, (ushort)value, (ushort)0); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xef428f2f67c4d439UL)]
@@ -16355,17 +15564,8 @@ namespace Capnproto_test.Capnp.Test
             }
         }
 
-        public Capnproto_test.Capnp.Test.TestNameAnnotation.BadlyNamedEnum AnotherBadFieldName
-        {
-            get;
-            set;
-        }
-
-        public Capnproto_test.Capnp.Test.TestNameAnnotation.badlyNamedUnion BadlyNamedUnion
-        {
-            get;
-            set;
-        }
+        public Capnproto_test.Capnp.Test.TestNameAnnotation.BadlyNamedEnum AnotherBadFieldName { get; set; }
+        public Capnproto_test.Capnp.Test.TestNameAnnotation.badlyNamedUnion BadlyNamedUnion { get; set; }
 
         public struct READER
         {
@@ -16392,34 +15592,11 @@ namespace Capnproto_test.Capnp.Test
                 this.SetStruct(1, 1);
             }
 
-            public WHICH which
-            {
-                get => (WHICH)this.ReadDataUShort(16U, (ushort)0);
-                set => this.WriteData(16U, (ushort)value, (ushort)0);
-            }
-
-            public bool BadFieldName
-            {
-                get => which == WHICH.BadFieldName ? this.ReadDataBool(0UL, false) : default;
-                set => this.WriteData(0UL, value, false);
-            }
-
-            public sbyte Bar
-            {
-                get => which == WHICH.Bar ? this.ReadDataSByte(0UL, (sbyte)0) : default;
-                set => this.WriteData(0UL, value, (sbyte)0);
-            }
-
-            public Capnproto_test.Capnp.Test.TestNameAnnotation.BadlyNamedEnum AnotherBadFieldName
-            {
-                get => (Capnproto_test.Capnp.Test.TestNameAnnotation.BadlyNamedEnum)this.ReadDataUShort(32UL, (ushort)0);
-                set => this.WriteData(32UL, (ushort)value, (ushort)0);
-            }
-
-            public badlyNamedUnion.WRITER BadlyNamedUnion
-            {
-                get => Rewrap<badlyNamedUnion.WRITER>();
-            }
+            public WHICH which { get => (WHICH)this.ReadDataUShort(16U, (ushort)0); set => this.WriteData(16U, (ushort)value, (ushort)0); }
+            public bool BadFieldName { get => which == WHICH.BadFieldName ? this.ReadDataBool(0UL, false) : default; set => this.WriteData(0UL, value, false); }
+            public sbyte Bar { get => which == WHICH.Bar ? this.ReadDataSByte(0UL, (sbyte)0) : default; set => this.WriteData(0UL, value, (sbyte)0); }
+            public Capnproto_test.Capnp.Test.TestNameAnnotation.BadlyNamedEnum AnotherBadFieldName { get => (Capnproto_test.Capnp.Test.TestNameAnnotation.BadlyNamedEnum)this.ReadDataUShort(32UL, (ushort)0); set => this.WriteData(32UL, (ushort)value, (ushort)0); }
+            public badlyNamedUnion.WRITER BadlyNamedUnion { get => Rewrap<badlyNamedUnion.WRITER>(); }
         }
 
         [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0x89d9d1626b34017cUL)]
@@ -16537,22 +15714,9 @@ namespace Capnproto_test.Capnp.Test
                 {
                 }
 
-                public WHICH which
-                {
-                    get => (WHICH)this.ReadDataUShort(48U, (ushort)0);
-                    set => this.WriteData(48U, (ushort)value, (ushort)0);
-                }
-
-                public badlyNamedGroup.WRITER BadlyNamedGroup
-                {
-                    get => which == WHICH.BadlyNamedGroup ? Rewrap<badlyNamedGroup.WRITER>() : default;
-                }
-
-                public Capnproto_test.Capnp.Test.TestNameAnnotation.NestedStruct.WRITER Baz
-                {
-                    get => which == WHICH.Baz ? BuildPointer<Capnproto_test.Capnp.Test.TestNameAnnotation.NestedStruct.WRITER>(0) : default;
-                    set => Link(0, value);
-                }
+                public WHICH which { get => (WHICH)this.ReadDataUShort(48U, (ushort)0); set => this.WriteData(48U, (ushort)value, (ushort)0); }
+                public badlyNamedGroup.WRITER BadlyNamedGroup { get => which == WHICH.BadlyNamedGroup ? Rewrap<badlyNamedGroup.WRITER>() : default; }
+                public Capnproto_test.Capnp.Test.TestNameAnnotation.NestedStruct.WRITER Baz { get => which == WHICH.Baz ? BuildPointer<Capnproto_test.Capnp.Test.TestNameAnnotation.NestedStruct.WRITER>(0) : default; set => Link(0, value); }
             }
 
             [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xc3594bce5b24b722UL)]
@@ -16635,17 +15799,8 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public bool BadNestedFieldName
-            {
-                get;
-                set;
-            }
-
-            public Capnproto_test.Capnp.Test.TestNameAnnotation.NestedStruct AnotherBadNestedFieldName
-            {
-                get;
-                set;
-            }
+            public bool BadNestedFieldName { get; set; }
+            public Capnproto_test.Capnp.Test.TestNameAnnotation.NestedStruct AnotherBadNestedFieldName { get; set; }
 
             public struct READER
             {
@@ -16670,17 +15825,8 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 1);
                 }
 
-                public bool BadNestedFieldName
-                {
-                    get => this.ReadDataBool(0UL, false);
-                    set => this.WriteData(0UL, value, false);
-                }
-
-                public Capnproto_test.Capnp.Test.TestNameAnnotation.NestedStruct.WRITER AnotherBadNestedFieldName
-                {
-                    get => BuildPointer<Capnproto_test.Capnp.Test.TestNameAnnotation.NestedStruct.WRITER>(0);
-                    set => Link(0, value);
-                }
+                public bool BadNestedFieldName { get => this.ReadDataBool(0UL, false); set => this.WriteData(0UL, value, false); }
+                public Capnproto_test.Capnp.Test.TestNameAnnotation.NestedStruct.WRITER AnotherBadNestedFieldName { get => BuildPointer<Capnproto_test.Capnp.Test.TestNameAnnotation.NestedStruct.WRITER>(0); set => Link(0, value); }
             }
 
             [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xf6cb3f9c7a4322e0UL)]
@@ -16693,7 +15839,7 @@ namespace Capnproto_test.Capnp.Test
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xd112a69d31ed918bUL), Proxy(typeof(TestNameAnnotationInterface_Proxy)), Skeleton(typeof(TestNameAnnotationInterface_Skeleton))]
+    [System.CodeDom.Compiler.GeneratedCode("capnpc-csharp", "1.3.0.0"), TypeId(0xd112a69d31ed918bUL), Proxy(typeof(Capnproto_test.Capnp.Test.TestNameAnnotationInterface_Proxy)), Skeleton(typeof(Capnproto_test.Capnp.Test.TestNameAnnotationInterface_Skeleton))]
     public interface ITestNameAnnotationInterface : IDisposable
     {
         Task BadlyNamedMethod(byte badlyNamedParam, CancellationToken cancellationToken_ = default);
@@ -16706,7 +15852,9 @@ namespace Capnproto_test.Capnp.Test
         {
             var in_ = SerializerState.CreateForRpc<Capnproto_test.Capnp.Test.TestNameAnnotationInterface.Params_BadlyNamedMethod.WRITER>();
             var arg_ = new Capnproto_test.Capnp.Test.TestNameAnnotationInterface.Params_BadlyNamedMethod()
-            {BadlyNamedParam = badlyNamedParam};
+            {
+                BadlyNamedParam = badlyNamedParam
+            };
             arg_?.serialize(in_);
             using (var d_ = await Call(15065286897585459595UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_).WhenReturned)
             {
@@ -16725,6 +15873,7 @@ namespace Capnproto_test.Capnp.Test
         }
 
         public override ulong InterfaceId => 15065286897585459595UL;
+
         async Task<AnswerOrCounterquestion> BadlyNamedMethod(DeserializerState d_, CancellationToken cancellationToken_)
         {
             using (d_)
@@ -16764,11 +15913,7 @@ namespace Capnproto_test.Capnp.Test
             {
             }
 
-            public byte BadlyNamedParam
-            {
-                get;
-                set;
-            }
+            public byte BadlyNamedParam { get; set; }
 
             public struct READER
             {
@@ -16791,11 +15936,7 @@ namespace Capnproto_test.Capnp.Test
                     this.SetStruct(1, 0);
                 }
 
-                public byte BadlyNamedParam
-                {
-                    get => this.ReadDataByte(0UL, (byte)0);
-                    set => this.WriteData(0UL, value, (byte)0);
-                }
+                public byte BadlyNamedParam { get => this.ReadDataByte(0UL, (byte)0); set => this.WriteData(0UL, value, (byte)0); }
             }
         }
 
