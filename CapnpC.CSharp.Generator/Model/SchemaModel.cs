@@ -596,13 +596,13 @@ internal class SchemaModel
     private TypeDefinition ProcessParameterList(Node.READER reader, Brand.READER brandReader, List<Field> list,
         Pass2State state)
     {
-//# If a named parameter list was specified in the method
-//# declaration (rather than a single struct parameter type) then a corresponding struct type is
-//# auto-generated. Such an auto-generated type will not be listed in the interface's
-//# `nestedNodes` and its `scopeId` will be zero -- it is completely detached from the namespace.
-//# (Awkwardly, it does of course inherit generic parameters from the method's scope, which makes
-//# this a situation where you can't just climb the scope chain to find where a particular
-//# generic parameter was introduced. Making the `scopeId` zero was a mistake.)
+        //# If a named parameter list was specified in the method
+        //# declaration (rather than a single struct parameter type) then a corresponding struct type is
+        //# auto-generated. Such an auto-generated type will not be listed in the interface's
+        //# `nestedNodes` and its `scopeId` will be zero -- it is completely detached from the namespace.
+        //# (Awkwardly, it does of course inherit generic parameters from the method's scope, which makes
+        //# this a situation where you can't just climb the scope chain to find where a particular
+        //# generic parameter was introduced. Making the `scopeId` zero was a mistake.)
 
         if (reader.which != Node.WHICH.Struct) throw new InvalidSchemaException("Expected a struct");
 

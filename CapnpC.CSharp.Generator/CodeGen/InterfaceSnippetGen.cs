@@ -803,75 +803,75 @@ internal class InterfaceSnippetGen
     public IEnumerable<MemberDeclarationSyntax> MakePipeliningSupport(TypeDefinition type)
     {
         foreach (var method in type.Methods)
-        foreach (var path in ExpandPipeliningPaths(method))
-        {
-            if (path.Count == 1 && path[0].Offset == 0)
-                // The "trivial path" is already covered by the "Eager" extension method.
-                continue;
+            foreach (var path in ExpandPipeliningPaths(method))
+            {
+                if (path.Count == 1 && path[0].Offset == 0)
+                    // The "trivial path" is already covered by the "Eager" extension method.
+                    continue;
 
-            var accessPath = _names.MakeMemberAccessPathFieldName(method, path);
-            var methodName = _names.MakePipeliningSupportExtensionMethodName(path);
-            var capType = path[path.Count - 1].Type;
-            var capTypeSyntax = _names.MakeTypeSyntax(capType, null, TypeUsage.DomainClass, Nullability.NonNullable);
+                var accessPath = _names.MakeMemberAccessPathFieldName(method, path);
+                var methodName = _names.MakePipeliningSupportExtensionMethodName(path);
+                var capType = path[path.Count - 1].Type;
+                var capTypeSyntax = _names.MakeTypeSyntax(capType, null, TypeUsage.DomainClass, Nullability.NonNullable);
 
-            if (!_existingExtensionMethods.Add((capTypeSyntax.ToString(), methodName.ToString()))) continue;
+                if (!_existingExtensionMethods.Add((capTypeSyntax.ToString(), methodName.ToString()))) continue;
 
-            var pathDecl = FieldDeclaration(
-                    VariableDeclaration(
-                            IdentifierName(nameof(MemberAccessPath)))
-                        .AddVariables(
-                            VariableDeclarator(
-                                    accessPath.Identifier)
-                                .WithInitializer(
-                                    EqualsValueClause(
-                                        ObjectCreationExpression(
-                                                IdentifierName(nameof(MemberAccessPath)))
-                                            .AddArgumentListArguments(
-                                                path.Select(
-                                                    f => Argument(
-                                                        LiteralExpression(SyntaxKind.NumericLiteralExpression,
-                                                            Literal(f.Offset)))).ToArray())))))
-                .AddModifiers(Static, Readonly);
+                var pathDecl = FieldDeclaration(
+                        VariableDeclaration(
+                                IdentifierName(nameof(MemberAccessPath)))
+                            .AddVariables(
+                                VariableDeclarator(
+                                        accessPath.Identifier)
+                                    .WithInitializer(
+                                        EqualsValueClause(
+                                            ObjectCreationExpression(
+                                                    IdentifierName(nameof(MemberAccessPath)))
+                                                .AddArgumentListArguments(
+                                                    path.Select(
+                                                        f => Argument(
+                                                            LiteralExpression(SyntaxKind.NumericLiteralExpression,
+                                                                Literal(f.Offset)))).ToArray())))))
+                    .AddModifiers(Static, Readonly);
 
 
-            var methodDecl = MethodDeclaration(capTypeSyntax, methodName.Identifier)
-                .AddModifiers(Public, Static)
-                .AddParameterListParameters(
-                    Parameter(
-                            _names.TaskParameter.Identifier)
-                        .AddModifiers(This)
-                        .WithType(TransformReturnType(method)))
-                .AddBodyStatements(
-                    MakeLocalAwaitProxyFunction(method, path),
-                    ReturnStatement(
-                        CastExpression(
-                            capTypeSyntax,
-                            InvocationExpression(
-                                    MemberAccessExpression(
-                                        SyntaxKind.SimpleMemberAccessExpression,
-                                        IdentifierName(nameof(CapabilityReflection)),
-                                        GenericName(
-                                                Identifier(nameof(CapabilityReflection.CreateProxy)))
-                                            .AddTypeArgumentListArguments(
-                                                capTypeSyntax)))
-                                .AddArgumentListArguments(
-                                    Argument(
-                                        InvocationExpression(
-                                                MemberAccessExpression(
-                                                    SyntaxKind.SimpleMemberAccessExpression,
-                                                    IdentifierName(nameof(Impatient)),
-                                                    IdentifierName(nameof(Impatient.Access))))
-                                            .AddArgumentListArguments(
-                                                Argument(
-                                                    _names.TaskParameter.IdentifierName),
-                                                Argument(
-                                                    accessPath.IdentifierName),
-                                                Argument(
-                                                    InvocationExpression(
-                                                        _names.AwaitProxy.IdentifierName))))))));
+                var methodDecl = MethodDeclaration(capTypeSyntax, methodName.Identifier)
+                    .AddModifiers(Public, Static)
+                    .AddParameterListParameters(
+                        Parameter(
+                                _names.TaskParameter.Identifier)
+                            .AddModifiers(This)
+                            .WithType(TransformReturnType(method)))
+                    .AddBodyStatements(
+                        MakeLocalAwaitProxyFunction(method, path),
+                        ReturnStatement(
+                            CastExpression(
+                                capTypeSyntax,
+                                InvocationExpression(
+                                        MemberAccessExpression(
+                                            SyntaxKind.SimpleMemberAccessExpression,
+                                            IdentifierName(nameof(CapabilityReflection)),
+                                            GenericName(
+                                                    Identifier(nameof(CapabilityReflection.CreateProxy)))
+                                                .AddTypeArgumentListArguments(
+                                                    capTypeSyntax)))
+                                    .AddArgumentListArguments(
+                                        Argument(
+                                            InvocationExpression(
+                                                    MemberAccessExpression(
+                                                        SyntaxKind.SimpleMemberAccessExpression,
+                                                        IdentifierName(nameof(Impatient)),
+                                                        IdentifierName(nameof(Impatient.Access))))
+                                                .AddArgumentListArguments(
+                                                    Argument(
+                                                        _names.TaskParameter.IdentifierName),
+                                                    Argument(
+                                                        accessPath.IdentifierName),
+                                                    Argument(
+                                                        InvocationExpression(
+                                                            _names.AwaitProxy.IdentifierName))))))));
 
-            yield return pathDecl;
-            yield return methodDecl;
-        }
+                yield return pathDecl;
+                yield return methodDecl;
+            }
     }
 }

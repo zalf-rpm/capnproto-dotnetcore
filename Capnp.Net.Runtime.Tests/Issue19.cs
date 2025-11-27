@@ -20,7 +20,7 @@ public class GenericAProxy<TT> : Proxy, IGenericA<TT> where TT : class
     {
         var in_ = SerializerState.CreateForRpc<GenericA<TT>.Params_methodA.WRITER>();
         var arg_ = new GenericA<TT>.Params_methodA
-            { Param1 = param1 };
+        { Param1 = param1 };
         arg_.serialize(in_);
         var d_ = await Call(10341943558714247093UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_)
             .WhenReturned;
@@ -192,7 +192,7 @@ public class B2Proxy : Proxy, IB2
     {
         var in_ = SerializerState.CreateForRpc<B2.Params_methodB.WRITER>();
         var arg_ = new B2.Params_methodB
-            { Param1 = param1 };
+        { Param1 = param1 };
         arg_.serialize(in_);
         var d_ = await Call(16414937344734980809UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_)
             .WhenReturned;
@@ -204,7 +204,7 @@ public class B2Proxy : Proxy, IB2
     {
         var in_ = SerializerState.CreateForRpc<GenericA<string>.Params_methodA.WRITER>();
         var arg_ = new GenericA<string>.Params_methodA
-            { Param1 = param1 };
+        { Param1 = param1 };
         arg_.serialize(in_);
         var d_ = await Call(10341943558714247093UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_)
             .WhenReturned;

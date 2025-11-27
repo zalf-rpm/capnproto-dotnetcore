@@ -153,7 +153,7 @@ public class CodeGeneratorSteps
     {
         Assert.IsNotNull(_result, "expected generation result");
         Assert.IsTrue(_result.IsSuccess, $"Tool invocation failed: {_result.Exception?.Message}");
-        Assert.AreEqual(1, _result.GeneratedFiles.Count, "Expected exactly one file");
+        Assert.HasCount(1, _result.GeneratedFiles, "Expected exactly one file");
         Assert.IsTrue(_result.GeneratedFiles[0].IsSuccess,
             $"Code generation failed: {_result.GeneratedFiles[0].Exception?.Message}");
         Assert.IsFalse(string.IsNullOrEmpty(_result.GeneratedFiles[0].GeneratedContent),

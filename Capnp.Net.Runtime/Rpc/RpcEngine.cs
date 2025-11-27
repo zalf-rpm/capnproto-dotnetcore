@@ -794,52 +794,52 @@ public class RpcEngine
                         break;
 
                     case MessageTarget.WHICH.PromisedAnswer:
-                    {
-                        bool exists;
-                        PendingAnswer? previousAnswer;
-
-                        lock (_reentrancyBlocker)
                         {
-                            exists = _answerTable.TryGetValue(req.Target.PromisedAnswer.QuestionId, out previousAnswer);
-                        }
+                            bool exists;
+                            PendingAnswer? previousAnswer;
 
-                        if (exists)
-                        {
-                            previousAnswer!.Chain(
-                                req.Target.PromisedAnswer,
-                                async t =>
-                                {
-                                    try
-                                    {
-                                        using var proxy = await t;
-                                        callTargetCap = await proxy.GetProvider();
-                                        callTargetCap.Claim();
-                                        CreateAnswerAwaitItAndReply();
-                                    }
-                                    catch (TaskCanceledException)
-                                    {
-                                        pendingAnswer = new PendingAnswer(
-                                            Task.FromCanceled<AnswerOrCounterquestion>(previousAnswer
-                                                .CancellationToken), null);
+                            lock (_reentrancyBlocker)
+                            {
+                                exists = _answerTable.TryGetValue(req.Target.PromisedAnswer.QuestionId, out previousAnswer);
+                            }
 
-                                        AwaitAnswerAndReply();
-                                    }
-                                    catch (System.Exception exception)
+                            if (exists)
+                            {
+                                previousAnswer!.Chain(
+                                    req.Target.PromisedAnswer,
+                                    async t =>
                                     {
-                                        pendingAnswer = new PendingAnswer(
-                                            Task.FromException<AnswerOrCounterquestion>(exception), null);
+                                        try
+                                        {
+                                            using var proxy = await t;
+                                            callTargetCap = await proxy.GetProvider();
+                                            callTargetCap.Claim();
+                                            CreateAnswerAwaitItAndReply();
+                                        }
+                                        catch (TaskCanceledException)
+                                        {
+                                            pendingAnswer = new PendingAnswer(
+                                                Task.FromCanceled<AnswerOrCounterquestion>(previousAnswer
+                                                    .CancellationToken), null);
 
-                                        AwaitAnswerAndReply();
-                                    }
-                                });
+                                            AwaitAnswerAndReply();
+                                        }
+                                        catch (System.Exception exception)
+                                        {
+                                            pendingAnswer = new PendingAnswer(
+                                                Task.FromException<AnswerOrCounterquestion>(exception), null);
+
+                                            AwaitAnswerAndReply();
+                                        }
+                                    });
+                            }
+                            else
+                            {
+                                Logger.LogWarning("Incoming RPC call: Peer asked for non-existing answer ID.");
+                                throw new RpcProtocolErrorException(
+                                    $"Did not find a promised answer for given ID {req.Target.PromisedAnswer.QuestionId}");
+                            }
                         }
-                        else
-                        {
-                            Logger.LogWarning("Incoming RPC call: Peer asked for non-existing answer ID.");
-                            throw new RpcProtocolErrorException(
-                                $"Did not find a promised answer for given ID {req.Target.PromisedAnswer.QuestionId}");
-                        }
-                    }
                         break;
 
                     default:
@@ -899,46 +899,46 @@ public class RpcEngine
                     break;
 
                 case Return.WHICH.TakeFromOtherQuestion:
-                {
-                    bool exists;
-                    PendingAnswer? pendingAnswer;
-
-                    lock (_reentrancyBlocker)
                     {
-                        exists = _answerTable.TryGetValue(req.TakeFromOtherQuestion, out pendingAnswer);
-                    }
+                        bool exists;
+                        PendingAnswer? pendingAnswer;
 
-                    if (exists)
-                    {
-                        pendingAnswer!.Chain(async t =>
+                        lock (_reentrancyBlocker)
                         {
-                            try
-                            {
-                                var aorcq = await t;
-                                var results = aorcq.Answer;
+                            exists = _answerTable.TryGetValue(req.TakeFromOtherQuestion, out pendingAnswer);
+                        }
 
-                                if (results != null)
-                                    question.OnReturn(results);
-                                else
-                                    question.OnTailCallReturn();
-                            }
-                            catch (TaskCanceledException)
+                        if (exists)
+                        {
+                            pendingAnswer!.Chain(async t =>
                             {
-                                question.OnCanceled();
-                            }
-                            catch (System.Exception exception)
-                            {
-                                question.OnException(exception);
-                            }
-                        });
+                                try
+                                {
+                                    var aorcq = await t;
+                                    var results = aorcq.Answer;
+
+                                    if (results != null)
+                                        question.OnReturn(results);
+                                    else
+                                        question.OnTailCallReturn();
+                                }
+                                catch (TaskCanceledException)
+                                {
+                                    question.OnCanceled();
+                                }
+                                catch (System.Exception exception)
+                                {
+                                    question.OnException(exception);
+                                }
+                            });
+                        }
+                        else
+                        {
+                            Logger.LogWarning(
+                                "Incoming RPC return: Peer requested to take results from other question, but specified ID is unknown (already released?)");
+                            throw new RpcProtocolErrorException("Invalid ID");
+                        }
                     }
-                    else
-                    {
-                        Logger.LogWarning(
-                            "Incoming RPC return: Peer requested to take results from other question, but specified ID is unknown (already released?)");
-                        throw new RpcProtocolErrorException("Invalid ID");
-                    }
-                }
                     break;
 
                 default:
@@ -1415,12 +1415,12 @@ public class RpcEngine
                             return impCap;
                         }
 
-                    {
-                        var newCap = new ImportedCapability(this, capDesc.SenderHosted);
-                        rcc = new RefCounted<RemoteCapability>(newCap);
-                        _importTable.Add(capDesc.SenderHosted, rcc);
-                        return newCap;
-                    }
+                        {
+                            var newCap = new ImportedCapability(this, capDesc.SenderHosted);
+                            rcc = new RefCounted<RemoteCapability>(newCap);
+                            _importTable.Add(capDesc.SenderHosted, rcc);
+                            return newCap;
+                        }
 
                     case CapDescriptor.WHICH.SenderPromise:
                         if (_importTable.TryGetValue(capDesc.SenderPromise, out var rccp))
@@ -1431,12 +1431,12 @@ public class RpcEngine
                             return impCap;
                         }
 
-                    {
-                        var newCap = new PromisedCapability(this, capDesc.SenderPromise);
-                        rccp = new RefCounted<RemoteCapability>(newCap);
-                        _importTable.Add(capDesc.SenderPromise, rccp);
-                        return newCap;
-                    }
+                        {
+                            var newCap = new PromisedCapability(this, capDesc.SenderPromise);
+                            rccp = new RefCounted<RemoteCapability>(newCap);
+                            _importTable.Add(capDesc.SenderPromise, rccp);
+                            return newCap;
+                        }
 
                     case CapDescriptor.WHICH.ReceiverHosted:
                         if (_exportTable.TryGetValue(capDesc.ReceiverHosted, out var rc)) return rc.Cap.AsCapability();
@@ -1484,11 +1484,11 @@ public class RpcEngine
                             return impCap;
                         }
 
-                    {
-                        var newCap = new ImportedCapability(this, capDesc.ThirdPartyHosted.VineId);
-                        rcv = new RefCounted<RemoteCapability>(newCap);
-                        return newCap;
-                    }
+                        {
+                            var newCap = new ImportedCapability(this, capDesc.ThirdPartyHosted.VineId);
+                            rcv = new RefCounted<RemoteCapability>(newCap);
+                            return newCap;
+                        }
 
                     case CapDescriptor.WHICH.None:
                         return NullCapability.Instance;

@@ -79,26 +79,26 @@ public static class Interceptor
                 return (CapabilityReflection.CreateProxy<TCap>(Detach(policy, proxy.ConsumedCap!)) as TCap)!;
 
             case CensorCapability ccap:
-            {
-                var cur = ccap;
-                var stk = new Stack<IInterceptionPolicy>();
-
-                do
                 {
-                    if (policy.Equals(cur.Policy))
+                    var cur = ccap;
+                    var stk = new Stack<IInterceptionPolicy>();
+
+                    do
                     {
-                        var cur2 = cur.InterceptedCapability;
+                        if (policy.Equals(cur.Policy))
+                        {
+                            var cur2 = cur.InterceptedCapability;
 
-                        foreach (var p in stk) cur2 = p.Attach(cur2);
-                        return (cur2 as TCap)!;
-                    }
+                            foreach (var p in stk) cur2 = p.Attach(cur2);
+                            return (cur2 as TCap)!;
+                        }
 
-                    stk.Push(cur.Policy);
-                    cur = cur.InterceptedCapability as CensorCapability;
-                } while (cur != null);
+                        stk.Push(cur.Policy);
+                        cur = cur.InterceptedCapability as CensorCapability;
+                    } while (cur != null);
 
-                return (ccap as TCap)!;
-            }
+                    return (ccap as TCap)!;
+                }
 
             default:
                 return cap;

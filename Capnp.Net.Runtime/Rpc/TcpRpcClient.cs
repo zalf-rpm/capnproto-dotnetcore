@@ -170,7 +170,7 @@ public class TcpRpcClient : IConnection, IDisposable
 
     private async Task ConnectAsync(string host, int port)
     {
-        for (var retry = 0;; retry++)
+        for (var retry = 0; ; retry++)
             try
             {
                 await _client.ConnectAsync(host, port);

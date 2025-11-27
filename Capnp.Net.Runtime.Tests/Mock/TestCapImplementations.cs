@@ -1085,7 +1085,7 @@ internal class TestMoreStuffImpl3 : ITestMoreStuff, ITestCallOrder
 
     public Task<uint> GetCallSequence(uint expected, CancellationToken cancellationToken_ = default)
     {
-        Assert.AreEqual(_counter, expected);
+        Assert.AreEqual(expected, _counter);
         return Task.FromResult(_counter++);
     }
 
@@ -1178,7 +1178,7 @@ internal class TestMoreStuffImpl4 : ITestMoreStuff, ITestCallOrder
 
     public Task<uint> GetCallSequence(uint expected, CancellationToken cancellationToken_ = default)
     {
-        Assert.AreEqual(_counter, expected);
+        Assert.AreEqual(expected, _counter);
         return Task.FromResult(_counter++);
     }
 
@@ -1270,7 +1270,7 @@ internal class TestMoreStuffImpl5 : ITestMoreStuff, ITestCallOrder
 
     public Task<uint> GetCallSequence(uint expected, CancellationToken cancellationToken_ = default)
     {
-        Assert.AreEqual(_counter, expected);
+        Assert.AreEqual(expected, _counter);
         return Task.FromResult(_counter++);
     }
 

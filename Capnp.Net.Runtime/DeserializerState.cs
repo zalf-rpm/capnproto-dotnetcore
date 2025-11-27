@@ -345,19 +345,19 @@ public struct DeserializerState : IStructDeserializer, IDisposable
                             break;
 
                         case ListKind.ListOfStructs:
-                        {
-                            if (Offset >= CurrentSegment.Length)
-                                throw new DeserializationException("List of composites pointer exceeds segment bounds");
-                            WirePointer tag = CurrentSegment[Offset];
-                            if (tag.Kind != PointerKind.Struct)
-                                throw new DeserializationException(
-                                    "Unexpected: List of composites with non-struct type tag");
-                            IncrementBytesTraversed(checked(8u * (uint)pointer.ListElementCount + 8u));
-                            ListElementCount = tag.ListOfStructsElementCount;
-                            StructDataCount = tag.StructDataCount;
-                            StructPtrCount = tag.StructPtrCount;
-                            Kind = ObjectKind.ListOfStructs;
-                        }
+                            {
+                                if (Offset >= CurrentSegment.Length)
+                                    throw new DeserializationException("List of composites pointer exceeds segment bounds");
+                                WirePointer tag = CurrentSegment[Offset];
+                                if (tag.Kind != PointerKind.Struct)
+                                    throw new DeserializationException(
+                                        "Unexpected: List of composites with non-struct type tag");
+                                IncrementBytesTraversed(checked(8u * (uint)pointer.ListElementCount + 8u));
+                                ListElementCount = tag.ListOfStructsElementCount;
+                                StructDataCount = tag.StructDataCount;
+                                StructPtrCount = tag.StructPtrCount;
+                                Kind = ObjectKind.ListOfStructs;
+                            }
                             break;
 
                         default:

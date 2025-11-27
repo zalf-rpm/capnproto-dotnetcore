@@ -148,7 +148,7 @@ public class General : TestBase
     {
         var thread = new Thread(() =>
         {
-            for (;;)
+            for (; ; )
                 try
                 {
                     Thread.Sleep(Timeout.Infinite);

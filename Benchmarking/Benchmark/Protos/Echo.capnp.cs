@@ -26,7 +26,7 @@ public class Echoer_Proxy : Proxy, IEchoer
     {
         var in_ = SerializerState.CreateForRpc<Echoer.Params_Echo.WRITER>();
         var arg_ = new Echoer.Params_Echo
-            { Input = input };
+        { Input = input };
         arg_?.serialize(in_);
         using (var d_ = await Call(9719129336158892292UL, 0, in_.Rewrap<DynamicSerializerState>(), false,
                    cancellationToken_).WhenReturned)

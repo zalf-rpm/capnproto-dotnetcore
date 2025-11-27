@@ -44,9 +44,9 @@ public static class CapabilityReflection
             try
             {
                 var attrs = (from iface in _.GetInterfaces()
-                    let generics = iface.GetGenericArguments()
-                    from attr in iface.GetCustomAttributes(typeof(SkeletonAttribute), false)
-                    select (Attr: (SkeletonAttribute)attr, Generics: generics)).ToArray();
+                             let generics = iface.GetGenericArguments()
+                             from attr in iface.GetCustomAttributes(typeof(SkeletonAttribute), false)
+                             select (Attr: (SkeletonAttribute)attr, Generics: generics)).ToArray();
 
                 if (attrs.Length == 0)
                     throw new InvalidCapabilityInterfaceException(

@@ -1508,12 +1508,12 @@ public class SerializerState : IStructSerializer, IDisposable
                 break;
 
             case IReadOnlyList<object> list:
-            {
-                var builder = BuildPointer(slot);
-                builder.SetListOfPointers(list.Count);
-                var i = 0;
-                foreach (var item in list) builder.LinkObject(i++, item);
-            }
+                {
+                    var builder = BuildPointer(slot);
+                    builder.SetListOfPointers(list.Count);
+                    var i = 0;
+                    foreach (var item in list) builder.LinkObject(i++, item);
+                }
                 break;
 
             default:

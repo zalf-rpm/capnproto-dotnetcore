@@ -332,74 +332,74 @@ internal class ReaderSnippetGen
         switch (elementType.Tag)
         {
             case TypeTag.List:
-            {
-                var innerImpl = MakeReadListPropertyImpl(
-                    elementType.ElementType,
-                    scope,
-                    lambdaArg,
-                    depth + 1);
+                {
+                    var innerImpl = MakeReadListPropertyImpl(
+                        elementType.ElementType,
+                        scope,
+                        lambdaArg,
+                        depth + 1);
 
-                return InvocationExpression(
-                        MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-                            context,
-                            IdentifierName(nameof(ListDeserializer.Cast))))
-                    .AddArgumentListArguments(
-                        Argument(SimpleLambdaExpression(lambdaParam, innerImpl)));
-            }
+                    return InvocationExpression(
+                            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                                context,
+                                IdentifierName(nameof(ListDeserializer.Cast))))
+                        .AddArgumentListArguments(
+                            Argument(SimpleLambdaExpression(lambdaParam, innerImpl)));
+                }
 
             case TypeTag.ListPointer:
-            {
-                context = InvocationExpression(MemberAccessExpression(
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    context,
-                    IdentifierName(nameof(DeserializerState.RequireList))
-                )).AddArgumentListArguments(Argument(lambdaArg));
+                {
+                    context = InvocationExpression(MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        context,
+                        IdentifierName(nameof(DeserializerState.RequireList))
+                    )).AddArgumentListArguments(Argument(lambdaArg));
 
-                return InvocationExpression(
-                        MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-                            context,
-                            IdentifierName(nameof(ReadOnlyListExtensions.LazyListSelect))))
-                    .AddArgumentListArguments(
-                        Argument(SimpleLambdaExpression(lambdaParam, context)));
-            }
+                    return InvocationExpression(
+                            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                                context,
+                                IdentifierName(nameof(ReadOnlyListExtensions.LazyListSelect))))
+                        .AddArgumentListArguments(
+                            Argument(SimpleLambdaExpression(lambdaParam, context)));
+                }
 
             case TypeTag.Struct:
-            {
-                return InvocationExpression(
-                        MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-                            context,
-                            IdentifierName(nameof(ListDeserializer.Cast))))
-                    .AddArgumentListArguments(
-                        Argument(MakeReaderCreator(elementTypeSyntax)));
-            }
+                {
+                    return InvocationExpression(
+                            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                                context,
+                                IdentifierName(nameof(ListDeserializer.Cast))))
+                        .AddArgumentListArguments(
+                            Argument(MakeReaderCreator(elementTypeSyntax)));
+                }
 
             case TypeTag.Enum:
-            {
-                var cons = SimpleLambdaExpression(
-                    lambdaParam,
-                    CastExpression(elementTypeSyntax, lambdaArg));
+                {
+                    var cons = SimpleLambdaExpression(
+                        lambdaParam,
+                        CastExpression(elementTypeSyntax, lambdaArg));
 
-                return InvocationExpression(
-                        MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-                            context,
-                            IdentifierName(nameof(ListDeserializer.CastEnums))))
-                    .AddArgumentListArguments(
-                        Argument(cons));
-            }
+                    return InvocationExpression(
+                            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                                context,
+                                IdentifierName(nameof(ListDeserializer.CastEnums))))
+                        .AddArgumentListArguments(
+                            Argument(cons));
+                }
 
             case TypeTag.AnyPointer:
             case TypeTag.StructPointer:
-            {
-                return context;
-            }
+                {
+                    return context;
+                }
 
             case TypeTag.Void:
-            {
-                return MemberAccessExpression(
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    context,
-                    IdentifierName(nameof(ListDeserializer.Count)));
-            }
+                {
+                    return MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        context,
+                        IdentifierName(nameof(ListDeserializer.Count)));
+                }
 
             case TypeTag.Data:
                 castFuncName = nameof(ListDeserializer.CastData);

@@ -1039,7 +1039,7 @@ public class TcpRpcInterop : TestBase
     }
 
     [TestMethod]
-    [Timeout(240000)]
+    [Timeout(240000, CooperativeCancellation = true)]
     public void RepeatedEmbargoError()
     {
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
