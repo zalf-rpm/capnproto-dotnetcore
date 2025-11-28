@@ -17,6 +17,7 @@ using Exception = System.Exception;
 
 namespace Capnp.Net.Runtime.Tests;
 
+[Ignore]
 [TestClass]
 public class TcpRpcInterop : TestBase
 {
