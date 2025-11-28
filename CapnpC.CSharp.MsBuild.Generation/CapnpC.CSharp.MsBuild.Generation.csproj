@@ -32,8 +32,36 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="18.0.2" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="18.0.2" />
+    <PackageReference
+      Include="Microsoft.Build.Framework"
+      Version="18.0.2"
+      Condition="'$(TargetFramework)' == 'net10.0'"
+    />
+    <PackageReference
+      Include="Microsoft.Build.Utilities.Core"
+      Version="18.0.2"
+      Condition="'$(TargetFramework)' == 'net10.0'"
+    />
+    <PackageReference
+      Include="Microsoft.Build.Framework"
+      Version="17.14.28"
+      Condition="'$(TargetFramework)' == 'net9.0'"
+    />
+    <PackageReference
+      Include="Microsoft.Build.Utilities.Core"
+      Version="17.14.28"
+      Condition="'$(TargetFramework)' == 'net9.0'"
+    />
+    <PackageReference
+      Include="Microsoft.Build.Framework"
+      Version="17.11.48"
+      Condition="'$(TargetFramework)' == 'net8.0'"
+    />
+    <PackageReference
+      Include="Microsoft.Build.Utilities.Core"
+      Version="17.11.48"
+      Condition="'$(TargetFramework)' == 'net8.0'"
+    />
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
     <PackageReference Update="Microsoft.Xaml" Version="4.0.0.1" />
     <PackageReference Update="System.Collections.Immutable" Version="10.0.0" />
