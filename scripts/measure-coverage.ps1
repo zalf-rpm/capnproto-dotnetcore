@@ -15,17 +15,15 @@ If(!(test-path $coverageReportDir)) {
   New-Item -ItemType Directory -Force -Path $coverageReportDir
 }
 
-& dotnet test $generatorTests `
+& dotnet test --project $generatorTests `
   --filter TestCategory=Coverage `
-  --logger console `
   --configuration Release `
   --collect:"XPlat code coverage" `
   --results-directory $resultsDir `
   --settings "$rootDir\coverlet.runsettings"
 
-& dotnet test $runtimeTests `
+& dotnet test --project $runtimeTests `
   --filter TestCategory=Coverage `
-  --logger console `
   --configuration Release `
   --collect:"XPlat code coverage" `
   --results-directory $resultsDir `

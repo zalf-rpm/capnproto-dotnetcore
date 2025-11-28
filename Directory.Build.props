@@ -8,5 +8,6 @@
   </ItemGroup>
   <PropertyGroup>
     <NoWarn>$(NoWarn);CS8981</NoWarn>
+    <UseAppHost>false</UseAppHost>
   </PropertyGroup>
 </Project>

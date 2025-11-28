@@ -63,13 +63,13 @@ test_script:
   - cmd: |
       nbgv get-version -v NuGetPackageVersion >> myversion.txt
       set /P VERSION=< myversion.txt
-      dotnet test CapnpC.CSharp.Generator.Tests\CapnpC.CSharp.Generator.Tests.csproj --configuration Release --logger:Appveyor --no-build
+      dotnet test --project CapnpC.CSharp.Generator.Tests\CapnpC.CSharp.Generator.Tests.csproj --configuration Release --no-build
       cd %APPVEYOR_BUILD_FOLDER%\capnpc-csharp
       dotnet tool install --global --add-source ./nupkg capnpc-csharp --version %VERSION%
       cd %APPVEYOR_BUILD_FOLDER%\install-test
       compile-test
       cd %APPVEYOR_BUILD_FOLDER%
-      dotnet test CapnpC.CSharp.Generator.Tests\CapnpC.CSharp.Generator.Tests.csproj --configuration Release --logger:Appveyor --no-build
+      dotnet test --project CapnpC.CSharp.Generator.Tests\CapnpC.CSharp.Generator.Tests.csproj --configuration Release --no-build
       dotnet tool uninstall --global capnpc-csharp
       cd %APPVEYOR_BUILD_FOLDER%\install-test
       notinstalled-test
@@ -81,10 +81,10 @@ test_script:
       choco uninstall capnpc-csharp-win-x86 -y
       notinstalled-test
       cd %APPVEYOR_BUILD_FOLDER%
-      dotnet test CapnpC.CSharp.MsBuild.Generation.Tests\CapnpC.CSharp.MsBuild.Generation.Tests.csproj --configuration Release --logger:Appveyor --no-build
+      dotnet test --project CapnpC.CSharp.MsBuild.Generation.Tests\CapnpC.CSharp.MsBuild.Generation.Tests.csproj --configuration Release --no-build
       msbuild -t:restore ./MsBuildGenerationTest/MsBuildGenerationTest.csproj /p:Configuration="Debug" /p:PackageReferenceVersion="%VERSION%"
       msbuild ./MsBuildGenerationTest/MsBuildGenerationTest.sln /p:Configuration="Debug" /p:PackageReferenceVersion="%VERSION%"
-      dotnet test Capnp.Net.Runtime.Tests\Capnp.Net.Runtime.Tests.csproj --configuration Release --logger:Appveyor --no-build
+      dotnet test --project Capnp.Net.Runtime.Tests\Capnp.Net.Runtime.Tests.csproj --configuration Release --no-build
       powershell -File .\scripts\measure-coverage.ps1
       csmacnz.Coveralls --lcov -i "coverage\lcov.info" --repoToken %COVERALLS_REPO_TOKEN%
 on_finish: # any cleanup in here

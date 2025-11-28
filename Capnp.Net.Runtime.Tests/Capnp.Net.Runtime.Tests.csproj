@@ -1,15 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSTest.Sdk/4.0.2">
   <PropertyGroup>
-    <IsPackable>false</IsPackable>
-
     <LangVersion>13.0</LangVersion>
-
-    <OutputType>Library</OutputType>
-
     <Configurations>Debug;Release</Configurations>
-
     <RootNamespace>Capnp.Net.Runtime.Tests</RootNamespace>
-
     <TargetFrameworks>net10.0;net8.0;net9.0</TargetFrameworks>
   </PropertyGroup>
 
@@ -22,15 +15,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="4.0.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="4.0.2" />
     <PackageReference Include="System.IO.Pipelines" Version="10.0.0" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" Version="10.0.0" />
     <PackageReference Update="Nerdbank.GitVersioning">

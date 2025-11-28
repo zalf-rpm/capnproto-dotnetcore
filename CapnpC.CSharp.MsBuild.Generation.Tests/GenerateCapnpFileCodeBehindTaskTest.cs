@@ -1,5 +1,5 @@
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using CapnpC.CSharp.Generator;
 using CapnpC.CSharp.Generator.Tests;
