@@ -28,6 +28,8 @@ internal class InlineAssemblyCompiler
         );
 
         var assemblyRoot = Path.GetDirectoryName(typeof(object).Assembly.Location);
+        var currentFramework = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).Name;
+        var configuration = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).Parent.Name;
 
         var capnpRuntimePath = Path.GetFullPath(
             Path.Combine(
@@ -39,8 +41,8 @@ internal class InlineAssemblyCompiler
                 "..",
                 "Capnp.Net.Runtime",
                 "bin",
-                "Debug",
-                "net9.0",
+                configuration,
+                currentFramework,
                 "Capnp.Net.Runtime.dll"
             )
         );

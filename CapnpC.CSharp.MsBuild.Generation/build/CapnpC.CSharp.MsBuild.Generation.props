@@ -91,7 +91,7 @@
   <PropertyGroup>
     <_CapnpcCsharp_TaskFolder
       Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_CapnpcCsharp_TaskFolder)' == ''"
-      >net9.0</_CapnpcCsharp_TaskFolder
+      >net8.0</_CapnpcCsharp_TaskFolder
     >
     <_CapnpcCsharp_TaskAssembly Condition=" '$(_CapnpcCsharp_TaskAssembly)' == '' "
       >..\tasks\$(_CapnpcCsharp_TaskFolder)\CapnpC.CSharp.MsBuild.Generation.dll</_CapnpcCsharp_TaskAssembly

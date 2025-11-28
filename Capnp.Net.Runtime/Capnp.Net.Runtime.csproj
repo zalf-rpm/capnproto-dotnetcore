@@ -24,7 +24,7 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net10.0;net8.0;net9.0</TargetFrameworks>
     <InvariantGlobalization>true</InvariantGlobalization>
     <LangVersion>13.0</LangVersion>
   </PropertyGroup>
@@ -37,7 +37,7 @@
     <DefineConstants></DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
