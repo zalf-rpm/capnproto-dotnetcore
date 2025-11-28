@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
+
+  <!-- Linux / Unix Build -->
+  <Target
+    Name="BuildCppUnix"
+    BeforeTargets="Build"
+    Condition="!$([MSBuild]::IsOsPlatform('Windows'))"
+  >
+    <Message Importance="high" Text="Building C++ Compat Test (Unix)..." />
+    <Exec Command="chmod +x ./build.sh" WorkingDirectory="$(MSBuildProjectDirectory)" />
+    <Exec Command="./build.sh" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
+
+  <Target
+    Name="CleanCppUnix"
+    AfterTargets="Clean"
+    Condition="!$([MSBuild]::IsOsPlatform('Windows'))"
+  >
+    <Exec
+      Command="rm -f CapnpCompatTest test.capnp.c++ test.capnp.h"
+      WorkingDirectory="$(MSBuildProjectDirectory)"
+    />
+  </Target>
+
+  <!-- Windows Build -->
+  <Target
+    Name="BuildCppWindows"
+    BeforeTargets="Build"
+    Condition="$([MSBuild]::IsOsPlatform('Windows'))"
+  >
+    <Message Importance="high" Text="Building C++ Compat Test (Windows)..." />
+    <Exec
+      Command="msbuild CapnpCompatTest.vcxproj /p:Configuration=$(Configuration) /p:Platform=x64"
+      WorkingDirectory="$(MSBuildProjectDirectory)"
+    />
+  </Target>
+
+  <Target
+    Name="CleanCppWindows"
+    AfterTargets="Clean"
+    Condition="$([MSBuild]::IsOsPlatform('Windows'))"
+  >
+    <Exec
+      Command="msbuild CapnpCompatTest.vcxproj /t:Clean /p:Configuration=$(Configuration) /p:Platform=x64"
+      WorkingDirectory="$(MSBuildProjectDirectory)"
+    />
+  </Target>
+</Project>

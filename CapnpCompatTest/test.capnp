@@ -21,7 +21,7 @@
 
 @0xd508eebdc2dc42b8;
 
-using Cxx = import "c++.capnp";
+using Cxx = import "/capnp/c++.capnp";
 
 # Use a namespace likely to cause trouble if the generated code doesn't use fully-qualified
 # names for stuff in the capnproto namespace.
@@ -829,7 +829,7 @@ interface TestMoreStuff extends(TestCallOrder) {
   callFooWhenResolved @1 (cap :TestInterface) -> (s: Text);
   # Like callFoo but waits for `cap` to resolve first.
 
-  neverReturn @2 (cap :TestInterface) -> (capCopy :TestInterface);
+  neverReturn @2 (cap :TestInterface) -> (capCopy :TestInterface) $Cxx.allowCancellation;
   # Doesn't return.  You should cancel it.
 
   hold @3 (cap :TestInterface) -> ();
@@ -844,7 +844,7 @@ interface TestMoreStuff extends(TestCallOrder) {
   echo @6 (cap :TestCallOrder) -> (cap :TestCallOrder);
   # Just returns the input cap.
 
-  expectCancel @7 (cap :TestInterface) -> ();
+  expectCancel @7 (cap :TestInterface) -> () $Cxx.allowCancellation;
   # evalLater()-loops forever, holding `cap`.  Must be canceled.
 
   methodWithDefaults @8 (a :Text, b :UInt32 = 123, c :Text = "foo") -> (d :Text, e :Text = "bar");

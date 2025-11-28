@@ -2,5 +2,5 @@
   <Configurations>
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="CapnpCompatTest/CapnpCompatTest.vcxproj" />
+  <Project Path="CapnpCompatTest/CapnpCompatTest.Wrapper.csproj" />
 </Solution>

@@ -17,7 +17,6 @@ using Exception = System.Exception;
 
 namespace Capnp.Net.Runtime.Tests;
 
-[Ignore]
 [TestClass]
 public class TcpRpcInterop : TestBase
 {
@@ -57,7 +56,13 @@ public class TcpRpcInterop : TestBase
 #else
         config = "Release";
 #endif
-        var path = Path.Combine(myPath, $@"..\..\..\..\{config}\CapnpCompatTest.exe");
+        // Adjusted for Linux build location
+        var path = Path.Combine(myPath, "../../../../CapnpCompatTest/CapnpCompatTest");
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+        {
+            path = Path.Combine(myPath, $@"..\..\..\..\{config}\CapnpCompatTest.exe");
+        }
+
         path = Path.GetFullPath(path);
         var arguments = $"{whichTest} {addr}:{port}";
         var startInfo = new ProcessStartInfo(path, arguments)

@@ -597,7 +597,7 @@ public:
 		// Also attach `cap` to the result struct to make sure that is released.
 		context.getResults().setCapCopy(context.getParams().getCap());
 
-		context.allowCancellation();
+		// context.allowCancellation();
 		return kj::mv(promise);
 	}
 
@@ -665,7 +665,7 @@ public:
 	{
 		cout << "expectCancel" << endl;
 		auto cap = context.getParams().getCap();
-		context.allowCancellation();
+		// context.allowCancellation();
 		// return loop(0, cap, context);
 		return kj::NEVER_DONE;
 	}
@@ -796,19 +796,28 @@ void ReleaseTest(capnp::EzRpcClient& rpc)
 	cin >> s;
 
 	handle1 = nullptr;
-	for (uint i = 0; i < 16; i++) kj::evalLater([]() {}).wait(waitScope);
+	for (uint i = 0; i < 16; i++) {
+		kj::evalLater([]() {}).wait(waitScope);
+		waitScope.poll();
+	}
 
 	cout << "handle1 null" << endl;
 	cin >> s;
 
 	handle2 = nullptr;
-	for (uint i = 0; i < 16; i++) kj::evalLater([]() {}).wait(waitScope);
+	for (uint i = 0; i < 16; i++) {
+		kj::evalLater([]() {}).wait(waitScope);
+		waitScope.poll();
+	}
 
 	cout << "handle2 null" << endl;
 	cin >> s;
 
 	promise = nullptr;
-	for (uint i = 0; i < 16; i++) kj::evalLater([]() {}).wait(waitScope);
+	for (uint i = 0; i < 16; i++) {
+		kj::evalLater([]() {}).wait(waitScope);
+		waitScope.poll();
+	}
 	waitScope.poll();
 
 	cout << "promise null" << endl;

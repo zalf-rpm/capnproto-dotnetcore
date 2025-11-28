@@ -12,6 +12,9 @@ public class Job : IDisposable
 
     public Job()
     {
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return;
+
         handle = CreateJobObject(IntPtr.Zero, null);
 
         var info = new JOBOBJECT_BASIC_LIMIT_INFORMATION { LimitFlags = 0x2000 };
@@ -75,12 +78,18 @@ public class Job : IDisposable
 
     public void Close()
     {
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return;
+
         CloseHandle(handle);
         handle = IntPtr.Zero;
     }
 
     public bool AddProcess(IntPtr processHandle)
     {
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return true;
+
         return AssignProcessToJobObject(handle, processHandle);
     }
 

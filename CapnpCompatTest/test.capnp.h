@@ -9,10 +9,14 @@
 #include <capnp/capability.h>
 #endif  // !CAPNP_LITE
 
-#if CAPNP_VERSION != 8000
+#ifndef CAPNP_VERSION
+#error "CAPNP_VERSION is not defined, is capnp/generated-header-support.h missing?"
+#elif CAPNP_VERSION != 1002000
 #error "Version mismatch between generated code and library headers.  You must use the same version of the Cap'n Proto compiler and library."
 #endif
 
+
+CAPNP_BEGIN_HEADER
 
 namespace capnp {
 namespace schemas {
@@ -1809,7 +1813,7 @@ extern const ::capnp::_::ConstStruct< ::capnproto_test::capnp::test::TestPrintIn
 extern const ::capnp::_::ConstStruct< ::capnproto_test::capnp::test::TestAllTypes> DERIVED_CONSTANT;
 extern const ::capnp::_::ConstStruct< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Text>> GENERIC_CONSTANT;
 extern const ::capnp::_::ConstData<831> EMBEDDED_DATA;
-extern const ::capnp::_::ConstText<4236> EMBEDDED_TEXT;
+extern const ::capnp::_::ConstText<4235> EMBEDDED_TEXT;
 extern const ::capnp::_::ConstStruct< ::capnproto_test::capnp::test::TestAllTypes> EMBEDDED_STRUCT;
 extern const ::capnp::_::ConstText<10> NON_ASCII_TEXT;
 struct TestAnyPointerConstants {
@@ -9796,7 +9800,7 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename Foo2 = ::capnp::AnyPointer, typename Bar2 = ::capnp::AnyPointer>
-  typename TestGenerics<Foo2, Bar2>::Reader asGeneric() {
+  typename TestGenerics<Foo2, Bar2>::Reader asGeneric() const {
     return typename TestGenerics<Foo2, Bar2>::Reader(_reader);
   }
 
@@ -9929,7 +9933,7 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename Foo2 = ::capnp::AnyPointer, typename Bar2 = ::capnp::AnyPointer>
-  typename TestGenerics<Foo2, Bar2>::Inner::Reader asTestGenericsGeneric() {
+  typename TestGenerics<Foo2, Bar2>::Inner::Reader asTestGenericsGeneric() const {
     return typename TestGenerics<Foo2, Bar2>::Inner::Reader(_reader);
   }
 
@@ -10038,12 +10042,12 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename Baz2 = ::capnp::AnyPointer>
-  typename Inner2<Baz2>::Reader asGeneric() {
+  typename Inner2<Baz2>::Reader asGeneric() const {
     return typename Inner2<Baz2>::Reader(_reader);
   }
 
   template <typename Foo2 = ::capnp::AnyPointer, typename Bar2 = ::capnp::AnyPointer>
-  typename TestGenerics<Foo2, Bar2>::template Inner2<Baz>::Reader asTestGenericsGeneric() {
+  typename TestGenerics<Foo2, Bar2>::template Inner2<Baz>::Reader asTestGenericsGeneric() const {
     return typename TestGenerics<Foo2, Bar2>::template Inner2<Baz>::Reader(_reader);
   }
 
@@ -10182,17 +10186,17 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename Qux2 = ::capnp::AnyPointer>
-  typename DeepNest<Qux2>::Reader asGeneric() {
+  typename DeepNest<Qux2>::Reader asGeneric() const {
     return typename DeepNest<Qux2>::Reader(_reader);
   }
 
   template <typename Baz2 = ::capnp::AnyPointer>
-  typename Inner2<Baz2>::template DeepNest<Qux>::Reader asInner2Generic() {
+  typename Inner2<Baz2>::template DeepNest<Qux>::Reader asInner2Generic() const {
     return typename Inner2<Baz2>::template DeepNest<Qux>::Reader(_reader);
   }
 
   template <typename Foo2 = ::capnp::AnyPointer, typename Bar2 = ::capnp::AnyPointer>
-  typename TestGenerics<Foo2, Bar2>::template Inner2<Baz>::Reader asTestGenericsGeneric() {
+  typename TestGenerics<Foo2, Bar2>::template Inner2<Baz>::Reader asTestGenericsGeneric() const {
     return typename TestGenerics<Foo2, Bar2>::template Inner2<Baz>::Reader(_reader);
   }
 
@@ -10422,22 +10426,22 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename Quux2 = ::capnp::AnyPointer>
-  typename DeepNestInterface<Quux2>::CallParams::Reader asDeepNestInterfaceGeneric() {
+  typename DeepNestInterface<Quux2>::CallParams::Reader asDeepNestInterfaceGeneric() const {
     return typename DeepNestInterface<Quux2>::CallParams::Reader(_reader);
   }
 
   template <typename Qux2 = ::capnp::AnyPointer>
-  typename DeepNest<Qux2>::template DeepNestInterface<Quux>::Reader asDeepNestGeneric() {
+  typename DeepNest<Qux2>::template DeepNestInterface<Quux>::Reader asDeepNestGeneric() const {
     return typename DeepNest<Qux2>::template DeepNestInterface<Quux>::Reader(_reader);
   }
 
   template <typename Baz2 = ::capnp::AnyPointer>
-  typename Inner2<Baz2>::template DeepNest<Qux>::Reader asInner2Generic() {
+  typename Inner2<Baz2>::template DeepNest<Qux>::Reader asInner2Generic() const {
     return typename Inner2<Baz2>::template DeepNest<Qux>::Reader(_reader);
   }
 
   template <typename Foo2 = ::capnp::AnyPointer, typename Bar2 = ::capnp::AnyPointer>
-  typename TestGenerics<Foo2, Bar2>::template Inner2<Baz>::Reader asTestGenericsGeneric() {
+  typename TestGenerics<Foo2, Bar2>::template Inner2<Baz>::Reader asTestGenericsGeneric() const {
     return typename TestGenerics<Foo2, Bar2>::template Inner2<Baz>::Reader(_reader);
   }
 
@@ -10545,22 +10549,22 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename Quux2 = ::capnp::AnyPointer>
-  typename DeepNestInterface<Quux2>::CallResults::Reader asDeepNestInterfaceGeneric() {
+  typename DeepNestInterface<Quux2>::CallResults::Reader asDeepNestInterfaceGeneric() const {
     return typename DeepNestInterface<Quux2>::CallResults::Reader(_reader);
   }
 
   template <typename Qux2 = ::capnp::AnyPointer>
-  typename DeepNest<Qux2>::template DeepNestInterface<Quux>::Reader asDeepNestGeneric() {
+  typename DeepNest<Qux2>::template DeepNestInterface<Quux>::Reader asDeepNestGeneric() const {
     return typename DeepNest<Qux2>::template DeepNestInterface<Quux>::Reader(_reader);
   }
 
   template <typename Baz2 = ::capnp::AnyPointer>
-  typename Inner2<Baz2>::template DeepNest<Qux>::Reader asInner2Generic() {
+  typename Inner2<Baz2>::template DeepNest<Qux>::Reader asInner2Generic() const {
     return typename Inner2<Baz2>::template DeepNest<Qux>::Reader(_reader);
   }
 
   template <typename Foo2 = ::capnp::AnyPointer, typename Bar2 = ::capnp::AnyPointer>
-  typename TestGenerics<Foo2, Bar2>::template Inner2<Baz>::Reader asTestGenericsGeneric() {
+  typename TestGenerics<Foo2, Bar2>::template Inner2<Baz>::Reader asTestGenericsGeneric() const {
     return typename TestGenerics<Foo2, Bar2>::template Inner2<Baz>::Reader(_reader);
   }
 
@@ -10732,12 +10736,12 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename Qux2 = ::capnp::AnyPointer>
-  typename Interface<Qux2>::CallResults::Reader asInterfaceGeneric() {
+  typename Interface<Qux2>::CallResults::Reader asInterfaceGeneric() const {
     return typename Interface<Qux2>::CallResults::Reader(_reader);
   }
 
   template <typename Foo2 = ::capnp::AnyPointer, typename Bar2 = ::capnp::AnyPointer>
-  typename TestGenerics<Foo2, Bar2>::template Interface<Qux>::Reader asTestGenericsGeneric() {
+  typename TestGenerics<Foo2, Bar2>::template Interface<Qux>::Reader asTestGenericsGeneric() const {
     return typename TestGenerics<Foo2, Bar2>::template Interface<Qux>::Reader(_reader);
   }
 
@@ -10851,7 +10855,7 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename Foo2 = ::capnp::AnyPointer, typename Bar2 = ::capnp::AnyPointer>
-  typename TestGenerics<Foo2, Bar2>::UseAliases::Reader asTestGenericsGeneric() {
+  typename TestGenerics<Foo2, Bar2>::UseAliases::Reader asTestGenericsGeneric() const {
     return typename TestGenerics<Foo2, Bar2>::UseAliases::Reader(_reader);
   }
 
@@ -11003,7 +11007,7 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename Foo2 = ::capnp::AnyPointer, typename Bar2 = ::capnp::AnyPointer>
-  typename TestGenerics<Foo2, Bar2>::Ug::Reader asTestGenericsGeneric() {
+  typename TestGenerics<Foo2, Bar2>::Ug::Reader asTestGenericsGeneric() const {
     return typename TestGenerics<Foo2, Bar2>::Ug::Reader(_reader);
   }
 
@@ -11092,7 +11096,7 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename Foo2 = ::capnp::AnyPointer, typename Bar2 = ::capnp::AnyPointer>
-  typename TestGenericsWrapper<Foo2, Bar2>::Reader asGeneric() {
+  typename TestGenericsWrapper<Foo2, Bar2>::Reader asGeneric() const {
     return typename TestGenericsWrapper<Foo2, Bar2>::Reader(_reader);
   }
 
@@ -11322,7 +11326,7 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename T2 = ::capnp::AnyPointer, typename U2 = ::capnp::AnyPointer>
-  typename CallParams<T2, U2>::Reader asGeneric() {
+  typename CallParams<T2, U2>::Reader asGeneric() const {
     return typename CallParams<T2, U2>::Reader(_reader);
   }
 
@@ -11491,12 +11495,12 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename T2 = ::capnp::AnyPointer, typename U2 = ::capnp::AnyPointer>
-  typename CallParams<T2, U2>::Reader asGeneric() {
+  typename CallParams<T2, U2>::Reader asGeneric() const {
     return typename CallParams<T2, U2>::Reader(_reader);
   }
 
   template <typename V2 = ::capnp::AnyPointer>
-  typename TestImplicitMethodParamsInGeneric<V2>::template CallParams<T, U>::Reader asTestImplicitMethodParamsInGenericGeneric() {
+  typename TestImplicitMethodParamsInGeneric<V2>::template CallParams<T, U>::Reader asTestImplicitMethodParamsInGenericGeneric() const {
     return typename TestImplicitMethodParamsInGeneric<V2>::template CallParams<T, U>::Reader(_reader);
   }
 
@@ -11611,7 +11615,7 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename Foo2 = ::capnp::AnyPointer, typename Bar2 = ::capnp::AnyPointer>
-  typename TestGenericsUnion<Foo2, Bar2>::Reader asGeneric() {
+  typename TestGenericsUnion<Foo2, Bar2>::Reader asGeneric() const {
     return typename TestGenericsUnion<Foo2, Bar2>::Reader(_reader);
   }
 
@@ -18838,7 +18842,7 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename VatId2 = ::capnp::AnyPointer>
-  typename TestAuthenticatedBootstrap<VatId2>::GetCallerIdParams::Reader asTestAuthenticatedBootstrapGeneric() {
+  typename TestAuthenticatedBootstrap<VatId2>::GetCallerIdParams::Reader asTestAuthenticatedBootstrapGeneric() const {
     return typename TestAuthenticatedBootstrap<VatId2>::GetCallerIdParams::Reader(_reader);
   }
 
@@ -18922,7 +18926,7 @@ public:
 #endif  // !CAPNP_LITE
 
   template <typename VatId2 = ::capnp::AnyPointer>
-  typename TestAuthenticatedBootstrap<VatId2>::GetCallerIdResults::Reader asTestAuthenticatedBootstrapGeneric() {
+  typename TestAuthenticatedBootstrap<VatId2>::GetCallerIdResults::Reader asTestAuthenticatedBootstrapGeneric() const {
     return typename TestAuthenticatedBootstrap<VatId2>::GetCallerIdResults::Reader(_reader);
   }
 
@@ -21213,12 +21217,12 @@ inline bool TestDefaults::Builder::hasTextField() {
 inline  ::capnp::Text::Reader TestDefaults::Reader::getTextField() const {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 372, 3);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 373, 3);
 }
 inline  ::capnp::Text::Builder TestDefaults::Builder::getTextField() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 372, 3);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 373, 3);
 }
 inline void TestDefaults::Builder::setTextField( ::capnp::Text::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
@@ -21249,12 +21253,12 @@ inline bool TestDefaults::Builder::hasDataField() {
 inline  ::capnp::Data::Reader TestDefaults::Reader::getDataField() const {
   return ::capnp::_::PointerHelpers< ::capnp::Data>::get(_reader.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 382, 3);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 383, 3);
 }
 inline  ::capnp::Data::Builder TestDefaults::Builder::getDataField() {
   return ::capnp::_::PointerHelpers< ::capnp::Data>::get(_builder.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 382, 3);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 383, 3);
 }
 inline void TestDefaults::Builder::setDataField( ::capnp::Data::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::Data>::set(_builder.getPointerField(
@@ -21285,12 +21289,12 @@ inline bool TestDefaults::Builder::hasStructField() {
 inline  ::capnproto_test::capnp::test::TestAllTypes::Reader TestDefaults::Reader::getStructField() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestAllTypes>::get(_reader.getPointerField(
       ::capnp::bounded<2>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 391);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 392);
 }
 inline  ::capnproto_test::capnp::test::TestAllTypes::Builder TestDefaults::Builder::getStructField() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestAllTypes>::get(_builder.getPointerField(
       ::capnp::bounded<2>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 391);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 392);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestAllTypes::Pipeline TestDefaults::Pipeline::getStructField() {
@@ -21354,12 +21358,12 @@ inline bool TestDefaults::Builder::hasVoidList() {
 inline  ::capnp::List< ::capnp::Void,  ::capnp::Kind::PRIMITIVE>::Reader TestDefaults::Reader::getVoidList() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::Void,  ::capnp::Kind::PRIMITIVE>>::get(_reader.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 629);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 630);
 }
 inline  ::capnp::List< ::capnp::Void,  ::capnp::Kind::PRIMITIVE>::Builder TestDefaults::Builder::getVoidList() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::Void,  ::capnp::Kind::PRIMITIVE>>::get(_builder.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 629);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 630);
 }
 inline void TestDefaults::Builder::setVoidList( ::capnp::List< ::capnp::Void,  ::capnp::Kind::PRIMITIVE>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::Void,  ::capnp::Kind::PRIMITIVE>>::set(_builder.getPointerField(
@@ -21394,12 +21398,12 @@ inline bool TestDefaults::Builder::hasBoolList() {
 inline  ::capnp::List<bool,  ::capnp::Kind::PRIMITIVE>::Reader TestDefaults::Reader::getBoolList() const {
   return ::capnp::_::PointerHelpers< ::capnp::List<bool,  ::capnp::Kind::PRIMITIVE>>::get(_reader.getPointerField(
       ::capnp::bounded<4>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 642);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 643);
 }
 inline  ::capnp::List<bool,  ::capnp::Kind::PRIMITIVE>::Builder TestDefaults::Builder::getBoolList() {
   return ::capnp::_::PointerHelpers< ::capnp::List<bool,  ::capnp::Kind::PRIMITIVE>>::get(_builder.getPointerField(
       ::capnp::bounded<4>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 642);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 643);
 }
 inline void TestDefaults::Builder::setBoolList( ::capnp::List<bool,  ::capnp::Kind::PRIMITIVE>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List<bool,  ::capnp::Kind::PRIMITIVE>>::set(_builder.getPointerField(
@@ -21434,12 +21438,12 @@ inline bool TestDefaults::Builder::hasInt8List() {
 inline  ::capnp::List< ::int8_t,  ::capnp::Kind::PRIMITIVE>::Reader TestDefaults::Reader::getInt8List() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t,  ::capnp::Kind::PRIMITIVE>>::get(_reader.getPointerField(
       ::capnp::bounded<5>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 656);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 657);
 }
 inline  ::capnp::List< ::int8_t,  ::capnp::Kind::PRIMITIVE>::Builder TestDefaults::Builder::getInt8List() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t,  ::capnp::Kind::PRIMITIVE>>::get(_builder.getPointerField(
       ::capnp::bounded<5>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 656);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 657);
 }
 inline void TestDefaults::Builder::setInt8List( ::capnp::List< ::int8_t,  ::capnp::Kind::PRIMITIVE>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::int8_t,  ::capnp::Kind::PRIMITIVE>>::set(_builder.getPointerField(
@@ -21474,12 +21478,12 @@ inline bool TestDefaults::Builder::hasInt16List() {
 inline  ::capnp::List< ::int16_t,  ::capnp::Kind::PRIMITIVE>::Reader TestDefaults::Reader::getInt16List() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t,  ::capnp::Kind::PRIMITIVE>>::get(_reader.getPointerField(
       ::capnp::bounded<6>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 670);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 671);
 }
 inline  ::capnp::List< ::int16_t,  ::capnp::Kind::PRIMITIVE>::Builder TestDefaults::Builder::getInt16List() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t,  ::capnp::Kind::PRIMITIVE>>::get(_builder.getPointerField(
       ::capnp::bounded<6>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 670);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 671);
 }
 inline void TestDefaults::Builder::setInt16List( ::capnp::List< ::int16_t,  ::capnp::Kind::PRIMITIVE>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::int16_t,  ::capnp::Kind::PRIMITIVE>>::set(_builder.getPointerField(
@@ -21514,12 +21518,12 @@ inline bool TestDefaults::Builder::hasInt32List() {
 inline  ::capnp::List< ::int32_t,  ::capnp::Kind::PRIMITIVE>::Reader TestDefaults::Reader::getInt32List() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t,  ::capnp::Kind::PRIMITIVE>>::get(_reader.getPointerField(
       ::capnp::bounded<7>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 684);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 685);
 }
 inline  ::capnp::List< ::int32_t,  ::capnp::Kind::PRIMITIVE>::Builder TestDefaults::Builder::getInt32List() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t,  ::capnp::Kind::PRIMITIVE>>::get(_builder.getPointerField(
       ::capnp::bounded<7>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 684);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 685);
 }
 inline void TestDefaults::Builder::setInt32List( ::capnp::List< ::int32_t,  ::capnp::Kind::PRIMITIVE>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::int32_t,  ::capnp::Kind::PRIMITIVE>>::set(_builder.getPointerField(
@@ -21554,12 +21558,12 @@ inline bool TestDefaults::Builder::hasInt64List() {
 inline  ::capnp::List< ::int64_t,  ::capnp::Kind::PRIMITIVE>::Reader TestDefaults::Reader::getInt64List() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t,  ::capnp::Kind::PRIMITIVE>>::get(_reader.getPointerField(
       ::capnp::bounded<8>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 698);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 699);
 }
 inline  ::capnp::List< ::int64_t,  ::capnp::Kind::PRIMITIVE>::Builder TestDefaults::Builder::getInt64List() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t,  ::capnp::Kind::PRIMITIVE>>::get(_builder.getPointerField(
       ::capnp::bounded<8>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 698);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 699);
 }
 inline void TestDefaults::Builder::setInt64List( ::capnp::List< ::int64_t,  ::capnp::Kind::PRIMITIVE>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::int64_t,  ::capnp::Kind::PRIMITIVE>>::set(_builder.getPointerField(
@@ -21594,12 +21598,12 @@ inline bool TestDefaults::Builder::hasUInt8List() {
 inline  ::capnp::List< ::uint8_t,  ::capnp::Kind::PRIMITIVE>::Reader TestDefaults::Reader::getUInt8List() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t,  ::capnp::Kind::PRIMITIVE>>::get(_reader.getPointerField(
       ::capnp::bounded<9>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 713);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 714);
 }
 inline  ::capnp::List< ::uint8_t,  ::capnp::Kind::PRIMITIVE>::Builder TestDefaults::Builder::getUInt8List() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t,  ::capnp::Kind::PRIMITIVE>>::get(_builder.getPointerField(
       ::capnp::bounded<9>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 713);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 714);
 }
 inline void TestDefaults::Builder::setUInt8List( ::capnp::List< ::uint8_t,  ::capnp::Kind::PRIMITIVE>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::uint8_t,  ::capnp::Kind::PRIMITIVE>>::set(_builder.getPointerField(
@@ -21634,12 +21638,12 @@ inline bool TestDefaults::Builder::hasUInt16List() {
 inline  ::capnp::List< ::uint16_t,  ::capnp::Kind::PRIMITIVE>::Reader TestDefaults::Reader::getUInt16List() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t,  ::capnp::Kind::PRIMITIVE>>::get(_reader.getPointerField(
       ::capnp::bounded<10>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 727);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 728);
 }
 inline  ::capnp::List< ::uint16_t,  ::capnp::Kind::PRIMITIVE>::Builder TestDefaults::Builder::getUInt16List() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t,  ::capnp::Kind::PRIMITIVE>>::get(_builder.getPointerField(
       ::capnp::bounded<10>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 727);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 728);
 }
 inline void TestDefaults::Builder::setUInt16List( ::capnp::List< ::uint16_t,  ::capnp::Kind::PRIMITIVE>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::uint16_t,  ::capnp::Kind::PRIMITIVE>>::set(_builder.getPointerField(
@@ -21674,12 +21678,12 @@ inline bool TestDefaults::Builder::hasUInt32List() {
 inline  ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>::Reader TestDefaults::Reader::getUInt32List() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>::get(_reader.getPointerField(
       ::capnp::bounded<11>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 741);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 742);
 }
 inline  ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>::Builder TestDefaults::Builder::getUInt32List() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>::get(_builder.getPointerField(
       ::capnp::bounded<11>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 741);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 742);
 }
 inline void TestDefaults::Builder::setUInt32List( ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>::set(_builder.getPointerField(
@@ -21714,12 +21718,12 @@ inline bool TestDefaults::Builder::hasUInt64List() {
 inline  ::capnp::List< ::uint64_t,  ::capnp::Kind::PRIMITIVE>::Reader TestDefaults::Reader::getUInt64List() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t,  ::capnp::Kind::PRIMITIVE>>::get(_reader.getPointerField(
       ::capnp::bounded<12>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 755);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 756);
 }
 inline  ::capnp::List< ::uint64_t,  ::capnp::Kind::PRIMITIVE>::Builder TestDefaults::Builder::getUInt64List() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t,  ::capnp::Kind::PRIMITIVE>>::get(_builder.getPointerField(
       ::capnp::bounded<12>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 755);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 756);
 }
 inline void TestDefaults::Builder::setUInt64List( ::capnp::List< ::uint64_t,  ::capnp::Kind::PRIMITIVE>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::uint64_t,  ::capnp::Kind::PRIMITIVE>>::set(_builder.getPointerField(
@@ -21754,12 +21758,12 @@ inline bool TestDefaults::Builder::hasFloat32List() {
 inline  ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>::Reader TestDefaults::Reader::getFloat32List() const {
   return ::capnp::_::PointerHelpers< ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>>::get(_reader.getPointerField(
       ::capnp::bounded<13>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 769);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 770);
 }
 inline  ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>::Builder TestDefaults::Builder::getFloat32List() {
   return ::capnp::_::PointerHelpers< ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>>::get(_builder.getPointerField(
       ::capnp::bounded<13>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 769);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 770);
 }
 inline void TestDefaults::Builder::setFloat32List( ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List<float,  ::capnp::Kind::PRIMITIVE>>::set(_builder.getPointerField(
@@ -21794,12 +21798,12 @@ inline bool TestDefaults::Builder::hasFloat64List() {
 inline  ::capnp::List<double,  ::capnp::Kind::PRIMITIVE>::Reader TestDefaults::Reader::getFloat64List() const {
   return ::capnp::_::PointerHelpers< ::capnp::List<double,  ::capnp::Kind::PRIMITIVE>>::get(_reader.getPointerField(
       ::capnp::bounded<14>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 784);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 785);
 }
 inline  ::capnp::List<double,  ::capnp::Kind::PRIMITIVE>::Builder TestDefaults::Builder::getFloat64List() {
   return ::capnp::_::PointerHelpers< ::capnp::List<double,  ::capnp::Kind::PRIMITIVE>>::get(_builder.getPointerField(
       ::capnp::bounded<14>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 784);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 785);
 }
 inline void TestDefaults::Builder::setFloat64List( ::capnp::List<double,  ::capnp::Kind::PRIMITIVE>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List<double,  ::capnp::Kind::PRIMITIVE>>::set(_builder.getPointerField(
@@ -21834,12 +21838,12 @@ inline bool TestDefaults::Builder::hasTextList() {
 inline  ::capnp::List< ::capnp::Text,  ::capnp::Kind::BLOB>::Reader TestDefaults::Reader::getTextList() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::Text,  ::capnp::Kind::BLOB>>::get(_reader.getPointerField(
       ::capnp::bounded<15>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 801);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 802);
 }
 inline  ::capnp::List< ::capnp::Text,  ::capnp::Kind::BLOB>::Builder TestDefaults::Builder::getTextList() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::Text,  ::capnp::Kind::BLOB>>::get(_builder.getPointerField(
       ::capnp::bounded<15>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 801);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 802);
 }
 inline void TestDefaults::Builder::setTextList( ::capnp::List< ::capnp::Text,  ::capnp::Kind::BLOB>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::Text,  ::capnp::Kind::BLOB>>::set(_builder.getPointerField(
@@ -21874,12 +21878,12 @@ inline bool TestDefaults::Builder::hasDataList() {
 inline  ::capnp::List< ::capnp::Data,  ::capnp::Kind::BLOB>::Reader TestDefaults::Reader::getDataList() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::Data,  ::capnp::Kind::BLOB>>::get(_reader.getPointerField(
       ::capnp::bounded<16>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 820);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 821);
 }
 inline  ::capnp::List< ::capnp::Data,  ::capnp::Kind::BLOB>::Builder TestDefaults::Builder::getDataList() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::Data,  ::capnp::Kind::BLOB>>::get(_builder.getPointerField(
       ::capnp::bounded<16>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 820);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 821);
 }
 inline void TestDefaults::Builder::setDataList( ::capnp::List< ::capnp::Data,  ::capnp::Kind::BLOB>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::capnp::Data,  ::capnp::Kind::BLOB>>::set(_builder.getPointerField(
@@ -21914,12 +21918,12 @@ inline bool TestDefaults::Builder::hasStructList() {
 inline  ::capnp::List< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Kind::STRUCT>::Reader TestDefaults::Reader::getStructList() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Kind::STRUCT>>::get(_reader.getPointerField(
       ::capnp::bounded<17>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 840);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 841);
 }
 inline  ::capnp::List< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Kind::STRUCT>::Builder TestDefaults::Builder::getStructList() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Kind::STRUCT>>::get(_builder.getPointerField(
       ::capnp::bounded<17>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 840);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 841);
 }
 inline void TestDefaults::Builder::setStructList( ::capnp::List< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Kind::STRUCT>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Kind::STRUCT>>::set(_builder.getPointerField(
@@ -21950,12 +21954,12 @@ inline bool TestDefaults::Builder::hasEnumList() {
 inline  ::capnp::List< ::capnproto_test::capnp::test::TestEnum,  ::capnp::Kind::ENUM>::Reader TestDefaults::Reader::getEnumList() const {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::capnproto_test::capnp::test::TestEnum,  ::capnp::Kind::ENUM>>::get(_reader.getPointerField(
       ::capnp::bounded<18>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 938);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 939);
 }
 inline  ::capnp::List< ::capnproto_test::capnp::test::TestEnum,  ::capnp::Kind::ENUM>::Builder TestDefaults::Builder::getEnumList() {
   return ::capnp::_::PointerHelpers< ::capnp::List< ::capnproto_test::capnp::test::TestEnum,  ::capnp::Kind::ENUM>>::get(_builder.getPointerField(
       ::capnp::bounded<18>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 938);
+        ::capnp::schemas::bp_eb3f9ebe98c73cb6 + 939);
 }
 inline void TestDefaults::Builder::setEnumList( ::capnp::List< ::capnproto_test::capnp::test::TestEnum,  ::capnp::Kind::ENUM>::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::List< ::capnproto_test::capnp::test::TestEnum,  ::capnp::Kind::ENUM>>::set(_builder.getPointerField(
@@ -25158,12 +25162,12 @@ inline bool TestUnionDefaults::Builder::hasS16s8s64s8Set() {
 inline  ::capnproto_test::capnp::test::TestUnion::Reader TestUnionDefaults::Reader::getS16s8s64s8Set() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestUnion>::get(_reader.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_94f7e0b103b4b718 + 54);
+        ::capnp::schemas::bp_94f7e0b103b4b718 + 55);
 }
 inline  ::capnproto_test::capnp::test::TestUnion::Builder TestUnionDefaults::Builder::getS16s8s64s8Set() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestUnion>::get(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_94f7e0b103b4b718 + 54);
+        ::capnp::schemas::bp_94f7e0b103b4b718 + 55);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestUnion::Pipeline TestUnionDefaults::Pipeline::getS16s8s64s8Set() {
@@ -25199,12 +25203,12 @@ inline bool TestUnionDefaults::Builder::hasS0sps1s32Set() {
 inline  ::capnproto_test::capnp::test::TestUnion::Reader TestUnionDefaults::Reader::getS0sps1s32Set() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestUnion>::get(_reader.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_94f7e0b103b4b718 + 73);
+        ::capnp::schemas::bp_94f7e0b103b4b718 + 74);
 }
 inline  ::capnproto_test::capnp::test::TestUnion::Builder TestUnionDefaults::Builder::getS0sps1s32Set() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestUnion>::get(_builder.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_94f7e0b103b4b718 + 73);
+        ::capnp::schemas::bp_94f7e0b103b4b718 + 74);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestUnion::Pipeline TestUnionDefaults::Pipeline::getS0sps1s32Set() {
@@ -25240,12 +25244,12 @@ inline bool TestUnionDefaults::Builder::hasUnnamed1() {
 inline  ::capnproto_test::capnp::test::TestUnnamedUnion::Reader TestUnionDefaults::Reader::getUnnamed1() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestUnnamedUnion>::get(_reader.getPointerField(
       ::capnp::bounded<2>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_94f7e0b103b4b718 + 93);
+        ::capnp::schemas::bp_94f7e0b103b4b718 + 94);
 }
 inline  ::capnproto_test::capnp::test::TestUnnamedUnion::Builder TestUnionDefaults::Builder::getUnnamed1() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestUnnamedUnion>::get(_builder.getPointerField(
       ::capnp::bounded<2>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_94f7e0b103b4b718 + 93);
+        ::capnp::schemas::bp_94f7e0b103b4b718 + 94);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestUnnamedUnion::Pipeline TestUnionDefaults::Pipeline::getUnnamed1() {
@@ -25281,12 +25285,12 @@ inline bool TestUnionDefaults::Builder::hasUnnamed2() {
 inline  ::capnproto_test::capnp::test::TestUnnamedUnion::Reader TestUnionDefaults::Reader::getUnnamed2() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestUnnamedUnion>::get(_reader.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_94f7e0b103b4b718 + 106);
+        ::capnp::schemas::bp_94f7e0b103b4b718 + 107);
 }
 inline  ::capnproto_test::capnp::test::TestUnnamedUnion::Builder TestUnionDefaults::Builder::getUnnamed2() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestUnnamedUnion>::get(_builder.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_94f7e0b103b4b718 + 106);
+        ::capnp::schemas::bp_94f7e0b103b4b718 + 107);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestUnnamedUnion::Pipeline TestUnionDefaults::Pipeline::getUnnamed2() {
@@ -26293,12 +26297,12 @@ inline bool TestListDefaults::Builder::hasLists() {
 inline  ::capnproto_test::capnp::test::TestLists::Reader TestListDefaults::Reader::getLists() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestLists>::get(_reader.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_a851ad32cbc2ffea + 32);
+        ::capnp::schemas::bp_a851ad32cbc2ffea + 33);
 }
 inline  ::capnproto_test::capnp::test::TestLists::Builder TestListDefaults::Builder::getLists() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestLists>::get(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_a851ad32cbc2ffea + 32);
+        ::capnp::schemas::bp_a851ad32cbc2ffea + 33);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestLists::Pipeline TestListDefaults::Pipeline::getLists() {
@@ -26916,12 +26920,12 @@ inline bool TestNewVersion::Builder::hasNew2() {
 inline  ::capnp::Text::Reader TestNewVersion::Reader::getNew2() const {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
       ::capnp::bounded<2>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_8ed75a7469f04ce3 + 93, 3);
+        ::capnp::schemas::bp_8ed75a7469f04ce3 + 94, 3);
 }
 inline  ::capnp::Text::Builder TestNewVersion::Builder::getNew2() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
       ::capnp::bounded<2>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_8ed75a7469f04ce3 + 93, 3);
+        ::capnp::schemas::bp_8ed75a7469f04ce3 + 94, 3);
 }
 inline void TestNewVersion::Builder::setNew2( ::capnp::Text::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
@@ -27785,15 +27789,19 @@ inline ::capnp::Orphan<Bar> TestGenerics<Foo, Bar>::Inner::Builder::disownBar() 
 }
 
 // TestGenerics<Foo, Bar>::Inner
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 constexpr uint16_t TestGenerics<Foo, Bar>::Inner::_capnpPrivate::dataWordSize;
 template <typename Foo, typename Bar>
 constexpr uint16_t TestGenerics<Foo, Bar>::Inner::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 constexpr ::capnp::Kind TestGenerics<Foo, Bar>::Inner::_capnpPrivate::kind;
 template <typename Foo, typename Bar>
 constexpr ::capnp::_::RawSchema const* TestGenerics<Foo, Bar>::Inner::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 const ::capnp::_::RawBrandedSchema::Scope TestGenerics<Foo, Bar>::Inner::_capnpPrivate::brandScopes[] = {
   { 0x9d5b8cd8de9922eb, brandBindings + 0, 2, false},
@@ -28395,6 +28403,7 @@ inline typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template
 
 #endif  // !CAPNP_LITE
 // TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest<Qux>::DeepNestInterface<Quux>::CallParams
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
@@ -28405,7 +28414,9 @@ template <typename Baz>
 template <typename Qux>
 template <typename Quux>
 constexpr uint16_t TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest<Qux>::DeepNestInterface<Quux>::CallParams::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
@@ -28416,6 +28427,7 @@ template <typename Baz>
 template <typename Qux>
 template <typename Quux>
 constexpr ::capnp::_::RawSchema const* TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest<Qux>::DeepNestInterface<Quux>::CallParams::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
@@ -28448,6 +28460,7 @@ const ::capnp::_::RawBrandedSchema TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest
 #endif  // !CAPNP_LITE
 
 // TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest<Qux>::DeepNestInterface<Quux>::CallResults
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
@@ -28458,7 +28471,9 @@ template <typename Baz>
 template <typename Qux>
 template <typename Quux>
 constexpr uint16_t TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest<Qux>::DeepNestInterface<Quux>::CallResults::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
@@ -28469,6 +28484,7 @@ template <typename Baz>
 template <typename Qux>
 template <typename Quux>
 constexpr ::capnp::_::RawSchema const* TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest<Qux>::DeepNestInterface<Quux>::CallResults::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
@@ -28508,7 +28524,7 @@ template <typename Quux>
 CAPNP_AUTO_IF_MSVC(::capnp::Request<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2<Baz>::template DeepNest<Qux>::template DeepNestInterface<Quux>::CallParams, typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2<Baz>::template DeepNest<Qux>::template DeepNestInterface<Quux>::CallResults>)
 TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest<Qux>::DeepNestInterface<Quux>::Client::callRequest(::kj::Maybe< ::capnp::MessageSize> sizeHint) {
   return newCall<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2<Baz>::template DeepNest<Qux>::template DeepNestInterface<Quux>::CallParams, typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2<Baz>::template DeepNest<Qux>::template DeepNestInterface<Quux>::CallResults>(
-      0x8839ed86c9794287ull, 0, sizeHint);
+      0x8839ed86c9794287ull, 0, sizeHint, {true});
 }
 template <typename Foo, typename Bar>
 template <typename Baz>
@@ -28545,6 +28561,7 @@ template <typename Quux>
       return {
         call(::capnp::Capability::Server::internalGetTypedContext<
             typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2<Baz>::template DeepNest<Qux>::template DeepNestInterface<Quux>::CallParams, typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2<Baz>::template DeepNest<Qux>::template DeepNestInterface<Quux>::CallResults>(context)),
+        false,
         false
       };
     default:
@@ -28558,6 +28575,7 @@ template <typename Quux>
 
 // TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest<Qux>::DeepNestInterface<Quux>
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
@@ -28568,6 +28586,7 @@ template <typename Baz>
 template <typename Qux>
 template <typename Quux>
 constexpr ::capnp::_::RawSchema const* TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest<Qux>::DeepNestInterface<Quux>::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
@@ -28608,6 +28627,7 @@ const ::capnp::_::RawBrandedSchema TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest
 #endif  // !CAPNP_LITE
 
 // TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest<Qux>
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
@@ -28616,7 +28636,9 @@ template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
 constexpr uint16_t TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest<Qux>::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
@@ -28625,6 +28647,7 @@ template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
 constexpr ::capnp::_::RawSchema const* TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest<Qux>::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 template <typename Qux>
@@ -28652,19 +28675,23 @@ const ::capnp::_::RawBrandedSchema TestGenerics<Foo, Bar>::Inner2<Baz>::DeepNest
 #endif  // !CAPNP_LITE
 
 // TestGenerics<Foo, Bar>::Inner2<Baz>
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 constexpr uint16_t TestGenerics<Foo, Bar>::Inner2<Baz>::_capnpPrivate::dataWordSize;
 template <typename Foo, typename Bar>
 template <typename Baz>
 constexpr uint16_t TestGenerics<Foo, Bar>::Inner2<Baz>::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 constexpr ::capnp::Kind TestGenerics<Foo, Bar>::Inner2<Baz>::_capnpPrivate::kind;
 template <typename Foo, typename Bar>
 template <typename Baz>
 constexpr ::capnp::_::RawSchema const* TestGenerics<Foo, Bar>::Inner2<Baz>::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Baz>
 const ::capnp::_::RawBrandedSchema::Scope TestGenerics<Foo, Bar>::Inner2<Baz>::_capnpPrivate::brandScopes[] = {
@@ -28850,19 +28877,23 @@ inline ::capnp::Orphan< ::capnproto_test::capnp::test::TestGenerics< ::capnproto
 }
 
 // TestGenerics<Foo, Bar>::Interface<Qux>::CallResults
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Qux>
 constexpr uint16_t TestGenerics<Foo, Bar>::Interface<Qux>::CallResults::_capnpPrivate::dataWordSize;
 template <typename Foo, typename Bar>
 template <typename Qux>
 constexpr uint16_t TestGenerics<Foo, Bar>::Interface<Qux>::CallResults::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Qux>
 constexpr ::capnp::Kind TestGenerics<Foo, Bar>::Interface<Qux>::CallResults::_capnpPrivate::kind;
 template <typename Foo, typename Bar>
 template <typename Qux>
 constexpr ::capnp::_::RawSchema const* TestGenerics<Foo, Bar>::Interface<Qux>::CallResults::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Qux>
 const ::capnp::_::RawBrandedSchema::Scope TestGenerics<Foo, Bar>::Interface<Qux>::CallResults::_capnpPrivate::brandScopes[] = {
@@ -28895,7 +28926,7 @@ template <typename Qux>
 CAPNP_AUTO_IF_MSVC(::capnp::Request<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2< ::capnp::Text>, typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Interface<Qux>::CallResults>)
 TestGenerics<Foo, Bar>::Interface<Qux>::Client::callRequest(::kj::Maybe< ::capnp::MessageSize> sizeHint) {
   return newCall<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2< ::capnp::Text>, typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Interface<Qux>::CallResults>(
-      0xc9e749e8dd54da5cull, 0, sizeHint);
+      0xc9e749e8dd54da5cull, 0, sizeHint, {false});
 }
 template <typename Foo, typename Bar>
 template <typename Qux>
@@ -28926,6 +28957,7 @@ template <typename Qux>
       return {
         call(::capnp::Capability::Server::internalGetTypedContext<
             typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2< ::capnp::Text>, typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Interface<Qux>::CallResults>(context)),
+        false,
         false
       };
     default:
@@ -28939,12 +28971,14 @@ template <typename Qux>
 
 // TestGenerics<Foo, Bar>::Interface<Qux>
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Qux>
 constexpr ::capnp::Kind TestGenerics<Foo, Bar>::Interface<Qux>::_capnpPrivate::kind;
 template <typename Foo, typename Bar>
 template <typename Qux>
 constexpr ::capnp::_::RawSchema const* TestGenerics<Foo, Bar>::Interface<Qux>::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 template <typename Qux>
 const ::capnp::_::RawBrandedSchema::Scope TestGenerics<Foo, Bar>::Interface<Qux>::_capnpPrivate::brandScopes[] = {
@@ -29115,14 +29149,14 @@ inline void TestGenerics<Foo, Bar>::UseAliases::Builder::adoptInner2(
   ::capnp::_::PointerHelpers<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2< ::capnp::AnyPointer>>::adopt(_builder.getPointerField(
       ::capnp::bounded<2>() * ::capnp::POINTERS), kj::mv(value));
 }
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) || defined(__clang__)
 // Excluded under MSVC because bugs may make it unable to compile this method.
 template <typename Foo, typename Bar>
 inline ::capnp::Orphan<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2< ::capnp::AnyPointer>> TestGenerics<Foo, Bar>::UseAliases::Builder::disownInner2() {
   return ::capnp::_::PointerHelpers<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2< ::capnp::AnyPointer>>::disown(_builder.getPointerField(
       ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
-#endif  // !_MSC_VER
+#endif  // !_MSC_VER || __clang__
 
 template <typename Foo, typename Bar>
 inline bool TestGenerics<Foo, Bar>::UseAliases::Reader::hasInner2Bind() const {
@@ -29166,14 +29200,14 @@ inline void TestGenerics<Foo, Bar>::UseAliases::Builder::adoptInner2Bind(
   ::capnp::_::PointerHelpers<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2< ::capnp::Text>>::adopt(_builder.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) || defined(__clang__)
 // Excluded under MSVC because bugs may make it unable to compile this method.
 template <typename Foo, typename Bar>
 inline ::capnp::Orphan<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2< ::capnp::Text>> TestGenerics<Foo, Bar>::UseAliases::Builder::disownInner2Bind() {
   return ::capnp::_::PointerHelpers<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2< ::capnp::Text>>::disown(_builder.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-#endif  // !_MSC_VER
+#endif  // !_MSC_VER || __clang__
 
 template <typename Foo, typename Bar>
 inline bool TestGenerics<Foo, Bar>::UseAliases::Reader::hasInner2Text() const {
@@ -29217,14 +29251,14 @@ inline void TestGenerics<Foo, Bar>::UseAliases::Builder::adoptInner2Text(
   ::capnp::_::PointerHelpers<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2< ::capnp::Text>>::adopt(_builder.getPointerField(
       ::capnp::bounded<4>() * ::capnp::POINTERS), kj::mv(value));
 }
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) || defined(__clang__)
 // Excluded under MSVC because bugs may make it unable to compile this method.
 template <typename Foo, typename Bar>
 inline ::capnp::Orphan<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2< ::capnp::Text>> TestGenerics<Foo, Bar>::UseAliases::Builder::disownInner2Text() {
   return ::capnp::_::PointerHelpers<typename  ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>::template Inner2< ::capnp::Text>>::disown(_builder.getPointerField(
       ::capnp::bounded<4>() * ::capnp::POINTERS));
 }
-#endif  // !_MSC_VER
+#endif  // !_MSC_VER || __clang__
 
 template <typename Foo, typename Bar>
 inline bool TestGenerics<Foo, Bar>::UseAliases::Reader::hasRevFoo() const {
@@ -29280,15 +29314,19 @@ inline ::capnp::Orphan<Bar> TestGenerics<Foo, Bar>::UseAliases::Builder::disownR
 }
 
 // TestGenerics<Foo, Bar>::UseAliases
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 constexpr uint16_t TestGenerics<Foo, Bar>::UseAliases::_capnpPrivate::dataWordSize;
 template <typename Foo, typename Bar>
 constexpr uint16_t TestGenerics<Foo, Bar>::UseAliases::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 constexpr ::capnp::Kind TestGenerics<Foo, Bar>::UseAliases::_capnpPrivate::kind;
 template <typename Foo, typename Bar>
 constexpr ::capnp::_::RawSchema const* TestGenerics<Foo, Bar>::UseAliases::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 const ::capnp::_::RawBrandedSchema::Scope TestGenerics<Foo, Bar>::UseAliases::_capnpPrivate::brandScopes[] = {
   { 0x9d5b8cd8de9922eb, brandBindings + 0, 2, false},
@@ -29330,15 +29368,19 @@ inline void TestGenerics<Foo, Bar>::Ug::Builder::setUgfoo( ::int32_t value) {
 }
 
 // TestGenerics<Foo, Bar>::Ug
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 constexpr uint16_t TestGenerics<Foo, Bar>::Ug::_capnpPrivate::dataWordSize;
 template <typename Foo, typename Bar>
 constexpr uint16_t TestGenerics<Foo, Bar>::Ug::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 constexpr ::capnp::Kind TestGenerics<Foo, Bar>::Ug::_capnpPrivate::kind;
 template <typename Foo, typename Bar>
 constexpr ::capnp::_::RawSchema const* TestGenerics<Foo, Bar>::Ug::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 const ::capnp::_::RawBrandedSchema::Scope TestGenerics<Foo, Bar>::Ug::_capnpPrivate::brandScopes[] = {
   { 0x9d5b8cd8de9922eb, brandBindings + 0, 2, false},
@@ -29356,15 +29398,19 @@ const ::capnp::_::RawBrandedSchema TestGenerics<Foo, Bar>::Ug::_capnpPrivate::sp
 #endif  // !CAPNP_LITE
 
 // TestGenerics<Foo, Bar>
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 constexpr uint16_t TestGenerics<Foo, Bar>::_capnpPrivate::dataWordSize;
 template <typename Foo, typename Bar>
 constexpr uint16_t TestGenerics<Foo, Bar>::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 constexpr ::capnp::Kind TestGenerics<Foo, Bar>::_capnpPrivate::kind;
 template <typename Foo, typename Bar>
 constexpr ::capnp::_::RawSchema const* TestGenerics<Foo, Bar>::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 const ::capnp::_::RawBrandedSchema::Scope TestGenerics<Foo, Bar>::_capnpPrivate::brandScopes[] = {
   { 0x9d5b8cd8de9922eb, brandBindings + 0, 2, false},
@@ -29436,15 +29482,19 @@ inline ::capnp::Orphan< ::capnproto_test::capnp::test::TestGenerics<Foo, Bar>> T
 }
 
 // TestGenericsWrapper<Foo, Bar>
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 constexpr uint16_t TestGenericsWrapper<Foo, Bar>::_capnpPrivate::dataWordSize;
 template <typename Foo, typename Bar>
 constexpr uint16_t TestGenericsWrapper<Foo, Bar>::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 constexpr ::capnp::Kind TestGenericsWrapper<Foo, Bar>::_capnpPrivate::kind;
 template <typename Foo, typename Bar>
 constexpr ::capnp::_::RawSchema const* TestGenericsWrapper<Foo, Bar>::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 const ::capnp::_::RawBrandedSchema::Scope TestGenericsWrapper<Foo, Bar>::_capnpPrivate::brandScopes[] = {
   { 0xa9b2b1f52dde845d, brandBindings + 0, 2, false},
@@ -29531,7 +29581,7 @@ template <typename T, typename U>
 ::capnp::Request< ::capnproto_test::capnp::test::TestImplicitMethodParams::CallParams<T, U>,  ::capnproto_test::capnp::test::TestGenerics<T, U>>
 TestImplicitMethodParams::Client::callRequest(::kj::Maybe< ::capnp::MessageSize> sizeHint) {
   return newCall< ::capnproto_test::capnp::test::TestImplicitMethodParams::CallParams<T, U>,  ::capnproto_test::capnp::test::TestGenerics<T, U>>(
-      0x8b9717a3f8d85a9aull, 0, sizeHint);
+      0x8b9717a3f8d85a9aull, 0, sizeHint, {false});
 }
 #endif  // !CAPNP_LITE
 template <typename T, typename U>
@@ -29641,15 +29691,19 @@ inline ::capnp::Orphan<U> TestImplicitMethodParams::CallParams<T, U>::Builder::d
 }
 
 // TestImplicitMethodParams::CallParams<T, U>
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename T, typename U>
 constexpr uint16_t TestImplicitMethodParams::CallParams<T, U>::_capnpPrivate::dataWordSize;
 template <typename T, typename U>
 constexpr uint16_t TestImplicitMethodParams::CallParams<T, U>::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename T, typename U>
 constexpr ::capnp::Kind TestImplicitMethodParams::CallParams<T, U>::_capnpPrivate::kind;
 template <typename T, typename U>
 constexpr ::capnp::_::RawSchema const* TestImplicitMethodParams::CallParams<T, U>::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename T, typename U>
 const ::capnp::_::RawBrandedSchema::Scope TestImplicitMethodParams::CallParams<T, U>::_capnpPrivate::brandScopes[] = {
   { 0xf83f8caf54bdc486, brandBindings + 0, 2, false},
@@ -29701,7 +29755,7 @@ template <typename T, typename U>
 CAPNP_AUTO_IF_MSVC(::capnp::Request<typename  ::capnproto_test::capnp::test::TestImplicitMethodParamsInGeneric<V>::template CallParams<T, U>,  ::capnproto_test::capnp::test::TestGenerics<T, U>>)
 TestImplicitMethodParamsInGeneric<V>::Client::callRequest(::kj::Maybe< ::capnp::MessageSize> sizeHint) {
   return newCall<typename  ::capnproto_test::capnp::test::TestImplicitMethodParamsInGeneric<V>::template CallParams<T, U>,  ::capnproto_test::capnp::test::TestGenerics<T, U>>(
-      0xdf9ccdeb81a704c9ull, 0, sizeHint);
+      0xdf9ccdeb81a704c9ull, 0, sizeHint, {false});
 }
 #endif  // !CAPNP_LITE
 template <typename V>
@@ -29831,19 +29885,23 @@ inline ::capnp::Orphan<U> TestImplicitMethodParamsInGeneric<V>::CallParams<T, U>
 }
 
 // TestImplicitMethodParamsInGeneric<V>::CallParams<T, U>
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename V>
 template <typename T, typename U>
 constexpr uint16_t TestImplicitMethodParamsInGeneric<V>::CallParams<T, U>::_capnpPrivate::dataWordSize;
 template <typename V>
 template <typename T, typename U>
 constexpr uint16_t TestImplicitMethodParamsInGeneric<V>::CallParams<T, U>::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename V>
 template <typename T, typename U>
 constexpr ::capnp::Kind TestImplicitMethodParamsInGeneric<V>::CallParams<T, U>::_capnpPrivate::kind;
 template <typename V>
 template <typename T, typename U>
 constexpr ::capnp::_::RawSchema const* TestImplicitMethodParamsInGeneric<V>::CallParams<T, U>::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename V>
 template <typename T, typename U>
 const ::capnp::_::RawBrandedSchema::Scope TestImplicitMethodParamsInGeneric<V>::CallParams<T, U>::_capnpPrivate::brandScopes[] = {
@@ -29892,6 +29950,7 @@ template <typename V>
       return {
         call(::capnp::Capability::Server::internalGetTypedContext<
             typename  ::capnproto_test::capnp::test::TestImplicitMethodParamsInGeneric<V>::template CallParams<>,  ::capnproto_test::capnp::test::TestGenerics< ::capnp::AnyPointer,  ::capnp::AnyPointer>>(context)),
+        false,
         false
       };
     default:
@@ -29905,10 +29964,12 @@ template <typename V>
 
 // TestImplicitMethodParamsInGeneric<V>
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename V>
 constexpr ::capnp::Kind TestImplicitMethodParamsInGeneric<V>::_capnpPrivate::kind;
 template <typename V>
 constexpr ::capnp::_::RawSchema const* TestImplicitMethodParamsInGeneric<V>::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename V>
 const ::capnp::_::RawBrandedSchema::Scope TestImplicitMethodParamsInGeneric<V>::_capnpPrivate::brandScopes[] = {
   { 0xdf9ccdeb81a704c9, brandBindings + 0, 1, false},
@@ -30083,15 +30144,19 @@ inline ::capnp::Orphan<Bar> TestGenericsUnion<Foo, Bar>::Builder::disownBar() {
 }
 
 // TestGenericsUnion<Foo, Bar>
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 constexpr uint16_t TestGenericsUnion<Foo, Bar>::_capnpPrivate::dataWordSize;
 template <typename Foo, typename Bar>
 constexpr uint16_t TestGenericsUnion<Foo, Bar>::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 constexpr ::capnp::Kind TestGenericsUnion<Foo, Bar>::_capnpPrivate::kind;
 template <typename Foo, typename Bar>
 constexpr ::capnp::_::RawSchema const* TestGenericsUnion<Foo, Bar>::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename Foo, typename Bar>
 const ::capnp::_::RawBrandedSchema::Scope TestGenericsUnion<Foo, Bar>::_capnpPrivate::brandScopes[] = {
   { 0xa54870440e919063, brandBindings + 0, 2, false},
@@ -30314,12 +30379,12 @@ inline bool TestUseGenerics::Builder::hasDefault() {
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Text>::Reader TestUseGenerics::Reader::getDefault() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Text>>::get(_reader.getPointerField(
       ::capnp::bounded<5>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 328);
+        ::capnp::schemas::bp_9427b2a71030338f + 329);
 }
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Text>::Builder TestUseGenerics::Builder::getDefault() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Text>>::get(_builder.getPointerField(
       ::capnp::bounded<5>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 328);
+        ::capnp::schemas::bp_9427b2a71030338f + 329);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Text>::Pipeline TestUseGenerics::Pipeline::getDefault() {
@@ -30355,12 +30420,12 @@ inline bool TestUseGenerics::Builder::hasDefaultInner() {
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Text>::Inner::Reader TestUseGenerics::Reader::getDefaultInner() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Text>::Inner>::get(_reader.getPointerField(
       ::capnp::bounded<6>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 420);
+        ::capnp::schemas::bp_9427b2a71030338f + 421);
 }
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Text>::Inner::Builder TestUseGenerics::Builder::getDefaultInner() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Text>::Inner>::get(_builder.getPointerField(
       ::capnp::bounded<6>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 420);
+        ::capnp::schemas::bp_9427b2a71030338f + 421);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::Text>::Inner::Pipeline TestUseGenerics::Pipeline::getDefaultInner() {
@@ -30396,12 +30461,12 @@ inline bool TestUseGenerics::Builder::hasDefaultUser() {
 inline  ::capnproto_test::capnp::test::TestUseGenerics::Reader TestUseGenerics::Reader::getDefaultUser() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestUseGenerics>::get(_reader.getPointerField(
       ::capnp::bounded<7>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 458);
+        ::capnp::schemas::bp_9427b2a71030338f + 459);
 }
 inline  ::capnproto_test::capnp::test::TestUseGenerics::Builder TestUseGenerics::Builder::getDefaultUser() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestUseGenerics>::get(_builder.getPointerField(
       ::capnp::bounded<7>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 458);
+        ::capnp::schemas::bp_9427b2a71030338f + 459);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestUseGenerics::Pipeline TestUseGenerics::Pipeline::getDefaultUser() {
@@ -30476,12 +30541,12 @@ inline bool TestUseGenerics::Builder::hasDefaultWrapper() {
 inline  ::capnproto_test::capnp::test::TestGenericsWrapper< ::capnp::Text,  ::capnproto_test::capnp::test::TestAllTypes>::Reader TestUseGenerics::Reader::getDefaultWrapper() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenericsWrapper< ::capnp::Text,  ::capnproto_test::capnp::test::TestAllTypes>>::get(_reader.getPointerField(
       ::capnp::bounded<9>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 561);
+        ::capnp::schemas::bp_9427b2a71030338f + 562);
 }
 inline  ::capnproto_test::capnp::test::TestGenericsWrapper< ::capnp::Text,  ::capnproto_test::capnp::test::TestAllTypes>::Builder TestUseGenerics::Builder::getDefaultWrapper() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenericsWrapper< ::capnp::Text,  ::capnproto_test::capnp::test::TestAllTypes>>::get(_builder.getPointerField(
       ::capnp::bounded<9>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 561);
+        ::capnp::schemas::bp_9427b2a71030338f + 562);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestGenericsWrapper< ::capnp::Text,  ::capnproto_test::capnp::test::TestAllTypes>::Pipeline TestUseGenerics::Pipeline::getDefaultWrapper() {
@@ -30517,12 +30582,12 @@ inline bool TestUseGenerics::Builder::hasDefaultWrapper2() {
 inline  ::capnproto_test::capnp::test::TestGenericsWrapper2::Reader TestUseGenerics::Reader::getDefaultWrapper2() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenericsWrapper2>::get(_reader.getPointerField(
       ::capnp::bounded<10>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 606);
+        ::capnp::schemas::bp_9427b2a71030338f + 607);
 }
 inline  ::capnproto_test::capnp::test::TestGenericsWrapper2::Builder TestUseGenerics::Builder::getDefaultWrapper2() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenericsWrapper2>::get(_builder.getPointerField(
       ::capnp::bounded<10>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 606);
+        ::capnp::schemas::bp_9427b2a71030338f + 607);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestGenericsWrapper2::Pipeline TestUseGenerics::Pipeline::getDefaultWrapper2() {
@@ -30558,12 +30623,12 @@ inline bool TestUseGenerics::Builder::hasAliasFoo() {
 inline  ::capnproto_test::capnp::test::TestAllTypes::Reader TestUseGenerics::Reader::getAliasFoo() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestAllTypes>::get(_reader.getPointerField(
       ::capnp::bounded<11>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 652);
+        ::capnp::schemas::bp_9427b2a71030338f + 653);
 }
 inline  ::capnproto_test::capnp::test::TestAllTypes::Builder TestUseGenerics::Builder::getAliasFoo() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestAllTypes>::get(_builder.getPointerField(
       ::capnp::bounded<11>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 652);
+        ::capnp::schemas::bp_9427b2a71030338f + 653);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestAllTypes::Pipeline TestUseGenerics::Pipeline::getAliasFoo() {
@@ -30599,12 +30664,12 @@ inline bool TestUseGenerics::Builder::hasAliasInner() {
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner::Reader TestUseGenerics::Reader::getAliasInner() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner>::get(_reader.getPointerField(
       ::capnp::bounded<12>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 705);
+        ::capnp::schemas::bp_9427b2a71030338f + 706);
 }
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner::Builder TestUseGenerics::Builder::getAliasInner() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner>::get(_builder.getPointerField(
       ::capnp::bounded<12>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 705);
+        ::capnp::schemas::bp_9427b2a71030338f + 706);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner::Pipeline TestUseGenerics::Pipeline::getAliasInner() {
@@ -30640,12 +30705,12 @@ inline bool TestUseGenerics::Builder::hasAliasInner2() {
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::AnyPointer>::Reader TestUseGenerics::Reader::getAliasInner2() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::AnyPointer>>::get(_reader.getPointerField(
       ::capnp::bounded<13>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 760);
+        ::capnp::schemas::bp_9427b2a71030338f + 761);
 }
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::AnyPointer>::Builder TestUseGenerics::Builder::getAliasInner2() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::AnyPointer>>::get(_builder.getPointerField(
       ::capnp::bounded<13>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 760);
+        ::capnp::schemas::bp_9427b2a71030338f + 761);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::AnyPointer>::Pipeline TestUseGenerics::Pipeline::getAliasInner2() {
@@ -30681,12 +30746,12 @@ inline bool TestUseGenerics::Builder::hasAliasInner2Bind() {
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>::Reader TestUseGenerics::Reader::getAliasInner2Bind() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>>::get(_reader.getPointerField(
       ::capnp::bounded<14>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 833);
+        ::capnp::schemas::bp_9427b2a71030338f + 834);
 }
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>::Builder TestUseGenerics::Builder::getAliasInner2Bind() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>>::get(_builder.getPointerField(
       ::capnp::bounded<14>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 833);
+        ::capnp::schemas::bp_9427b2a71030338f + 834);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>::Pipeline TestUseGenerics::Pipeline::getAliasInner2Bind() {
@@ -30722,12 +30787,12 @@ inline bool TestUseGenerics::Builder::hasAliasInner2Text() {
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::Text>::Reader TestUseGenerics::Reader::getAliasInner2Text() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::Text>>::get(_reader.getPointerField(
       ::capnp::bounded<15>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 903);
+        ::capnp::schemas::bp_9427b2a71030338f + 904);
 }
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::Text>::Builder TestUseGenerics::Builder::getAliasInner2Text() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::Text>>::get(_builder.getPointerField(
       ::capnp::bounded<15>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 903);
+        ::capnp::schemas::bp_9427b2a71030338f + 904);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnproto_test::capnp::test::TestAnyPointer>::Inner2< ::capnp::Text>::Pipeline TestUseGenerics::Pipeline::getAliasInner2Text() {
@@ -30763,12 +30828,12 @@ inline bool TestUseGenerics::Builder::hasAliasRev() {
 inline  ::capnp::Text::Reader TestUseGenerics::Reader::getAliasRev() const {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
       ::capnp::bounded<16>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 946, 4);
+        ::capnp::schemas::bp_9427b2a71030338f + 947, 4);
 }
 inline  ::capnp::Text::Builder TestUseGenerics::Builder::getAliasRev() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
       ::capnp::bounded<16>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 946, 4);
+        ::capnp::schemas::bp_9427b2a71030338f + 947, 4);
 }
 inline void TestUseGenerics::Builder::setAliasRev( ::capnp::Text::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
@@ -30799,12 +30864,12 @@ inline bool TestUseGenerics::Builder::hasUseAliases() {
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>::UseAliases::Reader TestUseGenerics::Reader::getUseAliases() const {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>::UseAliases>::get(_reader.getPointerField(
       ::capnp::bounded<17>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 977);
+        ::capnp::schemas::bp_9427b2a71030338f + 978);
 }
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>::UseAliases::Builder TestUseGenerics::Builder::getUseAliases() {
   return ::capnp::_::PointerHelpers< ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>::UseAliases>::get(_builder.getPointerField(
       ::capnp::bounded<17>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9427b2a71030338f + 977);
+        ::capnp::schemas::bp_9427b2a71030338f + 978);
 }
 #if !CAPNP_LITE
 inline  ::capnproto_test::capnp::test::TestGenerics< ::capnproto_test::capnp::test::TestAllTypes,  ::capnp::List< ::uint32_t,  ::capnp::Kind::PRIMITIVE>>::UseAliases::Pipeline TestUseGenerics::Pipeline::getUseAliases() {
@@ -32507,12 +32572,12 @@ inline bool TestMoreStuff::MethodWithDefaultsParams::Builder::hasC() {
 inline  ::capnp::Text::Reader TestMoreStuff::MethodWithDefaultsParams::Reader::getC() const {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_99160a25fa50fbf1 + 65, 3);
+        ::capnp::schemas::bp_99160a25fa50fbf1 + 66, 3);
 }
 inline  ::capnp::Text::Builder TestMoreStuff::MethodWithDefaultsParams::Builder::getC() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_99160a25fa50fbf1 + 65, 3);
+        ::capnp::schemas::bp_99160a25fa50fbf1 + 66, 3);
 }
 inline void TestMoreStuff::MethodWithDefaultsParams::Builder::setC( ::capnp::Text::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
@@ -32577,12 +32642,12 @@ inline bool TestMoreStuff::MethodWithDefaultsResults::Builder::hasE() {
 inline  ::capnp::Text::Reader TestMoreStuff::MethodWithDefaultsResults::Reader::getE() const {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9c7e066f845a6c56 + 50, 3);
+        ::capnp::schemas::bp_9c7e066f845a6c56 + 51, 3);
 }
 inline  ::capnp::Text::Builder TestMoreStuff::MethodWithDefaultsResults::Builder::getE() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS),
-        ::capnp::schemas::bp_9c7e066f845a6c56 + 50, 3);
+        ::capnp::schemas::bp_9c7e066f845a6c56 + 51, 3);
 }
 inline void TestMoreStuff::MethodWithDefaultsResults::Builder::setE( ::capnp::Text::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
@@ -33330,15 +33395,19 @@ inline typename  ::capnproto_test::capnp::test::TestAuthenticatedBootstrap<VatId
 
 #endif  // !CAPNP_LITE
 // TestAuthenticatedBootstrap<VatId>::GetCallerIdParams
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename VatId>
 constexpr uint16_t TestAuthenticatedBootstrap<VatId>::GetCallerIdParams::_capnpPrivate::dataWordSize;
 template <typename VatId>
 constexpr uint16_t TestAuthenticatedBootstrap<VatId>::GetCallerIdParams::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename VatId>
 constexpr ::capnp::Kind TestAuthenticatedBootstrap<VatId>::GetCallerIdParams::_capnpPrivate::kind;
 template <typename VatId>
 constexpr ::capnp::_::RawSchema const* TestAuthenticatedBootstrap<VatId>::GetCallerIdParams::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename VatId>
 const ::capnp::_::RawBrandedSchema::Scope TestAuthenticatedBootstrap<VatId>::GetCallerIdParams::_capnpPrivate::brandScopes[] = {
   { 0xea72cc77253798cd, brandBindings + 0, 1, false},
@@ -33408,15 +33477,19 @@ inline ::capnp::Orphan<VatId> TestAuthenticatedBootstrap<VatId>::GetCallerIdResu
 }
 
 // TestAuthenticatedBootstrap<VatId>::GetCallerIdResults
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename VatId>
 constexpr uint16_t TestAuthenticatedBootstrap<VatId>::GetCallerIdResults::_capnpPrivate::dataWordSize;
 template <typename VatId>
 constexpr uint16_t TestAuthenticatedBootstrap<VatId>::GetCallerIdResults::_capnpPrivate::pointerCount;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename VatId>
 constexpr ::capnp::Kind TestAuthenticatedBootstrap<VatId>::GetCallerIdResults::_capnpPrivate::kind;
 template <typename VatId>
 constexpr ::capnp::_::RawSchema const* TestAuthenticatedBootstrap<VatId>::GetCallerIdResults::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename VatId>
 const ::capnp::_::RawBrandedSchema::Scope TestAuthenticatedBootstrap<VatId>::GetCallerIdResults::_capnpPrivate::brandScopes[] = {
   { 0xea72cc77253798cd, brandBindings + 0, 1, false},
@@ -33437,7 +33510,7 @@ template <typename VatId>
 CAPNP_AUTO_IF_MSVC(::capnp::Request<typename  ::capnproto_test::capnp::test::TestAuthenticatedBootstrap<VatId>::GetCallerIdParams, typename  ::capnproto_test::capnp::test::TestAuthenticatedBootstrap<VatId>::GetCallerIdResults>)
 TestAuthenticatedBootstrap<VatId>::Client::getCallerIdRequest(::kj::Maybe< ::capnp::MessageSize> sizeHint) {
   return newCall<typename  ::capnproto_test::capnp::test::TestAuthenticatedBootstrap<VatId>::GetCallerIdParams, typename  ::capnproto_test::capnp::test::TestAuthenticatedBootstrap<VatId>::GetCallerIdResults>(
-      0xea72cc77253798cdull, 0, sizeHint);
+      0xea72cc77253798cdull, 0, sizeHint, {false});
 }
 template <typename VatId>
 ::kj::Promise<void> TestAuthenticatedBootstrap<VatId>::Server::getCallerId(GetCallerIdContext) {
@@ -33465,6 +33538,7 @@ template <typename VatId>
       return {
         getCallerId(::capnp::Capability::Server::internalGetTypedContext<
             typename  ::capnproto_test::capnp::test::TestAuthenticatedBootstrap<VatId>::GetCallerIdParams, typename  ::capnproto_test::capnp::test::TestAuthenticatedBootstrap<VatId>::GetCallerIdResults>(context)),
+        false,
         false
       };
     default:
@@ -33478,10 +33552,12 @@ template <typename VatId>
 
 // TestAuthenticatedBootstrap<VatId>
 #if !CAPNP_LITE
+#if CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename VatId>
 constexpr ::capnp::Kind TestAuthenticatedBootstrap<VatId>::_capnpPrivate::kind;
 template <typename VatId>
 constexpr ::capnp::_::RawSchema const* TestAuthenticatedBootstrap<VatId>::_capnpPrivate::schema;
+#endif  // !CAPNP_NEED_REDUNDANT_CONSTEXPR_DECL
 template <typename VatId>
 const ::capnp::_::RawBrandedSchema::Scope TestAuthenticatedBootstrap<VatId>::_capnpPrivate::brandScopes[] = {
   { 0xea72cc77253798cd, brandBindings + 0, 1, false},
@@ -33909,4 +33985,6 @@ inline void RenamedInterface::RenamedMethodParams::Builder::setRenamedParam( ::u
 }  // namespace
 }  // namespace
 }  // namespace
+
+CAPNP_END_HEADER
 
