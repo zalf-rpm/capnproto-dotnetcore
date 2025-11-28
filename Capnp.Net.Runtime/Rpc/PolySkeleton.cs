@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -43,8 +43,12 @@ public class PolySkeleton : RefCountingSkeleton
     /// <param name="args">Method arguments ("params struct")</param>
     /// <param name="cancellationToken">Cancellation token, indicating when the call should cancelled.</param>
     /// <returns>A Task which will resolve to the call result</returns>
-    public override Task<AnswerOrCounterquestion> Invoke(ulong interfaceId, ushort methodId, DeserializerState args,
-        CancellationToken cancellationToken = default)
+    public override Task<AnswerOrCounterquestion> Invoke(
+        ulong interfaceId,
+        ushort methodId,
+        DeserializerState args,
+        CancellationToken cancellationToken = default
+    )
     {
         if (_ifmap.TryGetValue(interfaceId, out var skel))
             return skel.Invoke(interfaceId, methodId, args, cancellationToken);
@@ -64,6 +68,7 @@ public class PolySkeleton : RefCountingSkeleton
 
     internal override void Bind(object impl)
     {
-        foreach (var skel in _ifmap.Values) skel.Bind(impl);
+        foreach (var skel in _ifmap.Values)
+            skel.Bind(impl);
     }
 }

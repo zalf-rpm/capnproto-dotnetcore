@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks.Dataflow;
 using Capnp.Net.Runtime.Tests.GenImpls;
@@ -126,8 +126,10 @@ public class Interception : TestBase
                 var rx = policy.Returns.ReceiveAsync();
 
                 // Racing against Bob's answer
-                Assert.IsTrue(cc.State == InterceptionState.ForwardedToBob ||
-                              cc.State == InterceptionState.ReturnedFromBob);
+                Assert.IsTrue(
+                    cc.State == InterceptionState.ForwardedToBob
+                        || cc.State == InterceptionState.ReturnedFromBob
+                );
 
                 Assert.IsTrue(rx.Wait(MediumNonDbgTimeout));
                 var rr = new TestInterface.Result_Foo.READER(cc.OutArgs);
@@ -135,7 +137,9 @@ public class Interception : TestBase
 
                 Assert.IsFalse(request1.IsCompleted);
 
-                var rw = ((DynamicSerializerState)cc.OutArgs).Rewrap<TestInterface.Result_Foo.WRITER>();
+                var rw = (
+                    (DynamicSerializerState)cc.OutArgs
+                ).Rewrap<TestInterface.Result_Foo.WRITER>();
                 rw.X = "bar";
                 cc.OutArgs = rw;
 
@@ -261,13 +265,19 @@ public class Interception : TestBase
             server.Main = new TestMoreStuffImpl(counters);
             using (var main = policy.Attach(client.GetMain<ITestMoreStuff>()))
             {
-                var request1 = main.NeverReturn(new TestInterfaceImpl(new Counters()), new CancellationToken(true));
+                var request1 = main.NeverReturn(
+                    new TestInterfaceImpl(new Counters()),
+                    new CancellationToken(true)
+                );
                 Assert.IsTrue(policy.Calls.TryReceive(out var cc));
                 Assert.IsFalse(request1.IsCompleted);
                 Assert.IsTrue(cc.CancelFromAlice.IsCancellationRequested);
 
                 cc.ForwardToBob();
-                Assert.IsTrue(policy.Returns.ReceiveAsync().Wait(MediumNonDbgTimeout), "must return");
+                Assert.IsTrue(
+                    policy.Returns.ReceiveAsync().Wait(MediumNonDbgTimeout),
+                    "must return"
+                );
                 Assert.IsTrue(cc.ReturnCanceled, "must be canceled");
                 cc.ReturnCanceled = false;
                 cc.Exception = "Cancelled";
@@ -432,7 +442,9 @@ public class Interception : TestBase
             using (var main = client.GetMain<ITestTailCaller>())
             {
                 var calleeCallCount = new Counters();
-                var callee = policy.Attach<ITestTailCallee>(new TestTailCalleeImpl(calleeCallCount));
+                var callee = policy.Attach<ITestTailCallee>(
+                    new TestTailCalleeImpl(calleeCallCount)
+                );
 
                 var promise = main.Foo(456, callee);
                 var ccf = policy.Calls.ReceiveAsync();
@@ -695,7 +707,9 @@ public class Interception : TestBase
     {
         var impl = new TestInterfaceImpl2();
         Assert.Throws<ArgumentNullException>(() => default(IInterceptionPolicy).Attach(impl));
-        Assert.Throws<ArgumentNullException>(() => new MyPolicy("x").Attach(default(ITestInterface)));
+        Assert.Throws<ArgumentNullException>(() =>
+            new MyPolicy("x").Attach(default(ITestInterface))
+        );
     }
 
     [TestMethod]
@@ -703,7 +717,9 @@ public class Interception : TestBase
     {
         var impl = new TestInterfaceImpl2();
         Assert.Throws<ArgumentNullException>(() => default(IInterceptionPolicy).Detach(impl));
-        Assert.Throws<ArgumentNullException>(() => new MyPolicy("x").Detach(default(ITestInterface)));
+        Assert.Throws<ArgumentNullException>(() =>
+            new MyPolicy("x").Detach(default(ITestInterface))
+        );
     }
 
     [TestMethod]

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Capnp;
@@ -31,7 +31,12 @@ public static class SerializerExtensions
     /// <param name="bitOffset">Start bit</param>
     /// <param name="value">Value to write</param>
     /// <param name="defaultValue">Field default value (will be XORed with the value to write)</param>
-    public static void WriteData<T>(this T d, ulong bitOffset, bool value, bool defaultValue = false)
+    public static void WriteData<T>(
+        this T d,
+        ulong bitOffset,
+        bool value,
+        bool defaultValue = false
+    )
         where T : IStructSerializer
     {
         d.StructWriteData(bitOffset, 1, value != defaultValue ? 1ul : 0);
@@ -115,7 +120,12 @@ public static class SerializerExtensions
     /// <param name="bitOffset">Start bit</param>
     /// <param name="value">Value to write</param>
     /// <param name="defaultValue">Field default value (will be XORed with the value to write)</param>
-    public static void WriteData<T>(this T d, ulong bitOffset, ushort value, ushort defaultValue = 0)
+    public static void WriteData<T>(
+        this T d,
+        ulong bitOffset,
+        ushort value,
+        ushort defaultValue = 0
+    )
         where T : IStructSerializer
     {
         d.StructWriteData(bitOffset, 16, (ushort)(value ^ defaultValue));
@@ -303,7 +313,12 @@ public static class SerializerExtensions
     /// <param name="bitOffset">Start bit</param>
     /// <param name="value">Value to write</param>
     /// <param name="defaultValue">Field default value (raw bits will be XORed with the value to write)</param>
-    public static void WriteData<T>(this T d, ulong bitOffset, float value, float defaultValue = 0.0f)
+    public static void WriteData<T>(
+        this T d,
+        ulong bitOffset,
+        float value,
+        float defaultValue = 0.0f
+    )
         where T : IStructSerializer
     {
         var bits = BitConverter.SingleToInt32Bits(value);
@@ -335,7 +350,12 @@ public static class SerializerExtensions
     /// <param name="bitOffset">Start bit</param>
     /// <param name="value">Value to write</param>
     /// <param name="defaultValue">Field default value (raw bits will be XORed with the value to write)</param>
-    public static void WriteData<T>(this T d, ulong bitOffset, double value, double defaultValue = 0.0)
+    public static void WriteData<T>(
+        this T d,
+        ulong bitOffset,
+        double value,
+        double defaultValue = 0.0
+    )
         where T : IStructSerializer
     {
         var bits = BitConverter.DoubleToInt64Bits(value);

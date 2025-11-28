@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Capnp.Rpc;
 
@@ -46,7 +46,8 @@ public class MessageBuilder
     ///     Constructs an instance using a custom segment allocator and reserves space for the root pointer.
     /// </summary>
     /// <typeparam name="T">Segment allocator implementation type</typeparam>
-    public static MessageBuilder Create<T>() where T : ISegmentAllocator, new()
+    public static MessageBuilder Create<T>()
+        where T : ISegmentAllocator, new()
     {
         return new MessageBuilder(new T());
     }
@@ -65,7 +66,8 @@ public class MessageBuilder
     /// </summary>
     /// <typeparam name="TS">Serializer state specialization</typeparam>
     /// <returns>Serializer state instance representing the new object</returns>
-    public TS CreateObject<TS>() where TS : SerializerState, new()
+    public TS CreateObject<TS>()
+        where TS : SerializerState, new()
     {
         var ts = new TS();
         ts.Bind(this);
@@ -77,7 +79,8 @@ public class MessageBuilder
     /// </summary>
     /// <typeparam name="TS">Serializer state specialization (must be a struct)</typeparam>
     /// <returns>Serializer state instance representing the new object</returns>
-    public TS BuildRoot<TS>() where TS : SerializerState, new()
+    public TS BuildRoot<TS>()
+        where TS : SerializerState, new()
     {
         if (Root != null)
             throw new InvalidOperationException("Root already set");

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,10 +9,8 @@ namespace Capnp;
 /// </summary>
 public class ListOfStructsDeserializer : ListDeserializer, IReadOnlyList<DeserializerState>
 {
-    internal ListOfStructsDeserializer(in DeserializerState context) :
-        base(context)
-    {
-    }
+    internal ListOfStructsDeserializer(in DeserializerState context)
+        : base(context) { }
 
     /// <summary>
     ///     Always returns <code>ListKind.ListOfStructs</code>.
@@ -71,6 +69,7 @@ public class ListOfStructsDeserializer : ListDeserializer, IReadOnlyList<Deseria
 
     private IEnumerable<DeserializerState> Enumerate()
     {
-        for (var i = 0; i < Count; i++) yield return this[i];
+        for (var i = 0; i < Count; i++)
+            yield return this[i];
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -90,11 +90,13 @@ public class ListOfBitsSerializer : SerializerState, IReadOnlyList<bool>
     /// <exception cref="ArgumentOutOfRangeException">More than 2^29-1 items.</exception>
     public void Init(IReadOnlyList<bool>? items)
     {
-        if (items == null) return;
+        if (items == null)
+            return;
 
         Init(items.Count);
 
-        for (var i = 0; i < items.Count; i++) this[i] = items[i];
+        for (var i = 0; i < items.Count; i++)
+            this[i] = items[i];
     }
 
     private IEnumerable<bool> Enumerate()

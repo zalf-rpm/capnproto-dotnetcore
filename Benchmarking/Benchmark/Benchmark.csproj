@@ -1,28 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net9.0</TargetFramework>
-    </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
 
-    <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.6" />
 
-        <PackageReference Include="BenchmarkDotNet" Version="0.15.6" />
+    <PackageReference Update="Nerdbank.GitVersioning">
+      <Version>3.9.50</Version>
+    </PackageReference>
+  </ItemGroup>
 
-        <PackageReference Update="Nerdbank.GitVersioning">
-            <Version>3.9.50</Version>
-        </PackageReference>
-    </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Protos\Echo.proto" GrpcServices="Client" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <Protobuf Include="Protos\Echo.proto" GrpcServices="Client" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="../../Capnp.Net.Runtime/Capnp.Net.Runtime.csproj" />
-        <ProjectReference Include="../../CapnpC.CSharp.MsBuild.Generation/CapnpC.CSharp.MsBuild.Generation.csproj" />
-
-    </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="../../Capnp.Net.Runtime/Capnp.Net.Runtime.csproj" />
+    <ProjectReference Include="../../CapnpC.CSharp.MsBuild.Generation/CapnpC.CSharp.MsBuild.Generation.csproj" />
+  </ItemGroup>
 </Project>

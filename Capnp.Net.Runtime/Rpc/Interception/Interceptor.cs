@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Capnp.Rpc.Interception;
@@ -32,7 +32,8 @@ public static class Interceptor
 
         while (cur != null)
         {
-            if (policy.Equals(cur.Policy)) return cap;
+            if (policy.Equals(cur.Policy))
+                return cap;
 
             cur = cur.InterceptedCapability as CensorCapability;
         }
@@ -40,15 +41,19 @@ public static class Interceptor
         switch (cap)
         {
             case Proxy proxy:
-                return (CapabilityReflection.CreateProxy<TCap>(
-                    Attach(policy, proxy.ConsumedCap!)) as TCap)!;
+                return (
+                    CapabilityReflection.CreateProxy<TCap>(Attach(policy, proxy.ConsumedCap!))
+                    as TCap
+                )!;
 
             case ConsumedCapability ccap:
                 return (new CensorCapability(ccap, policy) as TCap)!;
 
             default:
-                var temp = CapabilityReflection.CreateProxy<TCap>(
-                    CapabilityReflection.CreateSkeletonInternal(cap).AsCapability()) as TCap;
+                var temp =
+                    CapabilityReflection.CreateProxy<TCap>(
+                        CapabilityReflection.CreateSkeletonInternal(cap).AsCapability()
+                    ) as TCap;
                 return Attach(policy, temp!)!;
         }
     }
@@ -76,29 +81,33 @@ public static class Interceptor
         switch (cap)
         {
             case Proxy proxy:
-                return (CapabilityReflection.CreateProxy<TCap>(Detach(policy, proxy.ConsumedCap!)) as TCap)!;
+                return (
+                    CapabilityReflection.CreateProxy<TCap>(Detach(policy, proxy.ConsumedCap!))
+                    as TCap
+                )!;
 
             case CensorCapability ccap:
+            {
+                var cur = ccap;
+                var stk = new Stack<IInterceptionPolicy>();
+
+                do
                 {
-                    var cur = ccap;
-                    var stk = new Stack<IInterceptionPolicy>();
-
-                    do
+                    if (policy.Equals(cur.Policy))
                     {
-                        if (policy.Equals(cur.Policy))
-                        {
-                            var cur2 = cur.InterceptedCapability;
+                        var cur2 = cur.InterceptedCapability;
 
-                            foreach (var p in stk) cur2 = p.Attach(cur2);
-                            return (cur2 as TCap)!;
-                        }
+                        foreach (var p in stk)
+                            cur2 = p.Attach(cur2);
+                        return (cur2 as TCap)!;
+                    }
 
-                        stk.Push(cur.Policy);
-                        cur = cur.InterceptedCapability as CensorCapability;
-                    } while (cur != null);
+                    stk.Push(cur.Policy);
+                    cur = cur.InterceptedCapability as CensorCapability;
+                } while (cur != null);
 
-                    return (ccap as TCap)!;
-                }
+                return (ccap as TCap)!;
+            }
 
             default:
                 return cap;

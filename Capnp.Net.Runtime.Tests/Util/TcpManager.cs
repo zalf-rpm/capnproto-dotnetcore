@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 
 namespace Capnp.Net.Runtime.Tests.Util;
 
@@ -16,9 +16,7 @@ internal class TcpManager
 
     public (IPAddress, int) GetLocalAddressAndPort()
     {
-        if (++_nextAddress[2] == 0 &&
-            ++_nextAddress[1] == 0 &&
-            ++_nextAddress[0] == 0)
+        if (++_nextAddress[2] == 0 && ++_nextAddress[1] == 0 && ++_nextAddress[0] == 0)
             _nextAddress[0] = 2;
 
         return (new IPAddress(_nextAddress), _nextPort);

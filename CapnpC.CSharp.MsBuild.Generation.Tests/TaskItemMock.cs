@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using Microsoft.Build.Framework;
 
 namespace CapnpC.CSharp.MsBuild.Generation.Tests;
@@ -16,22 +16,17 @@ internal class TaskItemMock : ITaskItem
         return null;
     }
 
-    public void CopyMetadataTo(ITaskItem destinationItem)
-    {
-    }
+    public void CopyMetadataTo(ITaskItem destinationItem) { }
 
     public string GetMetadata(string metadataName)
     {
-        if (metadataName == "FullPath") return ItemSpec;
+        if (metadataName == "FullPath")
+            return ItemSpec;
 
         return string.Empty;
     }
 
-    public void RemoveMetadata(string metadataName)
-    {
-    }
+    public void RemoveMetadata(string metadataName) { }
 
-    public void SetMetadata(string metadataName, string metadataValue)
-    {
-    }
+    public void SetMetadata(string metadataName, string metadataValue) { }
 }

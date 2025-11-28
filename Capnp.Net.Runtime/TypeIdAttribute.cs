@@ -1,11 +1,14 @@
-﻿using System;
+using System;
 
 namespace Capnp;
 
 /// <summary>
 ///     Annotates an enum, class or interface with its schema type identifier.
 /// </summary>
-[AttributeUsage(AttributeTargets.Enum | AttributeTargets.Class | AttributeTargets.Interface, Inherited = false)]
+[AttributeUsage(
+    AttributeTargets.Enum | AttributeTargets.Class | AttributeTargets.Interface,
+    Inherited = false
+)]
 public class TypeIdAttribute : Attribute
 {
     /// <summary>
@@ -15,7 +18,8 @@ public class TypeIdAttribute : Attribute
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="typeId" /> is zero.</exception>
     public TypeIdAttribute(ulong typeId)
     {
-        if (typeId == 0) throw new ArgumentOutOfRangeException(nameof(typeId), "The value cannot be zero.");
+        if (typeId == 0)
+            throw new ArgumentOutOfRangeException(nameof(typeId), "The value cannot be zero.");
         Id = typeId;
     }
 

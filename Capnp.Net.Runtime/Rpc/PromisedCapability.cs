@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Capnp.Util;
@@ -13,7 +13,8 @@ internal class PromisedCapability : RemoteResolvingCapability
     private readonly StrictlyOrderedAwaitTask<Proxy> _whenResolvedProxy;
     private bool _released;
 
-    public PromisedCapability(IRpcEndpoint ep, uint remoteId) : base(ep)
+    public PromisedCapability(IRpcEndpoint ep, uint remoteId)
+        : base(ep)
     {
         _remoteId = remoteId;
 
@@ -42,7 +43,8 @@ internal class PromisedCapability : RemoteResolvingCapability
         }
     }
 
-    public override T? GetResolvedCapability<T>() where T : class
+    public override T? GetResolvedCapability<T>()
+        where T : class
     {
         return _whenResolvedProxy.WrappedTask.GetResolvedCapability<T>();
     }
@@ -79,7 +81,8 @@ internal class PromisedCapability : RemoteResolvingCapability
                             }
                         }
 
-                        if (release) _ep.ReleaseImport(_remoteId);
+                        if (release)
+                            _ep.ReleaseImport(_remoteId);
                     };
                 }
 
@@ -96,9 +99,7 @@ internal class PromisedCapability : RemoteResolvingCapability
         {
             await call;
         }
-        catch
-        {
-        }
+        catch { }
         finally
         {
             var release = false;
@@ -112,7 +113,8 @@ internal class PromisedCapability : RemoteResolvingCapability
                 }
             }
 
-            if (release) _ep.ReleaseImport(_remoteId);
+            if (release)
+                _ep.ReleaseImport(_remoteId);
         }
     }
 
@@ -122,11 +124,16 @@ internal class PromisedCapability : RemoteResolvingCapability
         wr.ImportedCap = _remoteId;
     }
 
-    internal override IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args)
+    internal override IPromisedAnswer DoCall(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args
+    )
     {
         lock (_reentrancyBlocker)
         {
-            if (_resolvedCap.Task.IsCompleted) return CallOnResolution(interfaceId, methodId, args);
+            if (_resolvedCap.Task.IsCompleted)
+                return CallOnResolution(interfaceId, methodId, args);
 
             Debug.Assert(!_released);
             ++_pendingCallsOnPromise;
@@ -144,8 +151,8 @@ internal class PromisedCapability : RemoteResolvingCapability
         lock (_reentrancyBlocker)
         {
 #if DebugFinalizers
-                if (resolvedCap != null)
-                    resolvedCap.ResolvingCap = this;
+            if (resolvedCap != null)
+                resolvedCap.ResolvingCap = this;
 #endif
             _resolvedCap.SetResult(resolvedCap!);
 
@@ -156,7 +163,8 @@ internal class PromisedCapability : RemoteResolvingCapability
             }
         }
 
-        if (release) _ep.ReleaseImport(_remoteId);
+        if (release)
+            _ep.ReleaseImport(_remoteId);
     }
 
     public void Break(string message)
@@ -178,7 +186,8 @@ internal class PromisedCapability : RemoteResolvingCapability
             }
         }
 
-        if (release) _ep.ReleaseImport(_remoteId);
+        if (release)
+            _ep.ReleaseImport(_remoteId);
     }
 
     protected override async void ReleaseRemotely()
@@ -193,12 +202,14 @@ internal class PromisedCapability : RemoteResolvingCapability
         {
             using var _ = await _whenResolvedProxy;
         }
-        catch
-        {
-        }
+        catch { }
     }
 
-    protected override Call.WRITER SetupMessage(DynamicSerializerState args, ulong interfaceId, ushort methodId)
+    protected override Call.WRITER SetupMessage(
+        DynamicSerializerState args,
+        ulong interfaceId,
+        ushort methodId
+    )
     {
         var call = base.SetupMessage(args, interfaceId, methodId);
 

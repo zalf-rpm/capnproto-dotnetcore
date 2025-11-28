@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -10,10 +10,8 @@ namespace Capnp;
 /// </summary>
 public class ListOfPointersDeserializer : ListDeserializer, IReadOnlyList<DeserializerState>
 {
-    internal ListOfPointersDeserializer(in DeserializerState state) :
-        base(state)
-    {
-    }
+    internal ListOfPointersDeserializer(in DeserializerState state)
+        : base(state) { }
 
     /// <summary>
     ///     Always <code>ListKind.ListOfPointers</code>

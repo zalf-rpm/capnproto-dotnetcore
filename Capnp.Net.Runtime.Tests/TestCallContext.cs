@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 using Capnp.Rpc;
 
@@ -6,7 +6,12 @@ namespace Capnp.Net.Runtime.Tests;
 
 internal class TestCallContext
 {
-    public TestCallContext(ulong interfaceId, ushort methodId, DeserializerState args, CancellationToken ct)
+    public TestCallContext(
+        ulong interfaceId,
+        ushort methodId,
+        DeserializerState args,
+        CancellationToken ct
+    )
     {
         InterfaceId = interfaceId;
         MethodId = methodId;

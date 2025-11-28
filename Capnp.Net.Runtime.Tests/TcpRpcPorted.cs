@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Capnp.Net.Runtime.Tests.GenImpls;
@@ -61,9 +61,8 @@ public class TcpRpcPorted : TestBase
                         {
                             t.Result.Dispose();
                         }
-                        catch (AggregateException ex) when (ex.InnerException is TaskCanceledException)
-                        {
-                        }
+                        catch (AggregateException ex)
+                            when (ex.InnerException is TaskCanceledException) { }
 
                         cts.Dispose();
                     });
@@ -71,7 +70,9 @@ public class TcpRpcPorted : TestBase
 
                 Thread.Sleep(ShortTimeout);
 
-                Assert.IsTrue(SpinWait.SpinUntil(() => counters.HandleCount == 0, MediumNonDbgTimeout));
+                Assert.IsTrue(
+                    SpinWait.SpinUntil(() => counters.HandleCount == 0, MediumNonDbgTimeout)
+                );
             }
         }
     }

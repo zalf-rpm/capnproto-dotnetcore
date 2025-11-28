@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -12,7 +12,8 @@ namespace Capnp;
 /// </summary>
 public static class CapnpSerializable
 {
-    private static readonly ConditionalWeakTable<Type, Func<DeserializerState, object?>> _typeMap = new();
+    private static readonly ConditionalWeakTable<Type, Func<DeserializerState, object?>> _typeMap =
+        new();
 
     static CapnpSerializable()
     {
@@ -35,9 +36,12 @@ public static class CapnpSerializable
     {
         switch (state.Kind)
         {
-            case ObjectKind.Capability: return state.RequireCap<BareProxy>();
-            case ObjectKind.Nil: return null;
-            default: return state;
+            case ObjectKind.Capability:
+                return state.RequireCap<BareProxy>();
+            case ObjectKind.Nil:
+                return null;
+            default:
+                return state;
         }
     }
 
@@ -46,22 +50,27 @@ public static class CapnpSerializable
         if (typeof(ICapnpSerializable).IsAssignableFrom(type))
             try
             {
-                return ((IConstructibleFromDeserializerState)
-                    Activator.CreateInstance(typeof(FromStruct<>).MakeGenericType(type))!).Create;
+                return (
+                    (IConstructibleFromDeserializerState)
+                        Activator.CreateInstance(typeof(FromStruct<>).MakeGenericType(type))!
+                ).Create;
             }
             catch (Exception ex)
             {
                 throw new ArgumentException(
                     $"Cannot create serializer, probably because serializer {type.Name} does not expose a public parameterless constructor",
-                    ex);
+                    ex
+                );
             }
 
         if (type.IsGenericType && typeof(IReadOnlyList<>) == type.GetGenericTypeDefinition())
             try
             {
                 var elementType = type.GetGenericArguments()[0];
-                return ((IConstructibleFromDeserializerState)
-                    Activator.CreateInstance(typeof(FromList<>).MakeGenericType(elementType))!).Create;
+                return (
+                    (IConstructibleFromDeserializerState)
+                        Activator.CreateInstance(typeof(FromList<>).MakeGenericType(elementType))!
+                ).Create;
             }
             catch (TargetInvocationException ex)
             {
@@ -71,7 +80,8 @@ public static class CapnpSerializable
             {
                 throw new ArgumentException(
                     "Cannot create list serializer, probably because the element type is not a reference type",
-                    ex);
+                    ex
+                );
             }
 
         try
@@ -82,19 +92,23 @@ public static class CapnpSerializable
         {
             throw new ArgumentException(
                 $"Don't know how to construct a serializer from {type.Name}. Tried to interpret it as capability interface, but it didn't work.",
-                ex);
+                ex
+            );
         }
 
         try
         {
-            return ((IConstructibleFromDeserializerState)
-                Activator.CreateInstance(typeof(FromCapability<>).MakeGenericType(type))!).Create;
+            return (
+                (IConstructibleFromDeserializerState)
+                    Activator.CreateInstance(typeof(FromCapability<>).MakeGenericType(type))!
+            ).Create;
         }
         catch (Exception ex)
         {
             throw new ArgumentException(
                 $"Cannot create serializer, probably because serializer {type.Name} a not a viable capability interface",
-                ex);
+                ex
+            );
         }
     }
 
@@ -174,7 +188,8 @@ public static class CapnpSerializable
         public object Create(DeserializerState state)
         {
             var result = new T();
-            if (state.Kind != ObjectKind.Nil) result.Deserialize(state);
+            if (state.Kind != ObjectKind.Nil)
+                result.Deserialize(state);
             return result;
         }
     }

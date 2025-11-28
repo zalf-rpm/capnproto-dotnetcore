@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 [assembly: InternalsVisibleTo("CapnpC.CSharp.Generator.Tests")]
@@ -21,8 +21,10 @@ public class CapnpMessage
     // Watching for the *last* colon as message separator does not work either, either. See first example.
     // Strategy: Watch out for the *last* occurence of pattern :[line]:[column]
 
-    private static readonly Regex LineColumnRegex = new(@":(?<Line>\d+):(?<Column>\d+)(-(?<EndColumn>\d+))?:",
-        RegexOptions.Compiled | RegexOptions.RightToLeft);
+    private static readonly Regex LineColumnRegex = new(
+        @":(?<Line>\d+):(?<Column>\d+)(-(?<EndColumn>\d+))?:",
+        RegexOptions.Compiled | RegexOptions.RightToLeft
+    );
 
     /// <summary>
     ///     Constructs an instance from given message

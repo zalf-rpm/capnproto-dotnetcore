@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -10,9 +10,7 @@ namespace Capnp;
 ///     SerializerState specialization for a list of capabilities.
 /// </summary>
 /// <typeparam name="T">Capability interface</typeparam>
-public class ListOfCapsSerializer<T> :
-    SerializerState,
-    IReadOnlyList<T?>
+public class ListOfCapsSerializer<T> : SerializerState, IReadOnlyList<T?>
     where T : class
 {
     /// <summary>
@@ -107,11 +105,13 @@ public class ListOfCapsSerializer<T> :
     /// <exception cref="ArgumentOutOfRangeException">More than 2^29-1 items.</exception>
     public void Init(IReadOnlyList<T?>? caps)
     {
-        if (caps == null) return;
+        if (caps == null)
+            return;
 
         Init(caps.Count);
 
-        for (var i = 0; i < caps.Count; i++) this[i] = caps[i];
+        for (var i = 0; i < caps.Count; i++)
+            this[i] = caps[i];
     }
 
     private IEnumerable<T> Enumerate()

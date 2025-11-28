@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
 namespace CapnpC.CSharp.Generator.Model;
 
-internal class TypeDefinition : AbstractType, IDefinition, IHasNestedDefinitions, IHasGenericParameters
+internal class TypeDefinition
+    : AbstractType,
+        IDefinition,
+        IHasNestedDefinitions,
+        IHasGenericParameters
 {
     public TypeDefinition(TypeTag tag, ulong id, IHasNestedDefinitions parent)
     {
@@ -52,7 +56,8 @@ internal class TypeDefinition : AbstractType, IDefinition, IHasNestedDefinitions
         get
         {
             IHasNestedDefinitions cur = this;
-            while (cur is TypeDefinition def) cur = def.DeclaringElement;
+            while (cur is TypeDefinition def)
+                cur = def.DeclaringElement;
             return cur as GenFile;
         }
     }

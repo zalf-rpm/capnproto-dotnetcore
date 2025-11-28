@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CapnpC.CSharp.Generator;
 
@@ -6,10 +6,14 @@ namespace CapnpC.CSharp.MsBuild.Generation;
 
 public class CsFileGeneratorResult
 {
-    public CsFileGeneratorResult(FileGenerationResult generatorResult, string fileName,
-        IReadOnlyList<CapnpMessage> messages)
+    public CsFileGeneratorResult(
+        FileGenerationResult generatorResult,
+        string fileName,
+        IReadOnlyList<CapnpMessage> messages
+    )
     {
-        if (generatorResult == null) throw new ArgumentNullException(nameof(generatorResult));
+        if (generatorResult == null)
+            throw new ArgumentNullException(nameof(generatorResult));
 
         Filename = fileName ?? throw new ArgumentNullException(nameof(fileName));
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Capnp;
@@ -17,10 +17,7 @@ internal class Value
 
     public static Value Scalar<T>(T scalar)
     {
-        var value = new Value
-        {
-            ScalarValue = scalar
-        };
+        var value = new Value { ScalarValue = scalar };
 
         if (typeof(T) == typeof(bool))
             value.Type = Types.Bool;
@@ -64,7 +61,8 @@ internal class Value
 
     private void DecodeStruct()
     {
-        if (RawValue.Kind != ObjectKind.Struct) throw new NotSupportedException();
+        if (RawValue.Kind != ObjectKind.Struct)
+            throw new NotSupportedException();
 
         var def = Type.Definition;
 
@@ -76,10 +74,7 @@ internal class Value
             if (field.DiscValue.HasValue && field.DiscValue.Value != DiscriminatorValue)
                 continue;
 
-            var value = new Value
-            {
-                Type = field.Type
-            };
+            var value = new Value { Type = field.Type };
 
             switch (field.Type.Tag)
             {
@@ -92,8 +87,10 @@ internal class Value
                     break;
 
                 case TypeTag.Bool:
-                    value.ScalarValue = RawValue.ReadDataBool(field.BitOffset.Value,
-                        field.DefaultValue?.ScalarValue as bool? ?? false);
+                    value.ScalarValue = RawValue.ReadDataBool(
+                        field.BitOffset.Value,
+                        field.DefaultValue?.ScalarValue as bool? ?? false
+                    );
                     break;
 
                 case TypeTag.CapabilityPointer:
@@ -115,57 +112,98 @@ internal class Value
                     break;
 
                 case TypeTag.Enum:
-                    value.ScalarValue = field.DefaultValue?.ScalarValue as ushort? ?? ushort.MaxValue;
+                    value.ScalarValue =
+                        field.DefaultValue?.ScalarValue as ushort? ?? ushort.MaxValue;
                     break;
 
                 case TypeTag.F32:
-                    value = Scalar(RawValue.ReadDataFloat(field.BitOffset.Value,
-                        field.DefaultValue?.ScalarValue as float? ?? 0.0f));
+                    value = Scalar(
+                        RawValue.ReadDataFloat(
+                            field.BitOffset.Value,
+                            field.DefaultValue?.ScalarValue as float? ?? 0.0f
+                        )
+                    );
                     break;
 
                 case TypeTag.F64:
-                    value = Scalar(RawValue.ReadDataDouble(field.BitOffset.Value,
-                        field.DefaultValue?.ScalarValue as double? ?? 0.0f));
+                    value = Scalar(
+                        RawValue.ReadDataDouble(
+                            field.BitOffset.Value,
+                            field.DefaultValue?.ScalarValue as double? ?? 0.0f
+                        )
+                    );
                     break;
 
                 case TypeTag.S16:
-                    value = Scalar(RawValue.ReadDataShort(field.BitOffset.Value,
-                        field.DefaultValue?.ScalarValue as short? ?? 0));
+                    value = Scalar(
+                        RawValue.ReadDataShort(
+                            field.BitOffset.Value,
+                            field.DefaultValue?.ScalarValue as short? ?? 0
+                        )
+                    );
                     break;
 
                 case TypeTag.S32:
-                    value = Scalar(RawValue.ReadDataInt(field.BitOffset.Value,
-                        field.DefaultValue?.ScalarValue as int? ?? 0));
+                    value = Scalar(
+                        RawValue.ReadDataInt(
+                            field.BitOffset.Value,
+                            field.DefaultValue?.ScalarValue as int? ?? 0
+                        )
+                    );
                     break;
 
                 case TypeTag.S64:
-                    value = Scalar(RawValue.ReadDataLong(field.BitOffset.Value,
-                        field.DefaultValue?.ScalarValue as long? ?? 0));
+                    value = Scalar(
+                        RawValue.ReadDataLong(
+                            field.BitOffset.Value,
+                            field.DefaultValue?.ScalarValue as long? ?? 0
+                        )
+                    );
                     break;
 
                 case TypeTag.S8:
-                    value = Scalar(RawValue.ReadDataSByte(field.BitOffset.Value,
-                        field.DefaultValue?.ScalarValue as sbyte? ?? 0));
+                    value = Scalar(
+                        RawValue.ReadDataSByte(
+                            field.BitOffset.Value,
+                            field.DefaultValue?.ScalarValue as sbyte? ?? 0
+                        )
+                    );
                     break;
 
                 case TypeTag.U16:
-                    value = Scalar(RawValue.ReadDataUShort(field.BitOffset.Value,
-                        field.DefaultValue?.ScalarValue as ushort? ?? 0));
+                    value = Scalar(
+                        RawValue.ReadDataUShort(
+                            field.BitOffset.Value,
+                            field.DefaultValue?.ScalarValue as ushort? ?? 0
+                        )
+                    );
                     break;
 
                 case TypeTag.U32:
-                    value = Scalar(RawValue.ReadDataUInt(field.BitOffset.Value,
-                        field.DefaultValue?.ScalarValue as uint? ?? 0));
+                    value = Scalar(
+                        RawValue.ReadDataUInt(
+                            field.BitOffset.Value,
+                            field.DefaultValue?.ScalarValue as uint? ?? 0
+                        )
+                    );
                     break;
 
                 case TypeTag.U64:
-                    value = Scalar(RawValue.ReadDataULong(field.BitOffset.Value,
-                        field.DefaultValue?.ScalarValue as ulong? ?? 0));
+                    value = Scalar(
+                        RawValue.ReadDataULong(
+                            field.BitOffset.Value,
+                            field.DefaultValue?.ScalarValue as ulong? ?? 0
+                        )
+                    );
                     break;
 
                 case TypeTag.U8:
-                    value = Scalar(RawValue.ReadDataByte(field.BitOffset.Value,
-                        field.DefaultValue?.ScalarValue as byte? ?? 0));
+                    value = Scalar(
+                        RawValue.ReadDataByte(
+                            field.BitOffset.Value,
+                            field.DefaultValue?.ScalarValue as byte? ?? 0
+                        )
+                    );
                     break;
 
                 case TypeTag.Void:
@@ -192,17 +230,25 @@ internal class Value
                 {
                     case TypeTag.AnyEnum:
                     case TypeTag.Enum:
-                        Items.AddRange(RawValue.RequireList().CastUShort().Select(u =>
-                        {
-                            var v = Scalar(u);
-                            v.Type = Type.ElementType;
-                            return v;
-                        }));
+                        Items.AddRange(
+                            RawValue
+                                .RequireList()
+                                .CastUShort()
+                                .Select(u =>
+                                {
+                                    var v = Scalar(u);
+                                    v.Type = Type.ElementType;
+                                    return v;
+                                })
+                        );
                         break;
 
                     case TypeTag.AnyPointer:
-                        Items.AddRange(RawValue.RequireList()
-                            .Cast(d => new Value { Type = Type.ElementType, RawValue = d }));
+                        Items.AddRange(
+                            RawValue
+                                .RequireList()
+                                .Cast(d => new Value { Type = Type.ElementType, RawValue = d })
+                        );
                         break;
 
                     case TypeTag.Bool:
@@ -213,12 +259,16 @@ internal class Value
                     case TypeTag.Group:
                     case TypeTag.Struct:
                     case TypeTag.List:
-                        Items.AddRange(RawValue.RequireList().Cast(d =>
-                        {
-                            var v = new Value { Type = Type.ElementType, RawValue = d };
-                            v.Decode();
-                            return v;
-                        }));
+                        Items.AddRange(
+                            RawValue
+                                .RequireList()
+                                .Cast(d =>
+                                {
+                                    var v = new Value { Type = Type.ElementType, RawValue = d };
+                                    v.Decode();
+                                    return v;
+                                })
+                        );
                         break;
 
                     case TypeTag.Text:
@@ -276,7 +326,11 @@ internal class Value
                 break;
 
             case TypeTag.ListPointer:
-                Items.AddRange(RawValue.RequireList().Cast(d => new Value { Type = Type.ElementType, RawValue = d }));
+                Items.AddRange(
+                    RawValue
+                        .RequireList()
+                        .Cast(d => new Value { Type = Type.ElementType, RawValue = d })
+                );
                 break;
 
             case TypeTag.Text:
@@ -287,7 +341,8 @@ internal class Value
 
     public void Decode()
     {
-        if (RawValue.Kind == ObjectKind.Nil) return;
+        if (RawValue.Kind == ObjectKind.Nil)
+            return;
 
         switch (Type.Tag)
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Capnp;
@@ -26,8 +26,7 @@ public abstract class ListDeserializer
         GenericCasts<IReadOnlyList<ulong>>.CastFunc = _ => _.CastULong();
         GenericCasts<IReadOnlyList<float>>.CastFunc = _ => _.CastFloat();
         GenericCasts<IReadOnlyList<double>>.CastFunc = _ => _.CastDouble();
-        GenericCasts<string>.CastFunc =
-            _ => _.CastText()!; // it *may* return null, but how to express this syntactically correct?
+        GenericCasts<string>.CastFunc = _ => _.CastText()!; // it *may* return null, but how to express this syntactically correct?
     }
 
     internal ListDeserializer(in DeserializerState state)
@@ -35,9 +34,7 @@ public abstract class ListDeserializer
         State = state;
     }
 
-    internal ListDeserializer()
-    {
-    }
+    internal ListDeserializer() { }
 
     /// <summary>
     ///     This list's element count
@@ -89,14 +86,18 @@ public abstract class ListDeserializer
     ///     If <typeparamref name="T" /> does not qualify as capability
     ///     interface.
     /// </exception>
-    public virtual IReadOnlyList<T> CastCapList<T>() where T : class
+    public virtual IReadOnlyList<T> CastCapList<T>()
+        where T : class
     {
-        throw new NotSupportedException("This kind of list cannot be represented as list of capabilities");
+        throw new NotSupportedException(
+            "This kind of list cannot be represented as list of capabilities"
+        );
     }
 
     private object CastND(int n, Func<ListDeserializer, object> func)
     {
-        if (n <= 0) throw new ArgumentOutOfRangeException(nameof(n));
+        if (n <= 0)
+            throw new ArgumentOutOfRangeException(nameof(n));
 
         for (var i = 1; i < n; i++)
         {
@@ -452,8 +453,7 @@ public abstract class ListDeserializer
 
         public static Func<ListDeserializer, T> GetCastFunc()
         {
-            return CastFunc ??
-                   throw new NotSupportedException("Requested cast is not supported");
+            return CastFunc ?? throw new NotSupportedException("Requested cast is not supported");
         }
     }
 }

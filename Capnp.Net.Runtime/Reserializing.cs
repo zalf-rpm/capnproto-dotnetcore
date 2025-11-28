@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Capnp;
@@ -46,7 +46,8 @@ public static class Reserializing
                 ds.SetStruct(from.StructDataCount, from.StructPtrCount);
                 ds.Allocate();
                 from.StructDataSection.CopyTo(ds.StructDataSection);
-                for (var i = 0; i < from.StructPtrCount; i++) DeepCopy(from.StructReadPointer(i), ds.BuildPointer(i));
+                for (var i = 0; i < from.StructPtrCount; i++)
+                    DeepCopy(from.StructReadPointer(i), ds.BuildPointer(i));
                 break;
 
             case ObjectKind.ListOfBits:
@@ -81,13 +82,19 @@ public static class Reserializing
             case ObjectKind.ListOfPointers:
                 ds.SetListOfPointers(from.ListElementCount);
                 items = (IReadOnlyList<DeserializerState>)from.RequireList();
-                for (var i = 0; i < from.ListElementCount; i++) DeepCopy(items[i], ds.BuildPointer(i));
+                for (var i = 0; i < from.ListElementCount; i++)
+                    DeepCopy(items[i], ds.BuildPointer(i));
                 break;
 
             case ObjectKind.ListOfStructs:
-                ds.SetListOfStructs(from.ListElementCount, from.StructDataCount, from.StructPtrCount);
+                ds.SetListOfStructs(
+                    from.ListElementCount,
+                    from.StructDataCount,
+                    from.StructPtrCount
+                );
                 items = (IReadOnlyList<DeserializerState>)from.RequireList();
-                for (var i = 0; i < from.ListElementCount; i++) DeepCopy(items[i], ds.ListBuildStruct(i));
+                for (var i = 0; i < from.ListElementCount; i++)
+                    DeepCopy(items[i], ds.ListBuildStruct(i));
                 break;
 
             case ObjectKind.Capability:

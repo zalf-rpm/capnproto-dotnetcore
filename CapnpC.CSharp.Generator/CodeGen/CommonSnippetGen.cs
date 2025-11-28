@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using CapnpC.CSharp.Generator.Model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static CapnpC.CSharp.Generator.CodeGen.SyntaxHelpers;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace CapnpC.CSharp.Generator.CodeGen;
 
@@ -30,15 +30,24 @@ internal class CommonSnippetGen
             whichEnum = whichEnum.AddMembers(
                 EnumMemberDeclaration(_names.GetCodeIdentifier(discField).Identifier)
                     .WithEqualsValue(
-                        EqualsValueClause(LiteralExpression(
-                            SyntaxKind.NumericLiteralExpression,
-                            Literal(discField.DiscValue.Value)))));
+                        EqualsValueClause(
+                            LiteralExpression(
+                                SyntaxKind.NumericLiteralExpression,
+                                Literal(discField.DiscValue.Value)
+                            )
+                        )
+                    )
+            );
 
-        var ndecl = EnumMemberDeclaration(_names.UnionDiscriminatorUndefined.ToString()).WithEqualsValue(
-            EqualsValueClause(
-                LiteralExpression(
-                    SyntaxKind.NumericLiteralExpression,
-                    Literal(SchemaModel.NoDiscriminant))));
+        var ndecl = EnumMemberDeclaration(_names.UnionDiscriminatorUndefined.ToString())
+            .WithEqualsValue(
+                EqualsValueClause(
+                    LiteralExpression(
+                        SyntaxKind.NumericLiteralExpression,
+                        Literal(SchemaModel.NoDiscriminant)
+                    )
+                )
+            );
 
         whichEnum = whichEnum.AddMembers(ndecl);
 
@@ -61,7 +70,10 @@ internal class CommonSnippetGen
                     EqualsValueClause(
                         LiteralExpression(
                             SyntaxKind.NumericLiteralExpression,
-                            Literal(enumerant.Ordinal.Value))));
+                            Literal(enumerant.Ordinal.Value)
+                        )
+                    )
+                );
 
             decl = decl.AddMembers(mdecl);
         }
@@ -69,7 +81,9 @@ internal class CommonSnippetGen
         return decl;
     }
 
-    public static IEnumerable<SyntaxNodeOrToken> MakeCommaSeparatedList(IEnumerable<ExpressionSyntax> expressions)
+    public static IEnumerable<SyntaxNodeOrToken> MakeCommaSeparatedList(
+        IEnumerable<ExpressionSyntax> expressions
+    )
     {
         var first = true;
 

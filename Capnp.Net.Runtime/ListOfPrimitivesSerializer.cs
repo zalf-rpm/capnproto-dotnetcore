@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -9,9 +9,7 @@ namespace Capnp;
 ///     SerializerState specialization for unmanaged primitive types (including enum).
 /// </summary>
 /// <typeparam name="T">List element type, must be primitive. Static constructor will throw if the type does not work.</typeparam>
-public class ListOfPrimitivesSerializer<T> :
-    SerializerState,
-    IReadOnlyList<T>
+public class ListOfPrimitivesSerializer<T> : SerializerState, IReadOnlyList<T>
     where T : unmanaged
 {
     private static readonly int ElementSize;
@@ -92,7 +90,8 @@ public class ListOfPrimitivesSerializer<T> :
     /// <exception cref="ArgumentOutOfRangeException">More than 2^29-1 items.</exception>
     public void Init(IReadOnlyList<T>? items)
     {
-        if (items == null) return;
+        if (items == null)
+            return;
 
         Init(items.Count);
 
@@ -115,7 +114,8 @@ public class ListOfPrimitivesSerializer<T> :
                 break;
 
             default:
-                for (var i = 0; i < items.Count; i++) this[i] = items[i];
+                for (var i = 0; i < items.Count; i++)
+                    this[i] = items[i];
                 break;
         }
     }

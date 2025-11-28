@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +10,8 @@ namespace Capnp;
 /// </summary>
 public class ListOfEmptyDeserializer : ListDeserializer, IReadOnlyList<DeserializerState>
 {
-    internal ListOfEmptyDeserializer(in DeserializerState state) :
-        base(state)
-    {
-    }
+    internal ListOfEmptyDeserializer(in DeserializerState state)
+        : base(state) { }
 
     /// <summary>
     ///     Always ListKind.ListOfEmpty

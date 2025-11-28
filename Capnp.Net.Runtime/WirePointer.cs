@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Capnp;
 
@@ -25,7 +25,7 @@ public enum PointerKind : byte
     /// <summary>
     ///     Other (capability) pointer
     /// </summary>
-    Other = 3
+    Other = 3,
 }
 
 /// <summary>
@@ -175,10 +175,12 @@ public struct WirePointer
         if (landingPadOffset < 0 || landingPadOffset >= 1 << 29)
             throw new ArgumentOutOfRangeException(nameof(landingPadOffset));
 
-        _ptrData = ((ulong)targetSegmentIndex << 32) |
-                   ((uint)landingPadOffset << 3) |
-                   (ulong)PointerKind.Far;
-        if (isDoubleFar) _ptrData |= 4;
+        _ptrData =
+            ((ulong)targetSegmentIndex << 32)
+            | ((uint)landingPadOffset << 3)
+            | (ulong)PointerKind.Far;
+        if (isDoubleFar)
+            _ptrData |= 4;
     }
 
     /// <summary>

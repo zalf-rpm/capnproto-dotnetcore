@@ -1,4 +1,4 @@
-﻿using Capnp.Util;
+using Capnp.Util;
 
 namespace Capnp.Rpc;
 

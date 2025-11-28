@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,8 +18,12 @@ public abstract class Skeleton : IProvidedCapability
     /// <param name="args">Method arguments ("params struct")</param>
     /// <param name="cancellationToken">Cancellation token, indicating when the call should cancelled.</param>
     /// <returns>A Task which will resolve to the call result</returns>
-    public abstract Task<AnswerOrCounterquestion> Invoke(ulong interfaceId, ushort methodId, DeserializerState args,
-        CancellationToken cancellationToken = default);
+    public abstract Task<AnswerOrCounterquestion> Invoke(
+        ulong interfaceId,
+        ushort methodId,
+        DeserializerState args,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     ///     Claims ownership on the given capability, preventing its automatic disposal.
@@ -27,7 +31,8 @@ public abstract class Skeleton : IProvidedCapability
     /// <typeparam name="T">Capability interface</typeparam>
     /// <param name="impl">Capability implementation</param>
     /// <returns>A disposable object. Calling Dispose() on the returned instance relinquishes ownership again.</returns>
-    public static IDisposable Claim<T>(T impl) where T : class
+    public static IDisposable Claim<T>(T impl)
+        where T : class
     {
         return new SkeletonRelinquisher(CapabilityReflection.CreateSkeletonInternal(impl));
     }
@@ -74,14 +79,13 @@ public abstract class Skeleton : IProvidedCapability
 /// <typeparam name="T">Capability interface</typeparam>
 public abstract class Skeleton<T> : RefCountingSkeleton, IMonoSkeleton
 {
-    private Func<DeserializerState, CancellationToken, Task<AnswerOrCounterquestion>>[] _methods = null!;
+    private Func<DeserializerState, CancellationToken, Task<AnswerOrCounterquestion>>[] _methods =
+        null!;
 
     /// <summary>
     ///     Constructs an instance.
     /// </summary>
-    public Skeleton()
-    {
-    }
+    public Skeleton() { }
 
     /// <summary>
     ///     Gets the underlying capability implementation.
@@ -102,8 +106,12 @@ public abstract class Skeleton<T> : RefCountingSkeleton, IMonoSkeleton
     /// <param name="cancellationToken">Cancellation token, indicating when the call should cancelled.</param>
     /// <returns>A Task which will resolve to the call result</returns>
     /// <exception cref="ObjectDisposedException">This Skeleton was disposed</exception>
-    public override async Task<AnswerOrCounterquestion> Invoke(ulong interfaceId, ushort methodId,
-        DeserializerState args, CancellationToken cancellationToken = default)
+    public override async Task<AnswerOrCounterquestion> Invoke(
+        ulong interfaceId,
+        ushort methodId,
+        DeserializerState args,
+        CancellationToken cancellationToken = default
+    )
     {
         if (InterfaceId != InterfaceId)
             throw new NotImplementedException("Wrong interface id");
@@ -120,7 +128,8 @@ public abstract class Skeleton<T> : RefCountingSkeleton, IMonoSkeleton
     /// </summary>
     /// <param name="methods">The method table. Index is method ID.</param>
     protected void SetMethodTable(
-        params Func<DeserializerState, CancellationToken, Task<AnswerOrCounterquestion>>[] methods)
+        params Func<DeserializerState, CancellationToken, Task<AnswerOrCounterquestion>>[] methods
+    )
     {
         _methods = methods;
     }
@@ -130,7 +139,8 @@ public abstract class Skeleton<T> : RefCountingSkeleton, IMonoSkeleton
     /// </summary>
     protected override void Dispose(bool disposing)
     {
-        if (disposing && Impl is IDisposable disposable) disposable.Dispose();
+        if (disposing && Impl is IDisposable disposable)
+            disposable.Dispose();
     }
 
     internal override void Bind(object impl)

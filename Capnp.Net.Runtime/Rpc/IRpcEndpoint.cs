@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 namespace Capnp.Rpc;
@@ -10,7 +10,11 @@ internal interface IRpcEndpoint
     uint AllocateExport(Skeleton providedCapability, out bool first);
     void Finish(uint questionId);
     void ReleaseImport(uint importId);
-    void Resolve(uint preliminaryId, Skeleton preliminaryCap, Func<ConsumedCapability> resolvedCapGetter);
+    void Resolve(
+        uint preliminaryId,
+        Skeleton preliminaryCap,
+        Func<ConsumedCapability> resolvedCapGetter
+    );
 
     Task RequestSenderLoopback(Action<MessageTarget.WRITER> writer);
     void DeleteQuestion(PendingQuestion question);

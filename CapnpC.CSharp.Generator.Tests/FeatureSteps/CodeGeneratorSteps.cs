@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -31,15 +31,19 @@ public class CodeGeneratorSteps
         CapnpCompilation.CapnpCompilerFilename = null;
     }
 
-    private GenerationResult MockCapnpInvocation(IEnumerable<string> arguments, string workingDirectory)
+    private GenerationResult MockCapnpInvocation(
+        IEnumerable<string> arguments,
+        string workingDirectory
+    )
     {
         var args = arguments.ToList();
         var fileArg = args.FirstOrDefault(a => a.EndsWith(".capnp"));
-        
-        if (fileArg == null) return new GenerationResult(new Exception("No capnp file provided"));
-        
+
+        if (fileArg == null)
+            return new GenerationResult(new Exception("No capnp file provided"));
+
         var fileName = Path.GetFileName(fileArg);
-        
+
         if (fileName == "UnitTest1.capnp")
         {
             using (var stream = LoadResource("UnitTest1.capnp.bin"))
@@ -51,20 +55,24 @@ public class CodeGeneratorSteps
         {
             var res = new GenerationResult(new Exception("Mock failure"));
             res.ErrorCategory = CapnpProcessFailure.BadInput;
-            res.Messages = new List<CapnpMessage> { new CapnpMessage($"{fileName}:1:1: error: File does not declare an ID") };
+            res.Messages = new List<CapnpMessage>
+            {
+                new CapnpMessage($"{fileName}:1:1: error: File does not declare an ID"),
+            };
             return res;
         }
         else if (fileName == "invalid.capnp")
         {
             var res = new GenerationResult(new Exception("Mock failure"));
             res.ErrorCategory = CapnpProcessFailure.BadInput;
-            res.Messages = new List<CapnpMessage> { 
+            res.Messages = new List<CapnpMessage>
+            {
                 new CapnpMessage($"{fileName}:1:1: error: Error 1"),
-                new CapnpMessage($"{fileName}:2:1: error: Error 2")
+                new CapnpMessage($"{fileName}:2:1: error: Error 2"),
             };
             return res;
         }
-        
+
         return new GenerationResult(new Exception($"Unknown mock file: {fileName}"));
     }
 
@@ -81,14 +89,20 @@ public class CodeGeneratorSteps
     {
         try
         {
-            var startInfo = new ProcessStartInfo(CapnpCompilation.CapnpCompilerFilename, "--version");
+            var startInfo = new ProcessStartInfo(
+                CapnpCompilation.CapnpCompilerFilename,
+                "--version"
+            );
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
 
             using (var process = Process.Start(startInfo))
             {
-                Assert.IsNotNull(process, $"Unable to start '{CapnpCompilation.CapnpCompilerFilename}'");
+                Assert.IsNotNull(
+                    process,
+                    $"Unable to start '{CapnpCompilation.CapnpCompilerFilename}'"
+                );
 
                 process.WaitForExit();
 
@@ -126,10 +140,10 @@ public class CodeGeneratorSteps
 
         using (_inputStream)
         {
-            _result = CapnpCompilation.GenerateFromStream(_inputStream, new GeneratorOptions
-            {
-                NullableEnableDefault = _nullableGenEnable
-            });
+            _result = CapnpCompilation.GenerateFromStream(
+                _inputStream,
+                new GeneratorOptions { NullableEnableDefault = _nullableGenEnable }
+            );
         }
     }
 
@@ -156,7 +170,8 @@ public class CodeGeneratorSteps
                 }
 
             Assert.Fail(
-                $"Reference output does not match. Expected: <{_referenceOutputContent.Substring(0, 100)}...>, actual: <{generated.Substring(0, 100)}...>, see {path}, first mismatch line: {mismatchLine}");
+                $"Reference output does not match. Expected: <{_referenceOutputContent.Substring(0, 100)}...>, actual: <{generated.Substring(0, 100)}...>, see {path}, first mismatch line: {mismatchLine}"
+            );
         }
     }
 
@@ -203,17 +218,22 @@ public class CodeGeneratorSteps
         Assert.IsNotNull(_result, "expected generation result");
         Assert.IsTrue(_result.IsSuccess, $"Tool invocation failed: {_result.Exception?.Message}");
         Assert.HasCount(1, _result.GeneratedFiles, "Expected exactly one file");
-        Assert.IsTrue(_result.GeneratedFiles[0].IsSuccess,
-            $"Code generation failed: {_result.GeneratedFiles[0].Exception?.Message}");
-        Assert.IsFalse(string.IsNullOrEmpty(_result.GeneratedFiles[0].GeneratedContent),
-            "Expected non-empty generated content");
+        Assert.IsTrue(
+            _result.GeneratedFiles[0].IsSuccess,
+            $"Code generation failed: {_result.GeneratedFiles[0].Exception?.Message}"
+        );
+        Assert.IsFalse(
+            string.IsNullOrEmpty(_result.GeneratedFiles[0].GeneratedContent),
+            "Expected non-empty generated content"
+        );
     }
 
     [Given(@"capnp\.exe is not installed on my system")]
     public void GivenCapnp_ExeIsNotInstalledOnMySystem()
     {
         CapnpCompilation.CapnpCompilerFilename = "capnp-non-existent";
-        if (IsCapnpInstalled()) Assert.Inconclusive("Capnp compiler found. Precondition of this test is not met.");
+        if (IsCapnpInstalled())
+            Assert.Inconclusive("Capnp compiler found. Precondition of this test is not met.");
     }
 
     [Then(@"the reason must be bad input")]
@@ -247,14 +267,17 @@ public class CodeGeneratorSteps
     }
 
     [Then(@"the invocation must succeed and attempting to compile the generated code gives (.*)")]
-    public void ThenTheInvocationMustSucceedAndAttemptingToCompileTheGeneratedCodeGives(string result)
+    public void ThenTheInvocationMustSucceedAndAttemptingToCompileTheGeneratedCodeGives(
+        string result
+    )
     {
         Console.WriteLine($"Compiler supports nullable reference types? {_nullableSupportEnable}");
 
         Assert.IsTrue(_result.IsSuccess, "Tool invocation was not successful");
         var summary = InlineAssemblyCompiler.TryCompileCapnp(
             _nullableSupportEnable ? NullableContextOptions.Enable : NullableContextOptions.Disable,
-            _result.GeneratedFiles[0].GeneratedContent);
+            _result.GeneratedFiles[0].GeneratedContent
+        );
 
         try
         {
@@ -264,21 +287,24 @@ public class CodeGeneratorSteps
                     Assert.AreEqual(
                         InlineAssemblyCompiler.CompileSummary.Success,
                         summary,
-                        "Compilation was expected to succeed");
+                        "Compilation was expected to succeed"
+                    );
                     break;
 
                 case "warnings":
                     Assert.AreEqual(
                         InlineAssemblyCompiler.CompileSummary.SuccessWithWarnings,
                         summary,
-                        "Compilation was expected to produce warnings");
+                        "Compilation was expected to produce warnings"
+                    );
                     break;
 
                 case "errors":
                     Assert.AreEqual(
                         InlineAssemblyCompiler.CompileSummary.Error,
                         summary,
-                        "Compilation was expected to fail");
+                        "Compilation was expected to fail"
+                    );
                     break;
 
                 default:

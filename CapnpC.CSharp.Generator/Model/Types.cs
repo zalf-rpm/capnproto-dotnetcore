@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace CapnpC.CSharp.Generator.Model;
 
@@ -26,28 +26,21 @@ internal static class Types
 
     public static Type List(Type elementType)
     {
-        return new Type(TypeTag.List)
-        {
-            ElementType = elementType
-        };
+        return new Type(TypeTag.List) { ElementType = elementType };
     }
 
     public static Type FromDefinition(TypeDefinition def)
     {
         if (def.Tag == TypeTag.Unknown)
-            throw new InvalidOperationException("Oops, type definition is not yet valid, cannot create type");
+            throw new InvalidOperationException(
+                "Oops, type definition is not yet valid, cannot create type"
+            );
 
-        return new Type(def.Tag)
-        {
-            Definition = def
-        };
+        return new Type(def.Tag) { Definition = def };
     }
 
     public static Type FromParameter(GenericParameter genericParameter)
     {
-        return new Type(TypeTag.AnyPointer)
-        {
-            Parameter = genericParameter
-        };
+        return new Type(TypeTag.AnyPointer) { Parameter = genericParameter };
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using CapnpC.CSharp.Generator;
@@ -7,14 +7,9 @@ namespace CapnpC.CSharp.MsBuild.Generation;
 
 public class CapnpCodeBehindGenerator : IDisposable
 {
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 
-    public void InitializeProject(string projectPath)
-    {
-    }
-
+    public void InitializeProject(string projectPath) { }
 
     public CsFileGeneratorResult GenerateCodeBehindFile(CapnpGenJob job)
     {
@@ -27,7 +22,10 @@ public class CapnpCodeBehindGenerator : IDisposable
         {
             if (File.Exists(capnpFile) && new FileInfo(capnpFile).Length == 0)
             {
-                var tempFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".capnp");
+                var tempFile = Path.Combine(
+                    Path.GetTempPath(),
+                    Path.GetRandomFileName() + ".capnp"
+                );
 
                 File.WriteAllText(tempFile, Environment.NewLine);
                 try
@@ -35,7 +33,7 @@ public class CapnpCodeBehindGenerator : IDisposable
                     var jobCopy = new CapnpGenJob
                     {
                         CapnpPath = tempFile,
-                        WorkingDirectory = job.WorkingDirectory
+                        WorkingDirectory = job.WorkingDirectory,
                     };
 
                     jobCopy.AdditionalArguments.AddRange(job.AdditionalArguments);
@@ -48,9 +46,7 @@ public class CapnpCodeBehindGenerator : IDisposable
                 }
             }
         }
-        catch
-        {
-        }
+        catch { }
 
         var args = new List<string>();
         args.AddRange(job.AdditionalArguments);
@@ -64,18 +60,21 @@ public class CapnpCodeBehindGenerator : IDisposable
                 return new CsFileGeneratorResult(
                     result.GeneratedFiles[0],
                     capnpFile + ".cs",
-                    result.Messages);
+                    result.Messages
+                );
 
             return new CsFileGeneratorResult(
                 "Code generation produced more than one file. This is not supported.",
-                result.Messages);
+                result.Messages
+            );
         }
 
         switch (result.ErrorCategory)
         {
             case CapnpProcessFailure.NotFound:
                 return new CsFileGeneratorResult(
-                    "Unable to find capnp.exe - please install capnproto on your system first.");
+                    "Unable to find capnp.exe - please install capnproto on your system first."
+                );
 
             case CapnpProcessFailure.BadInput:
                 return new CsFileGeneratorResult("Invalid schema", result.Messages);
@@ -83,7 +82,8 @@ public class CapnpCodeBehindGenerator : IDisposable
             case CapnpProcessFailure.BadOutput:
                 return new CsFileGeneratorResult(
                     "Internal error: capnp.exe produced a binary code generation request which was not understood by the backend",
-                    result.Messages);
+                    result.Messages
+                );
 
             default:
                 throw new NotSupportedException("Invalid error category");

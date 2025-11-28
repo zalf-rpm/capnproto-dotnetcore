@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,16 +14,18 @@ public sealed class NullSkeleton : Skeleton
     /// </summary>
     public static readonly NullSkeleton Instance = new();
 
-    private NullSkeleton()
-    {
-    }
+    private NullSkeleton() { }
 
     /// <summary>
     ///     Always throws an exception
     /// </summary>
     /// <exception cref="InvalidOperationException">always thrown</exception>
-    public override Task<AnswerOrCounterquestion> Invoke(ulong interfaceId, ushort methodId, DeserializerState args,
-        CancellationToken cancellationToken = default)
+    public override Task<AnswerOrCounterquestion> Invoke(
+        ulong interfaceId,
+        ushort methodId,
+        DeserializerState args,
+        CancellationToken cancellationToken = default
+    )
     {
         args.Dispose();
         throw new InvalidOperationException("Cannot call null capability");
@@ -34,11 +36,7 @@ public sealed class NullSkeleton : Skeleton
         return NullCapability.Instance;
     }
 
-    internal override void Claim()
-    {
-    }
+    internal override void Claim() { }
 
-    internal override void Relinquish()
-    {
-    }
+    internal override void Relinquish() { }
 }

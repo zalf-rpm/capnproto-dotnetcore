@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,9 +32,7 @@ public class General : TestBase
 
         var tcs = new TaskCompletionSource<int>();
 
-        var tasks =
-            from i in Enumerable.Range(0, 100)
-            select ExpectCount(tcs.Task, i);
+        var tasks = from i in Enumerable.Range(0, 100) select ExpectCount(tcs.Task, i);
 
         tcs.SetResult(0);
 
@@ -51,7 +49,6 @@ public class General : TestBase
             var t = Impatient.MakePipelineAware(mock, _ => (object)null);
             Assert.IsTrue(t.IsCompleted);
         }
-
         ;
     }
 
@@ -72,7 +69,8 @@ public class General : TestBase
         {
             try
             {
-                while (true) ;
+                while (true)
+                    ;
             }
             catch (ThreadInterruptedException)
             {
@@ -123,9 +121,7 @@ public class General : TestBase
             {
                 try
                 {
-                    lock (lk)
-                    {
-                    }
+                    lock (lk) { }
                 }
                 catch (ThreadInterruptedException)
                 {
@@ -189,9 +185,7 @@ public class General : TestBase
 
         public bool IsTailCall => false;
 
-        public void Dispose()
-        {
-        }
+        public void Dispose() { }
 
         public void Return()
         {

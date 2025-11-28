@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -31,7 +31,8 @@ internal class SchemaModel
             return node;
         if (mustExist)
             throw new InvalidSchemaException(
-                $"Node with ID {id.StrId()} is required by the codegen backend but is missing.");
+                $"Node with ID {id.StrId()} is required by the codegen backend but is missing."
+            );
         return null;
     }
 
@@ -49,7 +50,8 @@ internal class SchemaModel
         {
             if (_id2node.TryGetValue(node.Id, out var existingNode))
                 throw new InvalidSchemaException(
-                    $"Node {node.StrId()} \"{node.DisplayName}\" has a duplicate ID, prior node was \"{existingNode.DisplayName}\"");
+                    $"Node {node.StrId()} \"{node.DisplayName}\" has a duplicate ID, prior node was \"{existingNode.DisplayName}\""
+                );
             _id2node[node.Id] = node;
         }
 
@@ -58,7 +60,7 @@ internal class SchemaModel
             var sourceInfo = new SourceInfo
             {
                 DocComment = reader.DocComment,
-                MemberDocComments = reader.Members.Select(m => m.DocComment).ToList()
+                MemberDocComments = reader.Members.Select(m => m.DocComment).ToList(),
             };
 
             _id2sourceInfo.Add(reader.Id, sourceInfo);
@@ -69,12 +71,11 @@ internal class SchemaModel
         BuildPass2(requestedFiles);
     }
 
-    private void BuildPass1(Dictionary<ulong, CodeGeneratorRequest.RequestedFile.READER> requestedFiles)
+    private void BuildPass1(
+        Dictionary<ulong, CodeGeneratorRequest.RequestedFile.READER> requestedFiles
+    )
     {
-        var state = new Pass1State
-        {
-            unprocessedNodes = new HashSet<ulong>(_id2node.Keys)
-        };
+        var state = new Pass1State { unprocessedNodes = new HashSet<ulong>(_id2node.Keys) };
         foreach (var node in _id2node.Values.Where(n => n.which == Node.WHICH.File))
         {
             GenFile file;
@@ -100,7 +101,8 @@ internal class SchemaModel
         file.EmitNullableDirective = GetEmitNullableDirective(node) ?? false;
         file.EmitDomainClassesAndInterfaces = GetEmitDomainClassesAndInterfaces(node) ?? true;
         file.TypeVisibility = GetTypeVisibility(node) ?? TypeVisibility.Public;
-        if (_id2sourceInfo.TryGetValue(node.Id, out var sourceInfo)) file.HeaderText = GetHeaderText(sourceInfo);
+        if (_id2sourceInfo.TryGetValue(node.Id, out var sourceInfo))
+            file.HeaderText = GetHeaderText(sourceInfo);
         return ProcessNodePass1(id, name, state) as GenFile;
     }
 
@@ -125,7 +127,9 @@ internal class SchemaModel
                 return _typeDefMgr.CreateConstant(id, state.parent);
             case NodeKind.File:
                 if (state.parent != null)
-                    throw new InvalidSchemaException($"Did not expect a file node {node.StrId()} to be a nested node.");
+                    throw new InvalidSchemaException(
+                        $"Did not expect a file node {node.StrId()} to be a nested node."
+                    );
                 var file = _typeDefMgr.GetExistingFile(id);
                 file.Namespace = GetNamespaceAnnotation(node);
                 file.Name = name;
@@ -147,13 +151,16 @@ internal class SchemaModel
                 break;
             default:
                 throw new InvalidSchemaException(
-                    $"Don't know how to process node {node.StrId()} \"{node.DisplayName}\"");
+                    $"Don't know how to process node {node.StrId()} \"{node.DisplayName}\""
+                );
         }
 
         if (def == null)
         {
-            Trace.Assert(state.parent != null,
-                $"The {node.GetTypeTag().ToString()} node {node.StrId()} was expected to have a parent.");
+            Trace.Assert(
+                state.parent != null,
+                $"The {node.GetTypeTag().ToString()} node {node.StrId()} was expected to have a parent."
+            );
             var typeDef = _typeDefMgr.CreateTypeDef(id, node.GetTypeTag(), state.parent);
             typeDef.Name = name;
             typeDef.CsName = GetCsName(node);
@@ -165,12 +172,15 @@ internal class SchemaModel
             foreach (var nested in node.NestedNodes)
                 ProcessNodePass1(nested.Id, nested.Name, state);
         if (processFields && node.Struct.Fields != null)
-            foreach (var field in node.Struct.Fields.Where(f => f.which == Schema.Field.WHICH.Group))
+            foreach (
+                var field in node.Struct.Fields.Where(f => f.which == Schema.Field.WHICH.Group)
+            )
             {
                 var group = IdToNode(field.Group.TypeId);
                 if (group.which != Node.WHICH.Struct || !group.Struct.IsGroup)
                     throw new InvalidSchemaException(
-                        $"Expected node with id {group.StrId()} to be a struct definition");
+                        $"Expected node with id {group.StrId()} to be a struct definition"
+                    );
                 ProcessNodePass1(field.Group.TypeId, field.Name, state);
             }
 
@@ -178,15 +188,19 @@ internal class SchemaModel
             foreach (var method in node.Interface.Methods)
             {
                 var pnode = IdToNode(method.ParamStructType);
-                if (pnode.ScopeId == 0) ProcessNodePass1(pnode.Id, null, state); // Anonymous generated type
+                if (pnode.ScopeId == 0)
+                    ProcessNodePass1(pnode.Id, null, state); // Anonymous generated type
                 pnode = IdToNode(method.ResultStructType);
-                if (pnode.ScopeId == 0) ProcessNodePass1(pnode.Id, null, state); // Anonymous generated type
+                if (pnode.ScopeId == 0)
+                    ProcessNodePass1(pnode.Id, null, state); // Anonymous generated type
             }
 
         return def;
     }
 
-    private void BuildPass2(Dictionary<ulong, CodeGeneratorRequest.RequestedFile.READER> requestedFiles)
+    private void BuildPass2(
+        Dictionary<ulong, CodeGeneratorRequest.RequestedFile.READER> requestedFiles
+    )
     {
         var state = new Pass2State { processedNodes = new HashSet<ulong>() };
         foreach (var file in _typeDefMgr.Files)
@@ -196,9 +210,14 @@ internal class SchemaModel
         }
     }
 
-    private void ProcessNestedNodes(IEnumerable<Node.NestedNode.READER> nestedNodes, Pass2State state, bool mustExist)
+    private void ProcessNestedNodes(
+        IEnumerable<Node.NestedNode.READER> nestedNodes,
+        Pass2State state,
+        bool mustExist
+    )
     {
-        foreach (var nestedNode in nestedNodes) ProcessNode(nestedNode.Id, state, mustExist);
+        foreach (var nestedNode in nestedNodes)
+            ProcessNode(nestedNode.Id, state, mustExist);
     }
 
     private void ProcessBrand(Brand.READER brandReader, Type type, Pass2State state)
@@ -216,17 +235,23 @@ internal class SchemaModel
                         var typeParameter = new GenericParameter
                         {
                             DeclaringEntity = whatToBind,
-                            Index = index++
+                            Index = index++,
                         };
 
                         switch (bindingReader.which)
                         {
                             case Brand.Binding.WHICH.Type:
-                                type.BindGenericParameter(typeParameter, ProcessType(bindingReader.Type, state));
+                                type.BindGenericParameter(
+                                    typeParameter,
+                                    ProcessType(bindingReader.Type, state)
+                                );
                                 break;
 
                             case Brand.Binding.WHICH.Unbound:
-                                type.BindGenericParameter(typeParameter, Types.FromParameter(typeParameter));
+                                type.BindGenericParameter(
+                                    typeParameter,
+                                    Types.FromParameter(typeParameter)
+                                );
                                 break;
                         }
                     }
@@ -234,15 +259,22 @@ internal class SchemaModel
                     break;
 
                 case Brand.Scope.WHICH.Inherit:
-                    for (index = 0; index < type.DeclaringType.Definition.GenericParameters.Count; index++)
+                    for (
+                        index = 0;
+                        index < type.DeclaringType.Definition.GenericParameters.Count;
+                        index++
+                    )
                     {
                         var typeParameter = new GenericParameter
                         {
                             DeclaringEntity = whatToBind,
-                            Index = index
+                            Index = index,
                         };
 
-                        type.BindGenericParameter(typeParameter, Types.FromParameter(typeParameter));
+                        type.BindGenericParameter(
+                            typeParameter,
+                            Types.FromParameter(typeParameter)
+                        );
                     }
 
                     break;
@@ -263,18 +295,29 @@ internal class SchemaModel
                         return Types.FromParameter(
                             new GenericParameter
                             {
-                                DeclaringEntity = ProcessTypeDef(typeReader.AnyPointer.Parameter.ScopeId, state),
-                                Index = typeReader.AnyPointer.Parameter.ParameterIndex
-                            });
+                                DeclaringEntity = ProcessTypeDef(
+                                    typeReader.AnyPointer.Parameter.ScopeId,
+                                    state
+                                ),
+                                Index = typeReader.AnyPointer.Parameter.ParameterIndex,
+                            }
+                        );
 
                     case Schema.Type.anyPointer.WHICH.ImplicitMethodParameter:
                         return Types.FromParameter(
                             new GenericParameter
                             {
-                                DeclaringEntity = state.currentMethod ??
-                                                  throw new InvalidOperationException("current method not set"),
-                                Index = typeReader.AnyPointer.ImplicitMethodParameter.ParameterIndex
-                            });
+                                DeclaringEntity =
+                                    state.currentMethod
+                                    ?? throw new InvalidOperationException(
+                                        "current method not set"
+                                    ),
+                                Index = typeReader
+                                    .AnyPointer
+                                    .ImplicitMethodParameter
+                                    .ParameterIndex,
+                            }
+                        );
 
                     case Schema.Type.anyPointer.WHICH.Unconstrained:
                         switch (typeReader.AnyPointer.Unconstrained.which)
@@ -309,7 +352,9 @@ internal class SchemaModel
                 return Types.F64;
 
             case Schema.Type.WHICH.Enum:
-                return Types.FromDefinition(ProcessTypeDef(typeReader.Enum.TypeId, state, TypeTag.Enum));
+                return Types.FromDefinition(
+                    ProcessTypeDef(typeReader.Enum.TypeId, state, TypeTag.Enum)
+                );
 
             case Schema.Type.WHICH.Float32:
                 return Types.F32;
@@ -327,7 +372,9 @@ internal class SchemaModel
                 return Types.S8;
 
             case Schema.Type.WHICH.Interface:
-                result = Types.FromDefinition(ProcessTypeDef(typeReader.Interface.TypeId, state, TypeTag.Interface));
+                result = Types.FromDefinition(
+                    ProcessTypeDef(typeReader.Interface.TypeId, state, TypeTag.Interface)
+                );
                 ProcessBrand(typeReader.Interface.Brand, result, state);
                 return result;
 
@@ -335,7 +382,9 @@ internal class SchemaModel
                 return Types.List(ProcessType(typeReader.List.ElementType, state));
 
             case Schema.Type.WHICH.Struct:
-                result = Types.FromDefinition(ProcessTypeDef(typeReader.Struct.TypeId, state, TypeTag.Struct));
+                result = Types.FromDefinition(
+                    ProcessTypeDef(typeReader.Struct.TypeId, state, TypeTag.Struct)
+                );
                 ProcessBrand(typeReader.Struct.Brand, result, state);
                 return result;
 
@@ -469,9 +518,15 @@ internal class SchemaModel
         return value;
     }
 
-    private void ProcessFields(Node.READER reader, TypeDefinition declaringType, List<Field> fields, Pass2State state)
+    private void ProcessFields(
+        Node.READER reader,
+        TypeDefinition declaringType,
+        List<Field> fields,
+        Pass2State state
+    )
     {
-        if (reader.Struct.Fields == null) return;
+        if (reader.Struct.Fields == null)
+            return;
 
         foreach (var fieldReader in reader.Struct.Fields)
         {
@@ -480,10 +535,11 @@ internal class SchemaModel
                 DeclaringType = declaringType,
                 Name = fieldReader.Name,
                 CsName = GetCsName(fieldReader),
-                CodeOrder = fieldReader.CodeOrder
+                CodeOrder = fieldReader.CodeOrder,
             };
 
-            if (fieldReader.DiscriminantValue != NoDiscriminant) field.DiscValue = fieldReader.DiscriminantValue;
+            if (fieldReader.DiscriminantValue != NoDiscriminant)
+                field.DiscValue = fieldReader.DiscriminantValue;
 
             switch (fieldReader.which)
             {
@@ -512,7 +568,11 @@ internal class SchemaModel
         }
     }
 
-    private TypeDefinition ProcessInterfaceOrStructTail(TypeDefinition def, Node.READER reader, Pass2State state)
+    private TypeDefinition ProcessInterfaceOrStructTail(
+        TypeDefinition def,
+        Node.READER reader,
+        Pass2State state
+    )
     {
         def.IsGeneric = reader.IsGeneric;
 
@@ -533,7 +593,7 @@ internal class SchemaModel
                     DeclaringInterface = def,
                     Id = def.Methods.Count,
                     Name = methodReader.Name,
-                    CsName = GetCsName(methodReader)
+                    CsName = GetCsName(methodReader),
                 };
                 foreach (var implicitParameterReader in methodReader.ImplicitParameters)
                     method.GenericParameters.Add(implicitParameterReader.Name);
@@ -542,7 +602,12 @@ internal class SchemaModel
                 def.Methods.Add(method);
 
                 var paramNode = IdToNode(methodReader.ParamStructType);
-                var paramType = ProcessParameterList(paramNode, methodReader.ParamBrand, method.Params, state);
+                var paramType = ProcessParameterList(
+                    paramNode,
+                    methodReader.ParamBrand,
+                    method.Params,
+                    state
+                );
                 if (paramType != null)
                 {
                     paramType.SpecialName = SpecialName.MethodParamsStruct;
@@ -558,7 +623,12 @@ internal class SchemaModel
                 method.ParamsStruct.InheritFreeParameters(method);
 
                 var resultNode = IdToNode(methodReader.ResultStructType);
-                var resultType = ProcessParameterList(resultNode, methodReader.ResultBrand, method.Results, state);
+                var resultType = ProcessParameterList(
+                    resultNode,
+                    methodReader.ResultBrand,
+                    method.Results,
+                    state
+                );
                 if (resultType != null)
                 {
                     resultType.SpecialName = SpecialName.MethodResultStruct;
@@ -580,7 +650,11 @@ internal class SchemaModel
         return def;
     }
 
-    private TypeDefinition ProcessStruct(Node.READER structReader, TypeDefinition def, Pass2State state)
+    private TypeDefinition ProcessStruct(
+        Node.READER structReader,
+        TypeDefinition def,
+        Pass2State state
+    )
     {
         def.StructDataWordCount = structReader.Struct.DataWordCount;
         def.StructPointerCount = structReader.Struct.PointerCount;
@@ -588,13 +662,18 @@ internal class SchemaModel
         if (structReader.Struct.DiscriminantCount > 0)
             def.UnionInfo = new TypeDefinition.DiscriminationInfo(
                 structReader.Struct.DiscriminantCount,
-                16u * structReader.Struct.DiscriminantOffset);
+                16u * structReader.Struct.DiscriminantOffset
+            );
 
         return ProcessInterfaceOrStructTail(def, structReader, state);
     }
 
-    private TypeDefinition ProcessParameterList(Node.READER reader, Brand.READER brandReader, List<Field> list,
-        Pass2State state)
+    private TypeDefinition ProcessParameterList(
+        Node.READER reader,
+        Brand.READER brandReader,
+        List<Field> list,
+        Pass2State state
+    )
     {
         //# If a named parameter list was specified in the method
         //# declaration (rather than a single struct parameter type) then a corresponding struct type is
@@ -604,14 +683,16 @@ internal class SchemaModel
         //# this a situation where you can't just climb the scope chain to find where a particular
         //# generic parameter was introduced. Making the `scopeId` zero was a mistake.)
 
-        if (reader.which != Node.WHICH.Struct) throw new InvalidSchemaException("Expected a struct");
+        if (reader.which != Node.WHICH.Struct)
+            throw new InvalidSchemaException("Expected a struct");
 
         var def = ProcessTypeDef(reader.Id, state, TypeTag.Struct);
 
         if (reader.ScopeId == 0)
         {
             // Auto-generated => Named parameter list
-            foreach (var field in def.Fields) list.Add(field);
+            foreach (var field in def.Fields)
+                list.Add(field);
             return def;
         }
 
@@ -623,11 +704,17 @@ internal class SchemaModel
         return null;
     }
 
-    private TypeDefinition ProcessInterface(Node.READER ifaceReader, TypeDefinition def, Pass2State state)
+    private TypeDefinition ProcessInterface(
+        Node.READER ifaceReader,
+        TypeDefinition def,
+        Pass2State state
+    )
     {
         foreach (var superClassReader in ifaceReader.Interface.Superclasses)
         {
-            var superClass = Types.FromDefinition(ProcessTypeDef(superClassReader.Id, state, TypeTag.Interface));
+            var superClass = Types.FromDefinition(
+                ProcessTypeDef(superClassReader.Id, state, TypeTag.Interface)
+            );
             ProcessBrand(superClassReader.Brand, superClass, state);
             def.Superclasses.Add(superClass);
         }
@@ -644,7 +731,7 @@ internal class SchemaModel
                 TypeDefinition = def,
                 Literal = fieldReader.Name,
                 CsLiteral = GetCsName(fieldReader),
-                CodeOrder = fieldReader.CodeOrder
+                CodeOrder = fieldReader.CodeOrder,
             };
 
             def.Enumerants.Add(field);
@@ -664,21 +751,30 @@ internal class SchemaModel
     private TypeDefinition ProcessTypeDef(ulong id, Pass2State state, TypeTag tag = default)
     {
         var def = ProcessNode(id, state, true, tag);
-        var typeDef = def as TypeDefinition;
-        if (typeDef == null)
-            throw new ArgumentException(
+        var typeDef =
+            def as TypeDefinition
+            ?? throw new ArgumentException(
                 $"Expected node {id.StrId()} to be a TypeDefinition but got {def.GetType().Name} instead.",
-                nameof(id));
+                nameof(id)
+            );
         return typeDef;
     }
 
-    private IDefinition ProcessNode(ulong id, Pass2State state, bool mustExist, TypeTag tag = default)
+    private IDefinition ProcessNode(
+        ulong id,
+        Pass2State state,
+        bool mustExist,
+        TypeTag tag = default
+    )
     {
-        if (!(IdToNode(id, mustExist) is Node.READER node)) return null;
+        if (!(IdToNode(id, mustExist) is Node.READER node))
+            return null;
         var kind = node.GetKind();
-        if (tag == TypeTag.Unknown) tag = kind.GetTypeTag();
+        if (tag == TypeTag.Unknown)
+            tag = kind.GetTypeTag();
         var def = _typeDefMgr.GetExistingDef(id, tag);
-        if (state.processedNodes.Contains(id)) return def;
+        if (state.processedNodes.Contains(id))
+            return def;
         state.processedNodes.Add(id);
 
         switch (def)
@@ -696,7 +792,8 @@ internal class SchemaModel
                 return ProcessStruct(node, typeDef, state);
             default:
                 throw new InvalidProgramException(
-                    $"An unexpected node {node.StrId()} was found during the 2nd schema model building pass.");
+                    $"An unexpected node {node.StrId()} was found during the 2nd schema model building pass."
+                );
         }
     }
 
@@ -733,7 +830,7 @@ internal enum NodeKind
     File,
     Interface,
     Struct,
-    Group
+    Group,
 }
 
 internal static class SchemaExtensions
@@ -752,13 +849,20 @@ internal static class SchemaExtensions
     {
         switch (node.which)
         {
-            case Node.WHICH.Struct: return node.Struct.IsGroup ? NodeKind.Group : NodeKind.Struct;
-            case Node.WHICH.Interface: return NodeKind.Interface;
-            case Node.WHICH.Enum: return NodeKind.Enum;
-            case Node.WHICH.Const: return NodeKind.Const;
-            case Node.WHICH.Annotation: return NodeKind.Annotation;
-            case Node.WHICH.File: return NodeKind.File;
-            default: return NodeKind.Unknown;
+            case Node.WHICH.Struct:
+                return node.Struct.IsGroup ? NodeKind.Group : NodeKind.Struct;
+            case Node.WHICH.Interface:
+                return NodeKind.Interface;
+            case Node.WHICH.Enum:
+                return NodeKind.Enum;
+            case Node.WHICH.Const:
+                return NodeKind.Const;
+            case Node.WHICH.Annotation:
+                return NodeKind.Annotation;
+            case Node.WHICH.File:
+                return NodeKind.File;
+            default:
+                return NodeKind.Unknown;
         }
     }
 
@@ -766,11 +870,16 @@ internal static class SchemaExtensions
     {
         switch (kind)
         {
-            case NodeKind.Enum: return TypeTag.Enum;
-            case NodeKind.Interface: return TypeTag.Interface;
-            case NodeKind.Struct: return TypeTag.Struct;
-            case NodeKind.Group: return TypeTag.Group;
-            default: return TypeTag.Unknown;
+            case NodeKind.Enum:
+                return TypeTag.Enum;
+            case NodeKind.Interface:
+                return TypeTag.Interface;
+            case NodeKind.Struct:
+                return TypeTag.Struct;
+            case NodeKind.Group:
+                return TypeTag.Group;
+            default:
+                return TypeTag.Unknown;
         }
     }
 

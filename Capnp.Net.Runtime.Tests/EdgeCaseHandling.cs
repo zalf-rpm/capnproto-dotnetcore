@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipelines;
@@ -70,8 +70,10 @@ public class EdgeCaseHandling : TestBase
             _.Call.QuestionId = 99;
             _.Call.Target.which = MessageTarget.WHICH.ImportedCap;
             _.Call.Target.ImportedCap = bootCapId;
-            _.Call.InterfaceId =
-                ((TypeIdAttribute)typeof(ITestInterface).GetCustomAttributes(typeof(TypeIdAttribute), false)[0]).Id;
+            _.Call.InterfaceId = (
+                (TypeIdAttribute)
+                    typeof(ITestInterface).GetCustomAttributes(typeof(TypeIdAttribute), false)[0]
+            ).Id;
             _.Call.MethodId = 0;
             _.Call.Params.Content.Rewrap<TestInterface.Params_Foo.WRITER>();
         });
@@ -104,22 +106,29 @@ public class EdgeCaseHandling : TestBase
             _.Call.QuestionId = 42;
             _.Call.Target.which = MessageTarget.WHICH.ImportedCap;
             _.Call.Target.ImportedCap = bootCapId;
-            _.Call.InterfaceId =
-                ((TypeIdAttribute)typeof(ITestInterface).GetCustomAttributes(typeof(TypeIdAttribute), false)[0]).Id;
+            _.Call.InterfaceId = (
+                (TypeIdAttribute)
+                    typeof(ITestInterface).GetCustomAttributes(typeof(TypeIdAttribute), false)[0]
+            ).Id;
             _.Call.MethodId = 0;
             var wr = _.Call.Params.Content.Rewrap<TestInterface.Params_Foo.WRITER>();
             wr.I = 123u;
             wr.J = true;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Return, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Return, _.which);
+        });
         tester.Send(_ =>
         {
             _.which = Message.WHICH.Call;
             _.Call.QuestionId = 42;
             _.Call.Target.which = MessageTarget.WHICH.ImportedCap;
             _.Call.Target.ImportedCap = bootCapId;
-            _.Call.InterfaceId =
-                ((TypeIdAttribute)typeof(ITestInterface).GetCustomAttributes(typeof(TypeIdAttribute), false)[0]).Id;
+            _.Call.InterfaceId = (
+                (TypeIdAttribute)
+                    typeof(ITestInterface).GetCustomAttributes(typeof(TypeIdAttribute), false)[0]
+            ).Id;
             _.Call.MethodId = 0;
             _.Call.Params.Content.Rewrap<TestInterface.Params_Foo.WRITER>();
         });
@@ -212,7 +221,10 @@ public class EdgeCaseHandling : TestBase
             _.Return.Results.CapTable[0].SenderHosted = 1;
         });
         Assert.IsTrue(proxy.WhenResolved.IsCompleted);
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Finish, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Finish, _.which);
+        });
         tester.Send(_ =>
         {
             _.which = Message.WHICH.Return;
@@ -244,7 +256,10 @@ public class EdgeCaseHandling : TestBase
             _.which = Message.WHICH.Return;
             _.Return.which = Return.WHICH.AcceptFromThirdParty;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Unimplemented, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
+        });
     }
 
     [TestMethod]
@@ -267,7 +282,10 @@ public class EdgeCaseHandling : TestBase
             _.which = Message.WHICH.Return;
             _.Return.which = (Return.WHICH)33;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Unimplemented, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
+        });
     }
 
     [TestMethod]
@@ -344,7 +362,10 @@ public class EdgeCaseHandling : TestBase
             _.Return.Results.CapTable[0].which = CapDescriptor.WHICH.ReceiverAnswer;
             _.Return.Results.CapTable[0].ReceiverAnswer.QuestionId = 0;
             _.Return.Results.CapTable[0].ReceiverAnswer.Transform.Init(1);
-            _.Return.Results.CapTable[0].ReceiverAnswer.Transform[0].which = PromisedAnswer.Op.WHICH.GetPointerField;
+            _.Return.Results.CapTable[0].ReceiverAnswer.Transform[0].which = PromisedAnswer
+                .Op
+                .WHICH
+                .GetPointerField;
             _.Return.Results.CapTable[0].ReceiverAnswer.Transform[0].GetPointerField = 0;
         });
         Assert.IsTrue(proxy.WhenResolved.IsCompleted);
@@ -377,8 +398,10 @@ public class EdgeCaseHandling : TestBase
             _.Call.QuestionId = 1;
             _.Call.Target.which = MessageTarget.WHICH.ImportedCap;
             _.Call.Target.ImportedCap = bootCapId + 1;
-            _.Call.InterfaceId =
-                ((TypeIdAttribute)typeof(ITestInterface).GetCustomAttributes(typeof(TypeIdAttribute), false)[0]).Id;
+            _.Call.InterfaceId = (
+                (TypeIdAttribute)
+                    typeof(ITestInterface).GetCustomAttributes(typeof(TypeIdAttribute), false)[0]
+            ).Id;
             _.Call.MethodId = 0;
             _.Call.Params.Content.Rewrap<TestInterface.Params_Foo.WRITER>();
         });
@@ -412,9 +435,14 @@ public class EdgeCaseHandling : TestBase
             _.Call.Target.which = MessageTarget.WHICH.PromisedAnswer;
             _.Call.Target.PromisedAnswer.QuestionId = 1;
             _.Call.Target.PromisedAnswer.Transform.Init(1);
-            _.Call.Target.PromisedAnswer.Transform[0].which = PromisedAnswer.Op.WHICH.GetPointerField;
-            _.Call.InterfaceId =
-                ((TypeIdAttribute)typeof(ITestInterface).GetCustomAttributes(typeof(TypeIdAttribute), false)[0]).Id;
+            _.Call.Target.PromisedAnswer.Transform[0].which = PromisedAnswer
+                .Op
+                .WHICH
+                .GetPointerField;
+            _.Call.InterfaceId = (
+                (TypeIdAttribute)
+                    typeof(ITestInterface).GetCustomAttributes(typeof(TypeIdAttribute), false)[0]
+            ).Id;
             _.Call.MethodId = 0;
             _.Call.Params.Content.Rewrap<TestInterface.Params_Foo.WRITER>();
         });
@@ -446,12 +474,17 @@ public class EdgeCaseHandling : TestBase
             _.which = Message.WHICH.Call;
             _.Call.QuestionId = 1;
             _.Call.Target.which = (MessageTarget.WHICH)77;
-            _.Call.InterfaceId =
-                ((TypeIdAttribute)typeof(ITestInterface).GetCustomAttributes(typeof(TypeIdAttribute), false)[0]).Id;
+            _.Call.InterfaceId = (
+                (TypeIdAttribute)
+                    typeof(ITestInterface).GetCustomAttributes(typeof(TypeIdAttribute), false)[0]
+            ).Id;
             _.Call.MethodId = 0;
             _.Call.Params.Content.Rewrap<TestInterface.Params_Foo.WRITER>();
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Unimplemented, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
+        });
         Assert.IsFalse(tester.IsDismissed);
     }
 
@@ -485,22 +518,28 @@ public class EdgeCaseHandling : TestBase
             _.Resolve.Cap.which = CapDescriptor.WHICH.SenderHosted;
             _.Resolve.Cap.SenderHosted = 1;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Finish, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Finish, _.which);
+        });
         tester.Send(_ =>
         {
             _.which = Message.WHICH.Resolve;
             _.Resolve.which = Resolve.WHICH.Exception;
             _.Resolve.Exception.Reason = "problem";
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Release, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Release, _.which);
+        });
 
         // tester.ExpectAbort();
 
         // Duplicate resolve is only a protocol error if the Rpc engine can prove misbehavior.
         // In this case that proof is not possible because the preliminary cap is release (thus, removed from import table)
         // immediately after the first resolution. Now we get the situation that the 2nd resolution refers to a non-existing
-        // cap. This is not considered a protocol error because it might be due to an expected race condition 
-        // between receiver-side Release and sender-side Resolve. 
+        // cap. This is not considered a protocol error because it might be due to an expected race condition
+        // between receiver-side Release and sender-side Resolve.
     }
 
     [TestMethod]
@@ -528,8 +567,14 @@ public class EdgeCaseHandling : TestBase
             _.Return.Results.Content.SetCapability(0);
         });
         proxy.Call(0, 0, DynamicSerializerState.CreateForRpc());
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Finish, _.which); });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Call, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Finish, _.which);
+        });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Call, _.which);
+        });
         tester.Send(_ =>
         {
             _.which = Message.WHICH.Resolve;
@@ -575,8 +620,14 @@ public class EdgeCaseHandling : TestBase
             _.which = Message.WHICH.Resolve;
             _.Resolve.which = (Resolve.WHICH)7;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Finish, _.which); });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Unimplemented, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Finish, _.which);
+        });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
+        });
     }
 
     [TestMethod]
@@ -610,7 +661,10 @@ public class EdgeCaseHandling : TestBase
             _.Resolve.Cap.which = CapDescriptor.WHICH.SenderHosted;
             _.Resolve.Cap.SenderHosted = 1;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Finish, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Finish, _.which);
+        });
 
         tester.ExpectAbort();
     }
@@ -747,7 +801,10 @@ public class EdgeCaseHandling : TestBase
     {
         var tester = new RpcEngineTester();
 
-        tester.Send(_ => { _.which = Message.WHICH.ObsoleteDelete; });
+        tester.Send(_ =>
+        {
+            _.which = Message.WHICH.ObsoleteDelete;
+        });
         tester.Recv(_ =>
         {
             Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
@@ -761,7 +818,10 @@ public class EdgeCaseHandling : TestBase
     {
         var tester = new RpcEngineTester();
 
-        tester.Send(_ => { _.which = Message.WHICH.ObsoleteSave; });
+        tester.Send(_ =>
+        {
+            _.which = Message.WHICH.ObsoleteSave;
+        });
         tester.Recv(_ =>
         {
             Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
@@ -775,7 +835,10 @@ public class EdgeCaseHandling : TestBase
     {
         var tester = new RpcEngineTester();
 
-        tester.Send(_ => { _.which = (Message.WHICH)123; });
+        tester.Send(_ =>
+        {
+            _.which = (Message.WHICH)123;
+        });
         tester.Recv(_ =>
         {
             Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
@@ -816,7 +879,10 @@ public class EdgeCaseHandling : TestBase
             _.Call.Params.CapTable.Init(0);
             _.Call.SendResultsTo.which = Call.sendResultsTo.WHICH.ThirdParty;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Unimplemented, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
+        });
         Assert.IsFalse(tester.IsDismissed);
     }
 
@@ -852,7 +918,10 @@ public class EdgeCaseHandling : TestBase
             _.Call.Params.CapTable.Init(0);
             _.Call.SendResultsTo.which = (Call.sendResultsTo.WHICH)13;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Unimplemented, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
+        });
         Assert.IsFalse(tester.IsDismissed);
     }
 
@@ -973,7 +1042,10 @@ public class EdgeCaseHandling : TestBase
             _.Disembargo.Context.SenderLoopback = 0;
             _.Disembargo.Target.which = (MessageTarget.WHICH)12;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Unimplemented, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
+        });
     }
 
     [TestMethod]
@@ -1006,7 +1078,10 @@ public class EdgeCaseHandling : TestBase
             _.Disembargo.Target.which = MessageTarget.WHICH.ImportedCap;
             _.Disembargo.Target.ImportedCap = 0;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Unimplemented, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
+        });
     }
 
     [TestMethod]
@@ -1022,7 +1097,10 @@ public class EdgeCaseHandling : TestBase
             _.Disembargo.Target.which = MessageTarget.WHICH.ImportedCap;
             _.Disembargo.Target.ImportedCap = 0;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Unimplemented, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
+        });
     }
 
     [TestMethod]
@@ -1038,7 +1116,10 @@ public class EdgeCaseHandling : TestBase
             _.Disembargo.Target.which = MessageTarget.WHICH.ImportedCap;
             _.Disembargo.Target.ImportedCap = 0;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Unimplemented, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
+        });
     }
 
     [TestMethod]
@@ -1066,7 +1147,10 @@ public class EdgeCaseHandling : TestBase
             _.Return.Results.Content.SetCapability(0);
         });
         Assert.IsTrue(proxy.WhenResolved.IsCompleted);
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Finish, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Finish, _.which);
+        });
         var args = DynamicSerializerState.CreateForRpc();
         var ti = new TestInterfaceImpl(new Counters());
         args.ProvideCapability(ti);
@@ -1121,9 +1205,15 @@ public class EdgeCaseHandling : TestBase
         var cap = tester.RealEnd.QueryMain();
         var proxy = new BareProxy(cap);
 
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Bootstrap, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Bootstrap, _.which);
+        });
 
-        tester.Send(_ => { _.which = Message.WHICH.Abort; });
+        tester.Send(_ =>
+        {
+            _.which = Message.WHICH.Abort;
+        });
     }
 
     [TestMethod]
@@ -1150,7 +1240,10 @@ public class EdgeCaseHandling : TestBase
             });
         });
 
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Finish, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Finish, _.which);
+        });
 
         proxy.Call(1, 2, DynamicSerializerState.CreateForRpc());
 
@@ -1195,7 +1288,10 @@ public class EdgeCaseHandling : TestBase
             });
         });
 
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Finish, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Finish, _.which);
+        });
 
         var answer = proxy.Call(1, 2, DynamicSerializerState.CreateForRpc());
         var task = Impatient.MakePipelineAware(answer, _ => _);
@@ -1225,7 +1321,10 @@ public class EdgeCaseHandling : TestBase
             });
         });
 
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Unimplemented, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Unimplemented, _.which);
+        });
 
         Assert.IsFalse(tester.IsDismissed);
     }
@@ -1250,7 +1349,10 @@ public class EdgeCaseHandling : TestBase
             _.which = Message.WHICH.Return;
             _.Return.which = Return.WHICH.ResultsSentElsewhere;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Finish, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Finish, _.which);
+        });
         Assert.IsTrue(proxy.WhenResolved.IsCompleted);
         Assert.IsTrue(proxy.WhenResolved.WrappedTask.IsFaulted);
         tester.ExpectAbort();
@@ -1298,7 +1400,10 @@ public class EdgeCaseHandling : TestBase
             Assert.AreEqual(Call.sendResultsTo.WHICH.Yourself, _.Call.SendResultsTo.which);
             q = _.Call.QuestionId;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Release, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Release, _.which);
+        });
         tester.Recv(_ =>
         {
             Assert.AreEqual(Message.WHICH.Return, _.which);
@@ -1317,7 +1422,10 @@ public class EdgeCaseHandling : TestBase
             _.Return.Results.CapTable[0].which = CapDescriptor.WHICH.SenderHosted;
             _.Return.Results.CapTable[0].SenderHosted = 1;
         });
-        tester.Recv(_ => { Assert.AreEqual(Message.WHICH.Finish, _.which); });
+        tester.Recv(_ =>
+        {
+            Assert.AreEqual(Message.WHICH.Finish, _.which);
+        });
         tester.ExpectAbort();
     }
 
@@ -1393,14 +1501,18 @@ public class EdgeCaseHandling : TestBase
 
         public void ExpectAbort()
         {
-            Recv(_ => { Assert.AreEqual(Message.WHICH.Abort, _.which); });
+            Recv(_ =>
+            {
+                Assert.AreEqual(Message.WHICH.Abort, _.which);
+            });
             Assert.IsTrue(IsDismissed);
-            Assert.Throws<InvalidOperationException>(
-                () => Send(_ =>
+            Assert.Throws<InvalidOperationException>(() =>
+                Send(_ =>
                 {
                     _.which = Message.WHICH.Bootstrap;
                     _.Bootstrap.QuestionId = 33;
-                }));
+                })
+            );
         }
     }
 
@@ -1418,24 +1530,34 @@ public class EdgeCaseHandling : TestBase
 
         public bool IsGrandsonCapDisposed => _impl.IsChildCapDisposed;
 
-        public void Dispose()
-        {
-        }
+        public void Dispose() { }
 
-        public Task<(string, TestPipeline.AnyBox)> GetAnyCap(uint n, BareProxy inCap,
-            CancellationToken cancellationToken_ = default)
+        public Task<(string, TestPipeline.AnyBox)> GetAnyCap(
+            uint n,
+            BareProxy inCap,
+            CancellationToken cancellationToken_ = default
+        )
         {
             throw new NotImplementedException();
         }
 
-        public Task<(string, TestPipeline.Box)> GetCap(uint n, ITestInterface inCap,
-            CancellationToken cancellationToken_ = default)
+        public Task<(string, TestPipeline.Box)> GetCap(
+            uint n,
+            ITestInterface inCap,
+            CancellationToken cancellationToken_ = default
+        )
         {
-            return Task.FromResult(("foo", new TestPipeline.Box { Cap = _proxy.GetCap(0, null).OutBox_Cap() }));
+            return Task.FromResult(
+                ("foo", new TestPipeline.Box { Cap = _proxy.GetCap(0, null).OutBox_Cap() })
+            );
         }
 
-        public Task TestPointers(ITestInterface cap, object obj, IReadOnlyList<ITestInterface> list,
-            CancellationToken cancellationToken_ = default)
+        public Task TestPointers(
+            ITestInterface cap,
+            object obj,
+            IReadOnlyList<ITestInterface> list,
+            CancellationToken cancellationToken_ = default
+        )
         {
             throw new NotImplementedException();
         }

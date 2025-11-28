@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Capnp.Net.Runtime.Tests.GenImpls;
 using Capnp.Net.Runtime.Tests.Util;
@@ -71,7 +71,9 @@ public class TcpRpcAdvancedStuff : TestBase
 
                 using (var main = client1.GetMain<ITestMoreStuff>())
                 {
-                    Assert.IsTrue(main.Hold(new TestInterfaceImpl(counters)).Wait(MediumNonDbgTimeout));
+                    Assert.IsTrue(
+                        main.Hold(new TestInterfaceImpl(counters)).Wait(MediumNonDbgTimeout)
+                    );
                 }
 
                 using (var main = client2.GetMain<ITestMoreStuff>())
@@ -118,11 +120,13 @@ public class TcpRpcAdvancedStuff : TestBase
 
                     try
                     {
-                        Assert.IsTrue(((IResolvingCapability)main).WhenResolved.WrappedTask.Wait(MediumNonDbgTimeout));
+                        Assert.IsTrue(
+                            ((IResolvingCapability)main).WhenResolved.WrappedTask.Wait(
+                                MediumNonDbgTimeout
+                            )
+                        );
                     }
-                    catch (AggregateException)
-                    {
-                    }
+                    catch (AggregateException) { }
                 }
             }
         }
@@ -217,7 +221,9 @@ public class TcpRpcAdvancedStuff : TestBase
                             {
                                 var fooTask = main2.CallFoo(held);
                                 Assert.IsTrue(
-                                    main.Hold(new TestInterfaceImpl(new Counters())).Wait(MediumNonDbgTimeout));
+                                    main.Hold(new TestInterfaceImpl(new Counters()))
+                                        .Wait(MediumNonDbgTimeout)
+                                );
                                 Assert.IsTrue(fooTask.Wait(MediumNonDbgTimeout));
                                 Assert.AreEqual("bar", fooTask.Result);
                             }
@@ -256,7 +262,9 @@ public class TcpRpcAdvancedStuff : TestBase
                         {
                             var fooTask2 = main2.Foo(123, null);
                             Assert.IsTrue(fooTask2.Wait(MediumNonDbgTimeout));
-                            Assert.IsTrue(fooTask2.C().GetCallSequence(0).Wait(MediumNonDbgTimeout));
+                            Assert.IsTrue(
+                                fooTask2.C().GetCallSequence(0).Wait(MediumNonDbgTimeout)
+                            );
                         }
                     }
                 }
@@ -284,15 +292,16 @@ public class TcpRpcAdvancedStuff : TestBase
                     using (var echo = echoTask.Result)
                     {
                         var list = new Task<uint>[200];
-                        for (uint i = 0; i < list.Length; i++) list[i] = echo.GetCallSequence(i);
+                        for (uint i = 0; i < list.Length; i++)
+                            list[i] = echo.GetCallSequence(i);
                         Assert.IsTrue(Task.WaitAll(list, MediumNonDbgTimeout));
-                        for (uint i = 0; i < list.Length; i++) Assert.AreEqual(i, list[i].Result);
+                        for (uint i = 0; i < list.Length; i++)
+                            Assert.AreEqual(i, list[i].Result);
                     }
                 }
             }
         }
     }
-
 
     [TestMethod]
     public void NoTailCallMt()

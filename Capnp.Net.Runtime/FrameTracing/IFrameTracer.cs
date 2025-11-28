@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Capnp.FrameTracing;
 
@@ -15,7 +15,7 @@ public enum FrameDirection
     /// <summary>
     ///     Send direction
     /// </summary>
-    Tx
+    Tx,
 }
 
 /// <summary>

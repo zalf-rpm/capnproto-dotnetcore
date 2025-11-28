@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,7 +19,7 @@ internal enum NameUsage
     Interface,
     Proxy,
     Skeleton,
-    Namespace
+    Namespace,
 }
 
 internal enum TypeUsage
@@ -27,14 +27,14 @@ internal enum TypeUsage
     NotRelevant,
     DomainClass,
     Reader,
-    Writer
+    Writer,
 }
 
 internal enum Nullability
 {
     NonNullable,
     NullableRefAndValue,
-    NullableRef
+    NullableRef,
 }
 
 internal class GenNames
@@ -190,34 +190,48 @@ internal class GenNames
         return new Name(name);
     }
 
-    public SimpleNameSyntax MakeGenericTypeName(TypeDefinition def, NameUsage usage = NameUsage.Default)
+    public SimpleNameSyntax MakeGenericTypeName(
+        TypeDefinition def,
+        NameUsage usage = NameUsage.Default
+    )
     {
         var name = MakeTypeName(def, usage);
 
         if (def.GenericParameters.Count > 0)
             return GenericName(name.Identifier)
-                .AddTypeArgumentListArguments(def
-                    .GenericParameters
-                    .Select(p => GetGenericTypeParameter(p).IdentifierName).ToArray());
+                .AddTypeArgumentListArguments(
+                    def.GenericParameters.Select(p => GetGenericTypeParameter(p).IdentifierName)
+                        .ToArray()
+                );
 
         return name.IdentifierName;
     }
 
-    private TypeSyntax ResolveGenericParameter(GenericParameter p, Type boundType, TypeDefinition def)
+    private TypeSyntax ResolveGenericParameter(
+        GenericParameter p,
+        Type boundType,
+        TypeDefinition def
+    )
     {
         var type = boundType.ResolveGenericParameter(p);
         return MakeTypeSyntax(type, def, TypeUsage.DomainClass, Nullability.NonNullable);
     }
 
-    public SimpleNameSyntax MakeGenericTypeName(TypeDefinition def, Type boundType, NameUsage usage = NameUsage.Default)
+    public SimpleNameSyntax MakeGenericTypeName(
+        TypeDefinition def,
+        Type boundType,
+        NameUsage usage = NameUsage.Default
+    )
     {
         var name = MakeTypeName(def, usage);
 
         if (def.GenericParameters.Count > 0)
             return GenericName(name.Identifier)
-                .AddTypeArgumentListArguments(def
-                    .GetLocalTypeParameters()
-                    .Select(p => ResolveGenericParameter(p, boundType, def)).ToArray());
+                .AddTypeArgumentListArguments(
+                    def.GetLocalTypeParameters()
+                        .Select(p => ResolveGenericParameter(p, boundType, def))
+                        .ToArray()
+                );
 
         return name.IdentifierName;
     }
@@ -253,7 +267,10 @@ internal class GenNames
         return result;
     }
 
-    private SimpleNameSyntax MakeGenericTypeNameForAttributeSimple(TypeDefinition def, NameUsage usage)
+    private SimpleNameSyntax MakeGenericTypeNameForAttributeSimple(
+        TypeDefinition def,
+        NameUsage usage
+    )
     {
         var name = MakeTypeName(def, usage);
 
@@ -314,12 +331,10 @@ internal class GenNames
                 def = pdef;
             }
 
-            var qtype =
-                GetNamespaceFor(type.Definition)
-                ?? GetNamespaceFor(scope)
-                ?? TopNamespace;
+            var qtype = GetNamespaceFor(type.Definition) ?? GetNamespaceFor(scope) ?? TopNamespace;
 
-            foreach (var name in stack) qtype = QualifiedName(qtype, name);
+            foreach (var name in stack)
+                qtype = QualifiedName(qtype, name);
 
             return qtype;
         }
@@ -334,35 +349,62 @@ internal class GenNames
             case TypeTag.AnyPointer:
             case TypeTag.StructPointer:
             case TypeTag.ListPointer:
-                return Type<ListOfPointersSerializer<DynamicSerializerState>>(Nullability.NonNullable);
+                return Type<ListOfPointersSerializer<DynamicSerializerState>>(
+                    Nullability.NonNullable
+                );
 
             case TypeTag.CapabilityPointer:
                 return Type<ListOfCapsSerializer<BareProxy>>(Nullability.NonNullable);
 
             case TypeTag.Data:
-                return Type<ListOfPointersSerializer<
-                    ListOfPrimitivesSerializer<byte>>>(Nullability.NonNullable);
+                return Type<ListOfPointersSerializer<ListOfPrimitivesSerializer<byte>>>(
+                    Nullability.NonNullable
+                );
 
             case TypeTag.Enum:
                 return GenericName("ListOfPrimitivesSerializer")
-                    .AddTypeArgumentListArguments(MakeTypeSyntax(elementType, scope, TypeUsage.Writer,
-                        Nullability.NonNullable));
+                    .AddTypeArgumentListArguments(
+                        MakeTypeSyntax(
+                            elementType,
+                            scope,
+                            TypeUsage.Writer,
+                            Nullability.NonNullable
+                        )
+                    );
 
             case TypeTag.Group:
             case TypeTag.Struct:
                 return GenericName("ListOfStructsSerializer")
-                    .AddTypeArgumentListArguments(MakeTypeSyntax(elementType, scope, TypeUsage.Writer,
-                        Nullability.NonNullable));
+                    .AddTypeArgumentListArguments(
+                        MakeTypeSyntax(
+                            elementType,
+                            scope,
+                            TypeUsage.Writer,
+                            Nullability.NonNullable
+                        )
+                    );
 
             case TypeTag.Interface:
                 return GenericName("ListOfCapsSerializer")
-                    .AddTypeArgumentListArguments(MakeTypeSyntax(elementType, scope, TypeUsage.Writer,
-                        Nullability.NonNullable));
+                    .AddTypeArgumentListArguments(
+                        MakeTypeSyntax(
+                            elementType,
+                            scope,
+                            TypeUsage.Writer,
+                            Nullability.NonNullable
+                        )
+                    );
 
             case TypeTag.List:
                 return GenericName("ListOfPointersSerializer")
-                    .AddTypeArgumentListArguments(MakeTypeSyntax(elementType, scope, TypeUsage.Writer,
-                        Nullability.NonNullable));
+                    .AddTypeArgumentListArguments(
+                        MakeTypeSyntax(
+                            elementType,
+                            scope,
+                            TypeUsage.Writer,
+                            Nullability.NonNullable
+                        )
+                    );
 
             case TypeTag.Text:
                 return Type<ListOfTextSerializer>(Nullability.NonNullable);
@@ -405,7 +447,9 @@ internal class GenNames
                 return Type<ListOfPrimitivesSerializer<ulong>>(Nullability.NonNullable);
 
             default:
-                throw new NotImplementedException("Unexpected type tag, don't know how to deal with this");
+                throw new NotImplementedException(
+                    "Unexpected type tag, don't know how to deal with this"
+                );
         }
     }
 
@@ -454,7 +498,12 @@ internal class GenNames
         }
     }
 
-    public TypeSyntax MakeTypeSyntax(Type type, TypeDefinition scope, TypeUsage usage, Nullability nullability)
+    public TypeSyntax MakeTypeSyntax(
+        Type type,
+        TypeDefinition scope,
+        TypeUsage usage,
+        Nullability nullability
+    )
     {
         switch (type.Tag)
         {
@@ -538,24 +587,46 @@ internal class GenNames
             case TypeTag.F64:
                 return Type<double>(nullability);
 
-            case TypeTag.List when type.ElementType.Tag == TypeTag.Void && usage != TypeUsage.Writer:
+            case TypeTag.List
+                when type.ElementType.Tag == TypeTag.Void && usage != TypeUsage.Writer:
                 return Type<int>(nullability);
 
             case TypeTag.List:
                 switch (usage)
                 {
                     case TypeUsage.Writer:
-                        return MaybeNullableRefType(MakeListSerializerSyntax(type.ElementType, scope), nullability);
+                        return MaybeNullableRefType(
+                            MakeListSerializerSyntax(type.ElementType, scope),
+                            nullability
+                        );
 
                     case TypeUsage.Reader:
-                        return MaybeNullableRefType(GenericName(Identifier("IReadOnlyList"))
-                            .AddTypeArgumentListArguments(MakeTypeSyntax(type.ElementType, scope, TypeUsage.Reader,
-                                GetDefaultElementTypeNullability(type.ElementType))), nullability);
+                        return MaybeNullableRefType(
+                            GenericName(Identifier("IReadOnlyList"))
+                                .AddTypeArgumentListArguments(
+                                    MakeTypeSyntax(
+                                        type.ElementType,
+                                        scope,
+                                        TypeUsage.Reader,
+                                        GetDefaultElementTypeNullability(type.ElementType)
+                                    )
+                                ),
+                            nullability
+                        );
 
                     case TypeUsage.DomainClass:
-                        return MaybeNullableRefType(GenericName(Identifier("IReadOnlyList"))
-                            .AddTypeArgumentListArguments(MakeTypeSyntax(type.ElementType, scope, TypeUsage.DomainClass,
-                                GetDefaultElementTypeNullability(type.ElementType))), nullability);
+                        return MaybeNullableRefType(
+                            GenericName(Identifier("IReadOnlyList"))
+                                .AddTypeArgumentListArguments(
+                                    MakeTypeSyntax(
+                                        type.ElementType,
+                                        scope,
+                                        TypeUsage.DomainClass,
+                                        GetDefaultElementTypeNullability(type.ElementType)
+                                    )
+                                ),
+                            nullability
+                        );
 
                     default:
                         throw new NotImplementedException();
@@ -575,8 +646,10 @@ internal class GenNames
                             .AddTypeArgumentListArguments(Type<object>(Nullability.NullableRef));
 
                     case TypeUsage.DomainClass:
-                        return MakeNullableRefType(GenericName(Identifier("IReadOnlyList"))
-                            .AddTypeArgumentListArguments(Type<object>(Nullability.NullableRef)));
+                        return MakeNullableRefType(
+                            GenericName(Identifier("IReadOnlyList"))
+                                .AddTypeArgumentListArguments(Type<object>(Nullability.NullableRef))
+                        );
 
                     default:
                         throw new NotImplementedException();
@@ -613,7 +686,9 @@ internal class GenNames
                 return PredefinedType(Token(SyntaxKind.VoidKeyword));
 
             default:
-                throw new NotImplementedException("Unexpected type tag, don't know how to deal with this");
+                throw new NotImplementedException(
+                    "Unexpected type tag, don't know how to deal with this"
+                );
         }
     }
 
@@ -629,7 +704,10 @@ internal class GenNames
 
     public Name GetCodeIdentifier(Method method)
     {
-        return new Name(method.CsName ?? IdentifierRenamer.ToNonKeyword(SyntaxHelpers.MakeUpperCamel(method.Name)));
+        return new Name(
+            method.CsName
+                ?? IdentifierRenamer.ToNonKeyword(SyntaxHelpers.MakeUpperCamel(method.Name))
+        );
     }
 
     private string GetCodeIdentifierUpperCamel(Field field)
@@ -639,12 +717,14 @@ internal class GenNames
 
     public string GetCodeIdentifierLowerCamel(Field field)
     {
-        return field.CsName ?? IdentifierRenamer.ToNonKeyword(SyntaxHelpers.MakeLowerCamel(field.Name));
+        return field.CsName
+            ?? IdentifierRenamer.ToNonKeyword(SyntaxHelpers.MakeLowerCamel(field.Name));
     }
 
     public Name GetCodeIdentifier(Field field)
     {
-        if (_fieldNameMap.TryGetValue(field, out var name)) return name;
+        if (_fieldNameMap.TryGetValue(field, out var name))
+            return name;
 
         var def = field.DeclaringType;
 
@@ -667,7 +747,7 @@ internal class GenNames
     public string GetCodeIdentifier(TypeDefinition def)
     {
         var id = def.CsName ?? def.Name;
-        if (def.Tag == TypeTag.Group) // special treatment for groups: Need to disambiguate between 
+        if (def.Tag == TypeTag.Group) // special treatment for groups: Need to disambiguate between
             // the field name (use original name) and its type (make it start with a lower-case letter)
             id = IdentifierRenamer.ToNonKeyword(SyntaxHelpers.MakeLowerCamel(id));
         return id;
@@ -685,8 +765,12 @@ internal class GenNames
 
     public Name MakePipeliningSupportExtensionClassName(GenFile file)
     {
-        return new Name(string.Format(PipeliningExtensionsClassFormat,
-            Path.GetFileNameWithoutExtension(file.Name).Replace(".", "_")));
+        return new Name(
+            string.Format(
+                PipeliningExtensionsClassFormat,
+                Path.GetFileNameWithoutExtension(file.Name).Replace(".", "_")
+            )
+        );
     }
 
     public Name MakeMemberAccessPathFieldName(Method method, IReadOnlyList<Field> path)
@@ -712,15 +796,20 @@ internal class GenNames
 
                 default:
                     throw new NotImplementedException(
-                        "Unexpected element in definition hierarchy of method. Not a type, not a file.");
+                        "Unexpected element in definition hierarchy of method. Not a type, not a file."
+                    );
             }
         } while (cur != null);
 
-        return new Name(string.Format(MemberAccessPathNameFormat,
-            string.Join("_", nameList).Replace(".", "_"),
-            method.DeclaringInterface.Name.Replace(".", "_"),
-            method.Name.Replace(".", "_"),
-            MakePipeliningSupportExtensionMethodName(path)));
+        return new Name(
+            string.Format(
+                MemberAccessPathNameFormat,
+                string.Join("_", nameList).Replace(".", "_"),
+                method.DeclaringInterface.Name.Replace(".", "_"),
+                method.Name.Replace(".", "_"),
+                MakePipeliningSupportExtensionMethodName(path)
+            )
+        );
     }
 
     public TypeSyntax MakeNullableRefType(TypeSyntax type)
@@ -730,8 +819,9 @@ internal class GenNames
 
     public TypeSyntax Type<T>(Nullability nullability)
     {
-        return (NullableEnable && !typeof(T).IsValueType && nullability != Nullability.NonNullable) ||
-               (typeof(T).IsValueType && nullability == Nullability.NullableRefAndValue)
+        return
+            (NullableEnable && !typeof(T).IsValueType && nullability != Nullability.NonNullable)
+            || (typeof(T).IsValueType && nullability == Nullability.NullableRefAndValue)
             ? NullableType(SyntaxHelpers.NonNullableType<T>())
             : SyntaxHelpers.NonNullableType<T>();
     }
@@ -745,53 +835,50 @@ internal class GenNames
 
     private static LiteralExpressionSyntax HexLiteral(ulong id)
     {
-        return LiteralExpression(
-            SyntaxKind.NumericLiteralExpression,
-            Literal($"0x{id:x}UL", id));
+        return LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal($"0x{id:x}UL", id));
     }
 
     private static LiteralExpressionSyntax StringLiteral(string text)
     {
-        return LiteralExpression(
-            SyntaxKind.StringLiteralExpression,
-            Literal(text));
+        return LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(text));
     }
 
     public FieldDeclarationSyntax MakeTypeIdConst(ulong id)
     {
         return FieldDeclaration(
-                VariableDeclaration(
-                        IdentifierName("UInt64"))
+                VariableDeclaration(IdentifierName("UInt64"))
                     .WithVariables(
                         SingletonSeparatedList(
                             VariableDeclarator(TypeIdField.Identifier)
-                                .WithInitializer(
-                                    EqualsValueClause(HexLiteral(id))))))
+                                .WithInitializer(EqualsValueClause(HexLiteral(id)))
+                        )
+                    )
+            )
             .WithModifiers(
-                TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.ConstKeyword)));
+                TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.ConstKeyword))
+            );
     }
 
     private static AttributeSyntax MakeTypeIdAttribute(ulong id)
     {
-        return Attribute(
-                IdentifierName("TypeId"))
+        return Attribute(IdentifierName("TypeId"))
             .WithArgumentList(
-                AttributeArgumentList(
-                    SingletonSeparatedList(
-                        AttributeArgument(HexLiteral(id)))));
+                AttributeArgumentList(SingletonSeparatedList(AttributeArgument(HexLiteral(id))))
+            );
     }
 
     public AttributeSyntax MakeGeneratedCodeAttribute()
     {
-        return Attribute(
-                IdentifierName("System.CodeDom.Compiler.GeneratedCode"))
+        return Attribute(IdentifierName("System.CodeDom.Compiler.GeneratedCode"))
             .AddArgumentListArguments(
                 AttributeArgument(StringLiteral(GeneratorToolName)),
-                AttributeArgument(StringLiteral(GeneratorToolVersion)));
+                AttributeArgument(StringLiteral(GeneratorToolVersion))
+            );
     }
 
     public AttributeListSyntax MakeTypeDecorationAttributes(ulong typeId)
     {
-        return AttributeList().AddAttributes(MakeGeneratedCodeAttribute(), MakeTypeIdAttribute(typeId));
+        return AttributeList()
+            .AddAttributes(MakeGeneratedCodeAttribute(), MakeTypeIdAttribute(typeId));
     }
 }

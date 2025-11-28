@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Capnp;
@@ -12,18 +12,14 @@ public class DynamicSerializerState : SerializerState
     /// <summary>
     ///     Constructs an unbound instance.
     /// </summary>
-    public DynamicSerializerState()
-    {
-    }
+    public DynamicSerializerState() { }
 
     /// <summary>
     ///     Constructs an instance and binds it to the given <see cref="MessageBuilder" />.
     /// </summary>
     /// <param name="messageBuilder">message builder</param>
-    public DynamicSerializerState(MessageBuilder messageBuilder) :
-        base(messageBuilder)
-    {
-    }
+    public DynamicSerializerState(MessageBuilder messageBuilder)
+        : base(messageBuilder) { }
 
     /// <summary>
     ///     Constructs an instance, binds it to a dedicated message builder, and initializes the capability table for usage in
@@ -44,7 +40,8 @@ public class DynamicSerializerState : SerializerState
     public static explicit operator DynamicSerializerState(DeserializerState state)
     {
         var mb = MessageBuilder.Create();
-        if (state.Caps != null) mb.InitCapTable();
+        if (state.Caps != null)
+            mb.InitCapTable();
         var sstate = mb.CreateObject<DynamicSerializerState>();
         Reserializing.DeepCopy(state, sstate);
 
@@ -226,7 +223,8 @@ public class DynamicSerializerState : SerializerState
     /// </param>
     public void SetObject(object? obj)
     {
-        void RewrapAndInheritBack<T>(Action<T> init) where T : SerializerState, new()
+        void RewrapAndInheritBack<T>(Action<T> init)
+            where T : SerializerState, new()
         {
             var r = Rewrap<T>();
             init(r);
@@ -293,7 +291,8 @@ public class DynamicSerializerState : SerializerState
 
             case IReadOnlyList<object> objects:
                 RewrapAndInheritBack<ListOfPointersSerializer<DynamicSerializerState>>(_ =>
-                    _.Init(objects, (s, o) => s.SetObject(o)));
+                    _.Init(objects, (s, o) => s.SetObject(o))
+                );
                 break;
 
             case DeserializerState ds:

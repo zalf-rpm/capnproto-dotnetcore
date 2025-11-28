@@ -1,4 +1,4 @@
-﻿namespace Capnp.Rpc;
+namespace Capnp.Rpc;
 
 /// <summary>
 ///     Generic Proxy implementation which exposes the (usually protected) Call method.
@@ -8,17 +8,14 @@ public class BareProxy : Proxy
     /// <summary>
     ///     Constructs an unbound instance.
     /// </summary>
-    public BareProxy()
-    {
-    }
+    public BareProxy() { }
 
     /// <summary>
     ///     Constructs an instance and binds it to the given low-level capability.
     /// </summary>
     /// <param name="cap">low-level capability</param>
-    public BareProxy(ConsumedCapability cap) : base(cap)
-    {
-    }
+    public BareProxy(ConsumedCapability cap)
+        : base(cap) { }
 
     /// <summary>
     ///     Wraps a capability implementation in a Proxy.

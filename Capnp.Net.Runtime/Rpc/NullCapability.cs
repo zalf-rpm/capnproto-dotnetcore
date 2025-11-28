@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Capnp.Rpc;
 
@@ -12,27 +12,25 @@ public sealed class NullCapability : ConsumedCapability
     /// </summary>
     public static readonly NullCapability Instance = new();
 
-    private NullCapability()
-    {
-    }
+    private NullCapability() { }
 
     /// <summary>
     ///     Does nothing
     /// </summary>
-    protected override void ReleaseRemotely()
-    {
-    }
+    protected override void ReleaseRemotely() { }
 
-    internal override void AddRef()
-    {
-    }
+    internal override void AddRef() { }
 
     internal override Skeleton AsSkeleton()
     {
         return NullSkeleton.Instance;
     }
 
-    internal override IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args)
+    internal override IPromisedAnswer DoCall(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args
+    )
     {
         args.Dispose();
         throw new InvalidOperationException("Cannot call null capability");
@@ -44,9 +42,7 @@ public sealed class NullCapability : ConsumedCapability
         return null;
     }
 
-    internal override void Release()
-    {
-    }
+    internal override void Release() { }
 
     /// <summary>
     ///     String hint

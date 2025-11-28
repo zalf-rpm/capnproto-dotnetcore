@@ -1,4 +1,4 @@
-﻿using Capnp;
+using Capnp;
 
 namespace CapnpC.CSharp.Generator.CodeGen;
 

@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Capnp.Rpc;
@@ -28,14 +28,26 @@ internal class Vine : Skeleton
     }
 
     public override async Task<AnswerOrCounterquestion> Invoke(
-        ulong interfaceId, ushort methodId, DeserializerState args,
-        CancellationToken cancellationToken = default)
+        ulong interfaceId,
+        ushort methodId,
+        DeserializerState args,
+        CancellationToken cancellationToken = default
+    )
     {
         using var proxy = new Proxy(Cap);
-        var promisedAnswer = proxy.Call(interfaceId, methodId, (DynamicSerializerState)args, false, cancellationToken);
+        var promisedAnswer = proxy.Call(
+            interfaceId,
+            methodId,
+            (DynamicSerializerState)args,
+            false,
+            cancellationToken
+        );
 
-        if (promisedAnswer is PendingQuestion pendingQuestion &&
-            pendingQuestion.RpcEndpoint == Impatient.AskingEndpoint) return pendingQuestion;
+        if (
+            promisedAnswer is PendingQuestion pendingQuestion
+            && pendingQuestion.RpcEndpoint == Impatient.AskingEndpoint
+        )
+            return pendingQuestion;
 
         using var registration = cancellationToken.Register(promisedAnswer.Dispose);
         return (DynamicSerializerState)await promisedAnswer.WhenReturned;

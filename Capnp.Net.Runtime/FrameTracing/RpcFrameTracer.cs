@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,7 +14,8 @@ namespace Capnp.FrameTracing;
 public class RpcFrameTracer : IFrameTracer
 {
     private const string Header = "Ticks      | Thread     | Dir | Message";
-    private static readonly string HeaderSpace = new string(Enumerable.Repeat(' ', 30).ToArray()) + "|";
+    private static readonly string HeaderSpace =
+        new string(Enumerable.Repeat(' ', 30).ToArray()) + "|";
     private readonly bool _disposeWriter;
 
     private readonly Stopwatch _timer = new();
@@ -24,9 +25,8 @@ public class RpcFrameTracer : IFrameTracer
     ///     Constructs an instance
     /// </summary>
     /// <param name="traceWriter">textual logging target</param>
-    public RpcFrameTracer(TextWriter traceWriter) : this(traceWriter, true)
-    {
-    }
+    public RpcFrameTracer(TextWriter traceWriter)
+        : this(traceWriter, true) { }
 
     /// <summary>
     ///     Constructs an instance
@@ -57,9 +57,12 @@ public class RpcFrameTracer : IFrameTracer
     /// <param name="frame">actual frame</param>
     public void TraceFrame(FrameDirection dir, WireFrame frame)
     {
-        if (!_timer.IsRunning) _timer.Start();
+        if (!_timer.IsRunning)
+            _timer.Start();
 
-        _traceWriter.Write($@"{_timer.ElapsedTicks,10} | {Thread.CurrentThread.ManagedThreadId,10} | ");
+        _traceWriter.Write(
+            $@"{_timer.ElapsedTicks, 10} | {Thread.CurrentThread.ManagedThreadId, 10} | "
+        );
         _traceWriter.Write(dir == FrameDirection.Tx ? "Tx  |" : "Rx  |");
 
         var dec = DeserializerState.CreateRoot(frame);
@@ -80,7 +83,8 @@ public class RpcFrameTracer : IFrameTracer
             case Message.WHICH.Call:
                 tag = dir == FrameDirection.Tx ? "Q" : "A";
                 _traceWriter.Write(
-                    $"CALL {tag}{msg.Call.QuestionId}, I: {msg.Call.InterfaceId:x} M: {msg.Call.MethodId} ");
+                    $"CALL {tag}{msg.Call.QuestionId}, I: {msg.Call.InterfaceId:x} M: {msg.Call.MethodId} "
+                );
                 RenderMessageTarget(msg.Call.Target, dir);
                 _traceWriter.Write(HeaderSpace);
                 _traceWriter.WriteLine($"Send results to {msg.Call.SendResultsTo.which}");
@@ -111,12 +115,16 @@ public class RpcFrameTracer : IFrameTracer
 
             case Message.WHICH.Finish:
                 tag = dir == FrameDirection.Tx ? "Q" : "A";
-                _traceWriter.WriteLine($"FINISH {tag}{msg.Finish.QuestionId}, release: {msg.Finish.ReleaseResultCaps}");
+                _traceWriter.WriteLine(
+                    $"FINISH {tag}{msg.Finish.QuestionId}, release: {msg.Finish.ReleaseResultCaps}"
+                );
                 break;
 
             case Message.WHICH.Release:
                 tag = dir == FrameDirection.Tx ? "CR" : "CL";
-                _traceWriter.WriteLine($"RELEASE {tag}{msg.Release.Id}, count: {msg.Release.ReferenceCount}");
+                _traceWriter.WriteLine(
+                    $"RELEASE {tag}{msg.Release.Id}, count: {msg.Release.ReferenceCount}"
+                );
                 break;
 
             case Message.WHICH.Resolve:
@@ -207,11 +215,18 @@ public class RpcFrameTracer : IFrameTracer
             case MessageTarget.WHICH.PromisedAnswer:
                 tag = dir == FrameDirection.Tx ? "Q" : "A";
                 _traceWriter.Write($"on promised answer {tag}{target.PromisedAnswer.QuestionId}");
-                if (target.PromisedAnswer.Transform != null && target.PromisedAnswer.Transform.Count > 0)
+                if (
+                    target.PromisedAnswer.Transform != null
+                    && target.PromisedAnswer.Transform.Count > 0
+                )
                 {
                     _traceWriter.Write(": ");
-                    _traceWriter.Write(string.Join(".",
-                        target.PromisedAnswer.Transform.Select(t => t.GetPointerField)));
+                    _traceWriter.Write(
+                        string.Join(
+                            ".",
+                            target.PromisedAnswer.Transform.Select(t => t.GetPointerField)
+                        )
+                    );
                 }
 
                 _traceWriter.WriteLine();
@@ -223,7 +238,7 @@ public class RpcFrameTracer : IFrameTracer
     {
         string tag;
 
-        _traceWriter.Write($" {desc.which,14}");
+        _traceWriter.Write($" {desc.which, 14}");
         switch (desc.which)
         {
             case CapDescriptor.WHICH.ReceiverAnswer:

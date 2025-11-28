@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Capnp.Net.Runtime.Tests;
@@ -211,18 +211,17 @@ public class WirePointerTests
     public void ElementCountOutOfBounds()
     {
         var wp = default(WirePointer);
-        Assert.Throws<ArgumentOutOfRangeException>(
-            () => wp.BeginList(ListKind.ListOfBytes, 1 << 29));
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            wp.BeginList(ListKind.ListOfBytes, 1 << 29)
+        );
         wp.BeginList(ListKind.ListOfInts, 1 << (29 - 1));
-        Assert.Throws<ArgumentOutOfRangeException>(
-            () => wp.BeginList(ListKind.ListOfBytes, -1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => wp.BeginList(ListKind.ListOfBytes, -1));
     }
 
     [TestMethod]
     public void FarPointerOffsetOutOfBounds()
     {
         var wp = default(WirePointer);
-        Assert.Throws<ArgumentOutOfRangeException>(
-            () => wp.SetFarPointer(1, 1 << 29, false));
+        Assert.Throws<ArgumentOutOfRangeException>(() => wp.SetFarPointer(1, 1 << 29, false));
     }
 }

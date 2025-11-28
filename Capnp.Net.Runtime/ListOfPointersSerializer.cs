@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,9 +9,7 @@ namespace Capnp;
 ///     List(List(...)).
 /// </summary>
 /// <typeparam name="TS">SerializerState which represents the element type</typeparam>
-public class ListOfPointersSerializer<TS> :
-    SerializerState,
-    IReadOnlyList<TS?>
+public class ListOfPointersSerializer<TS> : SerializerState, IReadOnlyList<TS?>
     where TS : SerializerState, new()
 {
     /// <summary>
@@ -67,7 +65,8 @@ public class ListOfPointersSerializer<TS> :
     {
         var count = Count;
 
-        for (var i = 0; i < count; i++) yield return TryGetPointer<TS>(i);
+        for (var i = 0; i < count; i++)
+            yield return TryGetPointer<TS>(i);
     }
 
     /// <summary>
@@ -97,10 +96,12 @@ public class ListOfPointersSerializer<TS> :
     /// <exception cref="ArgumentOutOfRangeException">More than 2^29-1 items.</exception>
     public void Init<T>(IReadOnlyList<T>? items, Action<TS, T> init)
     {
-        if (items == null) return;
+        if (items == null)
+            return;
 
         Init(items.Count);
 
-        for (var i = 0; i < items.Count; i++) init(this[i], items[i]);
+        for (var i = 0; i < items.Count; i++)
+            init(this[i], items[i]);
     }
 }

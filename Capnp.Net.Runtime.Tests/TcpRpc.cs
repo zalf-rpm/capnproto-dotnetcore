@@ -26,9 +26,7 @@ public class TcpRpc : TestBase
         var (server, client) = SetupClientServerPair();
 
         using (server)
-        using (client)
-        {
-        }
+        using (client) { }
     }
 
     [TestMethod]
@@ -59,7 +57,7 @@ public class TcpRpc : TestBase
         var (addr, _) = TcpManager.Instance.GetLocalAddressAndPort();
         var listener = new TcpListener(addr, 0);
         listener.Start();
-        int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        var port = ((IPEndPoint)listener.LocalEndpoint).Port;
         listener.Stop();
 
         using (var client = new TcpRpcClient(addr.ToString(), port))
@@ -101,8 +99,11 @@ public class TcpRpc : TestBase
 
             var main = client.GetMain<BareProxy>();
             var resolving = main as IResolvingCapability;
-            Assert.IsTrue(Assert.ThrowsAsync<RpcException>(() => resolving.WhenResolved.WrappedTask)
-                .Wait(MediumNonDbgTimeout));
+            Assert.IsTrue(
+                Assert
+                    .ThrowsAsync<RpcException>(() => resolving.WhenResolved.WrappedTask)
+                    .Wait(MediumNonDbgTimeout)
+            );
         }
     }
 
@@ -177,8 +178,11 @@ public class TcpRpc : TestBase
 
                 mock.Return.SetCanceled();
 
-                Assert.IsTrue(Assert.ThrowsAsync<TaskCanceledException>(async () => await answer.WhenReturned)
-                    .Wait(MediumNonDbgTimeout));
+                Assert.IsTrue(
+                    Assert
+                        .ThrowsAsync<TaskCanceledException>(async () => await answer.WhenReturned)
+                        .Wait(MediumNonDbgTimeout)
+                );
             }
         }
     }
@@ -219,7 +223,9 @@ public class TcpRpc : TestBase
                     ctx = ct;
                 }
 
-                Assert.IsTrue(SpinWait.SpinUntil(() => ctx.IsCancellationRequested, MediumNonDbgTimeout));
+                Assert.IsTrue(
+                    SpinWait.SpinUntil(() => ctx.IsCancellationRequested, MediumNonDbgTimeout)
+                );
             }
             finally
             {
@@ -263,7 +269,9 @@ public class TcpRpc : TestBase
                     ctx = ct;
                 }
 
-                Assert.IsTrue(SpinWait.SpinUntil(() => ctx.IsCancellationRequested, MediumNonDbgTimeout));
+                Assert.IsTrue(
+                    SpinWait.SpinUntil(() => ctx.IsCancellationRequested, MediumNonDbgTimeout)
+                );
 
                 var mbr = MessageBuilder.Create();
                 mbr.InitCapTable();
@@ -318,7 +326,9 @@ public class TcpRpc : TestBase
 
                 mock.Return.SetException(new MyTestException());
 
-                var exTask = Assert.ThrowsAsync<RpcException>(async () => await answer.WhenReturned);
+                var exTask = Assert.ThrowsAsync<RpcException>(async () =>
+                    await answer.WhenReturned
+                );
                 Assert.IsTrue(exTask.Wait(MediumNonDbgTimeout));
                 Assert.Contains(new MyTestException().Message, exTask.Result.Message);
             }
@@ -348,9 +358,17 @@ public class TcpRpc : TestBase
             {
                 Assert.IsTrue(mock.WhenCalled.Wait(MediumNonDbgTimeout));
 
-                var pipelined = (BareProxy)CapabilityReflection.CreateProxy<BareProxy>(answer.Access(
-                    new MemberAccessPath(new MemberAccessPath.MemberAccess[]
-                        { new MemberAccessPath.StructMemberAccess(1) })));
+                var pipelined = (BareProxy)
+                    CapabilityReflection.CreateProxy<BareProxy>(
+                        answer.Access(
+                            new MemberAccessPath(
+                                new MemberAccessPath.MemberAccess[]
+                                {
+                                    new MemberAccessPath.StructMemberAccess(1),
+                                }
+                            )
+                        )
+                    );
 
                 var args2 = DynamicSerializerState.CreateForRpc();
                 args2.SetStruct(1, 0);
@@ -438,13 +456,19 @@ public class TcpRpc : TestBase
 
                 mock.Return.SetResult(result);
 
-                using (var pipelined = (BareProxy)CapabilityReflection.CreateProxy<BareProxy>(
-                           answer.Access(
-                               new MemberAccessPath(
-                                   new MemberAccessPath.MemberAccess[]
-                                   {
-                                       new MemberAccessPath.StructMemberAccess(1)
-                                   }))))
+                using (
+                    var pipelined = (BareProxy)
+                        CapabilityReflection.CreateProxy<BareProxy>(
+                            answer.Access(
+                                new MemberAccessPath(
+                                    new MemberAccessPath.MemberAccess[]
+                                    {
+                                        new MemberAccessPath.StructMemberAccess(1),
+                                    }
+                                )
+                            )
+                        )
+                )
                 {
                     var args2 = DynamicSerializerState.CreateForRpc();
                     args2.SetStruct(1, 0);
@@ -499,9 +523,17 @@ public class TcpRpc : TestBase
             {
                 Assert.IsTrue(mock.WhenCalled.Wait(MediumNonDbgTimeout));
 
-                var pipelined = (BareProxy)CapabilityReflection.CreateProxy<BareProxy>(
-                    answer.Access(new MemberAccessPath(new MemberAccessPath.MemberAccess[]
-                        { new MemberAccessPath.StructMemberAccess(1) })));
+                var pipelined = (BareProxy)
+                    CapabilityReflection.CreateProxy<BareProxy>(
+                        answer.Access(
+                            new MemberAccessPath(
+                                new MemberAccessPath.MemberAccess[]
+                                {
+                                    new MemberAccessPath.StructMemberAccess(1),
+                                }
+                            )
+                        )
+                    );
 
                 var args2 = DynamicSerializerState.CreateForRpc();
                 args2.SetStruct(1, 0);
@@ -619,9 +651,17 @@ public class TcpRpc : TestBase
             {
                 Assert.IsTrue(mock.WhenCalled.Wait(MediumNonDbgTimeout));
 
-                pipelined = (BareProxy)CapabilityReflection.CreateProxy<BareProxy>(
-                    answer.Access(new MemberAccessPath(new MemberAccessPath.MemberAccess[]
-                        { new MemberAccessPath.StructMemberAccess(1) })));
+                pipelined = (BareProxy)
+                    CapabilityReflection.CreateProxy<BareProxy>(
+                        answer.Access(
+                            new MemberAccessPath(
+                                new MemberAccessPath.MemberAccess[]
+                                {
+                                    new MemberAccessPath.StructMemberAccess(1),
+                                }
+                            )
+                        )
+                    );
             }
 
             var args2 = DynamicSerializerState.CreateForRpc();
@@ -633,12 +673,8 @@ public class TcpRpc : TestBase
                 pipelined.Call(0x8765432187654321, 0x4444, args2);
                 Assert.Fail("Expected an exception here");
             }
-            catch (ObjectDisposedException)
-            {
-            }
-            catch (TaskCanceledException)
-            {
-            }
+            catch (ObjectDisposedException) { }
+            catch (TaskCanceledException) { }
         }
     }
 
@@ -666,9 +702,17 @@ public class TcpRpc : TestBase
             {
                 Assert.IsTrue(mock.WhenCalled.Wait(MediumNonDbgTimeout));
 
-                var pipelined = (BareProxy)CapabilityReflection.CreateProxy<BareProxy>(
-                    answer.Access(new MemberAccessPath(new MemberAccessPath.MemberAccess[]
-                        { new MemberAccessPath.StructMemberAccess(1) })));
+                var pipelined = (BareProxy)
+                    CapabilityReflection.CreateProxy<BareProxy>(
+                        answer.Access(
+                            new MemberAccessPath(
+                                new MemberAccessPath.MemberAccess[]
+                                {
+                                    new MemberAccessPath.StructMemberAccess(1),
+                                }
+                            )
+                        )
+                    );
 
                 var args2 = DynamicSerializerState.CreateForRpc();
                 args2.SetStruct(1, 0);
@@ -697,8 +741,11 @@ public class TcpRpc : TestBase
 
                 mock.Return.SetResult(result);
 
-                Assert.IsTrue(Assert.ThrowsAsync<TaskCanceledException>(
-                    async () => await answer2.WhenReturned).Wait(MediumNonDbgTimeout));
+                Assert.IsTrue(
+                    Assert
+                        .ThrowsAsync<TaskCanceledException>(async () => await answer2.WhenReturned)
+                        .Wait(MediumNonDbgTimeout)
+                );
             }
         }
     }
@@ -756,7 +803,9 @@ public class TcpRpc : TestBase
         Assert.AreEqual(c1, server.Connections[0]);
         Assert.AreEqual(ConnectionState.Active, c1.State);
         var proxy = client1.GetMain<ITestInterface>();
-        Assert.IsTrue(proxy is IResolvingCapability r && r.WhenResolved.WrappedTask.Wait(MediumNonDbgTimeout));
+        Assert.IsTrue(
+            proxy is IResolvingCapability r && r.WhenResolved.WrappedTask.Wait(MediumNonDbgTimeout)
+        );
         Assert.IsGreaterThan(0, c1.RecvCount);
         Assert.IsGreaterThan(0, c1.SendCount);
 
@@ -773,13 +822,17 @@ public class TcpRpc : TestBase
         Assert.IsNotNull(c1d);
         Assert.AreEqual(1, server.ConnectionCount);
         Assert.AreEqual(c2, server.Connections[0]);
-        Assert.IsTrue(SpinWait.SpinUntil(() => c1d.State == ConnectionState.Down, MediumNonDbgTimeout));
+        Assert.IsTrue(
+            SpinWait.SpinUntil(() => c1d.State == ConnectionState.Down, MediumNonDbgTimeout)
+        );
 
         client2.Dispose();
         var c2d = cbb.Receive(TimeSpan.FromMilliseconds(MediumNonDbgTimeout));
         Assert.IsNotNull(c2d);
         Assert.AreEqual(0, server.ConnectionCount);
-        Assert.IsTrue(SpinWait.SpinUntil(() => c2d.State == ConnectionState.Down, MediumNonDbgTimeout));
+        Assert.IsTrue(
+            SpinWait.SpinUntil(() => c2d.State == ConnectionState.Down, MediumNonDbgTimeout)
+        );
 
         server.StopListening();
         Assert.IsFalse(server.IsAlive);
@@ -802,7 +855,10 @@ public class TcpRpc : TestBase
         var server = new TcpRpcServer();
         server.Main = new TestInterfaceImpl2();
         var tracer = new RpcFrameTracer(Console.Out);
-        server.OnConnectionChanged += (s, a) => { server.Dispose(); };
+        server.OnConnectionChanged += (s, a) =>
+        {
+            server.Dispose();
+        };
 
         var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
         server.StartAccepting(addr, 0);
@@ -810,8 +866,10 @@ public class TcpRpc : TestBase
 
         var client1 = new TcpRpcClient(addr.ToString(), port);
         Assert.IsTrue(client1.WhenConnected.Wait(MediumNonDbgTimeout), "Did not connect");
-        Assert.IsTrue(SpinWait.SpinUntil(() => client1.State == ConnectionState.Down, MediumNonDbgTimeout),
-            $"Connection did not go down: {client1.State}");
+        Assert.IsTrue(
+            SpinWait.SpinUntil(() => client1.State == ConnectionState.Down, MediumNonDbgTimeout),
+            $"Connection did not go down: {client1.State}"
+        );
     }
 
     [TestMethod]
@@ -821,7 +879,10 @@ public class TcpRpc : TestBase
         {
             server.Main = new TestInterfaceImpl2();
             var tracer = new RpcFrameTracer(Console.Out);
-            server.OnConnectionChanged += (s, a) => { a.Connection.Close(); };
+            server.OnConnectionChanged += (s, a) =>
+            {
+                a.Connection.Close();
+            };
 
             var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
             server.StartAccepting(addr, 0);
@@ -829,7 +890,9 @@ public class TcpRpc : TestBase
 
             var client1 = new TcpRpcClient(addr.ToString(), port);
             Assert.IsTrue(client1.WhenConnected.Wait(MediumNonDbgTimeout));
-            Assert.IsTrue(SpinWait.SpinUntil(() => client1.State == ConnectionState.Down, MediumNonDbgTimeout));
+            Assert.IsTrue(
+                SpinWait.SpinUntil(() => client1.State == ConnectionState.Down, MediumNonDbgTimeout)
+            );
         }
     }
 
@@ -853,7 +916,8 @@ public class TcpRpc : TestBase
             Assert.Throws<InvalidOperationException>(() => client.Connect(addr.ToString(), port));
             Assert.IsTrue(client.WhenConnected.Wait(MediumNonDbgTimeout));
             Assert.Throws<InvalidOperationException>(() =>
-                client.AttachTracer(new RpcFrameTracer(Console.Out, false)));
+                client.AttachTracer(new RpcFrameTracer(Console.Out, false))
+            );
             Assert.Throws<InvalidOperationException>(() => client.InjectMidlayer(_ => _));
             Assert.AreEqual(port, client.RemotePort);
             Assert.AreNotEqual(0, client.LocalPort);
@@ -861,14 +925,15 @@ public class TcpRpc : TestBase
             Assert.AreEqual(0L, client.RecvCount);
             Assert.IsTrue(SpinWait.SpinUntil(() => client.IsWaitingForData, MediumNonDbgTimeout));
             ((IConnection)client).Close();
-            Assert.IsTrue(SpinWait.SpinUntil(() => client.State == ConnectionState.Down, MediumNonDbgTimeout));
+            Assert.IsTrue(
+                SpinWait.SpinUntil(() => client.State == ConnectionState.Down, MediumNonDbgTimeout)
+            );
         }
     }
 
     private class MyTestException : Exception
     {
-        public MyTestException() : base("Test exception")
-        {
-        }
+        public MyTestException()
+            : base("Test exception") { }
     }
 }

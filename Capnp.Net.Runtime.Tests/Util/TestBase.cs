@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,7 +17,8 @@ namespace Capnp.Net.Runtime.Tests;
 public interface ITestbed
 {
     long ClientSendCount { get; }
-    T ConnectMain<T>(object main) where T : class, IDisposable;
+    T ConnectMain<T>(object main)
+        where T : class, IDisposable;
     void MustComplete(params Task[] tasks);
     void MustNotComplete(params Task[] tasks);
     void FlushCommunication();
@@ -38,7 +39,7 @@ public class TestBase
         None = 0,
         ClientTracer = 1,
         ClientFluctStream = 2,
-        ClientNoConnect = 4
+        ClientNoConnect = 4,
     }
 
     protected TestBase()
@@ -54,7 +55,7 @@ public class TestBase
             Thread.CurrentThread.Name = $"Test Thread {Thread.CurrentThread.ManagedThreadId}";
 
 #if SOTASK_PERF
-            StrictlyOrderedTaskExtensions.Stats.Reset();
+        StrictlyOrderedTaskExtensions.Stats.Reset();
 #endif
     }
 
@@ -68,15 +69,24 @@ public class TestBase
     public void TestCleanup()
     {
 #if SOTASK_PERF
-            Console.WriteLine($"StrictlyOrderedTask performance statistics:");
-            Console.WriteLine($"AwaitInternal: max. {StrictlyOrderedTaskExtensions.Stats.AwaitInternalMaxOuterIterations} outer iterations");
-            Console.WriteLine($"AwaitInternal: max. {StrictlyOrderedTaskExtensions.Stats.AwaitInternalMaxInnerIterations} inner iterations");
-            Console.WriteLine($"OnCompleted: max. {StrictlyOrderedTaskExtensions.Stats.OnCompletedMaxSpins} iterations");
+        Console.WriteLine($"StrictlyOrderedTask performance statistics:");
+        Console.WriteLine(
+            $"AwaitInternal: max. {StrictlyOrderedTaskExtensions.Stats.AwaitInternalMaxOuterIterations} outer iterations"
+        );
+        Console.WriteLine(
+            $"AwaitInternal: max. {StrictlyOrderedTaskExtensions.Stats.AwaitInternalMaxInnerIterations} inner iterations"
+        );
+        Console.WriteLine(
+            $"OnCompleted: max. {StrictlyOrderedTaskExtensions.Stats.OnCompletedMaxSpins} iterations"
+        );
 #endif
     }
 
-    protected static TcpRpcClient SetupClient(IPAddress addr, int port,
-        TcpRpcTestOptions options = TcpRpcTestOptions.None)
+    protected static TcpRpcClient SetupClient(
+        IPAddress addr,
+        int port,
+        TcpRpcTestOptions options = TcpRpcTestOptions.None
+    )
     {
         var client = new TcpRpcClient();
         client.AddBuffering();
@@ -98,10 +108,11 @@ public class TestBase
     }
 
     protected static (TcpRpcServer, TcpRpcClient) SetupClientServerPair(
-        TcpRpcTestOptions options = TcpRpcTestOptions.None)
+        TcpRpcTestOptions options = TcpRpcTestOptions.None
+    )
     {
         var (addr, _) = TcpManager.Instance.GetLocalAddressAndPort();
-        int port = 0;
+        var port = 0;
 
         var server = SetupServer(addr, port);
         port = server.Port;
@@ -110,7 +121,12 @@ public class TestBase
         return (server, client);
     }
 
-    protected static T SetupEnginePair<T>(object main, DecisionTree decisionTree, out EnginePair pair) where T : class
+    protected static T SetupEnginePair<T>(
+        object main,
+        DecisionTree decisionTree,
+        out EnginePair pair
+    )
+        where T : class
     {
         pair = new EnginePair(decisionTree);
         pair.Engine1.Main = main;
@@ -122,7 +138,9 @@ public class TestBase
         return new DtbdctTestbed();
     }
 
-    protected static LocalhostTcpTestbed NewLocalhostTcpTestbed(TcpRpcTestOptions options = TcpRpcTestOptions.None)
+    protected static LocalhostTcpTestbed NewLocalhostTcpTestbed(
+        TcpRpcTestOptions options = TcpRpcTestOptions.None
+    )
     {
         return new LocalhostTcpTestbed(options);
     }
@@ -141,10 +159,14 @@ public class TestBase
     protected static void WaitClientServerIdle(TcpRpcServer server, TcpRpcClient client)
     {
         var conn = server.Connections[0];
-        SpinWait.SpinUntil(() => conn.IsWaitingForData && client.IsWaitingForData &&
-                                 conn.RecvCount == client.SendCount &&
-                                 conn.SendCount == client.RecvCount,
-            MediumNonDbgTimeout);
+        SpinWait.SpinUntil(
+            () =>
+                conn.IsWaitingForData
+                && client.IsWaitingForData
+                && conn.RecvCount == client.SendCount
+                && conn.SendCount == client.RecvCount,
+            MediumNonDbgTimeout
+        );
     }
 
     protected void ExpectPromiseThrows(Task task)
@@ -180,7 +202,8 @@ public class TestBase
 
     protected class EnginePair
     {
-        private readonly EngineChannel _channel1, _channel2;
+        private readonly EngineChannel _channel1,
+            _channel2;
 
         private readonly DecisionTree _decisionTree;
 
@@ -208,11 +231,13 @@ public class TestBase
         public void FlushChannels(Func<bool> pred)
         {
             while (!pred())
-                if (!_channel1.Flush() &&
-                    !_channel2.Flush())
+                if (!_channel1.Flush() && !_channel2.Flush())
                     return;
 
-            while ((_channel1.HasBufferedFrames || _channel2.HasBufferedFrames) && _decisionTree.MakeDecision())
+            while (
+                (_channel1.HasBufferedFrames || _channel2.HasBufferedFrames)
+                && _decisionTree.MakeDecision()
+            )
                 if (_channel1.HasBufferedFrames)
                 {
                     var mark = _channel2.FrameCounter;
@@ -245,7 +270,6 @@ public class TestBase
             public bool HasBufferedFrames => _frameBuffer.Count > 0;
             public int FrameCounter { get; private set; }
 
-
             public void Dismiss()
             {
                 if (!_dismissed)
@@ -274,9 +298,7 @@ public class TestBase
                 }
             }
 
-            void IEndpoint.Flush()
-            {
-            }
+            void IEndpoint.Flush() { }
 
             public bool Flush()
             {
@@ -288,9 +310,7 @@ public class TestBase
                     {
                         OtherEndpoint.Forward(frame);
                     }
-                    catch (InvalidOperationException)
-                    {
-                    }
+                    catch (InvalidOperationException) { }
 
                     _recursion = false;
 
@@ -311,9 +331,7 @@ public class TestBase
             return Proxy.Share((T)main);
         }
 
-        void ITestbed.FlushCommunication()
-        {
-        }
+        void ITestbed.FlushCommunication() { }
 
         void ITestbed.MustComplete(params Task[] tasks)
         {
@@ -459,7 +477,9 @@ public class TestBase
         public void RunTest(Action<ITestbed> action)
         {
             (_server, _client) = SetupClientServerPair(_options);
-            Assert.IsTrue(SpinWait.SpinUntil(() => _server.ConnectionCount > 0, LargeNonDbgTimeout));
+            Assert.IsTrue(
+                SpinWait.SpinUntil(() => _server.ConnectionCount > 0, LargeNonDbgTimeout)
+            );
             var conn = _server.Connections[0];
 
             using (_server)
@@ -469,8 +489,18 @@ public class TestBase
 
                 if (!_prematurelyClosed)
                 {
-                    Assert.IsTrue(SpinWait.SpinUntil(() => _client.SendCount == conn.RecvCount, MediumNonDbgTimeout));
-                    Assert.IsTrue(SpinWait.SpinUntil(() => conn.SendCount == _client.RecvCount, MediumNonDbgTimeout));
+                    Assert.IsTrue(
+                        SpinWait.SpinUntil(
+                            () => _client.SendCount == conn.RecvCount,
+                            MediumNonDbgTimeout
+                        )
+                    );
+                    Assert.IsTrue(
+                        SpinWait.SpinUntil(
+                            () => conn.SendCount == _client.RecvCount,
+                            MediumNonDbgTimeout
+                        )
+                    );
                 }
             }
         }
@@ -483,9 +513,7 @@ public class TestBase
                 {
                     await t;
                 }
-                catch
-                {
-                }
+                catch { }
             }
 
             return tasks.Select(Gulp).ToArray();

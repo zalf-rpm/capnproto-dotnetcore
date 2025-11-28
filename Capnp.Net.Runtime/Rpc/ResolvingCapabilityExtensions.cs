@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +18,11 @@ internal static class ResolvingCapabilityExtensions
         return cap;
     }
 
-    public static Action? ExportAsSenderPromise<T>(this T cap, IRpcEndpoint endpoint, CapDescriptor.WRITER writer)
+    public static Action? ExportAsSenderPromise<T>(
+        this T cap,
+        IRpcEndpoint endpoint,
+        CapDescriptor.WRITER writer
+    )
         where T : ConsumedCapability, IResolvingCapability
     {
         var vine = cap.AsSkeleton();
@@ -68,13 +72,17 @@ internal static class ResolvingCapabilityExtensions
 
         switch (obj)
         {
-            case Proxy proxy: return proxy;
-            case null: return new Proxy(NullCapability.Instance);
-            default: return BareProxy.FromImpl(obj);
+            case Proxy proxy:
+                return proxy;
+            case null:
+                return new Proxy(NullCapability.Instance);
+            default:
+                return BareProxy.FromImpl(obj);
         }
     }
 
-    public static T? GetResolvedCapability<T>(this Task<Proxy> proxyTask) where T : class
+    public static T? GetResolvedCapability<T>(this Task<Proxy> proxyTask)
+        where T : class
     {
         if (proxyTask.IsCompleted)
             try

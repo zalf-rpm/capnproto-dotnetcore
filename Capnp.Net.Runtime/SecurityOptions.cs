@@ -1,4 +1,4 @@
-﻿namespace Capnp;
+namespace Capnp;
 
 /// <summary>
 ///     Provides the security bounds for defeating amplification and stack overflow DoS attacks.

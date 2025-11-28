@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace Capnp.Util;
 
 internal class DuplexBufferedStream : Stream
 {
-    // A buffer size of 1024 bytes seems to be a good comprise, giving good performance 
+    // A buffer size of 1024 bytes seems to be a good comprise, giving good performance
     // in TCP/IP-over-localhost scenarios for small to medium (200kiB) frame sizes.
     private const int DefaultBufferSize = 1024;
     private readonly int _bufferSize;
@@ -21,9 +21,8 @@ internal class DuplexBufferedStream : Stream
         _bufferSize = bufferSize;
     }
 
-    public DuplexBufferedStream(Stream stream) : this(stream, DefaultBufferSize)
-    {
-    }
+    public DuplexBufferedStream(Stream stream)
+        : this(stream, DefaultBufferSize) { }
 
     public override bool CanRead => true;
 
@@ -76,17 +75,13 @@ internal class DuplexBufferedStream : Stream
                 {
                     _readStream.Dispose();
                 }
-                catch
-                {
-                }
+                catch { }
 
                 try
                 {
                     _writeStream.Dispose();
                 }
-                catch
-                {
-                }
+                catch { }
             }
 
         base.Dispose(disposing);

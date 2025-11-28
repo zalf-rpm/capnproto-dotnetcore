@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Capnp.Util;
@@ -17,7 +17,12 @@ public class CallContext
 
     private SerializerState _inArgs;
 
-    internal CallContext(CensorCapability censorCapability, ulong interfaceId, ushort methodId, SerializerState inArgs)
+    internal CallContext(
+        CensorCapability censorCapability,
+        ulong interfaceId,
+        ushort methodId,
+        SerializerState inArgs
+    )
     {
         _censorCapability = censorCapability;
         _promisedAnswer = new PromisedAnswer(this);
@@ -238,8 +243,13 @@ public class CallContext
     /// </summary>
     public void ForwardToBob()
     {
-        var answer = BobProxy!.Call(InterfaceId, MethodId, InArgs.Rewrap<DynamicSerializerState>(), default,
-            CancelToBob);
+        var answer = BobProxy!.Call(
+            InterfaceId,
+            MethodId,
+            InArgs.Rewrap<DynamicSerializerState>(),
+            default,
+            CancelToBob
+        );
 
         State = InterceptionState.ForwardedToBob;
 
@@ -305,14 +315,16 @@ public class CallContext
         public ConsumedCapability Access(MemberAccessPath access)
         {
             return _callContext._censorCapability.Policy.Attach<ConsumedCapability>(
-                new LocalAnswerCapability(WhenReturned, access));
+                new LocalAnswerCapability(WhenReturned, access)
+            );
         }
 
         public ConsumedCapability Access(MemberAccessPath _, Task<IDisposable?> task)
         {
             var proxyTask = task.AsProxyTask();
             return _callContext._censorCapability.Policy.Attach<ConsumedCapability>(
-                new LocalAnswerCapability(proxyTask));
+                new LocalAnswerCapability(proxyTask)
+            );
         }
 
         public void Dispose()

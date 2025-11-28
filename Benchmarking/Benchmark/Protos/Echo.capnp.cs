@@ -14,22 +14,33 @@ namespace CapnpGen;
 [Skeleton(typeof(Echoer_Skeleton))]
 public interface IEchoer : IDisposable
 {
-    Task<IReadOnlyList<byte>> Echo(IReadOnlyList<byte> input, CancellationToken cancellationToken_ = default);
+    Task<IReadOnlyList<byte>> Echo(
+        IReadOnlyList<byte> input,
+        CancellationToken cancellationToken_ = default
+    );
 }
 
 [GeneratedCode("capnpc-csharp", "1.3.0.0")]
 [TypeId(0x86e148a317d43104UL)]
 public class Echoer_Proxy : Proxy, IEchoer
 {
-    public async Task<IReadOnlyList<byte>> Echo(IReadOnlyList<byte> input,
-        CancellationToken cancellationToken_ = default)
+    public async Task<IReadOnlyList<byte>> Echo(
+        IReadOnlyList<byte> input,
+        CancellationToken cancellationToken_ = default
+    )
     {
         var in_ = SerializerState.CreateForRpc<Echoer.Params_Echo.WRITER>();
-        var arg_ = new Echoer.Params_Echo
-        { Input = input };
+        var arg_ = new Echoer.Params_Echo { Input = input };
         arg_?.serialize(in_);
-        using (var d_ = await Call(9719129336158892292UL, 0, in_.Rewrap<DynamicSerializerState>(), false,
-                   cancellationToken_).WhenReturned)
+        using (
+            var d_ = await Call(
+                9719129336158892292UL,
+                0,
+                in_.Rewrap<DynamicSerializerState>(),
+                false,
+                cancellationToken_
+            ).WhenReturned
+        )
         {
             var r_ = CapnpSerializable.Create<Echoer.Result_Echo>(d_);
             return r_.Output;
@@ -48,12 +59,17 @@ public class Echoer_Skeleton : Skeleton<IEchoer>
 
     public override ulong InterfaceId => 9719129336158892292UL;
 
-    private Task<AnswerOrCounterquestion> Echo(DeserializerState d_, CancellationToken cancellationToken_)
+    private Task<AnswerOrCounterquestion> Echo(
+        DeserializerState d_,
+        CancellationToken cancellationToken_
+    )
     {
         using (d_)
         {
             var in_ = CapnpSerializable.Create<Echoer.Params_Echo>(d_);
-            return Impatient.MaybeTailCall(Impl.Echo(in_.Input, cancellationToken_), output =>
+            return Impatient.MaybeTailCall(
+                Impl.Echo(in_.Input, cancellationToken_),
+                output =>
                 {
                     var s_ = SerializerState.CreateForRpc<Echoer.Result_Echo.WRITER>();
                     var r_ = new Echoer.Result_Echo { Output = output };
@@ -92,9 +108,7 @@ public static class Echoer
             writer.Input.Init(Input);
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -163,9 +177,7 @@ public static class Echoer
             writer.Output.Init(Output);
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {

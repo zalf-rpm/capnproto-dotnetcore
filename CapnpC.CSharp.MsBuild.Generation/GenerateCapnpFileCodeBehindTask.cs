@@ -18,36 +18,42 @@ public class GenerateCapnpFileCodeBehindTask : Task
 
     public ICapnpcCsharpGenerator CodeBehindGenerator { get; set; }
 
-    [Required] public string ProjectPath { get; set; }
+    [Required]
+    public string ProjectPath { get; set; }
 
     public string ProjectFolder => Path.GetDirectoryName(ProjectPath);
 
     public ITaskItem[] CapnpFiles { get; set; }
 
-    [Output] public ITaskItem[] GeneratedFiles { get; private set; }
+    [Output]
+    public ITaskItem[] GeneratedFiles { get; private set; }
 
     private static CapnpGenJob ToGenJob(ITaskItem item)
     {
         var job = new CapnpGenJob
         {
             CapnpPath = item.GetMetadata("FullPath"),
-            WorkingDirectory = item.GetMetadata("WorkingDirectory")
+            WorkingDirectory = item.GetMetadata("WorkingDirectory"),
         };
 
         var importPaths = item.GetMetadata("ImportPaths");
 
         if (!string.IsNullOrWhiteSpace(importPaths))
-            job.AdditionalArguments.AddRange(importPaths.Split(new[] { ';' },
-                StringSplitOptions.RemoveEmptyEntries).Select(p => $"-I\"{p.TrimEnd('\\')}\""));
+            job.AdditionalArguments.AddRange(
+                importPaths
+                    .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(p => $"-I\"{p.TrimEnd('\\')}\"")
+            );
 
         var sourcePrefix = item.GetMetadata("SourcePrefix");
 
-        if (!string.IsNullOrWhiteSpace(sourcePrefix)) job.AdditionalArguments.Add(sourcePrefix);
-
+        if (!string.IsNullOrWhiteSpace(sourcePrefix))
+            job.AdditionalArguments.Add(sourcePrefix);
 
         var verbose = item.GetMetadata("Verbose");
 
-        if ("true".Equals(verbose, StringComparison.OrdinalIgnoreCase)) job.AdditionalArguments.Add("--verbose");
+        if ("true".Equals(verbose, StringComparison.OrdinalIgnoreCase))
+            job.AdditionalArguments.Add("--verbose");
 
         return job;
     }
@@ -60,8 +66,10 @@ public class GenerateCapnpFileCodeBehindTask : Task
             {
                 var currentProcess = Process.GetCurrentProcess();
 
-                Log.LogWithNameTag(Log.LogMessage,
-                    $"process: {currentProcess.ProcessName}, pid: {currentProcess.Id}, CD: {Environment.CurrentDirectory}");
+                Log.LogWithNameTag(
+                    Log.LogMessage,
+                    $"process: {currentProcess.ProcessName}, pid: {currentProcess.Id}, CD: {Environment.CurrentDirectory}"
+                );
 
                 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
                     Log.LogWithNameTag(Log.LogMessage, "  " + assembly.FullName);
@@ -82,9 +90,12 @@ public class GenerateCapnpFileCodeBehindTask : Task
             var generatedFiles = generator.GenerateFilesForProject(
                 ProjectPath,
                 capnpFiles,
-                ProjectFolder);
+                ProjectFolder
+            );
 
-            GeneratedFiles = generatedFiles.Select(file => new TaskItem { ItemSpec = file }).ToArray();
+            GeneratedFiles = generatedFiles
+                .Select(file => new TaskItem { ItemSpec = file })
+                .ToArray();
 
             return !Log.HasLoggedErrors;
         }
@@ -94,8 +105,14 @@ public class GenerateCapnpFileCodeBehindTask : Task
             {
                 if (e.InnerException is FileLoadException fle)
                 {
-                    Log?.LogWithNameTag(Log.LogError, $"FileLoadException Filename: {fle.FileName}");
-                    Log?.LogWithNameTag(Log.LogError, $"FileLoadException FusionLog: {fle.FusionLog}");
+                    Log?.LogWithNameTag(
+                        Log.LogError,
+                        $"FileLoadException Filename: {fle.FileName}"
+                    );
+                    Log?.LogWithNameTag(
+                        Log.LogError,
+                        $"FileLoadException FusionLog: {fle.FusionLog}"
+                    );
                     Log?.LogWithNameTag(Log.LogError, $"FileLoadException Message: {fle.Message}");
                 }
 
@@ -114,7 +131,6 @@ public class GenerateCapnpFileCodeBehindTask : Task
     private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
     {
         Log.LogWithNameTag(Log.LogMessage, args.Name);
-
 
         return null;
     }

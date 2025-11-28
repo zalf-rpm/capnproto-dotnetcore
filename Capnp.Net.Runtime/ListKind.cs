@@ -1,4 +1,4 @@
-﻿namespace Capnp;
+namespace Capnp;
 
 /// <summary>
 ///     Enumerates the list element categories which are defined by Cap'n Proto.
@@ -43,5 +43,5 @@ public enum ListKind : byte
     /// <summary>
     ///     A list of fixed-size composites (i.e. structs)
     /// </summary>
-    ListOfStructs = 7
+    ListOfStructs = 7,
 }

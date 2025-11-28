@@ -1,4 +1,4 @@
-﻿namespace CapnpC.CSharp.Generator.CodeGen;
+namespace CapnpC.CSharp.Generator.CodeGen;
 
 /// <summary>
 ///     Provides options properties defining how the generated code will look like.

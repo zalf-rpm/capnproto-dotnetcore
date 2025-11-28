@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +20,10 @@ internal class Common
         return Encoding.UTF8.GetBytes(s);
     }
 
-    private static bool DataSequenceEqual(IEnumerable<IReadOnlyList<byte>> seq1, IEnumerable<IReadOnlyList<byte>> seq2)
+    private static bool DataSequenceEqual(
+        IEnumerable<IReadOnlyList<byte>> seq1,
+        IEnumerable<IReadOnlyList<byte>> seq2
+    )
     {
         return seq1.Zip(seq2, (s1, s2) => s1.SequenceEqual(s2)).All(_ => _);
     }
@@ -60,10 +63,7 @@ internal class Common
                 sub.StructField = new TestAllTypes
                 {
                     TextField = "nested",
-                    StructField = new TestAllTypes
-                    {
-                        TextField = "really nested"
-                    }
+                    StructField = new TestAllTypes { TextField = "really nested" },
                 };
             }
             sub.EnumField = TestEnum.baz;
@@ -72,11 +72,23 @@ internal class Common
             sub.Int8List = new sbyte[] { 12, -34, -0x80, 0x7f };
             sub.Int16List = new short[] { 1234, -5678, -0x8000, 0x7fff };
             sub.Int32List = new[] { 12345678, -90123456, -0x7fffffff - 1, 0x7fffffff };
-            sub.Int64List = new[] { 123456789012345, -678901234567890, -0x7fffffffffffffff - 1, 0x7fffffffffffffff };
+            sub.Int64List = new[]
+            {
+                123456789012345,
+                -678901234567890,
+                -0x7fffffffffffffff - 1,
+                0x7fffffffffffffff,
+            };
             sub.UInt8List = new byte[] { 12, 34, 0, 0xff };
             sub.UInt16List = new ushort[] { 1234, 5678, 0, 0xffff };
             sub.UInt32List = new[] { 12345678u, 90123456u, 0u, 0xffffffffu };
-            sub.UInt64List = new ulong[] { 123456789012345, 678901234567890, 0, 0xffffffffffffffff };
+            sub.UInt64List = new ulong[]
+            {
+                123456789012345,
+                678901234567890,
+                0,
+                0xffffffffffffffff,
+            };
             sub.Float32List = new[] { 0, 1234567, 1e37f, -1e37f, 1e-37f, -1e-37f };
             sub.Float64List = new[] { 0, 123456789012345, 1e306, -1e306, 1e-306, -1e-306 };
             sub.TextList = new[] { "quux", "corge", "grault" };
@@ -85,7 +97,7 @@ internal class Common
             {
                 new TestAllTypes { TextField = "x structlist 1" },
                 new TestAllTypes { TextField = "x structlist 2" },
-                new TestAllTypes { TextField = "x structlist 3" }
+                new TestAllTypes { TextField = "x structlist 3" },
             };
             sub.EnumList = new[] { TestEnum.qux, TestEnum.bar, TestEnum.grault };
         }
@@ -100,8 +112,20 @@ internal class Common
         s.UInt16List = new ushort[] { 33333, 44444 };
         s.UInt32List = new[] { 3333333333 };
         s.UInt64List = new[] { 11111111111111111111 };
-        s.Float32List = new[] { 5555.5f, float.PositiveInfinity, float.NegativeInfinity, float.NaN };
-        s.Float64List = new[] { 7777.75, double.PositiveInfinity, double.NegativeInfinity, double.NaN };
+        s.Float32List = new[]
+        {
+            5555.5f,
+            float.PositiveInfinity,
+            float.NegativeInfinity,
+            float.NaN,
+        };
+        s.Float64List = new[]
+        {
+            7777.75,
+            double.PositiveInfinity,
+            double.NegativeInfinity,
+            double.NaN,
+        };
         s.TextList = new[] { "plugh", "xyzzy", "thud" };
         s.DataList = new[] { Data("oops"), Data("exhausted"), Data("rfc3092") };
         {
@@ -109,7 +133,7 @@ internal class Common
             {
                 new TestAllTypes { TextField = "structlist 1" },
                 new TestAllTypes { TextField = "structlist 2" },
-                new TestAllTypes { TextField = "structlist 3" }
+                new TestAllTypes { TextField = "structlist 3" },
             };
         }
         s.EnumList = new[] { TestEnum.foo, TestEnum.garply };
@@ -141,18 +165,44 @@ internal class Common
         Assert.IsTrue(sub.BoolList.SequenceEqual(new[] { false, true, false, true, true }));
         Assert.IsTrue(sub.Int8List.SequenceEqual(new sbyte[] { 12, -34, -0x80, 0x7f }));
         Assert.IsTrue(sub.Int16List.SequenceEqual(new short[] { 1234, -5678, -0x8000, 0x7fff }));
-        Assert.IsTrue(sub.Int32List.SequenceEqual(new[] { 12345678, -90123456, -0x7fffffff - 1, 0x7fffffff }));
-        Assert.IsTrue(sub.Int64List.SequenceEqual(new[]
-            { 123456789012345, -678901234567890, -0x7fffffffffffffff - 1, 0x7fffffffffffffff }));
+        Assert.IsTrue(
+            sub.Int32List.SequenceEqual(new[] { 12345678, -90123456, -0x7fffffff - 1, 0x7fffffff })
+        );
+        Assert.IsTrue(
+            sub.Int64List.SequenceEqual(
+                new[]
+                {
+                    123456789012345,
+                    -678901234567890,
+                    -0x7fffffffffffffff - 1,
+                    0x7fffffffffffffff,
+                }
+            )
+        );
         Assert.IsTrue(sub.UInt8List.SequenceEqual(new byte[] { 12, 34, 0, 0xff }));
         Assert.IsTrue(sub.UInt16List.SequenceEqual(new ushort[] { 1234, 5678, 0, 0xffff }));
-        Assert.IsTrue(sub.UInt32List.SequenceEqual(new uint[] { 12345678, 90123456, 0u, 0xffffffff }));
-        Assert.IsTrue(sub.UInt64List.SequenceEqual(new ulong[]
-            { 123456789012345, 678901234567890, 0, 0xffffffffffffffff }));
-        Assert.IsTrue(sub.Float32List.SequenceEqual(new[] { 0.0f, 1234567.0f, 1e37f, -1e37f, 1e-37f, -1e-37f }));
-        Assert.IsTrue(sub.Float64List.SequenceEqual(new[] { 0.0, 123456789012345.0, 1e306, -1e306, 1e-306, -1e-306 }));
+        Assert.IsTrue(
+            sub.UInt32List.SequenceEqual(new uint[] { 12345678, 90123456, 0u, 0xffffffff })
+        );
+        Assert.IsTrue(
+            sub.UInt64List.SequenceEqual(
+                new ulong[] { 123456789012345, 678901234567890, 0, 0xffffffffffffffff }
+            )
+        );
+        Assert.IsTrue(
+            sub.Float32List.SequenceEqual(
+                new[] { 0.0f, 1234567.0f, 1e37f, -1e37f, 1e-37f, -1e-37f }
+            )
+        );
+        Assert.IsTrue(
+            sub.Float64List.SequenceEqual(
+                new[] { 0.0, 123456789012345.0, 1e306, -1e306, 1e-306, -1e-306 }
+            )
+        );
         Assert.IsTrue(sub.TextList.SequenceEqual(new[] { "quux", "corge", "grault" }));
-        Assert.IsTrue(DataSequenceEqual(sub.DataList, new[] { Data("garply"), Data("waldo"), Data("fred") }));
+        Assert.IsTrue(
+            DataSequenceEqual(sub.DataList, new[] { Data("garply"), Data("waldo"), Data("fred") })
+        );
         {
             var list = sub.StructList;
             Assert.HasCount(3, list);
@@ -160,7 +210,9 @@ internal class Common
             Assert.AreEqual("x structlist 2", list[1].TextField);
             Assert.AreEqual("x structlist 3", list[2].TextField);
         }
-        Assert.IsTrue(sub.EnumList.SequenceEqual(new[] { TestEnum.qux, TestEnum.bar, TestEnum.grault }));
+        Assert.IsTrue(
+            sub.EnumList.SequenceEqual(new[] { TestEnum.qux, TestEnum.bar, TestEnum.grault })
+        );
         Assert.AreEqual(TestEnum.corge, s.EnumField);
 
         Assert.AreEqual(6, s.VoidList);
@@ -168,7 +220,9 @@ internal class Common
         Assert.IsTrue(s.Int8List.SequenceEqual(new sbyte[] { 111, -111 }));
         Assert.IsTrue(s.Int16List.SequenceEqual(new short[] { 11111, -11111 }));
         Assert.IsTrue(s.Int32List.SequenceEqual(new[] { 111111111, -111111111 }));
-        Assert.IsTrue(s.Int64List.SequenceEqual(new[] { 1111111111111111111, -1111111111111111111 }));
+        Assert.IsTrue(
+            s.Int64List.SequenceEqual(new[] { 1111111111111111111, -1111111111111111111 })
+        );
         Assert.IsTrue(s.UInt8List.SequenceEqual(new byte[] { 111, 222 }));
         Assert.IsTrue(s.UInt16List.SequenceEqual(new ushort[] { 33333, 44444 }));
         Assert.IsTrue(s.UInt32List.SequenceEqual(new[] { 3333333333 }));
@@ -190,7 +244,12 @@ internal class Common
             Assert.IsTrue(double.IsNaN(list[3]));
         }
         Assert.IsTrue(s.TextList.SequenceEqual(new[] { "plugh", "xyzzy", "thud" }));
-        Assert.IsTrue(DataSequenceEqual(s.DataList, new[] { Data("oops"), Data("exhausted"), Data("rfc3092") }));
+        Assert.IsTrue(
+            DataSequenceEqual(
+                s.DataList,
+                new[] { Data("oops"), Data("exhausted"), Data("rfc3092") }
+            )
+        );
         {
             var list = s.StructList;
             Assert.HasCount(3, list);
@@ -272,56 +331,47 @@ internal class Common
 
     public static void InitListDefaults(TestLists lists)
     {
-        lists.List0 = new[]
-        {
-            new TestLists.Struct0(),
-            new TestLists.Struct0()
-        };
+        lists.List0 = new[] { new TestLists.Struct0(), new TestLists.Struct0() };
         lists.List1 = new[]
         {
             new TestLists.Struct1 { F = true },
             new TestLists.Struct1 { F = false },
             new TestLists.Struct1 { F = true },
-            new TestLists.Struct1 { F = true }
+            new TestLists.Struct1 { F = true },
         };
         lists.List8 = new[]
         {
             new TestLists.Struct8 { F = 123 },
-            new TestLists.Struct8 { F = 45 }
+            new TestLists.Struct8 { F = 45 },
         };
         lists.List16 = new[]
         {
             new TestLists.Struct16 { F = 12345 },
-            new TestLists.Struct16 { F = 6789 }
+            new TestLists.Struct16 { F = 6789 },
         };
         lists.List32 = new[]
         {
             new TestLists.Struct32 { F = 123456789 },
-            new TestLists.Struct32 { F = 234567890 }
+            new TestLists.Struct32 { F = 234567890 },
         };
         lists.List64 = new[]
         {
             new TestLists.Struct64 { F = 1234567890123456 },
-            new TestLists.Struct64 { F = 2345678901234567 }
+            new TestLists.Struct64 { F = 2345678901234567 },
         };
         lists.ListP = new[]
         {
             new TestLists.StructP { F = "foo" },
-            new TestLists.StructP { F = "bar" }
+            new TestLists.StructP { F = "bar" },
         };
 
-        lists.Int32ListList = new[]
-        {
-            new[] { 1, 2, 3 },
-            new[] { 4, 5 },
-            new[] { 12341234 }
-        };
+        lists.Int32ListList = new[] { new[] { 1, 2, 3 }, new[] { 4, 5 }, new[] { 12341234 } };
 
         lists.TextListList = new[]
         {
             new[] { "foo", "bar" },
             new[] { "baz" },
-            new[] { "qux", "corge" }
+            new[] { "qux", "corge" },
         };
 
         lists.StructListList = new[]
@@ -329,12 +379,9 @@ internal class Common
             new[]
             {
                 new TestAllTypes { Int32Field = 123 },
-                new TestAllTypes { Int32Field = 456 }
+                new TestAllTypes { Int32Field = 456 },
             },
-            new[]
-            {
-                new TestAllTypes { Int32Field = 789 }
-            }
+            new[] { new TestAllTypes { Int32Field = 789 } },
         };
     }
 
@@ -478,9 +525,8 @@ internal class TestInterfaceImpl2 : ITestInterface
 
 internal class TestExtendsImpl : TestInterfaceImpl, ITestExtends
 {
-    public TestExtendsImpl(Counters counters) : base(counters)
-    {
-    }
+    public TestExtendsImpl(Counters counters)
+        : base(counters) { }
 
     public override Task<string> Foo(uint i, bool j, CancellationToken cancellationToken)
     {
@@ -522,12 +568,13 @@ internal class TestPipelineImpl : ITestPipeline
         _counters = counters;
     }
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 
-    public async Task<(string, TestPipeline.AnyBox)> GetAnyCap(uint n, BareProxy inCap,
-        CancellationToken cancellationToken_)
+    public async Task<(string, TestPipeline.AnyBox)> GetAnyCap(
+        uint n,
+        BareProxy inCap,
+        CancellationToken cancellationToken_
+    )
     {
         using (inCap)
         {
@@ -535,12 +582,18 @@ internal class TestPipelineImpl : ITestPipeline
             Assert.AreEqual(234u, n);
             var s = await inCap.Cast<ITestInterface>(true).Foo(123, true, cancellationToken_);
             Assert.AreEqual("foo", s);
-            return ("bar", new TestPipeline.AnyBox { Cap = BareProxy.FromImpl(new TestExtendsImpl(_counters)) });
+            return (
+                "bar",
+                new TestPipeline.AnyBox { Cap = BareProxy.FromImpl(new TestExtendsImpl(_counters)) }
+            );
         }
     }
 
-    public async Task<(string, TestPipeline.Box)> GetCap(uint n, ITestInterface inCap,
-        CancellationToken cancellationToken_)
+    public async Task<(string, TestPipeline.Box)> GetCap(
+        uint n,
+        ITestInterface inCap,
+        CancellationToken cancellationToken_
+    )
     {
         using (inCap)
         {
@@ -552,8 +605,12 @@ internal class TestPipelineImpl : ITestPipeline
         }
     }
 
-    public Task TestPointers(ITestInterface cap, object obj, IReadOnlyList<ITestInterface> list,
-        CancellationToken cancellationToken_)
+    public Task TestPointers(
+        ITestInterface cap,
+        object obj,
+        IReadOnlyList<ITestInterface> list,
+        CancellationToken cancellationToken_
+    )
     {
         throw new NotImplementedException();
     }
@@ -572,18 +629,22 @@ internal class TestPipelineImpl2 : ITestPipeline
 
     public bool IsChildCapDisposed => _timpl2.IsDisposed;
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 
-    public Task<(string, TestPipeline.AnyBox)> GetAnyCap(uint n, BareProxy inCap,
-        CancellationToken cancellationToken_ = default)
+    public Task<(string, TestPipeline.AnyBox)> GetAnyCap(
+        uint n,
+        BareProxy inCap,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(string, TestPipeline.Box)> GetCap(uint n, ITestInterface inCap,
-        CancellationToken cancellationToken_ = default)
+    public async Task<(string, TestPipeline.Box)> GetCap(
+        uint n,
+        ITestInterface inCap,
+        CancellationToken cancellationToken_ = default
+    )
     {
         using (inCap)
         {
@@ -592,8 +653,12 @@ internal class TestPipelineImpl2 : ITestPipeline
         }
     }
 
-    public Task TestPointers(ITestInterface cap, object obj, IReadOnlyList<ITestInterface> list,
-        CancellationToken cancellationToken_ = default)
+    public Task TestPointers(
+        ITestInterface cap,
+        object obj,
+        IReadOnlyList<ITestInterface> list,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
@@ -627,8 +692,10 @@ internal class TestCallOrderImpl : ITestCallOrder
     {
         lock (_lock)
         {
-            Assert.IsTrue(!CountToDispose.HasValue || _counter == CountToDispose,
-                $"Must not dispose at this point: {_counter} {Thread.CurrentThread.Name}");
+            Assert.IsTrue(
+                !CountToDispose.HasValue || _counter == CountToDispose,
+                $"Must not dispose at this point: {_counter} {Thread.CurrentThread.Name}"
+            );
         }
     }
 
@@ -655,11 +722,13 @@ internal class TestTailCallerImpl : ITestTailCaller
         _counters = counters;
     }
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 
-    public Task<TestTailCallee.TailResult> Foo(int i, ITestTailCallee callee, CancellationToken cancellationToken_)
+    public Task<TestTailCallee.TailResult> Foo(
+        int i,
+        ITestTailCallee callee,
+        CancellationToken cancellationToken_
+    )
     {
         Interlocked.Increment(ref _counters.CallCount);
 
@@ -679,7 +748,11 @@ internal class TestTailCallerImpl2 : ITestTailCaller
         _keeper?.Dispose();
     }
 
-    public Task<TestTailCallee.TailResult> Foo(int i, ITestTailCallee callee, CancellationToken cancellationToken_)
+    public Task<TestTailCallee.TailResult> Foo(
+        int i,
+        ITestTailCallee callee,
+        CancellationToken cancellationToken_
+    )
     {
         using (callee)
         {
@@ -690,22 +763,20 @@ internal class TestTailCallerImpl2 : ITestTailCaller
                 return task;
             }
 
-            return Task.FromResult(
-                new TestTailCallee.TailResult
-                {
-                    C = _keeper
-                });
+            return Task.FromResult(new TestTailCallee.TailResult { C = _keeper });
         }
     }
 }
 
 internal class TestTailCallerImpl3 : ITestTailCaller
 {
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 
-    public Task<TestTailCallee.TailResult> Foo(int i, ITestTailCallee callee, CancellationToken cancellationToken_)
+    public Task<TestTailCallee.TailResult> Foo(
+        int i,
+        ITestTailCallee callee,
+        CancellationToken cancellationToken_
+    )
     {
         using (callee)
         {
@@ -728,9 +799,7 @@ internal class TestTailCallerImpl3 : ITestTailCaller
                     await task2;
                     Assert.Fail("Not a tail call");
                 }
-                catch (NoResultsException)
-                {
-                }
+                catch (NoResultsException) { }
             }
 
             AssertIsTailCall();
@@ -742,12 +811,13 @@ internal class TestTailCallerImpl3 : ITestTailCaller
 
 internal class TestTailCallerImpl4 : ITestTailCaller
 {
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 
-    public async Task<TestTailCallee.TailResult> Foo(int i, ITestTailCallee callee,
-        CancellationToken cancellationToken_)
+    public async Task<TestTailCallee.TailResult> Foo(
+        int i,
+        ITestTailCallee callee,
+        CancellationToken cancellationToken_
+    )
     {
         await Task.Yield();
 
@@ -778,7 +848,11 @@ internal class TestTailCalleeImpl : ITestTailCallee
         IsDisposed = true;
     }
 
-    public Task<TestTailCallee.TailResult> Foo(int i, string t, CancellationToken cancellationToken_)
+    public Task<TestTailCallee.TailResult> Foo(
+        int i,
+        string t,
+        CancellationToken cancellationToken_
+    )
     {
         Assert.IsFalse(IsDisposed);
 
@@ -788,7 +862,7 @@ internal class TestTailCalleeImpl : ITestTailCallee
         {
             I = (uint)i,
             T = t,
-            C = new TestCallOrderImpl()
+            C = new TestCallOrderImpl(),
         };
         return Task.FromResult(result);
     }
@@ -822,7 +896,10 @@ internal class TestMoreStuffImpl : ITestMoreStuff
         return "bar";
     }
 
-    public async Task<string> CallFooWhenResolved(ITestInterface cap, CancellationToken cancellationToken_)
+    public async Task<string> CallFooWhenResolved(
+        ITestInterface cap,
+        CancellationToken cancellationToken_
+    )
     {
         Interlocked.Increment(ref _counters.CallCount);
         using (cap)
@@ -897,17 +974,29 @@ internal class TestMoreStuffImpl : ITestMoreStuff
         return Task.CompletedTask;
     }
 
-    public Task<(string, string)> MethodWithDefaults(string a, uint b, string c, CancellationToken cancellationToken_)
+    public Task<(string, string)> MethodWithDefaults(
+        string a,
+        uint b,
+        string c,
+        CancellationToken cancellationToken_
+    )
     {
         throw new NotImplementedException();
     }
 
-    public Task MethodWithNullDefault(string a, ITestInterface b, CancellationToken cancellationToken_)
+    public Task MethodWithNullDefault(
+        string a,
+        ITestInterface b,
+        CancellationToken cancellationToken_
+    )
     {
         throw new NotImplementedException();
     }
 
-    public async Task<ITestInterface> NeverReturn(ITestInterface cap, CancellationToken cancellationToken_)
+    public async Task<ITestInterface> NeverReturn(
+        ITestInterface cap,
+        CancellationToken cancellationToken_
+    )
     {
         Interlocked.Increment(ref _counters.CallCount);
 
@@ -950,7 +1039,10 @@ internal class TestMoreStuffImpl2 : ITestMoreStuff
         return "bar";
     }
 
-    public Task<string> CallFooWhenResolved(ITestInterface cap, CancellationToken cancellationToken_)
+    public Task<string> CallFooWhenResolved(
+        ITestInterface cap,
+        CancellationToken cancellationToken_
+    )
     {
         throw new NotImplementedException();
     }
@@ -960,9 +1052,7 @@ internal class TestMoreStuffImpl2 : ITestMoreStuff
         throw new NotImplementedException();
     }
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 
     public Task<ITestCallOrder> Echo(ITestCallOrder cap, CancellationToken cancellationToken_)
     {
@@ -1017,17 +1107,29 @@ internal class TestMoreStuffImpl2 : ITestMoreStuff
         }
     }
 
-    public Task<(string, string)> MethodWithDefaults(string a, uint b, string c, CancellationToken cancellationToken_)
+    public Task<(string, string)> MethodWithDefaults(
+        string a,
+        uint b,
+        string c,
+        CancellationToken cancellationToken_
+    )
     {
         throw new NotImplementedException();
     }
 
-    public Task MethodWithNullDefault(string a, ITestInterface b, CancellationToken cancellationToken_)
+    public Task MethodWithNullDefault(
+        string a,
+        ITestInterface b,
+        CancellationToken cancellationToken_
+    )
     {
         throw new NotImplementedException();
     }
 
-    public Task<ITestInterface> NeverReturn(ITestInterface cap, CancellationToken cancellationToken_)
+    public Task<ITestInterface> NeverReturn(
+        ITestInterface cap,
+        CancellationToken cancellationToken_
+    )
     {
         throw new NotImplementedException();
     }
@@ -1054,7 +1156,10 @@ internal class TestMoreStuffImpl3 : ITestMoreStuff, ITestCallOrder
         }
     }
 
-    public Task<string> CallFooWhenResolved(ITestInterface Cap, CancellationToken cancellationToken_ = default)
+    public Task<string> CallFooWhenResolved(
+        ITestInterface Cap,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
@@ -1066,14 +1171,16 @@ internal class TestMoreStuffImpl3 : ITestMoreStuff, ITestCallOrder
 
     public async void Dispose()
     {
-        using (var cap = await _heldCap.Task)
-        {
-        }
+        using (var cap = await _heldCap.Task) { }
     }
 
-    public Task<ITestCallOrder> Echo(ITestCallOrder cap, CancellationToken cancellationToken_ = default)
+    public Task<ITestCallOrder> Echo(
+        ITestCallOrder cap,
+        CancellationToken cancellationToken_ = default
+    )
     {
-        if (_echoCounter++ < 20) return Task.FromResult(((Proxy)cap).Cast<ITestMoreStuff>(false).Echo(cap).Eager());
+        if (_echoCounter++ < 20)
+            return Task.FromResult(((Proxy)cap).Cast<ITestMoreStuff>(false).Echo(cap).Eager());
 
         return Task.FromResult(cap);
     }
@@ -1115,18 +1222,29 @@ internal class TestMoreStuffImpl3 : ITestMoreStuff, ITestCallOrder
         return Task.CompletedTask;
     }
 
-    public Task<(string, string)> MethodWithDefaults(string A, uint B, string C,
-        CancellationToken cancellationToken_ = default)
+    public Task<(string, string)> MethodWithDefaults(
+        string A,
+        uint B,
+        string C,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
 
-    public Task MethodWithNullDefault(string A, ITestInterface B, CancellationToken cancellationToken_ = default)
+    public Task MethodWithNullDefault(
+        string A,
+        ITestInterface B,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
 
-    public Task<ITestInterface> NeverReturn(ITestInterface Cap, CancellationToken cancellationToken_ = default)
+    public Task<ITestInterface> NeverReturn(
+        ITestInterface Cap,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
@@ -1146,7 +1264,10 @@ internal class TestMoreStuffImpl4 : ITestMoreStuff, ITestCallOrder
         }
     }
 
-    public Task<string> CallFooWhenResolved(ITestInterface Cap, CancellationToken cancellationToken_ = default)
+    public Task<string> CallFooWhenResolved(
+        ITestInterface Cap,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
@@ -1158,12 +1279,13 @@ internal class TestMoreStuffImpl4 : ITestMoreStuff, ITestCallOrder
 
     public async void Dispose()
     {
-        using (var cap = await _heldCap.Task)
-        {
-        }
+        using (var cap = await _heldCap.Task) { }
     }
 
-    public Task<ITestCallOrder> Echo(ITestCallOrder cap, CancellationToken cancellationToken_ = default)
+    public Task<ITestCallOrder> Echo(
+        ITestCallOrder cap,
+        CancellationToken cancellationToken_ = default
+    )
     {
         using (var target = ((Proxy)cap).Cast<ITestMoreStuff>(false))
         {
@@ -1208,18 +1330,29 @@ internal class TestMoreStuffImpl4 : ITestMoreStuff, ITestCallOrder
         return Task.CompletedTask;
     }
 
-    public Task<(string, string)> MethodWithDefaults(string A, uint B, string C,
-        CancellationToken cancellationToken_ = default)
+    public Task<(string, string)> MethodWithDefaults(
+        string A,
+        uint B,
+        string C,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
 
-    public Task MethodWithNullDefault(string A, ITestInterface B, CancellationToken cancellationToken_ = default)
+    public Task MethodWithNullDefault(
+        string A,
+        ITestInterface B,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
 
-    public Task<ITestInterface> NeverReturn(ITestInterface Cap, CancellationToken cancellationToken_ = default)
+    public Task<ITestInterface> NeverReturn(
+        ITestInterface Cap,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
@@ -1240,7 +1373,10 @@ internal class TestMoreStuffImpl5 : ITestMoreStuff, ITestCallOrder
         }
     }
 
-    public Task<string> CallFooWhenResolved(ITestInterface Cap, CancellationToken cancellationToken_ = default)
+    public Task<string> CallFooWhenResolved(
+        ITestInterface Cap,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
@@ -1252,12 +1388,13 @@ internal class TestMoreStuffImpl5 : ITestMoreStuff, ITestCallOrder
 
     public async void Dispose()
     {
-        using (var cap = await _heldCap.Task)
-        {
-        }
+        using (var cap = await _heldCap.Task) { }
     }
 
-    public async Task<ITestCallOrder> Echo(ITestCallOrder cap, CancellationToken cancellationToken_ = default)
+    public async Task<ITestCallOrder> Echo(
+        ITestCallOrder cap,
+        CancellationToken cancellationToken_ = default
+    )
     {
         await _echoEnabled.Task;
         return cap;
@@ -1300,18 +1437,29 @@ internal class TestMoreStuffImpl5 : ITestMoreStuff, ITestCallOrder
         return Task.CompletedTask;
     }
 
-    public Task<(string, string)> MethodWithDefaults(string A, uint B, string C,
-        CancellationToken cancellationToken_ = default)
+    public Task<(string, string)> MethodWithDefaults(
+        string A,
+        uint B,
+        string C,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
 
-    public Task MethodWithNullDefault(string A, ITestInterface B, CancellationToken cancellationToken_ = default)
+    public Task MethodWithNullDefault(
+        string A,
+        ITestInterface B,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
 
-    public Task<ITestInterface> NeverReturn(ITestInterface Cap, CancellationToken cancellationToken_ = default)
+    public Task<ITestInterface> NeverReturn(
+        ITestInterface Cap,
+        CancellationToken cancellationToken_ = default
+    )
     {
         throw new NotImplementedException();
     }
@@ -1350,9 +1498,7 @@ internal class B2Impl : IB2
 {
     private string _s;
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 
     public Task MethodA(string param1, CancellationToken cancellationToken_ = default)
     {
@@ -1372,9 +1518,7 @@ internal class B2Impl : IB2
 
 internal class Issue25AImpl : IIssue25A
 {
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 
     public Task<long> MethodA(CancellationToken cancellationToken_ = default)
     {
@@ -1397,9 +1541,7 @@ internal class CapHolderImpl<T> : ICapHolder<T>
         return Task.FromResult(_cap);
     }
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 }
 
 internal class CapHolderAImpl : ICapHolderA
@@ -1416,30 +1558,32 @@ internal class CapHolderAImpl : ICapHolderA
         return Task.FromResult(_a);
     }
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 }
 
 internal class Issue25BImpl : IIssue25B
 {
     private readonly Issue25AImpl _a = new();
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 
-    public Task<ICapHolder<object>> GetAinCapHolderAnyPointer(CancellationToken cancellationToken_ = default)
+    public Task<ICapHolder<object>> GetAinCapHolderAnyPointer(
+        CancellationToken cancellationToken_ = default
+    )
     {
         return Task.FromResult<ICapHolder<object>>(new CapHolderImpl<object>(_a));
     }
 
-    public Task<ICapHolder<IIssue25A>> GetAinCapHolderGenericA(CancellationToken cancellationToken_ = default)
+    public Task<ICapHolder<IIssue25A>> GetAinCapHolderGenericA(
+        CancellationToken cancellationToken_ = default
+    )
     {
         return Task.FromResult<ICapHolder<IIssue25A>>(new CapHolderImpl<IIssue25A>(_a));
     }
 
-    public Task<ICapHolderA> GetAinCapHolderNonGenericA(CancellationToken cancellationToken_ = default)
+    public Task<ICapHolderA> GetAinCapHolderNonGenericA(
+        CancellationToken cancellationToken_ = default
+    )
     {
         return Task.FromResult<ICapHolderA>(new CapHolderAImpl(_a));
     }

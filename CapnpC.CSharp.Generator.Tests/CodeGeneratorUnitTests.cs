@@ -64,8 +64,14 @@ public class CodeGeneratorUnitTests
         var innerNameSyntax = names.GetQName(innerType, outerTypeDef);
         string[] outerNamespace = { "Foo", "Bar", "Baz" };
         string[] innerNamespace = { "Foo", "Garf", "Snarf" };
-        CollectionAssert.AreEqual(outerNamespace, (outerTypeDef.DeclaringElement as GenFile).Namespace);
-        CollectionAssert.AreEqual(innerNamespace, (innerType.Definition.DeclaringElement as GenFile).Namespace);
+        CollectionAssert.AreEqual(
+            outerNamespace,
+            (outerTypeDef.DeclaringElement as GenFile).Namespace
+        );
+        CollectionAssert.AreEqual(
+            innerNamespace,
+            (innerType.Definition.DeclaringElement as GenFile).Namespace
+        );
         var outerNSStr = string.Join('.', outerNamespace);
         var innerNSStr = string.Join('.', innerNamespace);
         Assert.AreEqual($"{outerNSStr}.Outer", outerNameSyntax.ToString());
@@ -90,7 +96,10 @@ public class CodeGeneratorUnitTests
         var (model, _, _) = LoadAndGenerate("UnitTest13.capnp.bin");
         var outerTypeDef = GetGeneratedFile("UnitTest13.capnp", model).NestedTypes.First();
         string[] outerNamespace = { "Foo", "Bar", "Baz" };
-        CollectionAssert.AreEqual(outerNamespace, (outerTypeDef.DeclaringElement as GenFile).Namespace);
+        CollectionAssert.AreEqual(
+            outerNamespace,
+            (outerTypeDef.DeclaringElement as GenFile).Namespace
+        );
     }
 
     [TestMethod]
@@ -99,7 +108,10 @@ public class CodeGeneratorUnitTests
         var (model, _, _) = LoadAndGenerate("UnitTest14.capnp.bin");
         var outerTypeDef = GetGeneratedFile("UnitTest14.capnp", model).NestedTypes.First();
         string[] outerNamespace = { "Foo", "Bar", "Baz" };
-        CollectionAssert.AreEqual(outerNamespace, (outerTypeDef.DeclaringElement as GenFile).Namespace);
+        CollectionAssert.AreEqual(
+            outerNamespace,
+            (outerTypeDef.DeclaringElement as GenFile).Namespace
+        );
     }
 
     [TestMethod]
@@ -108,50 +120,94 @@ public class CodeGeneratorUnitTests
         var (_, _, code) = LoadAndGenerate("UnitTest15.capnp.bin");
         try
         {
-            Assert.IsTrue(code.Contains("CsStruct", StringComparison.Ordinal),
-                "Generated code must contain C# struct name");
-            Assert.IsFalse(code.Contains("SomeStruct", StringComparison.Ordinal),
-                "Generated code must not contain original struct name");
-            Assert.IsTrue(code.Contains("CsField", StringComparison.Ordinal),
-                "Generated code must contain C# field name");
-            Assert.IsFalse(code.Contains("someField", StringComparison.OrdinalIgnoreCase),
-                "Generated code must not contain original field name");
-            Assert.IsTrue(code.Contains("CsUnion", StringComparison.Ordinal),
-                "Generated code must contain C# union name");
-            Assert.IsFalse(code.Contains("someUnion", StringComparison.OrdinalIgnoreCase),
-                "Generated code must not contain original union name");
-            Assert.IsTrue(code.Contains("CsGroup", StringComparison.Ordinal),
-                "Generated code must contain C# group name");
-            Assert.IsFalse(code.Contains("someGroup", StringComparison.OrdinalIgnoreCase),
-                "Generated code must not contain original group name");
-            Assert.IsTrue(code.Contains("CsEnum", StringComparison.Ordinal),
-                "Generated code must contain C# enum name");
-            Assert.IsFalse(code.Contains("SomeEnum", StringComparison.Ordinal),
-                "Generated code must not contain original enum name");
-            Assert.IsTrue(code.Contains("CsEnumerant", StringComparison.Ordinal),
-                "Generated code must contain C# enumerant name");
-            Assert.IsFalse(code.Contains("someEnumerant", StringComparison.OrdinalIgnoreCase),
-                "Generated code must not contain original enumerant name");
-            Assert.IsTrue(code.Contains("CsField", StringComparison.Ordinal),
-                "Generated code must contain C# field name");
-            Assert.IsFalse(code.Contains("someField", StringComparison.OrdinalIgnoreCase),
-                "Generated code must not contain original field name");
-            Assert.IsTrue(code.Contains("CsInterface", StringComparison.Ordinal),
-                "Generated code must contain C# interface name");
-            Assert.IsFalse(code.Contains("SomeInterface", StringComparison.Ordinal),
-                "Generated code must not contain original interface name");
-            Assert.IsTrue(code.Contains("CsMethod", StringComparison.Ordinal),
-                "Generated code must contain C# method name");
-            Assert.IsFalse(code.Contains("someMethod", StringComparison.OrdinalIgnoreCase),
-                "Generated code must not contain original method name");
-            Assert.IsTrue(code.Contains("CsField", StringComparison.Ordinal),
-                "Generated code must contain C# field name");
-            Assert.IsFalse(code.Contains("someField", StringComparison.OrdinalIgnoreCase),
-                "Generated code must not contain original field name");
-            Assert.IsTrue(code.Contains("CsResult", StringComparison.Ordinal),
-                "Generated code must contain C# method parameter name");
-            Assert.IsFalse(code.Contains("someResult", StringComparison.OrdinalIgnoreCase),
-                "Generated code must not contain original method parameter name");
+            Assert.IsTrue(
+                code.Contains("CsStruct", StringComparison.Ordinal),
+                "Generated code must contain C# struct name"
+            );
+            Assert.IsFalse(
+                code.Contains("SomeStruct", StringComparison.Ordinal),
+                "Generated code must not contain original struct name"
+            );
+            Assert.IsTrue(
+                code.Contains("CsField", StringComparison.Ordinal),
+                "Generated code must contain C# field name"
+            );
+            Assert.IsFalse(
+                code.Contains("someField", StringComparison.OrdinalIgnoreCase),
+                "Generated code must not contain original field name"
+            );
+            Assert.IsTrue(
+                code.Contains("CsUnion", StringComparison.Ordinal),
+                "Generated code must contain C# union name"
+            );
+            Assert.IsFalse(
+                code.Contains("someUnion", StringComparison.OrdinalIgnoreCase),
+                "Generated code must not contain original union name"
+            );
+            Assert.IsTrue(
+                code.Contains("CsGroup", StringComparison.Ordinal),
+                "Generated code must contain C# group name"
+            );
+            Assert.IsFalse(
+                code.Contains("someGroup", StringComparison.OrdinalIgnoreCase),
+                "Generated code must not contain original group name"
+            );
+            Assert.IsTrue(
+                code.Contains("CsEnum", StringComparison.Ordinal),
+                "Generated code must contain C# enum name"
+            );
+            Assert.IsFalse(
+                code.Contains("SomeEnum", StringComparison.Ordinal),
+                "Generated code must not contain original enum name"
+            );
+            Assert.IsTrue(
+                code.Contains("CsEnumerant", StringComparison.Ordinal),
+                "Generated code must contain C# enumerant name"
+            );
+            Assert.IsFalse(
+                code.Contains("someEnumerant", StringComparison.OrdinalIgnoreCase),
+                "Generated code must not contain original enumerant name"
+            );
+            Assert.IsTrue(
+                code.Contains("CsField", StringComparison.Ordinal),
+                "Generated code must contain C# field name"
+            );
+            Assert.IsFalse(
+                code.Contains("someField", StringComparison.OrdinalIgnoreCase),
+                "Generated code must not contain original field name"
+            );
+            Assert.IsTrue(
+                code.Contains("CsInterface", StringComparison.Ordinal),
+                "Generated code must contain C# interface name"
+            );
+            Assert.IsFalse(
+                code.Contains("SomeInterface", StringComparison.Ordinal),
+                "Generated code must not contain original interface name"
+            );
+            Assert.IsTrue(
+                code.Contains("CsMethod", StringComparison.Ordinal),
+                "Generated code must contain C# method name"
+            );
+            Assert.IsFalse(
+                code.Contains("someMethod", StringComparison.OrdinalIgnoreCase),
+                "Generated code must not contain original method name"
+            );
+            Assert.IsTrue(
+                code.Contains("CsField", StringComparison.Ordinal),
+                "Generated code must contain C# field name"
+            );
+            Assert.IsFalse(
+                code.Contains("someField", StringComparison.OrdinalIgnoreCase),
+                "Generated code must not contain original field name"
+            );
+            Assert.IsTrue(
+                code.Contains("CsResult", StringComparison.Ordinal),
+                "Generated code must contain C# method parameter name"
+            );
+            Assert.IsFalse(
+                code.Contains("someResult", StringComparison.OrdinalIgnoreCase),
+                "Generated code must not contain original method parameter name"
+            );
         }
         catch (AssertFailedException)
         {
@@ -209,14 +265,14 @@ public class CodeGeneratorUnitTests
             let model = LocalLoad(name)
             let codegen = CreateCodeGen(model)
             from file in model.FilesToGenerate
-            select codegen.Transform(file)).ToArray();
+            select codegen.Transform(file)
+        ).ToArray();
 
         Assert.AreEqual(
             InlineAssemblyCompiler.CompileSummary.Success,
-            InlineAssemblyCompiler.TryCompileCapnp(
-                NullableContextOptions.Disable,
-                codes),
-            "Compilation was not successful with no warnings");
+            InlineAssemblyCompiler.TryCompileCapnp(NullableContextOptions.Disable, codes),
+            "Compilation was not successful with no warnings"
+        );
 
         return (firstModel, firstCodeGen, codes[0]);
     }
@@ -240,9 +296,11 @@ public class CodeGeneratorUnitTests
     {
         foreach (var def in defs)
         {
-            if (def.Id == id) return def;
+            if (def.Id == id)
+                return def;
             var sub = GetTypeDef(id, def.NestedTypes);
-            if (sub != null) return sub;
+            if (sub != null)
+                return sub;
         }
 
         return null;

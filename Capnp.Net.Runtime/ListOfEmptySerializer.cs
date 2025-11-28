@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 
 namespace Capnp;
 
 /// <summary>
 ///     SerializerState specialization for List(Void).
 /// </summary>
-public class ListOfEmptySerializer :
-    SerializerState
+public class ListOfEmptySerializer : SerializerState
 {
     /// <summary>
     ///     This list's element count.

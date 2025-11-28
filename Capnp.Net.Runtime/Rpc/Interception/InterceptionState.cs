@@ -1,4 +1,4 @@
-﻿namespace Capnp.Rpc.Interception;
+namespace Capnp.Rpc.Interception;
 
 /// <summary>
 ///     The state of an intercepted call from Alice to Bob.
@@ -23,5 +23,5 @@ public enum InterceptionState
     /// <summary>
     ///     The call was returned to Alice (either with results, exception, or cancelled)
     /// </summary>
-    ReturnedToAlice
+    ReturnedToAlice,
 }

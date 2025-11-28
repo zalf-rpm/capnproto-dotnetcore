@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CapnpC.CSharp.Generator.Tests;
 
@@ -23,7 +23,9 @@ public class CapnpMessageUnitTests
     [TestMethod]
     public void ColumnSpan()
     {
-        var msg = new CapnpMessage(@"f:\code\invalid.capnp:10:7-8: error: Duplicate ordinal number.");
+        var msg = new CapnpMessage(
+            @"f:\code\invalid.capnp:10:7-8: error: Duplicate ordinal number."
+        );
         Assert.IsTrue(msg.IsParseSuccess);
         Assert.AreEqual(@"f:\code\invalid.capnp", msg.FileName);
         Assert.AreEqual(10, msg.Line);
@@ -37,18 +39,21 @@ public class CapnpMessageUnitTests
     public void NoSuchFile()
     {
         var msg = new CapnpMessage(
-            @"C:\ProgramData\chocolatey\lib\capnproto\tools\capnproto-tools-win32-0.7.0\capnp.exe compile: doesnotexist.capnp: no such file");
+            @"C:\ProgramData\chocolatey\lib\capnproto\tools\capnproto-tools-win32-0.7.0\capnp.exe compile: doesnotexist.capnp: no such file"
+        );
         Assert.IsFalse(msg.IsParseSuccess);
         Assert.AreEqual(
             @"C:\ProgramData\chocolatey\lib\capnproto\tools\capnproto-tools-win32-0.7.0\capnp.exe compile: doesnotexist.capnp: no such file",
-            msg.FullMessage);
+            msg.FullMessage
+        );
     }
 
     [TestMethod]
     public void NoId()
     {
         var msg = new CapnpMessage(
-            @"empty.capnp:1:1: error: File does not declare an ID.  I've generated one for you.  Add this line to your file: @0xc82955a0c779197d;");
+            @"empty.capnp:1:1: error: File does not declare an ID.  I've generated one for you.  Add this line to your file: @0xc82955a0c779197d;"
+        );
         Assert.IsTrue(msg.IsParseSuccess);
         Assert.AreEqual("empty.capnp", msg.FileName);
         Assert.AreEqual(1, msg.Line);
@@ -56,14 +61,16 @@ public class CapnpMessageUnitTests
         Assert.AreEqual("error", msg.Category);
         Assert.AreEqual(
             "File does not declare an ID.  I've generated one for you.  Add this line to your file: @0xc82955a0c779197d;",
-            msg.MessageText);
+            msg.MessageText
+        );
     }
 
     [TestMethod]
     public void AnnoyingNTFSAlternateDataStream1()
     {
         var msg = new CapnpMessage(
-            @"3:2:1:1: error: File does not declare an ID.  I've generated one for you.  Add this line to your file: @0xc82955a0c779197d;");
+            @"3:2:1:1: error: File does not declare an ID.  I've generated one for you.  Add this line to your file: @0xc82955a0c779197d;"
+        );
         Assert.IsTrue(msg.IsParseSuccess);
         Assert.AreEqual("3:2", msg.FileName);
         Assert.AreEqual(1, msg.Line);
@@ -71,14 +78,16 @@ public class CapnpMessageUnitTests
         Assert.AreEqual("error", msg.Category);
         Assert.AreEqual(
             "File does not declare an ID.  I've generated one for you.  Add this line to your file: @0xc82955a0c779197d;",
-            msg.MessageText);
+            msg.MessageText
+        );
     }
 
     [TestMethod]
     public void AnnoyingNTFSAlternateDataStream2()
     {
         var msg = new CapnpMessage(
-            @"c:\3:2:1:1: error: File does not declare an ID.  I've generated one for you.  Add this line to your file: @0xc82955a0c779197d;");
+            @"c:\3:2:1:1: error: File does not declare an ID.  I've generated one for you.  Add this line to your file: @0xc82955a0c779197d;"
+        );
         Assert.IsTrue(msg.IsParseSuccess);
         Assert.AreEqual(@"c:\3:2", msg.FileName);
         Assert.AreEqual(1, msg.Line);
@@ -86,14 +95,16 @@ public class CapnpMessageUnitTests
         Assert.AreEqual("error", msg.Category);
         Assert.AreEqual(
             "File does not declare an ID.  I've generated one for you.  Add this line to your file: @0xc82955a0c779197d;",
-            msg.MessageText);
+            msg.MessageText
+        );
     }
 
     [TestMethod]
     public void AnnoyingNTFSAlternateDataStream3()
     {
         var msg = new CapnpMessage(
-            @"\\?\c:\3:2:1:1: error: File does not declare an ID.  I've generated one for you.  Add this line to your file: @0xc82955a0c779197d;");
+            @"\\?\c:\3:2:1:1: error: File does not declare an ID.  I've generated one for you.  Add this line to your file: @0xc82955a0c779197d;"
+        );
         Assert.IsTrue(msg.IsParseSuccess);
         Assert.AreEqual(@"\\?\c:\3:2", msg.FileName);
         Assert.AreEqual(1, msg.Line);
@@ -101,7 +112,8 @@ public class CapnpMessageUnitTests
         Assert.AreEqual("error", msg.Category);
         Assert.AreEqual(
             "File does not declare an ID.  I've generated one for you.  Add this line to your file: @0xc82955a0c779197d;",
-            msg.MessageText);
+            msg.MessageText
+        );
     }
 
     [TestMethod]

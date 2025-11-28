@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -37,7 +37,8 @@ public class TcpRpcClient : IConnection, IDisposable
     ///     System.Net.IPEndPoint.MaxPort.
     /// </exception>
     /// <exception cref="System.Net.Sockets.SocketException">An error occurred when accessing the socket.</exception>
-    public TcpRpcClient(string host, int port) : this()
+    public TcpRpcClient(string host, int port)
+        : this()
     {
         Connect(host, port);
     }
@@ -76,7 +77,10 @@ public class TcpRpcClient : IConnection, IDisposable
         if (State != ConnectionState.Initializing)
             throw new InvalidOperationException("Connection is not in state 'Initializing'");
 
-        _attachTracerAction += () => { _pump?.AttachTracer(tracer); };
+        _attachTracerAction += () =>
+        {
+            _pump?.AttachTracer(tracer);
+        };
     }
 
     /// <summary>
@@ -177,8 +181,8 @@ public class TcpRpcClient : IConnection, IDisposable
 
                 return;
             }
-            catch (SocketException exception) when (retry < 240 &&
-                                                    exception.SocketErrorCode == SocketError.AddressAlreadyInUse)
+            catch (SocketException exception)
+                when (retry < 240 && exception.SocketErrorCode == SocketError.AddressAlreadyInUse)
             {
                 await Task.Delay(1000);
             }
@@ -203,13 +207,16 @@ public class TcpRpcClient : IConnection, IDisposable
         {
             try
             {
-                Thread.CurrentThread.Name = $"TCP RPC Client Thread {Thread.CurrentThread.ManagedThreadId}";
+                Thread.CurrentThread.Name =
+                    $"TCP RPC Client Thread {Thread.CurrentThread.ManagedThreadId}";
 
                 _pump.Run();
             }
             catch (ThreadInterruptedException)
             {
-                Logger.LogError($"{Thread.CurrentThread.Name} interrupted at {Environment.StackTrace}");
+                Logger.LogError(
+                    $"{Thread.CurrentThread.Name} interrupted at {Environment.StackTrace}"
+                );
             }
             finally
             {
@@ -250,14 +257,18 @@ public class TcpRpcClient : IConnection, IDisposable
     /// <typeparam name="TProxy">Bootstrap capability interface</typeparam>
     /// <returns>A proxy for the bootstrap capability</returns>
     /// <exception cref="InvalidOperationException">Not connected</exception>
-    public TProxy GetMain<TProxy>() where TProxy : class, IDisposable
+    public TProxy GetMain<TProxy>()
+        where TProxy : class, IDisposable
     {
-        if (WhenConnected == null) throw new InvalidOperationException("Not connecting");
+        if (WhenConnected == null)
+            throw new InvalidOperationException("Not connecting");
 
         async Task<TProxy> GetMainAsync()
         {
             await WhenConnected!;
-            return (CapabilityReflection.CreateProxy<TProxy>(_inboundEndpoint!.QueryMain()) as TProxy)!;
+            return (
+                CapabilityReflection.CreateProxy<TProxy>(_inboundEndpoint!.QueryMain()) as TProxy
+            )!;
         }
 
         return GetMainAsync().Eager(true);

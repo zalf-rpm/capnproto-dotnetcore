@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CapnpC.CSharp.Generator.Model;
@@ -24,7 +24,7 @@ internal class Method : IHasGenericParameters
             Name = Name,
             CsName = CsName,
             ParamsStruct = ParamsStruct,
-            ResultStruct = ResultStruct
+            ResultStruct = ResultStruct,
         };
         method.Params.AddRange(Params.Select(p => p.Clone()));
         method.Results.AddRange(Results.Select(r => r.Clone()));

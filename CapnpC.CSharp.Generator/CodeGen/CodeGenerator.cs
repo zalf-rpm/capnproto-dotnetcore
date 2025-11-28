@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Capnp;
@@ -51,11 +51,14 @@ internal class CodeGenerator
             yield return TypeParameter(_names.GetGenericTypeParameter(name).Identifier);
     }
 
-    private IEnumerable<TypeParameterConstraintClauseSyntax> MakeTypeParameterConstraints(TypeDefinition def)
+    private IEnumerable<TypeParameterConstraintClauseSyntax> MakeTypeParameterConstraints(
+        TypeDefinition def
+    )
     {
         foreach (var name in def.GenericParameters)
             yield return TypeParameterConstraintClause(
-                    _names.GetGenericTypeParameter(name).IdentifierName)
+                    _names.GetGenericTypeParameter(name).IdentifierName
+                )
                 .AddConstraints(ClassOrStructConstraint(SyntaxKind.ClassConstraint));
     }
 
@@ -66,10 +69,10 @@ internal class CodeGenerator
 
         if (_names.EmitDomainClassesAndInterfaces)
             topDecl = topDecl.AddBaseListTypes(
-                SimpleBaseType(_names.Type<ICapnpSerializable>(Nullability.NonNullable)));
+                SimpleBaseType(_names.Type<ICapnpSerializable>(Nullability.NonNullable))
+            );
         else
             topDecl = topDecl.AddModifiers(Static);
-
 
         if (def.GenericParameters.Count > 0)
             topDecl = topDecl
@@ -80,18 +83,22 @@ internal class CodeGenerator
             .AddMembers(_names.MakeTypeIdConst(def.Id))
             .AddAttributeLists(_names.MakeTypeDecorationAttributes(def.Id));
 
-        if (def.UnionInfo != null) topDecl = topDecl.AddMembers(_commonGen.MakeUnionSelectorEnum(def));
+        if (def.UnionInfo != null)
+            topDecl = topDecl.AddMembers(_commonGen.MakeUnionSelectorEnum(def));
 
         if (_names.EmitDomainClassesAndInterfaces)
             topDecl = topDecl.AddMembers(_domClassGen.MakeDomainClassMembers(def));
 
         topDecl = topDecl.AddMembers(
             _readerGen.MakeReaderStruct(def),
-            _writerGen.MakeWriterStruct(def));
+            _writerGen.MakeWriterStruct(def)
+        );
 
-        foreach (var nestedGroup in def.NestedGroups) topDecl = topDecl.AddMembers(Transform(nestedGroup).ToArray());
+        foreach (var nestedGroup in def.NestedGroups)
+            topDecl = topDecl.AddMembers(Transform(nestedGroup).ToArray());
 
-        foreach (var nestedDef in def.NestedTypes) topDecl = topDecl.AddMembers(Transform(nestedDef).ToArray());
+        foreach (var nestedDef in def.NestedTypes)
+            topDecl = topDecl.AddMembers(Transform(nestedDef).ToArray());
 
         yield return topDecl;
     }
@@ -107,16 +114,15 @@ internal class CodeGenerator
 
         if (def.NestedTypes.Any())
         {
-            var ns = ClassDeclaration(
-                    _names.MakeTypeName(def, NameUsage.Namespace).ToString())
+            var ns = ClassDeclaration(_names.MakeTypeName(def, NameUsage.Namespace).ToString())
                 .AddModifiers(Public, Static);
 
             if (def.GenericParameters.Count > 0)
-                ns = ns
-                    .AddTypeParameterListParameters(MakeTypeParameters(def).ToArray())
+                ns = ns.AddTypeParameterListParameters(MakeTypeParameters(def).ToArray())
                     .AddConstraintClauses(MakeTypeParameterConstraints(def).ToArray());
 
-            foreach (var nestedDef in def.NestedTypes) ns = ns.AddMembers(Transform(nestedDef).ToArray());
+            foreach (var nestedDef in def.NestedTypes)
+                ns = ns.AddMembers(Transform(nestedDef).ToArray());
 
             yield return ns;
         }
@@ -147,7 +153,8 @@ internal class CodeGenerator
 
         var q = new Queue<TypeDefinition>();
 
-        foreach (var inner in file.NestedTypes) q.Enqueue(inner);
+        foreach (var inner in file.NestedTypes)
+            q.Enqueue(inner);
 
         while (q.Count > 0)
         {
@@ -160,14 +167,17 @@ internal class CodeGenerator
                 if (members.Length > 0)
                 {
                     if (classDecl == null)
-                        classDecl = ClassDeclaration(_names.MakePipeliningSupportExtensionClassName(file).Identifier)
+                        classDecl = ClassDeclaration(
+                                _names.MakePipeliningSupportExtensionClassName(file).Identifier
+                            )
                             .AddModifiers(_names.TypeVisibilityModifier, Static, Partial);
 
                     classDecl = classDecl.AddMembers(members);
                 }
             }
 
-            foreach (var inner in cur.NestedTypes) q.Enqueue(inner);
+            foreach (var inner in cur.NestedTypes)
+                q.Enqueue(inner);
         }
 
         return classDecl;
@@ -187,43 +197,53 @@ internal class CodeGenerator
             ns = ns.WithLeadingTrivia(
                     Trivia(
                         NullableDirectiveTrivia(
-                            Token(_names.NullableEnable ? SyntaxKind.EnableKeyword : SyntaxKind.DisableKeyword),
-                            true)))
+                            Token(
+                                _names.NullableEnable
+                                    ? SyntaxKind.EnableKeyword
+                                    : SyntaxKind.DisableKeyword
+                            ),
+                            true
+                        )
+                    )
+                )
                 .WithTrailingTrivia(
-                    Trivia(
-                        NullableDirectiveTrivia(
-                            Token(SyntaxKind.RestoreKeyword),
-                            true)));
+                    Trivia(NullableDirectiveTrivia(Token(SyntaxKind.RestoreKeyword), true))
+                );
 
-        foreach (var def in file.NestedTypes) ns = ns.AddMembers(Transform(def).ToArray());
+        foreach (var def in file.NestedTypes)
+            ns = ns.AddMembers(Transform(def).ToArray());
 
         if (_names.EmitDomainClassesAndInterfaces)
         {
             var psc = TransformForPipeliningSupport(file);
 
-            if (psc != null) ns = ns.AddMembers(psc);
+            if (psc != null)
+                ns = ns.AddMembers(psc);
         }
 
-        var cu = CompilationUnit().AddUsings(
-            UsingDirective(ParseName("Capnp")),
-            UsingDirective(ParseName("Capnp.Rpc")),
-            UsingDirective(ParseName("System")),
-            UsingDirective(ParseName("System.CodeDom.Compiler")),
-            UsingDirective(ParseName("System.Collections.Generic")));
+        var cu = CompilationUnit()
+            .AddUsings(
+                UsingDirective(ParseName("Capnp")),
+                UsingDirective(ParseName("Capnp.Rpc")),
+                UsingDirective(ParseName("System")),
+                UsingDirective(ParseName("System.CodeDom.Compiler")),
+                UsingDirective(ParseName("System.Collections.Generic"))
+            );
 
         if (_names.NullableEnable)
-            cu = cu.AddUsings(
-                UsingDirective(ParseName("System.Diagnostics.CodeAnalysis")));
+            cu = cu.AddUsings(UsingDirective(ParseName("System.Diagnostics.CodeAnalysis")));
 
         cu = cu.AddUsings(
             UsingDirective(ParseName("System.Threading")),
-            UsingDirective(ParseName("System.Threading.Tasks")));
+            UsingDirective(ParseName("System.Threading.Tasks"))
+        );
 
         cu = cu.AddMembers(ns);
 
         var content = cu.NormalizeWhitespace("    ", Environment.NewLine).ToFullString();
 
-        if (!string.IsNullOrWhiteSpace(file.HeaderText)) content = file.HeaderText + content;
+        if (!string.IsNullOrWhiteSpace(file.HeaderText))
+            content = file.HeaderText + content;
 
         return content;
     }

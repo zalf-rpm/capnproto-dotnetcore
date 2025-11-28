@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Capnp.Util;
@@ -37,9 +37,7 @@ internal class LocalAnswer : IPromisedAnswer
         {
             _cts.Cancel();
         }
-        catch (ObjectDisposedException)
-        {
-        }
+        catch (ObjectDisposedException) { }
     }
 
     private async void CleanupAfterReturn()
@@ -48,9 +46,7 @@ internal class LocalAnswer : IPromisedAnswer
         {
             await WhenReturned;
         }
-        catch
-        {
-        }
+        catch { }
         finally
         {
             _cts.Dispose();

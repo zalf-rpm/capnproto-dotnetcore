@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Capnp;
@@ -29,7 +29,8 @@ public class SegmentAllocator : ISegmentAllocator
     /// <summary>
     ///     The list of currently allocated segments, each one truncated to its actual occupancy.
     /// </summary>
-    public IReadOnlyList<Memory<ulong>> Segments => _segments.LazyListSelect(s => s.Mem.Slice(0, s.FreeOffset));
+    public IReadOnlyList<Memory<ulong>> Segments =>
+        _segments.LazyListSelect(s => s.Mem.Slice(0, s.FreeOffset));
 
     /// <summary>
     ///     Allocates memory.
@@ -48,7 +49,12 @@ public class SegmentAllocator : ISegmentAllocator
     ///     enough space available, allocation will fail.
     /// </param>
     /// <returns>Whether allocation was successful.</returns>
-    public bool Allocate(uint nwords, uint preferredSegmentIndex, out SegmentSlice result, bool forcePreferredSegment)
+    public bool Allocate(
+        uint nwords,
+        uint preferredSegmentIndex,
+        out SegmentSlice result,
+        bool forcePreferredSegment
+    )
     {
         result = default;
         Segment segment;
@@ -64,7 +70,8 @@ public class SegmentAllocator : ISegmentAllocator
             }
         }
 
-        if (forcePreferredSegment) return false;
+        if (forcePreferredSegment)
+            return false;
 
         for (var i = 0; i < _nonFullSegments.Count; i++)
         {

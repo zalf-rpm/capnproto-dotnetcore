@@ -1,4 +1,4 @@
-﻿using Capnp.Util;
+using Capnp.Util;
 
 namespace Capnp.Rpc;
 
@@ -17,5 +17,6 @@ public interface IResolvingCapability
     /// </summary>
     /// <typeparam name="T">Capability interface or <see cref="BareProxy" /></typeparam>
     /// <returns>the resolved capability, or null if it did not resolve yet</returns>
-    T? GetResolvedCapability<T>() where T : class;
+    T? GetResolvedCapability<T>()
+        where T : class;
 }

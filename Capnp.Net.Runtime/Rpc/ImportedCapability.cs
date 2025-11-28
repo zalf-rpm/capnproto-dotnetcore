@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Capnp.Rpc;
 
@@ -9,7 +9,8 @@ internal class ImportedCapability : RemoteCapability
 {
     private readonly uint _remoteId;
 
-    public ImportedCapability(IRpcEndpoint ep, uint remoteId) : base(ep)
+    public ImportedCapability(IRpcEndpoint ep, uint remoteId)
+        : base(ep)
     {
         _remoteId = remoteId;
     }
@@ -19,7 +20,11 @@ internal class ImportedCapability : RemoteCapability
         _ep.ReleaseImport(_remoteId);
     }
 
-    protected override Call.WRITER SetupMessage(DynamicSerializerState args, ulong interfaceId, ushort methodId)
+    protected override Call.WRITER SetupMessage(
+        DynamicSerializerState args,
+        ulong interfaceId,
+        ushort methodId
+    )
     {
         var call = base.SetupMessage(args, interfaceId, methodId);
         call.Target.which = MessageTarget.WHICH.ImportedCap;

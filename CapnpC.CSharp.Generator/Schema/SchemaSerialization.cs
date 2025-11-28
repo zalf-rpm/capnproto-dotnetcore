@@ -1,4 +1,4 @@
-﻿#pragma warning disable CS1591
+#pragma warning disable CS1591
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using Capnp;
@@ -17,7 +17,7 @@ public class Node : ICapnpSerializable
         Interface = 3,
         Const = 4,
         Annotation = 5,
-        undefined = 65535
+        undefined = 65535,
     }
 
     public const ulong typeId = 0xe682ab4cf923a417UL;
@@ -151,8 +151,12 @@ public class Node : ICapnpSerializable
         DisplayName = reader.DisplayName;
         DisplayNamePrefixLength = reader.DisplayNamePrefixLength;
         ScopeId = reader.ScopeId;
-        NestedNodes = reader.NestedNodes?.ToReadOnlyList(_ => CapnpSerializable.Create<NestedNode>(_));
-        Annotations = reader.Annotations?.ToReadOnlyList(_ => CapnpSerializable.Create<Annotation>(_));
+        NestedNodes = reader.NestedNodes?.ToReadOnlyList(_ =>
+            CapnpSerializable.Create<NestedNode>(_)
+        );
+        Annotations = reader.Annotations?.ToReadOnlyList(_ =>
+            CapnpSerializable.Create<Annotation>(_)
+        );
         Parameters = reader.Parameters?.ToReadOnlyList(_ => CapnpSerializable.Create<Parameter>(_));
         IsGeneric = reader.IsGeneric;
         applyDefaults();
@@ -197,9 +201,7 @@ public class Node : ICapnpSerializable
         writer.IsGeneric = IsGeneric;
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -230,14 +232,19 @@ public class Node : ICapnpSerializable
         public string DisplayName => ctx.ReadText(0);
         public uint DisplayNamePrefixLength => ctx.ReadDataUInt(64UL);
         public ulong ScopeId => ctx.ReadDataULong(128UL);
-        public IReadOnlyList<NestedNode.READER> NestedNodes => ctx.ReadList(1).Cast(NestedNode.READER.create);
-        public IReadOnlyList<Annotation.READER> Annotations => ctx.ReadList(2).Cast(Schema.Annotation.READER.create);
+        public IReadOnlyList<NestedNode.READER> NestedNodes =>
+            ctx.ReadList(1).Cast(NestedNode.READER.create);
+        public IReadOnlyList<Annotation.READER> Annotations =>
+            ctx.ReadList(2).Cast(Schema.Annotation.READER.create);
         public @struct.READER Struct => which == WHICH.Struct ? new @struct.READER(ctx) : default;
         public @enum.READER Enum => which == WHICH.Enum ? new @enum.READER(ctx) : default;
-        public @interface.READER Interface => which == WHICH.Interface ? new @interface.READER(ctx) : default;
+        public @interface.READER Interface =>
+            which == WHICH.Interface ? new @interface.READER(ctx) : default;
         public @const.READER Const => which == WHICH.Const ? new @const.READER(ctx) : default;
-        public annotation.READER Annotation => which == WHICH.Annotation ? new annotation.READER(ctx) : default;
-        public IReadOnlyList<Parameter.READER> Parameters => ctx.ReadList(5).Cast(Parameter.READER.create);
+        public annotation.READER Annotation =>
+            which == WHICH.Annotation ? new annotation.READER(ctx) : default;
+        public IReadOnlyList<Parameter.READER> Parameters =>
+            ctx.ReadList(5).Cast(Parameter.READER.create);
         public bool IsGeneric => ctx.ReadDataBool(288UL);
     }
 
@@ -294,11 +301,13 @@ public class Node : ICapnpSerializable
 
         public @enum.WRITER Enum => which == WHICH.Enum ? Rewrap<@enum.WRITER>() : default;
 
-        public @interface.WRITER Interface => which == WHICH.Interface ? Rewrap<@interface.WRITER>() : default;
+        public @interface.WRITER Interface =>
+            which == WHICH.Interface ? Rewrap<@interface.WRITER>() : default;
 
         public @const.WRITER Const => which == WHICH.Const ? Rewrap<@const.WRITER>() : default;
 
-        public annotation.WRITER Annotation => which == WHICH.Annotation ? Rewrap<annotation.WRITER>() : default;
+        public annotation.WRITER Annotation =>
+            which == WHICH.Annotation ? Rewrap<annotation.WRITER>() : default;
 
         public ListOfStructsSerializer<Parameter.WRITER> Parameters
         {
@@ -362,9 +371,7 @@ public class Node : ICapnpSerializable
             writer.Fields.Init(Fields, (_s1, _v1) => _v1?.serialize(_s1));
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -456,7 +463,9 @@ public class Node : ICapnpSerializable
         void ICapnpSerializable.Deserialize(DeserializerState arg_)
         {
             var reader = READER.create(arg_);
-            Enumerants = reader.Enumerants?.ToReadOnlyList(_ => CapnpSerializable.Create<Enumerant>(_));
+            Enumerants = reader.Enumerants?.ToReadOnlyList(_ =>
+                CapnpSerializable.Create<Enumerant>(_)
+            );
             applyDefaults();
         }
 
@@ -470,9 +479,7 @@ public class Node : ICapnpSerializable
             writer.Enumerants.Init(Enumerants, (_s1, _v1) => _v1?.serialize(_s1));
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -498,7 +505,8 @@ public class Node : ICapnpSerializable
                 return new READER(ctx);
             }
 
-            public IReadOnlyList<Enumerant.READER> Enumerants => ctx.ReadList(3).Cast(Enumerant.READER.create);
+            public IReadOnlyList<Enumerant.READER> Enumerants =>
+                ctx.ReadList(3).Cast(Enumerant.READER.create);
         }
 
         public class WRITER : SerializerState
@@ -525,7 +533,9 @@ public class Node : ICapnpSerializable
         {
             var reader = READER.create(arg_);
             Methods = reader.Methods?.ToReadOnlyList(_ => CapnpSerializable.Create<Method>(_));
-            Superclasses = reader.Superclasses?.ToReadOnlyList(_ => CapnpSerializable.Create<Superclass>(_));
+            Superclasses = reader.Superclasses?.ToReadOnlyList(_ =>
+                CapnpSerializable.Create<Superclass>(_)
+            );
             applyDefaults();
         }
 
@@ -540,9 +550,7 @@ public class Node : ICapnpSerializable
             writer.Superclasses.Init(Superclasses, (_s1, _v1) => _v1?.serialize(_s1));
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -568,8 +576,10 @@ public class Node : ICapnpSerializable
                 return new READER(ctx);
             }
 
-            public IReadOnlyList<Method.READER> Methods => ctx.ReadList(3).Cast(Method.READER.create);
-            public IReadOnlyList<Superclass.READER> Superclasses => ctx.ReadList(4).Cast(Superclass.READER.create);
+            public IReadOnlyList<Method.READER> Methods =>
+                ctx.ReadList(3).Cast(Method.READER.create);
+            public IReadOnlyList<Superclass.READER> Superclasses =>
+                ctx.ReadList(4).Cast(Superclass.READER.create);
         }
 
         public class WRITER : SerializerState
@@ -617,9 +627,7 @@ public class Node : ICapnpSerializable
             Value?.serialize(writer.Value);
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -738,9 +746,7 @@ public class Node : ICapnpSerializable
             writer.TargetsAnnotation = TargetsAnnotation;
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -888,9 +894,7 @@ public class Node : ICapnpSerializable
             writer.Name = Name;
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -963,9 +967,7 @@ public class Node : ICapnpSerializable
             writer.Id = Id;
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -1049,9 +1051,7 @@ public class Node : ICapnpSerializable
             writer.Members.Init(Members, (_s1, _v1) => _v1?.serialize(_s1));
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -1079,7 +1079,8 @@ public class Node : ICapnpSerializable
 
             public ulong Id => ctx.ReadDataULong(0UL);
             public string DocComment => ctx.ReadText(0);
-            public IReadOnlyList<Member.READER> Members => ctx.ReadList(1).Cast(Member.READER.create);
+            public IReadOnlyList<Member.READER> Members =>
+                ctx.ReadList(1).Cast(Member.READER.create);
         }
 
         public class WRITER : SerializerState
@@ -1133,9 +1134,7 @@ public class Node : ICapnpSerializable
                 writer.DocComment = DocComment;
             }
 
-            public void applyDefaults()
-            {
-            }
+            public void applyDefaults() { }
 
             public struct READER
             {
@@ -1189,7 +1188,7 @@ public class Field : ICapnpSerializable
     {
         Slot = 0,
         Group = 1,
-        undefined = 65535
+        undefined = 65535,
     }
 
     public const ulong typeId = 0x9aad50a41f4af45fUL;
@@ -1223,9 +1222,7 @@ public class Field : ICapnpSerializable
 
     public IReadOnlyList<Annotation> Annotations { get; set; }
 
-    public ushort DiscriminantValue { get; set; }
-
-        = 65535;
+    public ushort DiscriminantValue { get; set; } = 65535;
 
     public slot Slot
     {
@@ -1264,7 +1261,9 @@ public class Field : ICapnpSerializable
 
         Name = reader.Name;
         CodeOrder = reader.CodeOrder;
-        Annotations = reader.Annotations?.ToReadOnlyList(_ => CapnpSerializable.Create<Annotation>(_));
+        Annotations = reader.Annotations?.ToReadOnlyList(_ =>
+            CapnpSerializable.Create<Annotation>(_)
+        );
         DiscriminantValue = reader.DiscriminantValue;
         Ordinal = CapnpSerializable.Create<ordinal>(reader.Ordinal);
         applyDefaults();
@@ -1295,9 +1294,7 @@ public class Field : ICapnpSerializable
         Ordinal?.serialize(writer.Ordinal);
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -1326,7 +1323,8 @@ public class Field : ICapnpSerializable
         public WHICH which => (WHICH)ctx.ReadDataUShort(64U);
         public string Name => ctx.ReadText(0);
         public ushort CodeOrder => ctx.ReadDataUShort(0UL);
-        public IReadOnlyList<Annotation.READER> Annotations => ctx.ReadList(1).Cast(Annotation.READER.create);
+        public IReadOnlyList<Annotation.READER> Annotations =>
+            ctx.ReadList(1).Cast(Annotation.READER.create);
         public ushort DiscriminantValue => ctx.ReadDataUShort(16UL, 65535);
         public slot.READER Slot => which == WHICH.Slot ? new slot.READER(ctx) : default;
         public group.READER Group => which == WHICH.Group ? new group.READER(ctx) : default;
@@ -1414,9 +1412,7 @@ public class Field : ICapnpSerializable
             writer.HadExplicitDefault = HadExplicitDefault;
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -1501,9 +1497,7 @@ public class Field : ICapnpSerializable
             writer.TypeId = TypeId;
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -1550,7 +1544,7 @@ public class Field : ICapnpSerializable
         {
             Implicit = 0,
             Explicit = 1,
-            undefined = 65535
+            undefined = 65535,
         }
 
         public const ulong typeId = 0xbb90d5c287870be6UL;
@@ -1621,9 +1615,7 @@ public class Field : ICapnpSerializable
             }
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -1687,7 +1679,9 @@ public class Enumerant : ICapnpSerializable
         var reader = READER.create(arg_);
         Name = reader.Name;
         CodeOrder = reader.CodeOrder;
-        Annotations = reader.Annotations?.ToReadOnlyList(_ => CapnpSerializable.Create<Annotation>(_));
+        Annotations = reader.Annotations?.ToReadOnlyList(_ =>
+            CapnpSerializable.Create<Annotation>(_)
+        );
         applyDefaults();
     }
 
@@ -1703,9 +1697,7 @@ public class Enumerant : ICapnpSerializable
         writer.Annotations.Init(Annotations, (_s1, _v1) => _v1?.serialize(_s1));
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -1733,7 +1725,8 @@ public class Enumerant : ICapnpSerializable
 
         public string Name => ctx.ReadText(0);
         public ushort CodeOrder => ctx.ReadDataUShort(0UL);
-        public IReadOnlyList<Annotation.READER> Annotations => ctx.ReadList(1).Cast(Annotation.READER.create);
+        public IReadOnlyList<Annotation.READER> Annotations =>
+            ctx.ReadList(1).Cast(Annotation.READER.create);
     }
 
     public class WRITER : SerializerState
@@ -1792,9 +1785,7 @@ public class Superclass : ICapnpSerializable
         Brand?.serialize(writer.Brand);
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -1874,11 +1865,14 @@ public class Method : ICapnpSerializable
         CodeOrder = reader.CodeOrder;
         ParamStructType = reader.ParamStructType;
         ResultStructType = reader.ResultStructType;
-        Annotations = reader.Annotations?.ToReadOnlyList(_ => CapnpSerializable.Create<Annotation>(_));
+        Annotations = reader.Annotations?.ToReadOnlyList(_ =>
+            CapnpSerializable.Create<Annotation>(_)
+        );
         ParamBrand = CapnpSerializable.Create<Brand>(reader.ParamBrand);
         ResultBrand = CapnpSerializable.Create<Brand>(reader.ResultBrand);
-        ImplicitParameters =
-            reader.ImplicitParameters?.ToReadOnlyList(_ => CapnpSerializable.Create<Node.Parameter>(_));
+        ImplicitParameters = reader.ImplicitParameters?.ToReadOnlyList(_ =>
+            CapnpSerializable.Create<Node.Parameter>(_)
+        );
         applyDefaults();
     }
 
@@ -1899,9 +1893,7 @@ public class Method : ICapnpSerializable
         writer.ImplicitParameters.Init(ImplicitParameters, (_s1, _v1) => _v1?.serialize(_s1));
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -1931,7 +1923,8 @@ public class Method : ICapnpSerializable
         public ushort CodeOrder => ctx.ReadDataUShort(0UL);
         public ulong ParamStructType => ctx.ReadDataULong(64UL);
         public ulong ResultStructType => ctx.ReadDataULong(128UL);
-        public IReadOnlyList<Annotation.READER> Annotations => ctx.ReadList(1).Cast(Annotation.READER.create);
+        public IReadOnlyList<Annotation.READER> Annotations =>
+            ctx.ReadList(1).Cast(Annotation.READER.create);
         public Brand.READER ParamBrand => ctx.ReadStruct(2, Brand.READER.create);
         public Brand.READER ResultBrand => ctx.ReadStruct(3, Brand.READER.create);
 
@@ -2021,7 +2014,7 @@ public class Type : ICapnpSerializable
         Struct = 16,
         Interface = 17,
         AnyPointer = 18,
-        undefined = 65535
+        undefined = 65535,
     }
 
     public const ulong typeId = 0xd07378ede1f9cc60UL;
@@ -2259,9 +2252,7 @@ public class Type : ICapnpSerializable
         }
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -2291,8 +2282,10 @@ public class Type : ICapnpSerializable
         public list.READER List => which == WHICH.List ? new list.READER(ctx) : default;
         public @enum.READER Enum => which == WHICH.Enum ? new @enum.READER(ctx) : default;
         public @struct.READER Struct => which == WHICH.Struct ? new @struct.READER(ctx) : default;
-        public @interface.READER Interface => which == WHICH.Interface ? new @interface.READER(ctx) : default;
-        public anyPointer.READER AnyPointer => which == WHICH.AnyPointer ? new anyPointer.READER(ctx) : default;
+        public @interface.READER Interface =>
+            which == WHICH.Interface ? new @interface.READER(ctx) : default;
+        public anyPointer.READER AnyPointer =>
+            which == WHICH.AnyPointer ? new anyPointer.READER(ctx) : default;
     }
 
     public class WRITER : SerializerState
@@ -2314,9 +2307,11 @@ public class Type : ICapnpSerializable
 
         public @struct.WRITER Struct => which == WHICH.Struct ? Rewrap<@struct.WRITER>() : default;
 
-        public @interface.WRITER Interface => which == WHICH.Interface ? Rewrap<@interface.WRITER>() : default;
+        public @interface.WRITER Interface =>
+            which == WHICH.Interface ? Rewrap<@interface.WRITER>() : default;
 
-        public anyPointer.WRITER AnyPointer => which == WHICH.AnyPointer ? Rewrap<anyPointer.WRITER>() : default;
+        public anyPointer.WRITER AnyPointer =>
+            which == WHICH.AnyPointer ? Rewrap<anyPointer.WRITER>() : default;
     }
 
     [GeneratedCode("capnpc-csharp", "1.3.0.0")]
@@ -2344,9 +2339,7 @@ public class Type : ICapnpSerializable
             ElementType?.serialize(writer.ElementType);
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -2414,9 +2407,7 @@ public class Type : ICapnpSerializable
             Brand?.serialize(writer.Brand);
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -2491,9 +2482,7 @@ public class Type : ICapnpSerializable
             Brand?.serialize(writer.Brand);
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -2568,9 +2557,7 @@ public class Type : ICapnpSerializable
             Brand?.serialize(writer.Brand);
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -2625,7 +2612,7 @@ public class Type : ICapnpSerializable
             Unconstrained = 0,
             Parameter = 1,
             ImplicitMethodParameter = 2,
-            undefined = 65535
+            undefined = 65535,
         }
 
         public const ulong typeId = 0xc2573fe8a23e49f1UL;
@@ -2678,7 +2665,8 @@ public class Type : ICapnpSerializable
 
         public implicitMethodParameter ImplicitMethodParameter
         {
-            get => _which == WHICH.ImplicitMethodParameter ? (implicitMethodParameter)_content : null;
+            get =>
+                _which == WHICH.ImplicitMethodParameter ? (implicitMethodParameter)_content : null;
             set
             {
                 _which = WHICH.ImplicitMethodParameter;
@@ -2698,8 +2686,9 @@ public class Type : ICapnpSerializable
                     Parameter = CapnpSerializable.Create<parameter>(reader.Parameter);
                     break;
                 case WHICH.ImplicitMethodParameter:
-                    ImplicitMethodParameter =
-                        CapnpSerializable.Create<implicitMethodParameter>(reader.ImplicitMethodParameter);
+                    ImplicitMethodParameter = CapnpSerializable.Create<implicitMethodParameter>(
+                        reader.ImplicitMethodParameter
+                    );
                     break;
             }
 
@@ -2728,9 +2717,7 @@ public class Type : ICapnpSerializable
             }
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -2761,11 +2748,13 @@ public class Type : ICapnpSerializable
             public unconstrained.READER Unconstrained =>
                 which == WHICH.Unconstrained ? new unconstrained.READER(ctx) : default;
 
-            public parameter.READER Parameter => which == WHICH.Parameter ? new parameter.READER(ctx) : default;
+            public parameter.READER Parameter =>
+                which == WHICH.Parameter ? new parameter.READER(ctx) : default;
 
-            public implicitMethodParameter.READER ImplicitMethodParameter => which == WHICH.ImplicitMethodParameter
-                ? new implicitMethodParameter.READER(ctx)
-                : default;
+            public implicitMethodParameter.READER ImplicitMethodParameter =>
+                which == WHICH.ImplicitMethodParameter
+                    ? new implicitMethodParameter.READER(ctx)
+                    : default;
         }
 
         public class WRITER : SerializerState
@@ -2779,11 +2768,13 @@ public class Type : ICapnpSerializable
             public unconstrained.WRITER Unconstrained =>
                 which == WHICH.Unconstrained ? Rewrap<unconstrained.WRITER>() : default;
 
-            public parameter.WRITER Parameter => which == WHICH.Parameter ? Rewrap<parameter.WRITER>() : default;
+            public parameter.WRITER Parameter =>
+                which == WHICH.Parameter ? Rewrap<parameter.WRITER>() : default;
 
-            public implicitMethodParameter.WRITER ImplicitMethodParameter => which == WHICH.ImplicitMethodParameter
-                ? Rewrap<implicitMethodParameter.WRITER>()
-                : default;
+            public implicitMethodParameter.WRITER ImplicitMethodParameter =>
+                which == WHICH.ImplicitMethodParameter
+                    ? Rewrap<implicitMethodParameter.WRITER>()
+                    : default;
         }
 
         [GeneratedCode("capnpc-csharp", "1.3.0.0")]
@@ -2796,7 +2787,7 @@ public class Type : ICapnpSerializable
                 Struct = 1,
                 List = 2,
                 Capability = 3,
-                undefined = 65535
+                undefined = 65535,
             }
 
             public const ulong typeId = 0x8e3b5f79fe593656UL;
@@ -2868,9 +2859,7 @@ public class Type : ICapnpSerializable
                 }
             }
 
-            public void applyDefaults()
-            {
-            }
+            public void applyDefaults() { }
 
             public struct READER
             {
@@ -2938,9 +2927,7 @@ public class Type : ICapnpSerializable
                 writer.ParameterIndex = ParameterIndex;
             }
 
-            public void applyDefaults()
-            {
-            }
+            public void applyDefaults() { }
 
             public struct READER
             {
@@ -3011,9 +2998,7 @@ public class Type : ICapnpSerializable
                 writer.ParameterIndex = ParameterIndex;
             }
 
-            public void applyDefaults()
-            {
-            }
+            public void applyDefaults() { }
 
             public struct READER
             {
@@ -3079,9 +3064,7 @@ public class Brand : ICapnpSerializable
         writer.Scopes.Init(Scopes, (_s1, _v1) => _v1?.serialize(_s1));
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -3132,7 +3115,7 @@ public class Brand : ICapnpSerializable
         {
             Bind = 0,
             Inherit = 1,
-            undefined = 65535
+            undefined = 65535,
         }
 
         public const ulong typeId = 0xabd73485a9636bc9UL;
@@ -3208,9 +3191,7 @@ public class Brand : ICapnpSerializable
             writer.ScopeId = ScopeId;
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -3264,7 +3245,10 @@ public class Brand : ICapnpSerializable
 
             public ListOfStructsSerializer<Binding.WRITER> Bind
             {
-                get => which == WHICH.Bind ? BuildPointer<ListOfStructsSerializer<Binding.WRITER>>(0) : default;
+                get =>
+                    which == WHICH.Bind
+                        ? BuildPointer<ListOfStructsSerializer<Binding.WRITER>>(0)
+                        : default;
                 set => Link(0, value);
             }
         }
@@ -3278,7 +3262,7 @@ public class Brand : ICapnpSerializable
         {
             Unbound = 0,
             Type = 1,
-            undefined = 65535
+            undefined = 65535,
         }
 
         public const ulong typeId = 0xc863cd16969ee7fcUL;
@@ -3349,9 +3333,7 @@ public class Brand : ICapnpSerializable
             }
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -3378,7 +3360,8 @@ public class Brand : ICapnpSerializable
             }
 
             public WHICH which => (WHICH)ctx.ReadDataUShort(0U);
-            public Type.READER Type => which == WHICH.Type ? ctx.ReadStruct(0, Schema.Type.READER.create) : default;
+            public Type.READER Type =>
+                which == WHICH.Type ? ctx.ReadStruct(0, Schema.Type.READER.create) : default;
         }
 
         public class WRITER : SerializerState
@@ -3428,7 +3411,7 @@ public class Value : ICapnpSerializable
         Struct = 16,
         Interface = 17,
         AnyPointer = 18,
-        undefined = 65535
+        undefined = 65535,
     }
 
     public const ulong typeId = 0xce23dcd2d7b00c9bUL;
@@ -3810,9 +3793,7 @@ public class Value : ICapnpSerializable
         }
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -3851,11 +3832,14 @@ public class Value : ICapnpSerializable
         public float Float32 => which == WHICH.Float32 ? ctx.ReadDataFloat(32UL) : default;
         public double Float64 => which == WHICH.Float64 ? ctx.ReadDataDouble(64UL) : default;
         public string Text => which == WHICH.Text ? ctx.ReadText(0) : default;
-        public IReadOnlyList<byte> Data => which == WHICH.Data ? ctx.ReadList(0).CastByte() : default;
+        public IReadOnlyList<byte> Data =>
+            which == WHICH.Data ? ctx.ReadList(0).CastByte() : default;
         public DeserializerState List => which == WHICH.List ? ctx.StructReadPointer(0) : default;
         public ushort Enum => which == WHICH.Enum ? ctx.ReadDataUShort(16UL) : default;
-        public DeserializerState Struct => which == WHICH.Struct ? ctx.StructReadPointer(0) : default;
-        public DeserializerState AnyPointer => which == WHICH.AnyPointer ? ctx.StructReadPointer(0) : default;
+        public DeserializerState Struct =>
+            which == WHICH.Struct ? ctx.StructReadPointer(0) : default;
+        public DeserializerState AnyPointer =>
+            which == WHICH.AnyPointer ? ctx.StructReadPointer(0) : default;
     }
 
     public class WRITER : SerializerState
@@ -3945,7 +3929,8 @@ public class Value : ICapnpSerializable
 
         public ListOfPrimitivesSerializer<byte> Data
         {
-            get => which == WHICH.Data ? BuildPointer<ListOfPrimitivesSerializer<byte>>(0) : default;
+            get =>
+                which == WHICH.Data ? BuildPointer<ListOfPrimitivesSerializer<byte>>(0) : default;
             set => Link(0, value);
         }
 
@@ -4008,9 +3993,7 @@ public class Annotation : ICapnpSerializable
         Brand?.serialize(writer.Brand);
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -4079,7 +4062,7 @@ public enum ElementSize : ushort
     fourBytes,
     eightBytes,
     pointer,
-    inlineComposite
+    inlineComposite,
 }
 
 [GeneratedCode("capnpc-csharp", "1.3.0.0")]
@@ -4115,9 +4098,7 @@ public class CapnpVersion : ICapnpSerializable
         writer.Micro = Micro;
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -4193,9 +4174,13 @@ public class CodeGeneratorRequest : ICapnpSerializable
     {
         var reader = READER.create(arg_);
         Nodes = reader.Nodes?.ToReadOnlyList(_ => CapnpSerializable.Create<Node>(_));
-        RequestedFiles = reader.RequestedFiles?.ToReadOnlyList(_ => CapnpSerializable.Create<RequestedFile>(_));
+        RequestedFiles = reader.RequestedFiles?.ToReadOnlyList(_ =>
+            CapnpSerializable.Create<RequestedFile>(_)
+        );
         CapnpVersion = CapnpSerializable.Create<CapnpVersion>(reader.CapnpVersion);
-        SourceInfo = reader.SourceInfo?.ToReadOnlyList(_ => CapnpSerializable.Create<Node.SourceInfo>(_));
+        SourceInfo = reader.SourceInfo?.ToReadOnlyList(_ =>
+            CapnpSerializable.Create<Node.SourceInfo>(_)
+        );
         applyDefaults();
     }
 
@@ -4212,9 +4197,7 @@ public class CodeGeneratorRequest : ICapnpSerializable
         writer.SourceInfo.Init(SourceInfo, (_s1, _v1) => _v1?.serialize(_s1));
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -4241,9 +4224,12 @@ public class CodeGeneratorRequest : ICapnpSerializable
         }
 
         public IReadOnlyList<Node.READER> Nodes => ctx.ReadList(0).Cast(Node.READER.create);
-        public IReadOnlyList<RequestedFile.READER> RequestedFiles => ctx.ReadList(1).Cast(RequestedFile.READER.create);
-        public CapnpVersion.READER CapnpVersion => ctx.ReadStruct(2, Schema.CapnpVersion.READER.create);
-        public IReadOnlyList<Node.SourceInfo.READER> SourceInfo => ctx.ReadList(3).Cast(Node.SourceInfo.READER.create);
+        public IReadOnlyList<RequestedFile.READER> RequestedFiles =>
+            ctx.ReadList(1).Cast(RequestedFile.READER.create);
+        public CapnpVersion.READER CapnpVersion =>
+            ctx.ReadStruct(2, Schema.CapnpVersion.READER.create);
+        public IReadOnlyList<Node.SourceInfo.READER> SourceInfo =>
+            ctx.ReadList(3).Cast(Node.SourceInfo.READER.create);
     }
 
     public class WRITER : SerializerState
@@ -4311,9 +4297,7 @@ public class CodeGeneratorRequest : ICapnpSerializable
             writer.Imports.Init(Imports, (_s1, _v1) => _v1?.serialize(_s1));
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -4341,7 +4325,8 @@ public class CodeGeneratorRequest : ICapnpSerializable
 
             public ulong Id => ctx.ReadDataULong(0UL);
             public string Filename => ctx.ReadText(0);
-            public IReadOnlyList<Import.READER> Imports => ctx.ReadList(1).Cast(Import.READER.create);
+            public IReadOnlyList<Import.READER> Imports =>
+                ctx.ReadList(1).Cast(Import.READER.create);
         }
 
         public class WRITER : SerializerState
@@ -4399,9 +4384,7 @@ public class CodeGeneratorRequest : ICapnpSerializable
                 writer.Name = Name;
             }
 
-            public void applyDefaults()
-            {
-            }
+            public void applyDefaults() { }
 
             public struct READER
             {

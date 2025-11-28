@@ -25,7 +25,7 @@ public class Message : ICapnpSerializable
         Accept = 11,
         Join = 12,
         Disembargo = 13,
-        undefined = 65535
+        undefined = 65535,
     }
 
     public const ulong typeId = 0x91b79f1f808db032UL;
@@ -336,9 +336,7 @@ public class Message : ICapnpSerializable
         }
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -365,11 +363,16 @@ public class Message : ICapnpSerializable
         }
 
         public WHICH which => (WHICH)ctx.ReadDataUShort(0U);
-        public READER Unimplemented => which == WHICH.Unimplemented ? ctx.ReadStruct(0, create) : default;
-        public Exception.READER Abort => which == WHICH.Abort ? ctx.ReadStruct(0, Exception.READER.create) : default;
-        public Call.READER Call => which == WHICH.Call ? ctx.ReadStruct(0, Rpc.Call.READER.create) : default;
-        public Return.READER Return => which == WHICH.Return ? ctx.ReadStruct(0, Rpc.Return.READER.create) : default;
-        public Finish.READER Finish => which == WHICH.Finish ? ctx.ReadStruct(0, Rpc.Finish.READER.create) : default;
+        public READER Unimplemented =>
+            which == WHICH.Unimplemented ? ctx.ReadStruct(0, create) : default;
+        public Exception.READER Abort =>
+            which == WHICH.Abort ? ctx.ReadStruct(0, Exception.READER.create) : default;
+        public Call.READER Call =>
+            which == WHICH.Call ? ctx.ReadStruct(0, Rpc.Call.READER.create) : default;
+        public Return.READER Return =>
+            which == WHICH.Return ? ctx.ReadStruct(0, Rpc.Return.READER.create) : default;
+        public Finish.READER Finish =>
+            which == WHICH.Finish ? ctx.ReadStruct(0, Rpc.Finish.READER.create) : default;
 
         public Resolve.READER Resolve =>
             which == WHICH.Resolve ? ctx.ReadStruct(0, Rpc.Resolve.READER.create) : default;
@@ -377,18 +380,22 @@ public class Message : ICapnpSerializable
         public Release.READER Release =>
             which == WHICH.Release ? ctx.ReadStruct(0, Rpc.Release.READER.create) : default;
 
-        public DeserializerState ObsoleteSave => which == WHICH.ObsoleteSave ? ctx.StructReadPointer(0) : default;
+        public DeserializerState ObsoleteSave =>
+            which == WHICH.ObsoleteSave ? ctx.StructReadPointer(0) : default;
 
         public Bootstrap.READER Bootstrap =>
             which == WHICH.Bootstrap ? ctx.ReadStruct(0, Rpc.Bootstrap.READER.create) : default;
 
-        public DeserializerState ObsoleteDelete => which == WHICH.ObsoleteDelete ? ctx.StructReadPointer(0) : default;
+        public DeserializerState ObsoleteDelete =>
+            which == WHICH.ObsoleteDelete ? ctx.StructReadPointer(0) : default;
 
         public Provide.READER Provide =>
             which == WHICH.Provide ? ctx.ReadStruct(0, Rpc.Provide.READER.create) : default;
 
-        public Accept.READER Accept => which == WHICH.Accept ? ctx.ReadStruct(0, Rpc.Accept.READER.create) : default;
-        public Join.READER Join => which == WHICH.Join ? ctx.ReadStruct(0, Rpc.Join.READER.create) : default;
+        public Accept.READER Accept =>
+            which == WHICH.Accept ? ctx.ReadStruct(0, Rpc.Accept.READER.create) : default;
+        public Join.READER Join =>
+            which == WHICH.Join ? ctx.ReadStruct(0, Rpc.Join.READER.create) : default;
 
         public Disembargo.READER Disembargo =>
             which == WHICH.Disembargo ? ctx.ReadStruct(0, Rpc.Disembargo.READER.create) : default;
@@ -473,7 +480,8 @@ public class Message : ICapnpSerializable
         [DisallowNull]
         public DynamicSerializerState? ObsoleteDelete
         {
-            get => which == WHICH.ObsoleteDelete ? BuildPointer<DynamicSerializerState>(0) : default;
+            get =>
+                which == WHICH.ObsoleteDelete ? BuildPointer<DynamicSerializerState>(0) : default;
             set => Link(0, value!);
         }
 
@@ -536,9 +544,7 @@ public class Bootstrap : ICapnpSerializable
         writer.DeprecatedObjectId.SetObject(DeprecatedObjectId);
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -638,9 +644,7 @@ public class Call : ICapnpSerializable
         writer.AllowThirdPartyTailCall = AllowThirdPartyTailCall;
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -730,7 +734,7 @@ public class Call : ICapnpSerializable
             Caller = 0,
             Yourself = 1,
             ThirdParty = 2,
-            undefined = 65535
+            undefined = 65535,
         }
 
         public const ulong typeId = 0xdae8b0f61aab5f99UL;
@@ -808,9 +812,7 @@ public class Call : ICapnpSerializable
             }
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -837,7 +839,8 @@ public class Call : ICapnpSerializable
             }
 
             public WHICH which => (WHICH)ctx.ReadDataUShort(48U);
-            public DeserializerState ThirdParty => which == WHICH.ThirdParty ? ctx.StructReadPointer(2) : default;
+            public DeserializerState ThirdParty =>
+                which == WHICH.ThirdParty ? ctx.StructReadPointer(2) : default;
         }
 
         public class WRITER : SerializerState
@@ -851,7 +854,8 @@ public class Call : ICapnpSerializable
             [DisallowNull]
             public DynamicSerializerState? ThirdParty
             {
-                get => which == WHICH.ThirdParty ? BuildPointer<DynamicSerializerState>(2) : default;
+                get =>
+                    which == WHICH.ThirdParty ? BuildPointer<DynamicSerializerState>(2) : default;
                 set => Link(2, value!);
             }
         }
@@ -870,7 +874,7 @@ public class Return : ICapnpSerializable
         ResultsSentElsewhere = 3,
         TakeFromOtherQuestion = 4,
         AcceptFromThirdParty = 5,
-        undefined = 65535
+        undefined = 65535,
     }
 
     public const ulong typeId = 0x9e19b28d3db3573aUL;
@@ -910,9 +914,7 @@ public class Return : ICapnpSerializable
 
     public uint AnswerId { get; set; }
 
-    public bool ReleaseParamCaps { get; set; }
-
-        = true;
+    public bool ReleaseParamCaps { get; set; } = true;
 
     public Payload? Results
     {
@@ -975,7 +977,9 @@ public class Return : ICapnpSerializable
                 TakeFromOtherQuestion = reader.TakeFromOtherQuestion;
                 break;
             case WHICH.AcceptFromThirdParty:
-                AcceptFromThirdParty = CapnpSerializable.Create<object>(reader.AcceptFromThirdParty);
+                AcceptFromThirdParty = CapnpSerializable.Create<object>(
+                    reader.AcceptFromThirdParty
+                );
                 break;
         }
 
@@ -1016,9 +1020,7 @@ public class Return : ICapnpSerializable
         writer.ReleaseParamCaps = ReleaseParamCaps;
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -1047,12 +1049,14 @@ public class Return : ICapnpSerializable
         public WHICH which => (WHICH)ctx.ReadDataUShort(48U);
         public uint AnswerId => ctx.ReadDataUInt(0UL);
         public bool ReleaseParamCaps => ctx.ReadDataBool(32UL, true);
-        public Payload.READER Results => which == WHICH.Results ? ctx.ReadStruct(0, Payload.READER.create) : default;
+        public Payload.READER Results =>
+            which == WHICH.Results ? ctx.ReadStruct(0, Payload.READER.create) : default;
 
         public Exception.READER Exception =>
             which == WHICH.Exception ? ctx.ReadStruct(0, Rpc.Exception.READER.create) : default;
 
-        public uint TakeFromOtherQuestion => which == WHICH.TakeFromOtherQuestion ? ctx.ReadDataUInt(64UL) : default;
+        public uint TakeFromOtherQuestion =>
+            which == WHICH.TakeFromOtherQuestion ? ctx.ReadDataUInt(64UL) : default;
 
         public DeserializerState AcceptFromThirdParty =>
             which == WHICH.AcceptFromThirdParty ? ctx.StructReadPointer(0) : default;
@@ -1106,7 +1110,10 @@ public class Return : ICapnpSerializable
         [DisallowNull]
         public DynamicSerializerState? AcceptFromThirdParty
         {
-            get => which == WHICH.AcceptFromThirdParty ? BuildPointer<DynamicSerializerState>(0) : default;
+            get =>
+                which == WHICH.AcceptFromThirdParty
+                    ? BuildPointer<DynamicSerializerState>(0)
+                    : default;
             set => Link(0, value!);
         }
     }
@@ -1120,9 +1127,7 @@ public class Finish : ICapnpSerializable
 
     public uint QuestionId { get; set; }
 
-    public bool ReleaseResultCaps { get; set; }
-
-        = true;
+    public bool ReleaseResultCaps { get; set; } = true;
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
@@ -1143,9 +1148,7 @@ public class Finish : ICapnpSerializable
         writer.ReleaseResultCaps = ReleaseResultCaps;
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -1204,7 +1207,7 @@ public class Resolve : ICapnpSerializable
     {
         Cap = 0,
         Exception = 1,
-        undefined = 65535
+        undefined = 65535,
     }
 
     public const ulong typeId = 0xbbc29655fa89086eUL;
@@ -1292,9 +1295,7 @@ public class Resolve : ICapnpSerializable
         writer.PromiseId = PromiseId;
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -1394,9 +1395,7 @@ public class Release : ICapnpSerializable
         writer.ReferenceCount = ReferenceCount;
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -1476,9 +1475,7 @@ public class Disembargo : ICapnpSerializable
         Context?.serialize(writer.Context);
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -1534,7 +1531,7 @@ public class Disembargo : ICapnpSerializable
             ReceiverLoopback = 1,
             Accept = 2,
             Provide = 3,
-            undefined = 65535
+            undefined = 65535,
         }
 
         public const ulong typeId = 0xd562b4df655bdd4dUL;
@@ -1643,9 +1640,7 @@ public class Disembargo : ICapnpSerializable
             }
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -1672,8 +1667,10 @@ public class Disembargo : ICapnpSerializable
             }
 
             public WHICH which => (WHICH)ctx.ReadDataUShort(32U);
-            public uint SenderLoopback => which == WHICH.SenderLoopback ? ctx.ReadDataUInt(0UL) : default;
-            public uint ReceiverLoopback => which == WHICH.ReceiverLoopback ? ctx.ReadDataUInt(0UL) : default;
+            public uint SenderLoopback =>
+                which == WHICH.SenderLoopback ? ctx.ReadDataUInt(0UL) : default;
+            public uint ReceiverLoopback =>
+                which == WHICH.ReceiverLoopback ? ctx.ReadDataUInt(0UL) : default;
             public uint Provide => which == WHICH.Provide ? ctx.ReadDataUInt(0UL) : default;
         }
 
@@ -1739,9 +1736,7 @@ public class Provide : ICapnpSerializable
         writer.Recipient.SetObject(Recipient);
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -1832,9 +1827,7 @@ public class Accept : ICapnpSerializable
         writer.Embargo = Embargo;
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -1925,9 +1918,7 @@ public class Join : ICapnpSerializable
         writer.KeyPart.SetObject(KeyPart);
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -1993,7 +1984,7 @@ public class MessageTarget : ICapnpSerializable
     {
         ImportedCap = 0,
         PromisedAnswer = 1,
-        undefined = 65535
+        undefined = 65535,
     }
 
     public const ulong typeId = 0x95bc14545813fbc1UL;
@@ -2076,9 +2067,7 @@ public class MessageTarget : ICapnpSerializable
         }
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -2107,9 +2096,10 @@ public class MessageTarget : ICapnpSerializable
         public WHICH which => (WHICH)ctx.ReadDataUShort(32U);
         public uint ImportedCap => which == WHICH.ImportedCap ? ctx.ReadDataUInt(0UL) : default;
 
-        public PromisedAnswer.READER PromisedAnswer => which == WHICH.PromisedAnswer
-            ? ctx.ReadStruct(0, Rpc.PromisedAnswer.READER.create)
-            : default;
+        public PromisedAnswer.READER PromisedAnswer =>
+            which == WHICH.PromisedAnswer
+                ? ctx.ReadStruct(0, Rpc.PromisedAnswer.READER.create)
+                : default;
     }
 
     public class WRITER : SerializerState
@@ -2154,7 +2144,9 @@ public class Payload : ICapnpSerializable
     {
         var reader = READER.create(arg_);
         Content = CapnpSerializable.Create<object>(reader.Content);
-        CapTable = reader.CapTable?.ToReadOnlyList(_ => CapnpSerializable.Create<CapDescriptor>(_)!);
+        CapTable = reader.CapTable?.ToReadOnlyList(_ =>
+            CapnpSerializable.Create<CapDescriptor>(_)!
+        );
         applyDefaults();
     }
 
@@ -2169,9 +2161,7 @@ public class Payload : ICapnpSerializable
         writer.CapTable.Init(CapTable, (_s1, _v1) => _v1?.serialize(_s1));
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -2198,7 +2188,8 @@ public class Payload : ICapnpSerializable
         }
 
         public DeserializerState Content => ctx.StructReadPointer(0);
-        public IReadOnlyList<CapDescriptor.READER> CapTable => ctx.ReadList(1).Cast(CapDescriptor.READER.create);
+        public IReadOnlyList<CapDescriptor.READER> CapTable =>
+            ctx.ReadList(1).Cast(CapDescriptor.READER.create);
     }
 
     public class WRITER : SerializerState
@@ -2234,7 +2225,7 @@ public class CapDescriptor : ICapnpSerializable
         ReceiverHosted = 3,
         ReceiverAnswer = 4,
         ThirdPartyHosted = 5,
-        undefined = 65535
+        undefined = 65535,
     }
 
     public const ulong typeId = 0x8523ddc40b86b8b0UL;
@@ -2344,7 +2335,9 @@ public class CapDescriptor : ICapnpSerializable
                 ReceiverAnswer = CapnpSerializable.Create<PromisedAnswer>(reader.ReceiverAnswer);
                 break;
             case WHICH.ThirdPartyHosted:
-                ThirdPartyHosted = CapnpSerializable.Create<ThirdPartyCapDescriptor>(reader.ThirdPartyHosted);
+                ThirdPartyHosted = CapnpSerializable.Create<ThirdPartyCapDescriptor>(
+                    reader.ThirdPartyHosted
+                );
                 break;
         }
 
@@ -2381,9 +2374,7 @@ public class CapDescriptor : ICapnpSerializable
         }
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -2411,16 +2402,20 @@ public class CapDescriptor : ICapnpSerializable
 
         public WHICH which => (WHICH)ctx.ReadDataUShort(0U);
         public uint SenderHosted => which == WHICH.SenderHosted ? ctx.ReadDataUInt(32UL) : default;
-        public uint SenderPromise => which == WHICH.SenderPromise ? ctx.ReadDataUInt(32UL) : default;
-        public uint ReceiverHosted => which == WHICH.ReceiverHosted ? ctx.ReadDataUInt(32UL) : default;
+        public uint SenderPromise =>
+            which == WHICH.SenderPromise ? ctx.ReadDataUInt(32UL) : default;
+        public uint ReceiverHosted =>
+            which == WHICH.ReceiverHosted ? ctx.ReadDataUInt(32UL) : default;
 
-        public PromisedAnswer.READER ReceiverAnswer => which == WHICH.ReceiverAnswer
-            ? ctx.ReadStruct(0, PromisedAnswer.READER.create)
-            : default;
+        public PromisedAnswer.READER ReceiverAnswer =>
+            which == WHICH.ReceiverAnswer
+                ? ctx.ReadStruct(0, PromisedAnswer.READER.create)
+                : default;
 
-        public ThirdPartyCapDescriptor.READER ThirdPartyHosted => which == WHICH.ThirdPartyHosted
-            ? ctx.ReadStruct(0, ThirdPartyCapDescriptor.READER.create)
-            : default;
+        public ThirdPartyCapDescriptor.READER ThirdPartyHosted =>
+            which == WHICH.ThirdPartyHosted
+                ? ctx.ReadStruct(0, ThirdPartyCapDescriptor.READER.create)
+                : default;
     }
 
     public class WRITER : SerializerState
@@ -2464,7 +2459,10 @@ public class CapDescriptor : ICapnpSerializable
         [DisallowNull]
         public ThirdPartyCapDescriptor.WRITER? ThirdPartyHosted
         {
-            get => which == WHICH.ThirdPartyHosted ? BuildPointer<ThirdPartyCapDescriptor.WRITER>(0) : default;
+            get =>
+                which == WHICH.ThirdPartyHosted
+                    ? BuildPointer<ThirdPartyCapDescriptor.WRITER>(0)
+                    : default;
             set => Link(0, value!);
         }
     }
@@ -2499,9 +2497,7 @@ public class PromisedAnswer : ICapnpSerializable
         writer.Transform.Init(Transform, (_s1, _v1) => _v1?.serialize(_s1));
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -2559,7 +2555,7 @@ public class PromisedAnswer : ICapnpSerializable
         {
             Noop = 0,
             GetPointerField = 1,
-            undefined = 65535
+            undefined = 65535,
         }
 
         public const ulong typeId = 0xf316944415569081UL;
@@ -2630,9 +2626,7 @@ public class PromisedAnswer : ICapnpSerializable
             }
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -2659,7 +2653,8 @@ public class PromisedAnswer : ICapnpSerializable
             }
 
             public WHICH which => (WHICH)ctx.ReadDataUShort(0U);
-            public ushort GetPointerField => which == WHICH.GetPointerField ? ctx.ReadDataUShort(16UL) : default;
+            public ushort GetPointerField =>
+                which == WHICH.GetPointerField ? ctx.ReadDataUShort(16UL) : default;
         }
 
         public class WRITER : SerializerState
@@ -2713,9 +2708,7 @@ public class ThirdPartyCapDescriptor : ICapnpSerializable
         writer.VineId = VineId;
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -2777,7 +2770,7 @@ public class Exception : ICapnpSerializable
         failed,
         overloaded,
         disconnected,
-        unimplemented
+        unimplemented,
     }
 
     public const ulong typeId = 0xd625b7063acf691aUL;
@@ -2813,9 +2806,7 @@ public class Exception : ICapnpSerializable
         writer.TheType = TheType;
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {

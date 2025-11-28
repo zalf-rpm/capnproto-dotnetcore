@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Capnp.FrameTracing;
 
 namespace Capnp.Rpc;

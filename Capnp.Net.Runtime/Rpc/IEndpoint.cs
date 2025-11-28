@@ -1,4 +1,4 @@
-﻿namespace Capnp.Rpc;
+namespace Capnp.Rpc;
 
 /// <summary>
 ///     A uni-directional endpoint, used in conjunction with the <see cref="RpcEngine" />.

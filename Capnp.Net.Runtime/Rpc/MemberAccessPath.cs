@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,7 +50,8 @@ public class MemberAccessPath
         var ops = new MemberAccess[promisedAnswer.Transform.Count];
 
         var i = 0;
-        foreach (var op in promisedAnswer.Transform) ops[i++] = MemberAccess.Deserialize(op);
+        foreach (var op in promisedAnswer.Transform)
+            ops[i++] = MemberAccess.Deserialize(op);
 
         return new MemberAccessPath(ops);
     }
@@ -63,7 +64,8 @@ public class MemberAccessPath
     {
         promisedAnswer.Transform.Init(Path.Count);
 
-        for (var i = 0; i < Path.Count; i++) Path[i].Serialize(promisedAnswer.Transform[i]);
+        for (var i = 0; i < Path.Count; i++)
+            Path[i].Serialize(promisedAnswer.Transform[i]);
     }
 
     /// <summary>
@@ -76,7 +78,8 @@ public class MemberAccessPath
     {
         var cur = rpcState;
 
-        foreach (var op in Path) cur = op.Eval(cur);
+        foreach (var op in Path)
+            cur = op.Eval(cur);
 
         switch (cur.Kind)
         {
@@ -168,9 +171,11 @@ public class MemberAccessPath
         /// <returns>Member value or object</returns>
         public override DeserializerState Eval(DeserializerState state)
         {
-            if (state.Kind == ObjectKind.Nil) return default;
+            if (state.Kind == ObjectKind.Nil)
+                return default;
 
-            if (state.Kind != ObjectKind.Struct) throw new ArgumentException("Expected a struct");
+            if (state.Kind != ObjectKind.Struct)
+                throw new ArgumentException("Expected a struct");
 
             return state.StructReadPointer(Offset);
         }

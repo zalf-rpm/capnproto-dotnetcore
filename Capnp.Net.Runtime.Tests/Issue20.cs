@@ -1,9 +1,10 @@
-﻿using Capnp;
+using Capnp;
 
 namespace CapnpGen;
 
 [TypeId(0xb706e295e5860f3dUL)]
-public class RpcRequest<TRequest> : ICapnpSerializable where TRequest : class
+public class RpcRequest<TRequest> : ICapnpSerializable
+    where TRequest : class
 {
     public const ulong typeId = 0xb706e295e5860f3dUL;
 
@@ -30,9 +31,7 @@ public class RpcRequest<TRequest> : ICapnpSerializable where TRequest : class
         writer.Request.SetObject(Request);
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -111,9 +110,7 @@ public class ArithmeticOperationRequest : ICapnpSerializable
         writer.NumB = NumB;
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {
@@ -188,9 +185,7 @@ public class ArithmeticOperationReply : ICapnpSerializable
         writer.Result = Result;
     }
 
-    public void applyDefaults()
-    {
-    }
+    public void applyDefaults() { }
 
     public struct READER
     {

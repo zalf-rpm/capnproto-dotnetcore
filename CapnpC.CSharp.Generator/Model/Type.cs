@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Capnp;
 
 namespace CapnpC.CSharp.Generator.Model;
@@ -13,12 +13,15 @@ internal class Type : AbstractType
     {
         Tag = tag;
     }
+
     // Representation of a type expression in the schema language
 
     public TypeDefinition Definition { get; set; }
+
     // The model for all nodes that are not file nodes - they define types
 
     public GenericParameter Parameter { get; set; }
+
     // A reference to type parameter in this scope
 
     public Type ElementType { get; set; }
@@ -56,9 +59,10 @@ internal class Type : AbstractType
     {
         get
         {
-            var parentDef = Definition?.DeclaringElement as TypeDefinition;
             // FIXME: Will become more sophisticated as soon as generics are implemented
-            return parentDef != null ? Types.FromDefinition(parentDef) : null;
+            return Definition?.DeclaringElement is TypeDefinition parentDef
+                ? Types.FromDefinition(parentDef)
+                : null;
         }
     }
 
@@ -73,7 +77,8 @@ internal class Type : AbstractType
             {
                 var def = stk.Pop();
 
-                if (def == null) break;
+                if (def == null)
+                    break;
 
                 if (set.Add(def))
                     foreach (var super in def.Definition.Superclasses)
@@ -92,17 +97,20 @@ internal class Type : AbstractType
                 if (!_parameterBindings.ContainsKey(p))
                     _parameterBindings[p] = Types.FromParameter(p);
 
-            declaringType = (declaringType as TypeDefinition)?.DeclaringElement as IHasGenericParameters;
+            declaringType =
+                (declaringType as TypeDefinition)?.DeclaringElement as IHasGenericParameters;
         }
     }
 
     private Type SubstituteGenerics(Type type)
     {
-        if (type == null) return null;
+        if (type == null)
+            return null;
 
         if (type.Parameter != null)
         {
-            if (_parameterBindings.TryGetValue(type.Parameter, out var boundType)) return boundType;
+            if (_parameterBindings.TryGetValue(type.Parameter, out var boundType))
+                return boundType;
 
             return type;
         }
@@ -110,7 +118,7 @@ internal class Type : AbstractType
         var stype = new Type(type.Tag)
         {
             Definition = type.Definition,
-            ElementType = SubstituteGenerics(type.ElementType)
+            ElementType = SubstituteGenerics(type.ElementType),
         };
 
         foreach (var kvp in type._parameterBindings)
@@ -138,8 +146,10 @@ internal class Type : AbstractType
         var result = method.Clone();
         result.ParamsStruct = SubstituteGenerics(result.ParamsStruct);
         result.ResultStruct = SubstituteGenerics(result.ResultStruct);
-        foreach (var field in result.Params) field.Type = SubstituteGenerics(field.Type);
-        foreach (var field in result.Results) field.Type = SubstituteGenerics(field.Type);
+        foreach (var field in result.Params)
+            field.Type = SubstituteGenerics(field.Type);
+        foreach (var field in result.Results)
+            field.Type = SubstituteGenerics(field.Type);
         return result;
     }
 
@@ -159,7 +169,8 @@ internal class Type : AbstractType
 
     public Type ResolveGenericParameter(GenericParameter genericParameter)
     {
-        if (_parameterBindings.TryGetValue(genericParameter, out var type)) return type;
+        if (_parameterBindings.TryGetValue(genericParameter, out var type))
+            return type;
 
         return Types.AnyPointer;
     }

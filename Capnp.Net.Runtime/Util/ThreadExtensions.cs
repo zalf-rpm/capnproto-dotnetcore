@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 
@@ -8,7 +8,8 @@ internal static class ThreadExtensions
 {
     private static readonly Lazy<ThreadExtensionsLoggingContext> LoggingContext = new(
         () => new ThreadExtensionsLoggingContext(),
-        LazyThreadSafetyMode.PublicationOnly);
+        LazyThreadSafetyMode.PublicationOnly
+    );
 
     public static void SafeJoin(this Thread thread, ILogger? logger = null, int timeout = 5000)
     {
@@ -20,15 +21,16 @@ internal static class ThreadExtensions
 
             try
             {
-                logger.LogError($"Unable to join thread {name}. Thread is in state {thread.ThreadState}.");
+                logger.LogError(
+                    $"Unable to join thread {name}. Thread is in state {thread.ThreadState}."
+                );
                 thread.Interrupt();
                 if (!thread.Join(timeout))
                     logger.LogError(
-                        $"Still unable to join thread {name} after Interrupt(). Thread is in state {thread.ThreadState}.");
+                        $"Still unable to join thread {name} after Interrupt(). Thread is in state {thread.ThreadState}."
+                    );
             }
-            catch
-            {
-            }
+            catch { }
         }
     }
 

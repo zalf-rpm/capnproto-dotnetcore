@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
@@ -63,7 +63,8 @@ public class FramePump : IDisposable
     {
         if (0 == Interlocked.Exchange(ref _disposing, 1))
         {
-            foreach (var tracer in _tracers) tracer.Dispose();
+            foreach (var tracer in _tracers)
+                tracer.Dispose();
 
             _writer?.Dispose();
             _stream.Dispose();
@@ -100,11 +101,13 @@ public class FramePump : IDisposable
 
         lock (_writeLock)
         {
-            foreach (var tracer in _tracers) tracer.TraceFrame(FrameDirection.Tx, frame);
+            foreach (var tracer in _tracers)
+                tracer.TraceFrame(FrameDirection.Tx, frame);
 
             _writer.Write(frame.Segments.Count - 1);
 
-            foreach (var segment in frame.Segments) _writer.Write(segment.Length);
+            foreach (var segment in frame.Segments)
+                _writer.Write(segment.Length);
 
             if ((frame.Segments.Count & 1) == 0)
                 // Padding
@@ -158,15 +161,20 @@ public class FramePump : IDisposable
                     IsWaitingForData = true;
                     var frame = reader.ReadWireFrame();
                     IsWaitingForData = false;
-                    foreach (var tracer in _tracers) tracer.TraceFrame(FrameDirection.Rx, frame);
+                    foreach (var tracer in _tracers)
+                        tracer.TraceFrame(FrameDirection.Rx, frame);
                     FrameReceived?.Invoke(frame);
                 }
             }
         }
-        catch (Exception exception) when (exception is EndOfStreamException ||
-                                          (exception is IOException ioex &&
-                                           ioex.InnerException is SocketException sockex &&
-                                           sockex.SocketErrorCode == SocketError.Interrupted))
+        catch (Exception exception)
+            when (exception is EndOfStreamException
+                || (
+                    exception is IOException ioex
+                    && ioex.InnerException is SocketException sockex
+                    && sockex.SocketErrorCode == SocketError.Interrupted
+                )
+            )
         {
             Logger.LogInformation("Encountered end of stream");
         }
@@ -174,14 +182,13 @@ public class FramePump : IDisposable
         {
             Logger.LogWarning(e.Message);
         }
-        catch (ObjectDisposedException)
-        {
-        }
+        catch (ObjectDisposedException) { }
         catch (Exception exception)
         {
             // When disposing, all kinds of errors might happen here,
             // not worth logging.
-            if (_disposing == 0) Logger.LogWarning(exception.Message);
+            if (_disposing == 0)
+                Logger.LogWarning(exception.Message);
         }
         finally
         {

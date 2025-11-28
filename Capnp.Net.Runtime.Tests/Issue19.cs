@@ -9,26 +9,33 @@ namespace CapnpGen;
 [TypeId(0x8f85f6df684d47b5UL)]
 [Proxy(typeof(GenericAProxy<>))]
 [Skeleton(typeof(GenericASkeleton<>))]
-public interface IGenericA<TT> : IDisposable where TT : class
+public interface IGenericA<TT> : IDisposable
+    where TT : class
 {
     Task MethodA(TT param1, CancellationToken cancellationToken_ = default);
 }
 
-public class GenericAProxy<TT> : Proxy, IGenericA<TT> where TT : class
+public class GenericAProxy<TT> : Proxy, IGenericA<TT>
+    where TT : class
 {
     public async Task MethodA(TT param1, CancellationToken cancellationToken_ = default)
     {
         var in_ = SerializerState.CreateForRpc<GenericA<TT>.Params_methodA.WRITER>();
-        var arg_ = new GenericA<TT>.Params_methodA
-        { Param1 = param1 };
+        var arg_ = new GenericA<TT>.Params_methodA { Param1 = param1 };
         arg_.serialize(in_);
-        var d_ = await Call(10341943558714247093UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_)
-            .WhenReturned;
+        var d_ = await Call(
+            10341943558714247093UL,
+            0,
+            in_.Rewrap<DynamicSerializerState>(),
+            false,
+            cancellationToken_
+        ).WhenReturned;
         var r_ = CapnpSerializable.Create<GenericA<TT>.Result_methodA>(d_);
     }
 }
 
-public class GenericASkeleton<TT> : Skeleton<IGenericA<TT>> where TT : class
+public class GenericASkeleton<TT> : Skeleton<IGenericA<TT>>
+    where TT : class
 {
     public GenericASkeleton()
     {
@@ -37,7 +44,10 @@ public class GenericASkeleton<TT> : Skeleton<IGenericA<TT>> where TT : class
 
     public override ulong InterfaceId => 10341943558714247093UL;
 
-    private async Task<AnswerOrCounterquestion> MethodA(DeserializerState d_, CancellationToken cancellationToken_)
+    private async Task<AnswerOrCounterquestion> MethodA(
+        DeserializerState d_,
+        CancellationToken cancellationToken_
+    )
     {
         var in_ = CapnpSerializable.Create<GenericA<TT>.Params_methodA>(d_);
         await Impl.MethodA(in_.Param1, cancellationToken_);
@@ -73,9 +83,7 @@ public static class GenericA<TT>
             writer.Param1.SetObject(Param1);
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -135,13 +143,9 @@ public static class GenericA<TT>
             serialize(arg_.Rewrap<WRITER>());
         }
 
-        public void serialize(WRITER writer)
-        {
-        }
+        public void serialize(WRITER writer) { }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -191,11 +195,15 @@ public class B2Proxy : Proxy, IB2
     public async Task<string> MethodB(long param1, CancellationToken cancellationToken_ = default)
     {
         var in_ = SerializerState.CreateForRpc<B2.Params_methodB.WRITER>();
-        var arg_ = new B2.Params_methodB
-        { Param1 = param1 };
+        var arg_ = new B2.Params_methodB { Param1 = param1 };
         arg_.serialize(in_);
-        var d_ = await Call(16414937344734980809UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_)
-            .WhenReturned;
+        var d_ = await Call(
+            16414937344734980809UL,
+            0,
+            in_.Rewrap<DynamicSerializerState>(),
+            false,
+            cancellationToken_
+        ).WhenReturned;
         var r_ = CapnpSerializable.Create<B2.Result_methodB>(d_);
         return r_.Res;
     }
@@ -203,11 +211,15 @@ public class B2Proxy : Proxy, IB2
     public async Task MethodA(string param1, CancellationToken cancellationToken_ = default)
     {
         var in_ = SerializerState.CreateForRpc<GenericA<string>.Params_methodA.WRITER>();
-        var arg_ = new GenericA<string>.Params_methodA
-        { Param1 = param1 };
+        var arg_ = new GenericA<string>.Params_methodA { Param1 = param1 };
         arg_.serialize(in_);
-        var d_ = await Call(10341943558714247093UL, 0, in_.Rewrap<DynamicSerializerState>(), false, cancellationToken_)
-            .WhenReturned;
+        var d_ = await Call(
+            10341943558714247093UL,
+            0,
+            in_.Rewrap<DynamicSerializerState>(),
+            false,
+            cancellationToken_
+        ).WhenReturned;
         var r_ = CapnpSerializable.Create<GenericA<string>.Result_methodA>(d_);
     }
 }
@@ -221,10 +233,15 @@ public class B2Skeleton : Skeleton<IB2>
 
     public override ulong InterfaceId => 16414937344734980809UL;
 
-    private Task<AnswerOrCounterquestion> MethodB(DeserializerState d_, CancellationToken cancellationToken_)
+    private Task<AnswerOrCounterquestion> MethodB(
+        DeserializerState d_,
+        CancellationToken cancellationToken_
+    )
     {
         var in_ = CapnpSerializable.Create<B2.Params_methodB>(d_);
-        return Impatient.MaybeTailCall(Impl.MethodB(in_.Param1, cancellationToken_), res =>
+        return Impatient.MaybeTailCall(
+            Impl.MethodB(in_.Param1, cancellationToken_),
+            res =>
             {
                 var s_ = SerializerState.CreateForRpc<B2.Result_methodB.WRITER>();
                 var r_ = new B2.Result_methodB { Res = res };
@@ -261,9 +278,7 @@ public static class B2
             writer.Param1 = Param1;
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {
@@ -331,9 +346,7 @@ public static class B2
             writer.Res = Res;
         }
 
-        public void applyDefaults()
-        {
-        }
+        public void applyDefaults() { }
 
         public struct READER
         {

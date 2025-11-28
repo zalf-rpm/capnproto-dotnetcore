@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 
 namespace Capnp.Rpc;
@@ -14,14 +14,22 @@ internal abstract class RemoteCapability : RefCountingCapability
 
     internal IRpcEndpoint Endpoint => _ep;
 
-    internal override IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args)
+    internal override IPromisedAnswer DoCall(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args
+    )
     {
         var call = SetupMessage(args, interfaceId, methodId);
         Debug.Assert(call.Target.which != MessageTarget.WHICH.undefined);
         return _ep.BeginQuestion(this, args);
     }
 
-    protected virtual Call.WRITER SetupMessage(DynamicSerializerState args, ulong interfaceId, ushort methodId)
+    protected virtual Call.WRITER SetupMessage(
+        DynamicSerializerState args,
+        ulong interfaceId,
+        ushort methodId
+    )
     {
         if (args.MsgBuilder == null)
             throw new ArgumentException("Unbound serializer state", nameof(args));

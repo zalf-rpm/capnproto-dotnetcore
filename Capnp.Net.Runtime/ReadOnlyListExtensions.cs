@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,9 @@ public static class ReadOnlyListExtensions
     /// <returns>A read-only list in which each element corresponds to the source element after applying the selector function</returns>
     /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="selector" /> is null.</exception>
     public static IReadOnlyList<To> LazyListSelect<From, To>(
-        this IReadOnlyList<From> source, Func<From, To> selector)
+        this IReadOnlyList<From> source,
+        Func<From, To> selector
+    )
     {
         return new ReadOnlyListSelectOperator<From, To>(source, selector);
     }
@@ -40,7 +42,9 @@ public static class ReadOnlyListExtensions
     /// <returns>A read-only list in which each element corresponds to the source element after applying the selector function</returns>
     /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="selector" /> is null.</exception>
     public static IReadOnlyList<To> ToReadOnlyList<From, To>(
-        this IReadOnlyList<From> source, Func<From, To> selector)
+        this IReadOnlyList<From> source,
+        Func<From, To> selector
+    )
     {
         return source.Select(selector).ToList().AsReadOnly();
     }

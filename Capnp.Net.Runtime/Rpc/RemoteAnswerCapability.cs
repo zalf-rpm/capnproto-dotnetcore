@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Capnp.Util;
 
@@ -12,22 +12,31 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
     // overhead for creating the Logger object, calling the Logger methods and deciding to
     // filter the output. This justifies the precompiler switch.
 #if DebugEmbargos
-        ILogger Logger { get; } = Logging.CreateLogger<RemoteAnswerCapability>();
+    ILogger Logger { get; } = Logging.CreateLogger<RemoteAnswerCapability>();
 #endif
 
     private readonly PendingQuestion _question;
     private readonly MemberAccessPath _access;
     private readonly StrictlyOrderedAwaitTask<Proxy> _whenResolvedProxy;
 
-    public RemoteAnswerCapability(PendingQuestion question, MemberAccessPath access, Task<Proxy> proxyTask) : base(
-        question.RpcEndpoint)
+    public RemoteAnswerCapability(
+        PendingQuestion question,
+        MemberAccessPath access,
+        Task<Proxy> proxyTask
+    )
+        : base(question.RpcEndpoint)
     {
         _question = question ?? throw new ArgumentNullException(nameof(question));
         _access = access ?? throw new ArgumentNullException(nameof(access));
-        _whenResolvedProxy = (proxyTask ?? throw new ArgumentNullException(nameof(proxyTask))).EnforceAwaitOrder();
+        _whenResolvedProxy = (
+            proxyTask ?? throw new ArgumentNullException(nameof(proxyTask))
+        ).EnforceAwaitOrder();
     }
 
-    private static async Task<Proxy> TransferOwnershipToDummyProxy(PendingQuestion question, MemberAccessPath access)
+    private static async Task<Proxy> TransferOwnershipToDummyProxy(
+        PendingQuestion question,
+        MemberAccessPath access
+    )
     {
         var result = await question.WhenReturned;
         var cap = access.Eval(result);
@@ -36,10 +45,8 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
         return proxy;
     }
 
-    public RemoteAnswerCapability(PendingQuestion question, MemberAccessPath access) : this(question, access,
-        TransferOwnershipToDummyProxy(question, access))
-    {
-    }
+    public RemoteAnswerCapability(PendingQuestion question, MemberAccessPath access)
+        : this(question, access, TransferOwnershipToDummyProxy(question, access)) { }
 
     private async void ReAllowFinishWhenDone(StrictlyOrderedAwaitTask task)
     {
@@ -49,9 +56,7 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
 
             await task;
         }
-        catch
-        {
-        }
+        catch { }
         finally
         {
             lock (_question.ReentrancyBlocker)
@@ -68,7 +73,10 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
         {
             lock (_question.ReentrancyBlocker)
             {
-                if (!_question.IsTailCall && _question.StateFlags.HasFlag(PendingQuestion.State.Returned))
+                if (
+                    !_question.IsTailCall
+                    && _question.StateFlags.HasFlag(PendingQuestion.State.Returned)
+                )
                     try
                     {
                         return _whenResolvedProxy.Result.ConsumedCap;
@@ -85,7 +93,8 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
 
     public override StrictlyOrderedAwaitTask WhenResolved => _whenResolvedProxy;
 
-    public override T? GetResolvedCapability<T>() where T : class
+    public override T? GetResolvedCapability<T>()
+        where T : class
     {
         return _whenResolvedProxy.WrappedTask.GetResolvedCapability<T>();
     }
@@ -97,18 +106,26 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
         _access.Serialize(wr.PromisedAnswer);
     }
 
-    internal override IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args)
+    internal override IPromisedAnswer DoCall(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args
+    )
     {
         lock (_question.ReentrancyBlocker)
         {
-            if (!_question.StateFlags.HasFlag(PendingQuestion.State.TailCall) &&
-                _question.StateFlags.HasFlag(PendingQuestion.State.Returned))
+            if (
+                !_question.StateFlags.HasFlag(PendingQuestion.State.TailCall)
+                && _question.StateFlags.HasFlag(PendingQuestion.State.Returned)
+            )
                 return CallOnResolution(interfaceId, methodId, args);
 #if DebugEmbargos
-                    Logger.LogDebug("Call by proxy");
+            Logger.LogDebug("Call by proxy");
 #endif
-            if (_question.StateFlags.HasFlag(PendingQuestion.State.CanceledByDispose) ||
-                _question.StateFlags.HasFlag(PendingQuestion.State.FinishRequested))
+            if (
+                _question.StateFlags.HasFlag(PendingQuestion.State.CanceledByDispose)
+                || _question.StateFlags.HasFlag(PendingQuestion.State.FinishRequested)
+            )
             {
                 args.Dispose();
                 throw new ObjectDisposedException(nameof(PendingQuestion));
@@ -125,9 +142,7 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
                 {
                     await promisedAnswer.WhenReturned;
                 }
-                catch
-                {
-                }
+                catch { }
                 finally
                 {
                     lock (_question.ReentrancyBlocker)
@@ -142,7 +157,11 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
         }
     }
 
-    protected override Call.WRITER SetupMessage(DynamicSerializerState args, ulong interfaceId, ushort methodId)
+    protected override Call.WRITER SetupMessage(
+        DynamicSerializerState args,
+        ulong interfaceId,
+        ushort methodId
+    )
     {
         var call = base.SetupMessage(args, interfaceId, methodId);
 
@@ -160,7 +179,10 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
             if (_question.StateFlags.HasFlag(PendingQuestion.State.CanceledByDispose))
                 throw new ObjectDisposedException(nameof(PendingQuestion));
 
-            if (_question.StateFlags.HasFlag(PendingQuestion.State.Returned) && !_question.IsTailCall)
+            if (
+                _question.StateFlags.HasFlag(PendingQuestion.State.Returned)
+                && !_question.IsTailCall
+            )
             {
                 ResolvedCap!.Export(endpoint, writer);
             }
@@ -199,9 +221,7 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
             {
                 using var _ = await _whenResolvedProxy;
             }
-            catch
-            {
-            }
+            catch { }
     }
 
     internal override void AddRef()

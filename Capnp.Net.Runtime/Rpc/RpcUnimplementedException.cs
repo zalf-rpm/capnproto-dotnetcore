@@ -1,5 +1,3 @@
-﻿namespace Capnp.Rpc;
+namespace Capnp.Rpc;
 
-internal class RpcUnimplementedException : System.Exception
-{
-}
+internal class RpcUnimplementedException : System.Exception { }

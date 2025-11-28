@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -38,8 +38,10 @@ public class RpcEngine
     /// </summary>
     public object Main
     {
-        set => BootstrapCap =
-            value is Skeleton skeleton ? skeleton : CapabilityReflection.CreateSkeletonInternal(value);
+        set =>
+            BootstrapCap = value is Skeleton skeleton
+                ? skeleton
+                : CapabilityReflection.CreateSkeletonInternal(value);
     }
 
     /// <summary>
@@ -103,7 +105,7 @@ public class RpcEngine
             /// <summary>
             ///     The session is closed, either deliberately or due to an error condition.
             /// </summary>
-            Dismissed
+            Dismissed,
         }
 
         private static readonly ThreadLocal<PendingQuestion?> _deferredCall = new();
@@ -217,7 +219,9 @@ public class RpcEngine
                 _revExportTable.Clear();
 
                 foreach (var question in _questionTable.Values.ToList())
-                    question.OnException(new RpcException("RPC connection is broken. Task would never return."));
+                    question.OnException(
+                        new RpcException("RPC connection is broken. Task would never return.")
+                    );
 
                 Debug.Assert(_questionTable.Count == 0);
 
@@ -237,25 +241,30 @@ public class RpcEngine
         public void Forward(WireFrame frame)
         {
             if (State == EndpointState.Dismissed)
-                throw new InvalidOperationException("Endpoint is in dismissed state and doesn't accept frames anymore");
+                throw new InvalidOperationException(
+                    "Endpoint is in dismissed state and doesn't accept frames anymore"
+                );
 
             Interlocked.Increment(ref _recvCount);
             ProcessFrame(frame);
         }
 
-        void IEndpoint.Flush()
-        {
-        }
+        void IEndpoint.Flush() { }
 
-        void IRpcEndpoint.Resolve(uint preliminaryId, Skeleton preliminaryCap,
-            Func<ConsumedCapability> resolvedCapGetter)
+        void IRpcEndpoint.Resolve(
+            uint preliminaryId,
+            Skeleton preliminaryCap,
+            Func<ConsumedCapability> resolvedCapGetter
+        )
         {
             using var fc = SetupFlushContext();
 
             lock (_reentrancyBlocker)
             {
-                if (!_exportTable.TryGetValue(preliminaryId, out var existing) ||
-                    existing.Cap != preliminaryCap)
+                if (
+                    !_exportTable.TryGetValue(preliminaryId, out var existing)
+                    || existing.Cap != preliminaryCap
+                )
                     // Resolved too late. Capability was already released.
                     return;
 
@@ -292,7 +301,10 @@ public class RpcEngine
             return AllocateExport(providedCapability, out first);
         }
 
-        PendingQuestion IRpcEndpoint.BeginQuestion(ConsumedCapability target, SerializerState inParams)
+        PendingQuestion IRpcEndpoint.BeginQuestion(
+            ConsumedCapability target,
+            SerializerState inParams
+        )
         {
             using var fc = SetupFlushContext();
             var question = AllocateQuestion(target, inParams);
@@ -337,7 +349,8 @@ public class RpcEngine
                     rc.ReleaseAll();
                 }
 
-                if (exists) _importTable.Remove(importId);
+                if (exists)
+                    _importTable.Remove(importId);
             }
 
             if (exists && count > 0)
@@ -356,7 +369,8 @@ public class RpcEngine
                 catch (RpcException exception)
                 {
                     Logger.LogWarning(
-                        $"Unable to release import: {exception.InnerException?.Message ?? exception.Message}");
+                        $"Unable to release import: {exception.InnerException?.Message ?? exception.Message}"
+                    );
                 }
             }
         }
@@ -394,7 +408,8 @@ public class RpcEngine
 
         private FlushContextKeeper SetupFlushContext()
         {
-            if (_flushRequests.Value?.Ep == this) return new FlushContextKeeper(_flushRequests.Value, false);
+            if (_flushRequests.Value?.Ep == this)
+                return new FlushContextKeeper(_flushRequests.Value, false);
 
             _flushRequests.Value = new FlushContext(_flushRequests.Value, this);
             return new FlushContextKeeper(_flushRequests.Value, true);
@@ -434,8 +449,7 @@ public class RpcEngine
                 Tx(mb.Frame);
             }
             catch // Take care that an exception does not prevent shutdown.
-            {
-            }
+            { }
         }
 
         private uint NextId()
@@ -470,7 +484,10 @@ public class RpcEngine
             }
         }
 
-        private PendingQuestion AllocateQuestion(ConsumedCapability target, SerializerState? inParams)
+        private PendingQuestion AllocateQuestion(
+            ConsumedCapability target,
+            SerializerState? inParams
+        )
         {
             lock (_reentrancyBlocker)
             {
@@ -493,7 +510,8 @@ public class RpcEngine
             {
                 var id = NextId();
 
-                while (!_pendingDisembargos.TryAdd(id, tcs)) id = NextId();
+                while (!_pendingDisembargos.TryAdd(id, tcs))
+                    id = NextId();
 
                 return (tcs, id);
             }
@@ -523,12 +541,16 @@ public class RpcEngine
             }
             else
             {
-                Logger.LogWarning("Peer asked for bootstrap capability, but no bootstrap capability was set.");
+                Logger.LogWarning(
+                    "Peer asked for bootstrap capability, but no bootstrap capability was set."
+                );
 
                 ret.which = Return.WHICH.Exception;
                 ret.Exception!.Reason = "No bootstrap capability present";
 
-                bootstrapTask = Task.FromException<AnswerOrCounterquestion>(new RpcException(ret.Exception.Reason));
+                bootstrapTask = Task.FromException<AnswerOrCounterquestion>(
+                    new RpcException(ret.Exception.Reason)
+                );
             }
 
             var pendingAnswer = new PendingAnswer(bootstrapTask, null);
@@ -542,10 +564,10 @@ public class RpcEngine
             if (!added)
             {
                 Logger.LogWarning(
-                    "Incoming bootstrap request: Peer specified duplicate (not yet released?) answer ID.");
+                    "Incoming bootstrap request: Peer specified duplicate (not yet released?) answer ID."
+                );
                 throw new RpcProtocolErrorException("Duplicate question ID");
             }
-
 
             if (ret.Results != null)
                 ExportCapTableAndSend(bootstrap, ret.Results);
@@ -597,7 +619,8 @@ public class RpcEngine
                 catch (RpcException exception)
                 {
                     Logger.LogWarning(
-                        $"Unable to return call: {exception.InnerException?.Message ?? exception.Message}");
+                        $"Unable to return call: {exception.InnerException?.Message ?? exception.Message}"
+                    );
                 }
             }
 
@@ -615,13 +638,16 @@ public class RpcEngine
 
                 if (!added)
                 {
-                    Logger.LogWarning("Incoming RPC call: Peer specified duplicate (not yet released?) answer ID.");
+                    Logger.LogWarning(
+                        "Incoming RPC call: Peer specified duplicate (not yet released?) answer ID."
+                    );
 
                     pendingAnswer.Cancel();
                     pendingAnswer.Dispose();
 
                     throw new RpcProtocolErrorException(
-                        $"There is another pending answer for the same question ID {req.QuestionId}.");
+                        $"There is another pending answer for the same question ID {req.QuestionId}."
+                    );
                 }
 
                 switch (req.SendResultsTo.which)
@@ -637,17 +663,23 @@ public class RpcEngine
                                 {
                                     Debug.Fail("Either answer or counter question must be present");
                                 }
-                                else if (aorcq.Answer != null || aorcq.Counterquestion != _deferredCall.Value)
+                                else if (
+                                    aorcq.Answer != null
+                                    || aorcq.Counterquestion != _deferredCall.Value
+                                )
                                 {
-                                    var results = aorcq.Answer ??
-                                                  (DynamicSerializerState)await aorcq.Counterquestion!.WhenReturned;
+                                    var results =
+                                        aorcq.Answer
+                                        ?? (DynamicSerializerState)
+                                            await aorcq.Counterquestion!.WhenReturned;
                                     var ret = SetupReturn(results.MsgBuilder!);
 
                                     switch (req.SendResultsTo.which)
                                     {
                                         case Call.sendResultsTo.WHICH.Caller:
                                             ret.which = Return.WHICH.Results;
-                                            ret.Results!.Content = results.Rewrap<DynamicSerializerState>();
+                                            ret.Results!.Content =
+                                                results.Rewrap<DynamicSerializerState>();
                                             ret.ReleaseParamCaps = releaseParamCaps;
                                             DispatchDeferredCalls();
                                             ExportCapTableAndSend(results, ret.Results);
@@ -672,7 +704,9 @@ public class RpcEngine
                                     ReturnCallNoCapTable(ret2 =>
                                     {
                                         ret2.which = Return.WHICH.TakeFromOtherQuestion;
-                                        ret2.TakeFromOtherQuestion = aorcq.Counterquestion.QuestionId;
+                                        ret2.TakeFromOtherQuestion = aorcq
+                                            .Counterquestion
+                                            .QuestionId;
                                         ret2.ReleaseParamCaps = releaseParamCaps;
                                     });
                                 }
@@ -704,9 +738,7 @@ public class RpcEngine
                             {
                                 await t;
                             }
-                            catch
-                            {
-                            }
+                            catch { }
                             finally
                             {
                                 ReturnCallNoCapTable(ret =>
@@ -729,15 +761,23 @@ public class RpcEngine
                 try
                 {
                     var cts = new CancellationTokenSource();
-                    var callTask = callTargetCap.Invoke(req.InterfaceId, req.MethodId, inParams, cts.Token);
+                    var callTask = callTargetCap.Invoke(
+                        req.InterfaceId,
+                        req.MethodId,
+                        inParams,
+                        cts.Token
+                    );
                     pendingAnswer = new PendingAnswer(callTask, cts);
                 }
                 catch (System.Exception exception)
                 {
-                    foreach (var cap in inParams.Caps) cap.Release();
+                    foreach (var cap in inParams.Caps)
+                        cap.Release();
 
                     pendingAnswer = new PendingAnswer(
-                        Task.FromException<AnswerOrCounterquestion>(exception), null);
+                        Task.FromException<AnswerOrCounterquestion>(exception),
+                        null
+                    );
                 }
                 finally
                 {
@@ -755,11 +795,14 @@ public class RpcEngine
 
                 case Call.sendResultsTo.WHICH.ThirdParty:
                     Logger.LogWarning(
-                        "Incoming RPC call: Peer requested sending results to 3rd party, which is not (yet) supported.");
+                        "Incoming RPC call: Peer requested sending results to 3rd party, which is not (yet) supported."
+                    );
                     throw new RpcUnimplementedException();
 
                 default:
-                    Logger.LogWarning("Incoming RPC call: Peer requested unknown send-results-to mode.");
+                    Logger.LogWarning(
+                        "Incoming RPC call: Peer requested unknown send-results-to mode."
+                    );
                     throw new RpcUnimplementedException();
             }
 
@@ -782,10 +825,12 @@ public class RpcEngine
                             else
                             {
                                 Logger.LogWarning(
-                                    "Incoming RPC call: Peer asked for invalid (already released?) capability ID.");
+                                    "Incoming RPC call: Peer asked for invalid (already released?) capability ID."
+                                );
 
                                 throw new RpcProtocolErrorException(
-                                    $"Requested capability with ID {req.Target.ImportedCap} does not exist.");
+                                    $"Requested capability with ID {req.Target.ImportedCap} does not exist."
+                                );
                             }
                         }
 
@@ -800,7 +845,10 @@ public class RpcEngine
 
                             lock (_reentrancyBlocker)
                             {
-                                exists = _answerTable.TryGetValue(req.Target.PromisedAnswer.QuestionId, out previousAnswer);
+                                exists = _answerTable.TryGetValue(
+                                    req.Target.PromisedAnswer.QuestionId,
+                                    out previousAnswer
+                                );
                             }
 
                             if (exists)
@@ -819,25 +867,36 @@ public class RpcEngine
                                         catch (TaskCanceledException)
                                         {
                                             pendingAnswer = new PendingAnswer(
-                                                Task.FromCanceled<AnswerOrCounterquestion>(previousAnswer
-                                                    .CancellationToken), null);
+                                                Task.FromCanceled<AnswerOrCounterquestion>(
+                                                    previousAnswer.CancellationToken
+                                                ),
+                                                null
+                                            );
 
                                             AwaitAnswerAndReply();
                                         }
                                         catch (System.Exception exception)
                                         {
                                             pendingAnswer = new PendingAnswer(
-                                                Task.FromException<AnswerOrCounterquestion>(exception), null);
+                                                Task.FromException<AnswerOrCounterquestion>(
+                                                    exception
+                                                ),
+                                                null
+                                            );
 
                                             AwaitAnswerAndReply();
                                         }
-                                    });
+                                    }
+                                );
                             }
                             else
                             {
-                                Logger.LogWarning("Incoming RPC call: Peer asked for non-existing answer ID.");
+                                Logger.LogWarning(
+                                    "Incoming RPC call: Peer asked for non-existing answer ID."
+                                );
                                 throw new RpcProtocolErrorException(
-                                    $"Did not find a promised answer for given ID {req.Target.PromisedAnswer.QuestionId}");
+                                    $"Did not find a promised answer for given ID {req.Target.PromisedAnswer.QuestionId}"
+                                );
                             }
                         }
                         break;
@@ -870,7 +929,8 @@ public class RpcEngine
                 }
             }
 
-            if (req.ReleaseParamCaps) ReleaseExports(question.CapTable);
+            if (req.ReleaseParamCaps)
+                ReleaseExports(question.CapTable);
 
             switch (req.which)
             {
@@ -882,7 +942,8 @@ public class RpcEngine
 
                 case Return.WHICH.AcceptFromThirdParty:
                     Logger.LogWarning(
-                        "Incoming RPC return: Peer requested to accept results from 3rd party, which is not (yet) supported.");
+                        "Incoming RPC return: Peer requested to accept results from 3rd party, which is not (yet) supported."
+                    );
 
                     throw new RpcUnimplementedException();
 
@@ -905,7 +966,10 @@ public class RpcEngine
 
                         lock (_reentrancyBlocker)
                         {
-                            exists = _answerTable.TryGetValue(req.TakeFromOtherQuestion, out pendingAnswer);
+                            exists = _answerTable.TryGetValue(
+                                req.TakeFromOtherQuestion,
+                                out pendingAnswer
+                            );
                         }
 
                         if (exists)
@@ -935,7 +999,8 @@ public class RpcEngine
                         else
                         {
                             Logger.LogWarning(
-                                "Incoming RPC return: Peer requested to take results from other question, but specified ID is unknown (already released?)");
+                                "Incoming RPC return: Peer requested to take results from other question, but specified ID is unknown (already released?)"
+                            );
                             throw new RpcProtocolErrorException("Invalid ID");
                         }
                     }
@@ -969,7 +1034,9 @@ public class RpcEngine
 
                 if (!(cap is PromisedCapability resolvableCap))
                 {
-                    Logger.LogWarning("Received a resolve message for a capability which is not a promise");
+                    Logger.LogWarning(
+                        "Received a resolve message for a capability which is not a promise"
+                    );
                     throw new RpcProtocolErrorException($"Not a promise {resolve.PromiseId}");
                 }
 
@@ -993,7 +1060,9 @@ public class RpcEngine
                 }
                 catch (InvalidOperationException)
                 {
-                    throw new RpcProtocolErrorException($"Capability {resolve.PromiseId} was already resolved");
+                    throw new RpcProtocolErrorException(
+                        $"Capability {resolve.PromiseId} was already resolved"
+                    );
                 }
             }
         }
@@ -1015,7 +1084,8 @@ public class RpcEngine
                     if (!_exportTable.TryGetValue(disembargo.Target.ImportedCap, out var cap))
                     {
                         Logger.LogWarning(
-                            "Sender loopback request: Peer asked for invalid (already released?) capability ID.");
+                            "Sender loopback request: Peer asked for invalid (already released?) capability ID."
+                        );
 
                         throw new RpcProtocolErrorException("'Disembargo': Invalid capability ID");
                     }
@@ -1039,7 +1109,9 @@ public class RpcEngine
                     for (var i = 0; i < count; i++)
                     {
                         replyPromisedAnswer.Transform[i].which = promisedAnswer.Transform[i].which;
-                        replyPromisedAnswer.Transform[i].GetPointerField = promisedAnswer.Transform[i].GetPointerField;
+                        replyPromisedAnswer.Transform[i].GetPointerField = promisedAnswer
+                            .Transform[i]
+                            .GetPointerField;
                     }
 
                     if (_answerTable.TryGetValue(promisedAnswer.QuestionId, out var previousAnswer))
@@ -1050,26 +1122,36 @@ public class RpcEngine
                             {
                                 using var proxy = await t;
 
-                                if (proxy.ConsumedCap is RemoteCapability remote && remote.Endpoint == this)
+                                if (
+                                    proxy.ConsumedCap is RemoteCapability remote
+                                    && remote.Endpoint == this
+                                )
                                 {
 #if DebugEmbargos
-                                        Logger.LogDebug($"Sender loopback disembargo. Thread = {Thread.CurrentThread.Name}");
+                                    Logger.LogDebug(
+                                        $"Sender loopback disembargo. Thread = {Thread.CurrentThread.Name}"
+                                    );
 #endif
                                     Tx(mb.Frame);
                                 }
                                 else
                                 {
                                     Logger.LogWarning(
-                                        "Sender loopback request: Peer asked for disembargoing an answer which does not resolve back to the sender.");
+                                        "Sender loopback request: Peer asked for disembargoing an answer which does not resolve back to the sender."
+                                    );
 
                                     throw new RpcProtocolErrorException(
-                                        "'Disembargo': Answer does not resolve back to me");
+                                        "'Disembargo': Answer does not resolve back to me"
+                                    );
                                 }
-                            });
+                            }
+                        );
                     }
                     else
                     {
-                        Logger.LogWarning("Sender loopback request: Peer asked for non-existing answer ID.");
+                        Logger.LogWarning(
+                            "Sender loopback request: Peer asked for non-existing answer ID."
+                        );
 
                         throw new RpcProtocolErrorException("'Disembargo': Invalid answer ID");
                     }
@@ -1077,7 +1159,9 @@ public class RpcEngine
                     break;
 
                 default:
-                    Logger.LogWarning("Sender loopback request: Peer specified unknown call target.");
+                    Logger.LogWarning(
+                        "Sender loopback request: Peer specified unknown call target."
+                    );
 
                     throw new RpcUnimplementedException();
             }
@@ -1101,7 +1185,9 @@ public class RpcEngine
                 // whether this is a security issue: Can the sloppy checking be exploited in some way?
 
 #if DebugEmbargos
-                    Logger.LogDebug($"Receiver loopback disembargo, Thread = {Thread.CurrentThread.Name}");
+                Logger.LogDebug(
+                    $"Receiver loopback disembargo, Thread = {Thread.CurrentThread.Name}"
+                );
 #endif
 
                 tcs!.SetResult(0);
@@ -1157,9 +1243,7 @@ public class RpcEngine
                     var aorcq = await t;
                     ReleaseExports(answer.CapTable);
                 }
-                catch
-                {
-                }
+                catch { }
             });
         }
 
@@ -1175,7 +1259,8 @@ public class RpcEngine
 
             if (exists)
             {
-                if (finish.ReleaseResultCaps) ReleaseResultCaps(answer!);
+                if (finish.ReleaseResultCaps)
+                    ReleaseResultCaps(answer!);
 
                 answer!.Cancel();
                 answer!.Dispose();
@@ -1212,7 +1297,8 @@ public class RpcEngine
                     catch (System.Exception exception)
                     {
                         Logger.LogWarning(
-                            $"Attempting to release capability with invalid reference count: {exception.Message}");
+                            $"Attempting to release capability with invalid reference count: {exception.Message}"
+                        );
 
                         throw new RpcProtocolErrorException("Invalid reference count");
                     }
@@ -1286,7 +1372,9 @@ public class RpcEngine
                     //# In cases where there is no sensible way to react to an `unimplemented` message (without
                     //# resource leaks or other serious problems), the connection may need to be aborted.  This is
                     //# a gray area; different implementations may take different approaches.
-                    throw new RpcProtocolErrorException("It's hopeless if you don't implement the bootstrap message");
+                    throw new RpcProtocolErrorException(
+                        "It's hopeless if you don't implement the bootstrap message"
+                    );
             }
         }
 
@@ -1308,7 +1396,8 @@ public class RpcEngine
 
             var main = new RemoteAnswerCapability(
                 pendingBootstrap,
-                MemberAccessPath.BootstrapAccess);
+                MemberAccessPath.BootstrapAccess
+            );
 
             return main;
         }
@@ -1325,7 +1414,8 @@ public class RpcEngine
                 {
                     case Message.WHICH.Abort:
                         Logger.LogInformation(
-                            $"Got 'abort' '{msg.Abort.TheType}' message from peer: {msg.Abort.Reason}");
+                            $"Got 'abort' '{msg.Abort.TheType}' message from peer: {msg.Abort.Reason}"
+                        );
                         break;
 
                     case Message.WHICH.Bootstrap:
@@ -1363,7 +1453,9 @@ public class RpcEngine
                     case Message.WHICH.Accept:
                     case Message.WHICH.Join:
                     case Message.WHICH.Provide:
-                        Logger.LogWarning("Received level-3 message from peer. I don't support that.");
+                        Logger.LogWarning(
+                            "Received level-3 message from peer. I don't support that."
+                        );
                         throw new RpcUnimplementedException();
 
                     case Message.WHICH.ObsoleteDelete:
@@ -1395,7 +1487,9 @@ public class RpcEngine
                 // A first intuition might be to send the caught exception message. But this is probably a bad idea:
                 // First, we send implementation specific details of a - maybe internal - error, not very valuable for the
                 // receiver. But worse: From a security point of view, we might even reveil a secret here.
-                SendAbort("Uncaught exception during RPC processing. This may also happen due to invalid input.");
+                SendAbort(
+                    "Uncaught exception during RPC processing. This may also happen due to invalid input."
+                );
                 Dismiss();
             }
         }
@@ -1439,14 +1533,23 @@ public class RpcEngine
                         }
 
                     case CapDescriptor.WHICH.ReceiverHosted:
-                        if (_exportTable.TryGetValue(capDesc.ReceiverHosted, out var rc)) return rc.Cap.AsCapability();
+                        if (_exportTable.TryGetValue(capDesc.ReceiverHosted, out var rc))
+                            return rc.Cap.AsCapability();
 
-                        Logger.LogWarning("Peer refers to receiver-hosted capability which does not exist.");
+                        Logger.LogWarning(
+                            "Peer refers to receiver-hosted capability which does not exist."
+                        );
                         throw new RpcProtocolErrorException(
-                            $"Receiver-hosted capability {capDesc.ReceiverHosted} does not exist.");
+                            $"Receiver-hosted capability {capDesc.ReceiverHosted} does not exist."
+                        );
 
                     case CapDescriptor.WHICH.ReceiverAnswer:
-                        if (_answerTable.TryGetValue(capDesc.ReceiverAnswer.QuestionId, out var pendingAnswer))
+                        if (
+                            _answerTable.TryGetValue(
+                                capDesc.ReceiverAnswer.QuestionId,
+                                out var pendingAnswer
+                            )
+                        )
                         {
                             var tcs = new TaskCompletionSource<Proxy>();
 
@@ -1467,13 +1570,16 @@ public class RpcEngine
                                     {
                                         tcs.SetException(exception);
                                     }
-                                });
+                                }
+                            );
 
                             return new LazyCapability(tcs.Task);
                         }
 
                         Logger.LogWarning("Peer refers to pending answer which does not exist.");
-                        throw new RpcProtocolErrorException($"Invalid question ID {capDesc.ReceiverAnswer.QuestionId}");
+                        throw new RpcProtocolErrorException(
+                            $"Invalid question ID {capDesc.ReceiverAnswer.QuestionId}"
+                        );
 
                     case CapDescriptor.WHICH.ThirdPartyHosted:
                         if (_importTable.TryGetValue(capDesc.ThirdPartyHosted.VineId, out var rcv))
@@ -1485,7 +1591,10 @@ public class RpcEngine
                         }
 
                         {
-                            var newCap = new ImportedCapability(this, capDesc.ThirdPartyHosted.VineId);
+                            var newCap = new ImportedCapability(
+                                this,
+                                capDesc.ThirdPartyHosted.VineId
+                            );
                             rcv = new RefCounted<RemoteCapability>(newCap);
                             return newCap;
                         }
@@ -1518,9 +1627,7 @@ public class RpcEngine
             return list;
         }
 
-        private void ExportCapTableAndSend(
-            SerializerState state,
-            Payload.WRITER payload)
+        private void ExportCapTableAndSend(SerializerState state, Payload.WRITER payload)
         {
             payload.CapTable.Init(state.MsgBuilder!.Caps!.Count);
 
@@ -1606,7 +1713,8 @@ public class RpcEngine
 
             public void Dispose()
             {
-                if (_owner) _context.Remove();
+                if (_owner)
+                    _context.Remove();
             }
         }
     }

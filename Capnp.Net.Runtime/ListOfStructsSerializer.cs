@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +9,7 @@ namespace Capnp;
 ///     SerializerState specialization for List(T) when T is a known struct (i.e. a list of fixed-width composites).
 /// </summary>
 /// <typeparam name="TS">SerializerState which represents the struct type</typeparam>
-public class ListOfStructsSerializer<TS> :
-    SerializerState,
-    IReadOnlyList<TS>
+public class ListOfStructsSerializer<TS> : SerializerState, IReadOnlyList<TS>
     where TS : SerializerState, new()
 {
     /// <summary>
@@ -44,7 +42,8 @@ public class ListOfStructsSerializer<TS> :
     /// <returns></returns>
     public IEnumerator<TS> GetEnumerator()
     {
-        if (Count == 0) return Enumerable.Empty<TS>().GetEnumerator();
+        if (Count == 0)
+            return Enumerable.Empty<TS>().GetEnumerator();
         return ListEnumerateStructs<TS>().GetEnumerator();
     }
 
@@ -79,10 +78,12 @@ public class ListOfStructsSerializer<TS> :
     /// <exception cref="ArgumentOutOfRangeException">More than 2^29-1 items.</exception>
     public void Init<T>(IReadOnlyList<T>? items, Action<TS, T> init)
     {
-        if (items == null) return;
+        if (items == null)
+            return;
 
         Init(items.Count);
 
-        for (var i = 0; i < items.Count; i++) init(this[i], items[i]);
+        for (var i = 0; i < items.Count; i++)
+            init(this[i], items[i]);
     }
 }

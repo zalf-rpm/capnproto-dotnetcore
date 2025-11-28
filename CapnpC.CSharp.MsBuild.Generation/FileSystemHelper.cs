@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 
@@ -18,24 +18,38 @@ public static class FileSystemHelper
         if (string.Equals(path, basePath, StringComparison.OrdinalIgnoreCase))
             return "."; // the "this folder"
 
-        if (path.StartsWith(basePath + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+        if (
+            path.StartsWith(
+                basePath + Path.DirectorySeparatorChar,
+                StringComparison.OrdinalIgnoreCase
+            )
+        )
             return path.Substring(basePath.Length + 1);
 
         //handle different drives
         var pathRoot = Path.GetPathRoot(path);
-        if (!string.Equals(pathRoot, Path.GetPathRoot(basePath), StringComparison.OrdinalIgnoreCase))
+        if (
+            !string.Equals(pathRoot, Path.GetPathRoot(basePath), StringComparison.OrdinalIgnoreCase)
+        )
             return path;
 
         //handle ".." pathes
         var pathParts = path.Substring(pathRoot.Length)
             .Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-        var basePathParts = basePath.Substring(pathRoot.Length)
+        var basePathParts = basePath
+            .Substring(pathRoot.Length)
             .Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
         var commonFolderCount = 0;
-        while (commonFolderCount < pathParts.Length && commonFolderCount < basePathParts.Length &&
-               string.Equals(pathParts[commonFolderCount], basePathParts[commonFolderCount],
-                   StringComparison.OrdinalIgnoreCase))
+        while (
+            commonFolderCount < pathParts.Length
+            && commonFolderCount < basePathParts.Length
+            && string.Equals(
+                pathParts[commonFolderCount],
+                basePathParts[commonFolderCount],
+                StringComparison.OrdinalIgnoreCase
+            )
+        )
             commonFolderCount++;
 
         var result = new StringBuilder();
@@ -48,14 +62,20 @@ public static class FileSystemHelper
         if (pathParts.Length - commonFolderCount == 0)
             return result.ToString().TrimEnd(Path.DirectorySeparatorChar);
 
-        result.Append(string.Join(Path.DirectorySeparatorChar.ToString(), pathParts, commonFolderCount,
-            pathParts.Length - commonFolderCount));
+        result.Append(
+            string.Join(
+                Path.DirectorySeparatorChar.ToString(),
+                pathParts,
+                commonFolderCount,
+                pathParts.Length - commonFolderCount
+            )
+        );
         return result.ToString();
     }
 
-    // This method accepts two strings the represent two files to 
+    // This method accepts two strings the represent two files to
     // compare. A return value of true indicates that the contents of the files
-    // are the same. A return value of any other value indicates that the 
+    // are the same. A return value of any other value indicates that the
     // files are not the same.
     public static bool FileCompare(string filePath1, string filePath2)
     {
@@ -72,7 +92,7 @@ public static class FileSystemHelper
         {
             using (var fs2 = new FileStream(filePath2, FileMode.Open, FileAccess.Read))
             {
-                // Check the file sizes. If they are not the same, the files 
+                // Check the file sizes. If they are not the same, the files
                 // are not the same.
                 if (fs1.Length != fs2.Length)
                     // Return false to indicate files are different
@@ -90,15 +110,15 @@ public static class FileSystemHelper
             }
         }
 
-        // Return the success of the comparison. "file1byte" is 
-        // equal to "file2byte" at this point only if the files are 
+        // Return the success of the comparison. "file1byte" is
+        // equal to "file2byte" at this point only if the files are
         // the same.
         return file1byte - file2byte == 0;
     }
 
-    // This method accepts two strings the represent two files to 
+    // This method accepts two strings the represent two files to
     // compare. A return value of true indicates that the contents of the files
-    // are the same. A return value of any other value indicates that the 
+    // are the same. A return value of any other value indicates that the
     // files are not the same.
     public static bool FileCompareContent(string filePath1, string fileContent)
     {

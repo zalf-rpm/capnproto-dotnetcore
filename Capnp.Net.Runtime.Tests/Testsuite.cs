@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -105,7 +105,11 @@ internal static class Testsuite
                     Assert.AreEqual(3u, call3.Result);
                     Assert.AreEqual(4u, call4.Result);
                     Assert.AreEqual(5u, call5.Result);
-                    Assert.AreEqual(cap.Count, cap.CountToDispose, "counter must have reached number of calls");
+                    Assert.AreEqual(
+                        cap.Count,
+                        cap.CountToDispose,
+                        "counter must have reached number of calls"
+                    );
                 }
             }
         }
@@ -304,7 +308,8 @@ internal static class Testsuite
         {
             var cap = new TestInterfaceImpl(new Counters(), destructionPromise);
 
-            Task<string> ftask1, ftask2;
+            Task<string> ftask1,
+                ftask2;
 
             using (var claimer = Skeleton.Claim(cap))
             {
@@ -340,7 +345,10 @@ internal static class Testsuite
         using (var main = testbed.ConnectMain<ITestMoreStuff>(impl))
         using (var cts = new CancellationTokenSource())
         {
-            var ntask = main.NeverReturn(new TestInterfaceImpl(counters, destructionPromise), cts.Token);
+            var ntask = main.NeverReturn(
+                new TestInterfaceImpl(counters, destructionPromise),
+                cts.Token
+            );
 
             // Allow some time to settle.
             var cstask = main.GetCallSequence(0);
@@ -401,7 +409,7 @@ internal static class Testsuite
                 Assert.AreEqual(oldSendCount, testbed.ClientSendCount);
 
                 // We can send another copy of the same cap to another method, and it works.
-                // Note that this was a bug in previous versions: 
+                // Note that this was a bug in previous versions:
                 // Since passing a cap has move semantics, we need to create an explicit copy.
                 var copy = Proxy.Share(cap);
                 Assert.IsFalse(((Proxy)copy).IsDisposed);
@@ -546,9 +554,7 @@ internal static class Testsuite
                 {
                     task.Result.Dispose();
                 }
-                catch (AggregateException ex) when (ex.InnerException is TaskCanceledException)
-                {
-                }
+                catch (AggregateException ex) when (ex.InnerException is TaskCanceledException) { }
             }
 
             testbed.FlushCommunication();
@@ -571,12 +577,16 @@ internal static class Testsuite
             task1.Result.Dispose();
 
             testbed.FlushCommunication();
-            Assert.IsTrue(SpinWait.SpinUntil(() => counters.HandleCount == 1, TestBase.ShortTimeout));
+            Assert.IsTrue(
+                SpinWait.SpinUntil(() => counters.HandleCount == 1, TestBase.ShortTimeout)
+            );
 
             task2.Result.Dispose();
 
             testbed.FlushCommunication();
-            Assert.IsTrue(SpinWait.SpinUntil(() => counters.HandleCount == 0, TestBase.ShortTimeout));
+            Assert.IsTrue(
+                SpinWait.SpinUntil(() => counters.HandleCount == 0, TestBase.ShortTimeout)
+            );
         }
     }
 
@@ -632,9 +642,7 @@ internal static class Testsuite
         var impl = new TestInterfaceImpl(counters);
         for (var i = 0; i < 10; i++)
         {
-            using (var main = testbed.ConnectMain<ITestInterface>(impl))
-            {
-            }
+            using (var main = testbed.ConnectMain<ITestInterface>(impl)) { }
 
             Assert.IsFalse(impl.IsDisposed);
         }
@@ -703,7 +711,8 @@ internal static class Testsuite
             testbed.MustComplete(
                 main.Hold(new TestInterfaceImpl(new Counters(), tcs)),
                 foo,
-                tcs.Task);
+                tcs.Task
+            );
         }
     }
 
@@ -716,10 +725,10 @@ internal static class Testsuite
             var foo = main.CallFoo(held);
             testbed.MustNotComplete(foo);
             var faulted = Task.FromException<ITestInterface>(
-                new InvalidOperationException("I faulted")).Eager(true);
-            testbed.MustComplete(
-                main.Hold(faulted),
-                foo);
+                    new InvalidOperationException("I faulted")
+                )
+                .Eager(true);
+            testbed.MustComplete(main.Hold(faulted), foo);
             Assert.IsTrue(foo.IsFaulted);
         }
     }
@@ -732,10 +741,9 @@ internal static class Testsuite
         {
             var foo = main.CallFoo(held);
             testbed.MustNotComplete(foo);
-            var canceled = Task.FromCanceled<ITestInterface>(new CancellationToken(true)).Eager(true);
-            testbed.MustComplete(
-                main.Hold(canceled),
-                foo);
+            var canceled = Task.FromCanceled<ITestInterface>(new CancellationToken(true))
+                .Eager(true);
+            testbed.MustComplete(main.Hold(canceled), foo);
             Assert.IsTrue(foo.IsCanceled);
         }
     }
@@ -850,7 +858,9 @@ internal static class Testsuite
             var answer = Impatient.TryGetAnswer(task);
             Assert.IsNotNull(answer);
             var cap = answer.Access(new MemberAccessPath(0));
-            using (var proxy = (ITestCallOrder)CapabilityReflection.CreateProxy<ITestCallOrder>(cap))
+            using (
+                var proxy = (ITestCallOrder)CapabilityReflection.CreateProxy<ITestCallOrder>(cap)
+            )
             {
                 var seq = proxy.GetCallSequence(0);
                 testbed.MustComplete(seq);
@@ -863,8 +873,12 @@ internal static class Testsuite
     {
         public bool WasCalled { get; private set; }
 
-        public override Task<AnswerOrCounterquestion> Invoke(ulong interfaceId, ushort methodId, DeserializerState args,
-            CancellationToken cancellationToken = default)
+        public override Task<AnswerOrCounterquestion> Invoke(
+            ulong interfaceId,
+            ushort methodId,
+            DeserializerState args,
+            CancellationToken cancellationToken = default
+        )
         {
             WasCalled = true;
             throw new NotImplementedException();

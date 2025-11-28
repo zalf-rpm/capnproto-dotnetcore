@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -73,7 +73,9 @@ internal static class SyntaxHelpers
 
             case 0 when type.IsGenericType:
                 return GenericName(type.Name.Substring(0, type.Name.IndexOf('`')))
-                    .AddTypeArgumentListArguments(type.GetGenericArguments().Select(NonNullableType).ToArray());
+                    .AddTypeArgumentListArguments(
+                        type.GetGenericArguments().Select(NonNullableType).ToArray()
+                    );
 
             default:
                 return ParseTypeName(type.Name);
@@ -90,23 +92,33 @@ internal static class SyntaxHelpers
         switch (value)
         {
             case bool x:
-                return LiteralExpression(x ? SyntaxKind.TrueLiteralExpression : SyntaxKind.FalseLiteralExpression);
+                return LiteralExpression(
+                    x ? SyntaxKind.TrueLiteralExpression : SyntaxKind.FalseLiteralExpression
+                );
 
             case sbyte x:
-                return CastExpression(NonNullableType<sbyte>(),
-                    LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(x)));
+                return CastExpression(
+                    NonNullableType<sbyte>(),
+                    LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(x))
+                );
 
             case byte x:
-                return CastExpression(NonNullableType<byte>(),
-                    LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(x)));
+                return CastExpression(
+                    NonNullableType<byte>(),
+                    LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(x))
+                );
 
             case short x:
-                return CastExpression(NonNullableType<short>(),
-                    LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(x)));
+                return CastExpression(
+                    NonNullableType<short>(),
+                    LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(x))
+                );
 
             case ushort x:
-                return CastExpression(NonNullableType<ushort>(),
-                    LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(x)));
+                return CastExpression(
+                    NonNullableType<ushort>(),
+                    LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(x))
+                );
 
             case int x:
                 return LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(x));
@@ -139,7 +151,8 @@ internal static class SyntaxHelpers
 
     public static TypeSyntax MakeNonNullableType(TypeSyntax type)
     {
-        if (type is NullableTypeSyntax nts) type = nts.ElementType;
+        if (type is NullableTypeSyntax nts)
+            type = nts.ElementType;
         return type;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace CapnpC.CSharp.Generator.Model;
+namespace CapnpC.CSharp.Generator.Model;
 
 internal interface IDefinition
 {

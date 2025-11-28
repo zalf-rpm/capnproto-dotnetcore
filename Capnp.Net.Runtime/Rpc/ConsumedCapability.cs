@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Capnp.Rpc;
 
@@ -10,7 +10,11 @@ namespace Capnp.Rpc;
 /// </summary>
 public abstract class ConsumedCapability
 {
-    internal abstract IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args);
+    internal abstract IPromisedAnswer DoCall(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args
+    );
 
     /// <summary>
     ///     Request the RPC engine to release this capability from its import table,
@@ -24,7 +28,7 @@ public abstract class ConsumedCapability
     internal abstract Skeleton AsSkeleton();
 
 #if DebugFinalizers
-        internal Proxy? OwningProxy { get; set; }
-        internal ConsumedCapability? ResolvingCap { get; set; }
+    internal Proxy? OwningProxy { get; set; }
+    internal ConsumedCapability? ResolvingCap { get; set; }
 #endif
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -12,7 +12,9 @@ namespace Capnp.Rpc;
 public static class Impatient
 {
     private static readonly ConditionalWeakTable<Task, IPromisedAnswer> _taskTable = new();
-    private static readonly ThreadLocal<Stack<IRpcEndpoint>> _askingEndpoint = new(() => new Stack<IRpcEndpoint>());
+    private static readonly ThreadLocal<Stack<IRpcEndpoint>> _askingEndpoint = new(() =>
+        new Stack<IRpcEndpoint>()
+    );
 
     private static readonly MemberAccessPath Path_OneAndOnly = new(0U);
 
@@ -28,7 +30,10 @@ public static class Impatient
     /// <returns>Task representing the future answer</returns>
     /// <exception cref="ArgumentNullException"><paramref name="promise" /> or <paramref name="then" /> is null.</exception>
     /// <exception cref="ArgumentException">The pomise was already registered.</exception>
-    public static Task<T> MakePipelineAware<T>(IPromisedAnswer promise, Func<DeserializerState, T> then)
+    public static Task<T> MakePipelineAware<T>(
+        IPromisedAnswer promise,
+        Func<DeserializerState, T> then
+    )
     {
         async Task<T> AwaitAnswer()
         {
@@ -57,10 +62,13 @@ public static class Impatient
     /// <returns>The underlying promise</returns>
     /// <exception cref="ArgumentNullException"><paramref name="task" /> is null.</exception>
     /// <exception cref="ArgumentException">The task was not registered using MakePipelineAware.</exception>
-    [Obsolete("Please re-generate capnp code-behind. GetAnswer(task).Access(...) was replaced by Access(task, ...)")]
+    [Obsolete(
+        "Please re-generate capnp code-behind. GetAnswer(task).Access(...) was replaced by Access(task, ...)"
+    )]
     public static IPromisedAnswer GetAnswer(Task task)
     {
-        if (!_taskTable.TryGetValue(task, out var answer)) throw new ArgumentException("Unknown task");
+        if (!_taskTable.TryGetValue(task, out var answer))
+            throw new ArgumentException("Unknown task");
 
         return answer;
     }
@@ -78,10 +86,15 @@ public static class Impatient
     /// <param name="access">path to the desired capability</param>
     /// <param name="proxyTask">task returning a proxy to the desired capability</param>
     /// <returns>Pipelined low-level capability</returns>
-    public static ConsumedCapability Access(Task task, MemberAccessPath access, Task<IDisposable?> proxyTask)
+    public static ConsumedCapability Access(
+        Task task,
+        MemberAccessPath access,
+        Task<IDisposable?> proxyTask
+    )
     {
         var answer = TryGetAnswer(task);
-        if (answer != null) return answer.Access(access, proxyTask);
+        if (answer != null)
+            return answer.Access(access, proxyTask);
         return new LazyCapability(proxyTask.AsProxyTask());
     }
 
@@ -141,7 +154,10 @@ public static class Impatient
     /// </exception>
     /// <exception cref="MemberAccessException">Caller does not have permission to invoke the Proxy constructor.</exception>
     /// <exception cref="TypeLoadException">Problem with building the Proxy type, or problem with loading some dependent class.</exception>
-    public static TInterface Eager<TInterface>(this Task<TInterface> task, bool allowNoPipeliningFallback = false)
+    public static TInterface Eager<TInterface>(
+        this Task<TInterface> task,
+        bool allowNoPipeliningFallback = false
+    )
         where TInterface : class, IDisposable
     {
         var answer = TryGetAnswer(task);
@@ -149,10 +165,12 @@ public static class Impatient
         {
             if (!allowNoPipeliningFallback)
                 throw new ArgumentException(
-                    "The task was not returned from a remote method invocation. See documentation for details.");
+                    "The task was not returned from a remote method invocation. See documentation for details."
+                );
 
             var proxyTask = task.AsProxyTask();
-            if (proxyTask.IsCompletedSuccessfully) return proxyTask.Result.Cast<TInterface>(true);
+            if (proxyTask.IsCompletedSuccessfully)
+                return proxyTask.Result.Cast<TInterface>(true);
 
             var lazyCap = new LazyCapability(proxyTask);
             return (CapabilityReflection.CreateProxy<TInterface>(lazyCap) as TInterface)!;
@@ -163,8 +181,11 @@ public static class Impatient
             return await task;
         }
 
-        return (CapabilityReflection.CreateProxy<TInterface>(answer.Access(Path_OneAndOnly, AsDisposableTask())) as
-            TInterface)!;
+        return (
+            CapabilityReflection.CreateProxy<TInterface>(
+                answer.Access(Path_OneAndOnly, AsDisposableTask())
+            ) as TInterface
+        )!;
     }
 
     /// <summary>
@@ -177,7 +198,8 @@ public static class Impatient
     /// <param name="cap">capability to unwrap</param>
     /// <returns>Task returning the eventually resolved capability</returns>
     /// <exception cref="RpcException">Capability is broken</exception>
-    public static async Task<TInterface?> Unwrap<TInterface>(this TInterface cap) where TInterface : class, IDisposable
+    public static async Task<TInterface?> Unwrap<TInterface>(this TInterface cap)
+        where TInterface : class, IDisposable
     {
         using var proxy = cap as Proxy;
 
@@ -208,10 +230,15 @@ public static class Impatient
     /// <param name="task">Task to request</param>
     /// <param name="func">Converts the task's result to a SerializerState</param>
     /// <returns>Tail-call aware task</returns>
-    public static async Task<AnswerOrCounterquestion> MaybeTailCall<T>(Task<T> task, Func<T, SerializerState> func)
+    public static async Task<AnswerOrCounterquestion> MaybeTailCall<T>(
+        Task<T> task,
+        Func<T, SerializerState> func
+    )
     {
-        if (TryGetAnswer(task) is PendingQuestion pendingQuestion &&
-            pendingQuestion.RpcEndpoint == AskingEndpoint)
+        if (
+            TryGetAnswer(task) is PendingQuestion pendingQuestion
+            && pendingQuestion.RpcEndpoint == AskingEndpoint
+        )
         {
             pendingQuestion.IsTailCall = true;
             return pendingQuestion;
@@ -223,8 +250,10 @@ public static class Impatient
     /// <summary>
     ///     Overload for tuple-typed tasks
     /// </summary>
-    public static Task<AnswerOrCounterquestion> MaybeTailCall<T1, T2>(Task<(T1, T2)> task,
-        Func<T1, T2, SerializerState> func)
+    public static Task<AnswerOrCounterquestion> MaybeTailCall<T1, T2>(
+        Task<(T1, T2)> task,
+        Func<T1, T2, SerializerState> func
+    )
     {
         return MaybeTailCall(task, t => func(t.Item1, t.Item2));
     }
@@ -232,8 +261,10 @@ public static class Impatient
     /// <summary>
     ///     Overload for tuple-typed tasks
     /// </summary>
-    public static Task<AnswerOrCounterquestion> MaybeTailCall<T1, T2, T3>(Task<(T1, T2, T3)> task,
-        Func<T1, T2, T3, SerializerState> func)
+    public static Task<AnswerOrCounterquestion> MaybeTailCall<T1, T2, T3>(
+        Task<(T1, T2, T3)> task,
+        Func<T1, T2, T3, SerializerState> func
+    )
     {
         return MaybeTailCall(task, t => func(t.Item1, t.Item2, t.Item3));
     }
@@ -241,8 +272,10 @@ public static class Impatient
     /// <summary>
     ///     Overload for tuple-typed tasks
     /// </summary>
-    public static Task<AnswerOrCounterquestion> MaybeTailCall<T1, T2, T3, T4>(Task<(T1, T2, T3, T4)> task,
-        Func<T1, T2, T3, T4, SerializerState> func)
+    public static Task<AnswerOrCounterquestion> MaybeTailCall<T1, T2, T3, T4>(
+        Task<(T1, T2, T3, T4)> task,
+        Func<T1, T2, T3, T4, SerializerState> func
+    )
     {
         return MaybeTailCall(task, t => func(t.Item1, t.Item2, t.Item3, t.Item4));
     }
@@ -250,8 +283,10 @@ public static class Impatient
     /// <summary>
     ///     Overload for tuple-typed tasks
     /// </summary>
-    public static Task<AnswerOrCounterquestion> MaybeTailCall<T1, T2, T3, T4, T5>(Task<(T1, T2, T3, T4, T5)> task,
-        Func<T1, T2, T3, T4, T5, SerializerState> func)
+    public static Task<AnswerOrCounterquestion> MaybeTailCall<T1, T2, T3, T4, T5>(
+        Task<(T1, T2, T3, T4, T5)> task,
+        Func<T1, T2, T3, T4, T5, SerializerState> func
+    )
     {
         return MaybeTailCall(task, t => func(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5));
     }
@@ -260,7 +295,9 @@ public static class Impatient
     ///     Overload for tuple-typed tasks
     /// </summary>
     public static Task<AnswerOrCounterquestion> MaybeTailCall<T1, T2, T3, T4, T5, T6>(
-        Task<(T1, T2, T3, T4, T5, T6)> task, Func<T1, T2, T3, T4, T5, T6, SerializerState> func)
+        Task<(T1, T2, T3, T4, T5, T6)> task,
+        Func<T1, T2, T3, T4, T5, T6, SerializerState> func
+    )
     {
         return MaybeTailCall(task, t => func(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6));
     }
@@ -269,8 +306,13 @@ public static class Impatient
     ///     Overload for tuple-typed tasks
     /// </summary>
     public static Task<AnswerOrCounterquestion> MaybeTailCall<T1, T2, T3, T4, T5, T6, T7>(
-        Task<(T1, T2, T3, T4, T5, T6, T7)> task, Func<T1, T2, T3, T4, T5, T6, T7, SerializerState> func)
+        Task<(T1, T2, T3, T4, T5, T6, T7)> task,
+        Func<T1, T2, T3, T4, T5, T6, T7, SerializerState> func
+    )
     {
-        return MaybeTailCall(task, t => func(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6, t.Item7));
+        return MaybeTailCall(
+            task,
+            t => func(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6, t.Item7)
+        );
     }
 }

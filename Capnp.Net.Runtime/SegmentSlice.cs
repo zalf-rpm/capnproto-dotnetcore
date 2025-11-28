@@ -1,4 +1,4 @@
-﻿namespace Capnp;
+namespace Capnp;
 
 /// <summary>
 ///     Helper struct to represent the tuple (segment index, offset)

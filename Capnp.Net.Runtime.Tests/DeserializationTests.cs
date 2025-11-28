@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Capnp.Net.Runtime.Tests.GenImpls;
@@ -154,8 +154,10 @@ public class DeserializationTests
         Assert.AreEqual(ulong.MaxValue, asListOfStructs[1].ReadDataULong(0));
         Assert.Throws<IndexOutOfRangeException>(() => asListOfStructs[-1].ReadDataUShort(0));
         Assert.Throws<IndexOutOfRangeException>(() => asListOfStructs[3].ReadDataUShort(0));
-        CollectionAssert.AreEqual(new ulong[] { 0, ulong.MaxValue },
-            asListOfStructs.Select(_ => _.ReadDataULong(0)).ToArray());
+        CollectionAssert.AreEqual(
+            new ulong[] { 0, ulong.MaxValue },
+            asListOfStructs.Select(_ => _.ReadDataULong(0)).ToArray()
+        );
     }
 
     [TestMethod]
@@ -385,12 +387,7 @@ public class DeserializationTests
     [TestMethod]
     public void NestedLists()
     {
-        var expected = new[]
-        {
-            new[] { 1, 2, 3 },
-            new[] { 4, 5 },
-            new[] { 6 }
-        };
+        var expected = new[] { new[] { 1, 2, 3 }, new[] { 4, 5 }, new[] { 6 } };
 
         var b = MessageBuilder.Create();
         var dss = b.CreateObject<DynamicSerializerState>();
@@ -400,7 +397,8 @@ public class DeserializationTests
         Assert.Throws<NotSupportedException>(() => ld.CastText());
         var result = ld.Cast2D<int>();
         Assert.HasCount(3, result);
-        for (var i = 0; i < result.Count; i++) CollectionAssert.AreEqual(expected[i], result[i].ToArray());
+        for (var i = 0; i < result.Count; i++)
+            CollectionAssert.AreEqual(expected[i], result[i].ToArray());
 
         Assert.Throws<NotSupportedException>(() => ld.Cast2D<decimal>());
     }
@@ -422,18 +420,9 @@ public class DeserializationTests
     {
         var expected = new[]
         {
-            new[]
-            {
-                new[] { 1, 2, 3 },
-                new[] { 4, 5 },
-                new[] { 6 }
-            },
-            new[]
-            {
-                new[] { 1, 2, 3 },
-                new int[0]
-            },
-            new int[0][]
+            new[] { new[] { 1, 2, 3 }, new[] { 4, 5 }, new[] { 6 } },
+            new[] { new[] { 1, 2, 3 }, new int[0] },
+            new int[0][],
         };
 
         var b = MessageBuilder.Create();
@@ -461,18 +450,9 @@ public class DeserializationTests
     {
         var expected = new[]
         {
-            new[]
-            {
-                new[] { 1, 2, 3 },
-                new[] { 4, 5 },
-                new[] { 6 }
-            },
-            new[]
-            {
-                new[] { 1, 2, 3 },
-                new int[0]
-            },
-            new int[0][]
+            new[] { new[] { 1, 2, 3 }, new[] { 4, 5 }, new[] { 6 } },
+            new[] { new[] { 1, 2, 3 }, new int[0] },
+            new int[0][],
         };
 
         var b = MessageBuilder.Create();
@@ -534,7 +514,8 @@ public class DeserializationTests
                 var inner2 = inner[j];
                 Assert.HasCount(j + 1, inner2);
 
-                for (var k = 0; k < inner2.Count; k++) Assert.AreEqual($"{i}, {j}, {k}", inner2[k].SomeText);
+                for (var k = 0; k < inner2.Count; k++)
+                    Assert.AreEqual($"{i}, {j}, {k}", inner2[k].SomeText);
             }
         }
     }
@@ -578,7 +559,8 @@ public class DeserializationTests
                 var inner2 = (IReadOnlyList<SomeStruct.READER>)inner[j];
                 Assert.HasCount(j + 1, inner2);
 
-                for (var k = 0; k < inner2.Count; k++) Assert.AreEqual($"{i}, {j}, {k}", inner2[k].SomeText);
+                for (var k = 0; k < inner2.Count; k++)
+                    Assert.AreEqual($"{i}, {j}, {k}", inner2[k].SomeText);
             }
         }
     }
@@ -612,7 +594,8 @@ public class DeserializationTests
             var inner = result[i];
             Assert.HasCount(i + 1, inner);
 
-            for (var j = 0; j < inner.Count; j++) Assert.AreEqual($"{i}, {j}", inner[j].SomeText);
+            for (var j = 0; j < inner.Count; j++)
+                Assert.AreEqual($"{i}, {j}", inner[j].SomeText);
         }
     }
 
@@ -636,7 +619,7 @@ public class DeserializationTests
         var expected = new[]
         {
             new[] { TestEnum.bar, TestEnum.baz, TestEnum.corge },
-            new[] { TestEnum.corge, TestEnum.foo, TestEnum.garply }
+            new[] { TestEnum.corge, TestEnum.foo, TestEnum.garply },
         };
 
         var b = MessageBuilder.Create();
@@ -646,7 +629,8 @@ public class DeserializationTests
         var ld = d.RequireList();
         var result = ld.CastEnums2D(_ => (TestEnum)_);
         Assert.HasCount(expected.Length, result);
-        for (var i = 0; i < result.Count; i++) CollectionAssert.AreEqual(expected[i], result[i].ToArray());
+        for (var i = 0; i < result.Count; i++)
+            CollectionAssert.AreEqual(expected[i], result[i].ToArray());
     }
 
     [TestMethod]
@@ -658,14 +642,10 @@ public class DeserializationTests
             {
                 new[] { TestEnum.qux, TestEnum.quux, TestEnum.grault },
                 new[] { TestEnum.garply, TestEnum.foo },
-                new[] { TestEnum.corge }
+                new[] { TestEnum.corge },
             },
-            new[]
-            {
-                new[] { TestEnum.baz, TestEnum.bar },
-                new TestEnum[0]
-            },
-            new TestEnum[0][]
+            new[] { new[] { TestEnum.baz, TestEnum.bar }, new TestEnum[0] },
+            new TestEnum[0][],
         };
 
         var b = MessageBuilder.Create();
@@ -697,14 +677,10 @@ public class DeserializationTests
             {
                 new[] { TestEnum.qux, TestEnum.quux, TestEnum.grault },
                 new[] { TestEnum.garply, TestEnum.foo },
-                new[] { TestEnum.corge }
+                new[] { TestEnum.corge },
             },
-            new[]
-            {
-                new[] { TestEnum.baz, TestEnum.bar },
-                new TestEnum[0]
-            },
-            new TestEnum[0][]
+            new[] { new[] { TestEnum.baz, TestEnum.bar }, new TestEnum[0] },
+            new TestEnum[0][],
         };
 
         var b = MessageBuilder.Create();
@@ -744,21 +720,20 @@ public class DeserializationTests
     [TestMethod]
     public void NestedLists3DVoid()
     {
-        var expected = new[]
-        {
-            new[] { 1, 2, 3 },
-            new[] { 4, 5 },
-            new[] { 6 }
-        };
+        var expected = new[] { new[] { 1, 2, 3 }, new[] { 4, 5 }, new[] { 6 } };
 
         var b = MessageBuilder.Create();
-        var s = b.CreateObject<ListOfPointersSerializer<ListOfPointersSerializer<ListOfEmptySerializer>>>();
+        var s = b.CreateObject<
+            ListOfPointersSerializer<ListOfPointersSerializer<ListOfEmptySerializer>>
+        >();
         s.Init(expected.Length);
-        for (var i = 0; i < expected.Length; i++) s[i].Init(expected[i], (l, j) => l.Init(j));
+        for (var i = 0; i < expected.Length; i++)
+            s[i].Init(expected[i], (l, j) => l.Init(j));
         DeserializerState d = s;
         var voids = d.RequireList().CastVoid3D();
         Assert.HasCount(expected.Length, voids);
-        for (var i = 0; i < expected.Length; i++) CollectionAssert.AreEqual(expected[i], voids[i].ToArray());
+        for (var i = 0; i < expected.Length; i++)
+            CollectionAssert.AreEqual(expected[i], voids[i].ToArray());
     }
 
     [TestMethod]

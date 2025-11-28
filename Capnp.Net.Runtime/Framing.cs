@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -40,12 +40,14 @@ public static class Framing
     public static WireFrame ReadWireFrame(this BinaryReader reader)
     {
         var scount = reader.ReadUInt32();
-        if (scount++ == uint.MaxValue) throw new InvalidDataException("Encountered invalid framing data");
+        if (scount++ == uint.MaxValue)
+            throw new InvalidDataException("Encountered invalid framing data");
 
         // Cannot have more segments than the traversal limit
         if (scount >= SecurityOptions.TraversalLimit)
             throw new InvalidDataException(
-                "Too many segments. Probably invalid data. Try increasing the traversal limit.");
+                "Too many segments. Probably invalid data. Try increasing the traversal limit."
+            );
 
         var buffers = new Memory<ulong>[scount];
 
@@ -53,11 +55,13 @@ public static class Framing
         {
             var size = reader.ReadUInt32();
 
-            if (size == 0) throw new EndOfStreamException("Stream closed");
+            if (size == 0)
+                throw new EndOfStreamException("Stream closed");
 
             if (size >= SecurityOptions.TraversalLimit)
                 throw new InvalidDataException(
-                    "Too large segment. Probably invalid data. Try increasing the traversal limit.");
+                    "Too large segment. Probably invalid data. Try increasing the traversal limit."
+                );
 
             buffers[i] = new Memory<ulong>(new ulong[size]);
         }
@@ -74,10 +78,15 @@ public static class Framing
     private static InvalidDataException StreamClosed()
     {
         return new InvalidDataException(
-            "Prematurely reached end of stream. Expected more bytes according to framing header.");
+            "Prematurely reached end of stream. Expected more bytes according to framing header."
+        );
     }
 
-    private static void FillBuffersFromFrames(Memory<ulong>[] buffers, uint segmentCount, BinaryReader reader)
+    private static void FillBuffersFromFrames(
+        Memory<ulong>[] buffers,
+        uint segmentCount,
+        BinaryReader reader
+    )
     {
         for (uint i = 0; i < segmentCount; i++)
         {

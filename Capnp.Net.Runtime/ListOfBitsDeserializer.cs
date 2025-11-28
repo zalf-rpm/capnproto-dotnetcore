@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,8 +11,8 @@ public class ListOfBitsDeserializer : ListDeserializer, IReadOnlyList<bool>
 {
     private readonly bool _defaultValue;
 
-    internal ListOfBitsDeserializer(in DeserializerState context, bool defaultValue) :
-        base(context)
+    internal ListOfBitsDeserializer(in DeserializerState context, bool defaultValue)
+        : base(context)
     {
         _defaultValue = defaultValue;
     }
@@ -38,8 +38,8 @@ public class ListOfBitsDeserializer : ListDeserializer, IReadOnlyList<bool>
             var wi = index / 64;
             var bi = index % 64;
 
-            return ((State.CurrentSegment[State.Offset + wi] >> bi) & 1) !=
-                   (_defaultValue ? 1u : 0);
+            return ((State.CurrentSegment[State.Offset + wi] >> bi) & 1)
+                != (_defaultValue ? 1u : 0);
         }
     }
 

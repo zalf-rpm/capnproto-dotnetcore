@@ -12,7 +12,8 @@ public class CapnpBenchmark
     private IEchoer _echoer;
     private byte[] _payload;
 
-    [Params(0, 256, 1024, 4096)] public int BufferSize;
+    [Params(0, 256, 1024, 4096)]
+    public int BufferSize;
 
     [Params(20, 200, 2000, 20000, 200000, 2000000)]
     public int PayloadBytes;

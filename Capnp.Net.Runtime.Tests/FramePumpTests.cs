@@ -19,7 +19,8 @@ public class FramePumpTests
         {
             var count = frame.Segments.Count;
 
-            for (var i = 0; i < count; i++) Assert.AreEqual(i + 1, frame.Segments[i].Length);
+            for (var i = 0; i < count; i++)
+                Assert.AreEqual(i + 1, frame.Segments[i].Length);
 
             return count;
         }
@@ -53,7 +54,10 @@ public class FramePumpTests
                 using (var txPump = new FramePump(serverStream))
                 using (var rxPump = new FramePump(clientStream))
                 {
-                    rxRunner = new Thread(() => { rxPump.Run(); });
+                    rxRunner = new Thread(() =>
+                    {
+                        rxPump.Run();
+                    });
                     rxRunner.IsBackground = true;
 
                     rxPump.FrameReceived += f => bc.Add(UnpackFrame(f));
@@ -120,7 +124,8 @@ public class FramePumpTests
             {
                 var a = new ulong[value - i];
                 segments[i] = new Memory<ulong>(a);
-                for (var j = 0; j < a.Length; j++) a[j] = (ulong)(a.Length - j);
+                for (var j = 0; j < a.Length; j++)
+                    a[j] = (ulong)(a.Length - j);
             }
 
             return new WireFrame(segments);
@@ -142,7 +147,10 @@ public class FramePumpTests
                 using (var txPump = new FramePump(serverStream))
                 using (var rxPump = new FramePump(clientStream))
                 {
-                    rxRunner = new Thread(() => { rxPump.Run(); });
+                    rxRunner = new Thread(() =>
+                    {
+                        rxPump.Run();
+                    });
                     rxRunner.IsBackground = true;
 
                     rxPump.FrameReceived += bc.Add;

@@ -1,4 +1,4 @@
-﻿namespace Capnp.Rpc;
+namespace Capnp.Rpc;
 
 /// <summary>
 ///     State of an RPC connection
@@ -19,5 +19,5 @@ public enum ConnectionState
     /// <summary>
     ///     Connection is down. It will never be active again (re-connecting means to establish a new connection).
     /// </summary>
-    Down
+    Down,
 }

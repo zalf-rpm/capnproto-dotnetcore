@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Capnp.Net.Runtime.Tests.GenImpls;
 using Capnp.Net.Runtime.Tests.Util;
 using Capnp.Rpc;
@@ -24,25 +24,28 @@ public class TcpRpcStress : TestBase
     [TestMethod]
     public void ResolveMain()
     {
-        Repeat(5000, () =>
-        {
-            var (server, client) = SetupClientServerPair();
-
-            using (server)
-            using (client)
+        Repeat(
+            5000,
+            () =>
             {
-                //client.WhenConnected.Wait();
+                var (server, client) = SetupClientServerPair();
 
-                var counters = new Counters();
-                var impl = new TestMoreStuffImpl(counters);
-                server.Main = impl;
-                using (var main = client.GetMain<ITestMoreStuff>())
+                using (server)
+                using (client)
                 {
-                    var resolving = main as IResolvingCapability;
-                    Assert.IsTrue(resolving.WhenResolved.WrappedTask.Wait(MediumNonDbgTimeout));
+                    //client.WhenConnected.Wait();
+
+                    var counters = new Counters();
+                    var impl = new TestMoreStuffImpl(counters);
+                    server.Main = impl;
+                    using (var main = client.GetMain<ITestMoreStuff>())
+                    {
+                        var resolving = main as IResolvingCapability;
+                        Assert.IsTrue(resolving.WhenResolved.WrappedTask.Wait(MediumNonDbgTimeout));
+                    }
                 }
             }
-        });
+        );
     }
 
     [TestMethod]
@@ -56,10 +59,14 @@ public class TcpRpcStress : TestBase
     public void Embargo()
     {
         var t = new TcpRpcPorted();
-        Repeat(100,
+        Repeat(
+            100,
             () =>
-                NewLocalhostTcpTestbed(TcpRpcTestOptions.ClientTracer | TcpRpcTestOptions.ClientFluctStream)
-                    .RunTest(Testsuite.EmbargoOnPromisedAnswer));
+                NewLocalhostTcpTestbed(
+                        TcpRpcTestOptions.ClientTracer | TcpRpcTestOptions.ClientFluctStream
+                    )
+                    .RunTest(Testsuite.EmbargoOnPromisedAnswer)
+        );
     }
 
     [TestMethod]

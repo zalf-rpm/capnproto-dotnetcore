@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 
 namespace Capnp.Rpc;
@@ -19,9 +19,7 @@ public abstract class RefCountingSkeleton : Skeleton
     /// <summary>
     ///     Dispose pattern implementation
     /// </summary>
-    protected virtual void Dispose(bool disposing)
-    {
-    }
+    protected virtual void Dispose(bool disposing) { }
 
     /// <summary>
     ///     Finalizer
@@ -33,7 +31,8 @@ public abstract class RefCountingSkeleton : Skeleton
 
     internal sealed override void Claim()
     {
-        int count, newCount;
+        int count,
+            newCount;
 
         do
         {
@@ -47,7 +46,8 @@ public abstract class RefCountingSkeleton : Skeleton
 
     internal override void Relinquish()
     {
-        int count, newCount;
+        int count,
+            newCount;
 
         do
         {
@@ -68,7 +68,8 @@ public abstract class RefCountingSkeleton : Skeleton
     internal override ConsumedCapability AsCapability()
     {
         var cap = Volatile.Read(ref _localCap);
-        if (cap == null) Interlocked.CompareExchange(ref _localCap, new LocalCapability(this), null);
+        if (cap == null)
+            Interlocked.CompareExchange(ref _localCap, new LocalCapability(this), null);
         return Volatile.Read(ref _localCap)!;
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -245,6 +245,8 @@ public class LocalRpc : TestBase
         Assert.IsTrue(p.IsDisposed);
         Assert.Throws<ObjectDisposedException>(() => p.ConsumedCap);
         var t = proxy.Foo(123, true);
-        Assert.IsTrue(Assert.ThrowsAsync<ObjectDisposedException>(() => t).Wait(MediumNonDbgTimeout));
+        Assert.IsTrue(
+            Assert.ThrowsAsync<ObjectDisposedException>(() => t).Wait(MediumNonDbgTimeout)
+        );
     }
 }

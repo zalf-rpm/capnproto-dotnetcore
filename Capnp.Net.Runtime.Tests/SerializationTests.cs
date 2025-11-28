@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,7 +41,10 @@ public class SerializationTests
         {
             var _ = list[0];
         });
-        Assert.Throws<InvalidOperationException>(() => { list[0] = false; });
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            list[0] = false;
+        });
         list.Init(130);
         list[63] = true;
         list[65] = true;
@@ -52,7 +55,10 @@ public class SerializationTests
         {
             var _ = list[130];
         });
-        Assert.Throws<IndexOutOfRangeException>(() => { list[130] = false; });
+        Assert.Throws<IndexOutOfRangeException>(() =>
+        {
+            list[130] = false;
+        });
         Assert.IsFalse(list[0]);
         Assert.IsTrue(list[63]);
         Assert.IsFalse(list[64]);
@@ -114,14 +120,20 @@ public class SerializationTests
         {
             var _ = list[0];
         });
-        Assert.Throws<InvalidOperationException>(() => { list[0] = null; });
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            list[0] = null;
+        });
         list.Init(5);
         Assert.Throws<InvalidOperationException>(() => list.Init(1));
         Assert.Throws<IndexOutOfRangeException>(() =>
         {
             var _ = list[5];
         });
-        Assert.Throws<IndexOutOfRangeException>(() => { list[-1] = null; });
+        Assert.Throws<IndexOutOfRangeException>(() =>
+        {
+            list[-1] = null;
+        });
         var c1 = new Counters();
         var cap1 = new TestInterfaceImpl(c1);
         var c2 = new Counters();
@@ -194,7 +206,10 @@ public class SerializationTests
         {
             var _ = list[0];
         });
-        Assert.Throws<InvalidOperationException>(() => { list[0] = null; });
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            list[0] = null;
+        });
         list.Init(7);
         Assert.Throws<InvalidOperationException>(() => list.Init(1));
         Assert.AreEqual(7, list.Count);
@@ -202,7 +217,10 @@ public class SerializationTests
         {
             var _ = list[-1];
         });
-        Assert.Throws<IndexOutOfRangeException>(() => { list[7] = null; });
+        Assert.Throws<IndexOutOfRangeException>(() =>
+        {
+            list[7] = null;
+        });
         var c1 = new Counters();
         var cap1 = new TestInterfaceImpl(c1);
         var obj1 = b.CreateObject<DynamicSerializerState>();
@@ -247,7 +265,10 @@ public class SerializationTests
         {
             var _ = list[0];
         });
-        Assert.Throws<InvalidOperationException>(() => { list[0] = 1.0f; });
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            list[0] = 1.0f;
+        });
         list.Init(4);
         Assert.Throws<InvalidOperationException>(() => list.Init(1));
         Assert.AreEqual(4, list.Count);
@@ -412,11 +433,14 @@ public class SerializationTests
         Assert.AreEqual("3", list[3].SomeText);
 
         var list2 = b.CreateObject<ListOfStructsSerializer<SomeStruct.WRITER>>();
-        list2.Init(list.ToArray(), (dst, src) =>
-        {
-            dst.SomeText = src.SomeText;
-            dst.MoreText = src.MoreText;
-        });
+        list2.Init(
+            list.ToArray(),
+            (dst, src) =>
+            {
+                dst.SomeText = src.SomeText;
+                dst.MoreText = src.MoreText;
+            }
+        );
         Assert.AreEqual(4, list2.Count);
         Assert.AreEqual("0", list2[0].SomeText);
         Assert.AreEqual("3", list2[3].SomeText);
@@ -471,7 +495,10 @@ public class SerializationTests
         {
             var _ = list[0];
         });
-        Assert.Throws<InvalidOperationException>(() => { list[0] = "foo"; });
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            list[0] = "foo";
+        });
         list.Init(4);
         Assert.Throws<InvalidOperationException>(() => list.Init(1));
         Assert.AreEqual(4, list.Count);
@@ -479,7 +506,10 @@ public class SerializationTests
         {
             var _ = list[5];
         });
-        Assert.Throws<IndexOutOfRangeException>(() => { list[-1] = null; });
+        Assert.Throws<IndexOutOfRangeException>(() =>
+        {
+            list[-1] = null;
+        });
         list[0] = "0";
         list[2] = null;
         list[3] = "3";
@@ -703,8 +733,12 @@ public class SerializationTests
     {
         var d = default(DeserializerState);
         Assert.Throws<ArgumentException>(() => CapnpSerializable.Create<SerializationTests>(d));
-        Assert.Throws<ArgumentException>(() => CapnpSerializable.Create<IReadOnlyList<SerializationTests>>(d));
-        Assert.Throws<ArgumentException>(() => CapnpSerializable.Create<IReadOnlyList<DeserializerState>>(d));
+        Assert.Throws<ArgumentException>(() =>
+            CapnpSerializable.Create<IReadOnlyList<SerializationTests>>(d)
+        );
+        Assert.Throws<ArgumentException>(() =>
+            CapnpSerializable.Create<IReadOnlyList<DeserializerState>>(d)
+        );
         Assert.Throws<ArgumentException>(() => CapnpSerializable.Create<Unconstructible1>(d));
         Assert.Throws<ArgumentException>(() => CapnpSerializable.Create<Unconstructible2>(d));
     }
@@ -969,7 +1003,9 @@ public class SerializationTests
         Assert.Throws<ArgumentOutOfRangeException>(() => dss.Link(-1, dss));
         Assert.Throws<ArgumentOutOfRangeException>(() => dss.Link(1, dss));
         dss.Link(0, dss);
-        Assert.Throws<InvalidOperationException>(() => dss.Link(0, mb.CreateObject<DynamicSerializerState>()));
+        Assert.Throws<InvalidOperationException>(() =>
+            dss.Link(0, mb.CreateObject<DynamicSerializerState>())
+        );
     }
 
     [TestMethod]
@@ -988,8 +1024,12 @@ public class SerializationTests
         var dss = new DynamicSerializerState(MessageBuilder.Create());
         dss.SetStruct(0, 1);
         Assert.Throws<InvalidOperationException>(() => dss.ReadCap(0));
-        Assert.Throws<InvalidOperationException>(() => dss.ProvideCapability(new TestInterfaceImpl2()));
-        Assert.Throws<InvalidOperationException>(() => dss.ProvideCapability(new TestInterface_Skeleton()));
+        Assert.Throws<InvalidOperationException>(() =>
+            dss.ProvideCapability(new TestInterfaceImpl2())
+        );
+        Assert.Throws<InvalidOperationException>(() =>
+            dss.ProvideCapability(new TestInterface_Skeleton())
+        );
     }
 
     [TestMethod]
@@ -1045,7 +1085,8 @@ public class SerializationTests
         Assert.Throws<InvalidOperationException>(() => dss.SetListOfStructs(1, 1, 1));
         Assert.Throws<InvalidOperationException>(() => dss.SetListOfValues(8, 1));
         Assert.Throws<InvalidOperationException>(() =>
-            dss.SetObject(mb.CreateObject<TestSerializerStateStruct11>()));
+            dss.SetObject(mb.CreateObject<TestSerializerStateStruct11>())
+        );
         dss.SetObject(null);
         Assert.Throws<InvalidOperationException>(() => dss.SetStruct(1, 1));
     }
@@ -1117,8 +1158,11 @@ public class SerializationTests
         var s1 = dss2.ListBuildStruct<TestSerializerStateStruct11>(1);
         Assert.AreEqual(s1, dss2.ListBuildStruct<TestSerializerStateStruct11>(1));
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            dss2.ListBuildStruct<TestSerializerStateStruct11>(-1));
-        Assert.Throws<ArgumentOutOfRangeException>(() => dss2.ListBuildStruct<TestSerializerStateStruct11>(2));
+            dss2.ListBuildStruct<TestSerializerStateStruct11>(-1)
+        );
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            dss2.ListBuildStruct<TestSerializerStateStruct11>(2)
+        );
     }
 
     [TestMethod]
@@ -1196,9 +1240,7 @@ public class SerializationTests
 
     private class Unconstructible1 : ICapnpSerializable
     {
-        public Unconstructible1(int annoyingParameter)
-        {
-        }
+        public Unconstructible1(int annoyingParameter) { }
 
         public void Deserialize(DeserializerState state)
         {

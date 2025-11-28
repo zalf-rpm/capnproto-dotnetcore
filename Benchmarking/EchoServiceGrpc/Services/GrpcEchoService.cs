@@ -10,9 +10,6 @@ public class GrpcEchoService(ILogger<GrpcEchoService> logger) : Echoer.EchoerBas
 
     public override Task<EchoReply> Echo(EchoRequest request, ServerCallContext context)
     {
-        return Task.FromResult(new EchoReply
-        {
-            Payload = request.Payload
-        });
+        return Task.FromResult(new EchoReply { Payload = request.Payload });
     }
 }

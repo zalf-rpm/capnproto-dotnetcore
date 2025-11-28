@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Capnp.Rpc.Interception;
 
@@ -19,7 +19,11 @@ internal class CensorCapability : RefCountingCapability
         InterceptedCapability.Release();
     }
 
-    internal override IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args)
+    internal override IPromisedAnswer DoCall(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args
+    )
     {
         var cc = new CallContext(this, interfaceId, methodId, args);
         Policy.OnCallFromAlice(cc);

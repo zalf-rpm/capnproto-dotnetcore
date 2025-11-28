@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +8,8 @@ internal class DefinitionManager
 {
     private readonly Dictionary<ulong, IDefinition> _id2def = new();
 
-    public IEnumerable<GenFile> Files => _id2def.Values.Where(d => d.Tag == TypeTag.File).Select(f => f as GenFile);
+    public IEnumerable<GenFile> Files =>
+        _id2def.Values.Where(d => d.Tag == TypeTag.File).Select(f => f as GenFile);
 
     public GenFile CreateFile(ulong id, bool isGenerated)
     {
@@ -28,7 +29,8 @@ internal class DefinitionManager
     public TypeDefinition GetExistingTypeDef(ulong id, TypeTag tag)
     {
         var def = GetId<TypeDefinition>(id, tag);
-        if (def.Tag == TypeTag.Unknown) def.Tag = tag;
+        if (def.Tag == TypeTag.Unknown)
+            def.Tag = tag;
         return def;
     }
 
@@ -57,23 +59,30 @@ internal class DefinitionManager
         return GetId<IDefinition>(id, tag);
     }
 
-    private T CreateId<T>(ulong id, Func<IDefinition> creator) where T : class, IDefinition
+    private T CreateId<T>(ulong id, Func<IDefinition> creator)
+        where T : class, IDefinition
     {
         if (_id2def.TryGetValue(id, out var d))
-            throw new ArgumentException(nameof(id),
-                $"Attempting to redefine {d.Tag.ToString()} {id.StrId()} (as {nameof(T)}).");
+            throw new ArgumentException(
+                nameof(id),
+                $"Attempting to redefine {d.Tag.ToString()} {id.StrId()} (as {nameof(T)})."
+            );
         var def = creator();
         _id2def.Add(id, def);
         return def as T;
     }
 
-    private T GetId<T>(ulong id, TypeTag tag) where T : IDefinition
+    private T GetId<T>(ulong id, TypeTag tag)
+        where T : IDefinition
     {
         if (!_id2def.TryGetValue(id, out var anyDef))
-            throw new ArgumentOutOfRangeException($"Attempting to retrieve nonexistent node {id.StrId()}.");
+            throw new ArgumentOutOfRangeException(
+                $"Attempting to retrieve nonexistent node {id.StrId()}."
+            );
         if (!(anyDef is T def) || (tag != TypeTag.Unknown && def.Tag != tag))
             throw new ArgumentOutOfRangeException(
-                $"Attempting to retrieve {tag.ToString()} {id.StrId()}, but found {anyDef.Tag.ToString()} instead.");
+                $"Attempting to retrieve {tag.ToString()} {id.StrId()}, but found {anyDef.Tag.ToString()} instead."
+            );
         return def;
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -15,8 +15,8 @@ public class ListOfPrimitivesDeserializer<T> : ListDeserializer, IReadOnlyList<T
 {
     private readonly ListKind _kind;
 
-    internal ListOfPrimitivesDeserializer(in DeserializerState state, ListKind kind) :
-        base(state)
+    internal ListOfPrimitivesDeserializer(in DeserializerState state, ListKind kind)
+        : base(state)
     {
         _kind = kind;
     }
@@ -54,10 +54,13 @@ public class ListOfPrimitivesDeserializer<T> : ListDeserializer, IReadOnlyList<T
         return GetEnumerator();
     }
 
-    private ListOfPrimitivesDeserializer<U> PrimitiveCast<U>() where U : unmanaged
+    private ListOfPrimitivesDeserializer<U> PrimitiveCast<U>()
+        where U : unmanaged
     {
         if (Marshal.SizeOf<U>() != Marshal.SizeOf<T>())
-            throw new NotSupportedException("Source and target types have different sizes, cannot cast");
+            throw new NotSupportedException(
+                "Source and target types have different sizes, cannot cast"
+            );
 
         return new ListOfPrimitivesDeserializer<U>(State, Kind);
     }
@@ -179,10 +182,17 @@ public class ListOfPrimitivesDeserializer<T> : ListDeserializer, IReadOnlyList<T
     {
         switch (Marshal.SizeOf<T>())
         {
-            case 1: return PrimitiveCast<byte>().LazyListSelect(x => cons(DeserializerState.MakeValueState(x)));
-            case 2: return PrimitiveCast<ushort>().LazyListSelect(x => cons(DeserializerState.MakeValueState(x)));
-            case 4: return PrimitiveCast<uint>().LazyListSelect(x => cons(DeserializerState.MakeValueState(x)));
-            case 8: return new ListOfULongAsStructView<U>(PrimitiveCast<ulong>(), cons);
+            case 1:
+                return PrimitiveCast<byte>()
+                    .LazyListSelect(x => cons(DeserializerState.MakeValueState(x)));
+            case 2:
+                return PrimitiveCast<ushort>()
+                    .LazyListSelect(x => cons(DeserializerState.MakeValueState(x)));
+            case 4:
+                return PrimitiveCast<uint>()
+                    .LazyListSelect(x => cons(DeserializerState.MakeValueState(x)));
+            case 8:
+                return new ListOfULongAsStructView<U>(PrimitiveCast<ulong>(), cons);
             default:
                 throw new InvalidProgramException("This program path should not be reachable");
         }
@@ -196,7 +206,8 @@ public class ListOfPrimitivesDeserializer<T> : ListDeserializer, IReadOnlyList<T
     public override string CastText()
     {
         var utf8Bytes = PrimitiveCast<byte>().Span;
-        if (utf8Bytes.Length == 0) return string.Empty;
+        if (utf8Bytes.Length == 0)
+            return string.Empty;
         var utf8GytesNoZterm = utf8Bytes.Slice(0, utf8Bytes.Length - 1);
         return Encoding.UTF8.GetString(utf8GytesNoZterm.ToArray());
     }
@@ -212,7 +223,10 @@ public class ListOfPrimitivesDeserializer<T> : ListDeserializer, IReadOnlyList<T
         private readonly ListOfPrimitivesDeserializer<ulong> _lpd;
         private readonly Func<DeserializerState, U> _sel;
 
-        public ListOfULongAsStructView(ListOfPrimitivesDeserializer<ulong> lpd, Func<DeserializerState, U> sel)
+        public ListOfULongAsStructView(
+            ListOfPrimitivesDeserializer<ulong> lpd,
+            Func<DeserializerState, U> sel
+        )
         {
             _lpd = lpd;
             _sel = sel;

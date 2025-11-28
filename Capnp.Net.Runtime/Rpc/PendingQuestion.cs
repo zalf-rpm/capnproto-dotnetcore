@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -50,7 +50,7 @@ public sealed class PendingQuestion : IPromisedAnswer
         /// <summary>
         ///     Question object was disposed.
         /// </summary>
-        CanceledByDispose = 16
+        CanceledByDispose = 16,
     }
 
     private const string ReturnDespiteTailCallMessage =
@@ -60,11 +60,17 @@ public sealed class PendingQuestion : IPromisedAnswer
         "Peer sent the results of this questions somewhere else. This was not expected and is a protocol error.";
 
     private readonly TaskCompletionSource<DeserializerState> _tcs = new();
-    private int _inhibitFinishCounter, _refCounter;
+    private int _inhibitFinishCounter,
+        _refCounter;
     private SerializerState? _inParams;
     private ConsumedCapability? _target;
 
-    internal PendingQuestion(IRpcEndpoint ep, uint id, ConsumedCapability target, SerializerState? inParams)
+    internal PendingQuestion(
+        IRpcEndpoint ep,
+        uint id,
+        ConsumedCapability target,
+        SerializerState? inParams
+    )
     {
         RpcEndpoint = ep ?? throw new ArgumentNullException(nameof(ep));
         QuestionId = id;
@@ -74,7 +80,7 @@ public sealed class PendingQuestion : IPromisedAnswer
 
         StateFlags = inParams == null ? State.Sent : State.None;
 
-        if (target != null) target.AddRef();
+        target?.AddRef();
     }
 
     internal IRpcEndpoint RpcEndpoint { get; }
@@ -154,7 +160,8 @@ public sealed class PendingQuestion : IPromisedAnswer
             }
         }
 
-        if (justDisposed) _tcs.TrySetCanceled();
+        if (justDisposed)
+            _tcs.TrySetCanceled();
     }
 
     internal void DisallowFinish()
@@ -198,7 +205,8 @@ public sealed class PendingQuestion : IPromisedAnswer
             throw new RpcProtocolErrorException(ReturnDespiteTailCallMessage);
         }
 
-        if (!_tcs.TrySetResult(results)) ReleaseOutCaps(results);
+        if (!_tcs.TrySetResult(results))
+            ReleaseOutCaps(results);
     }
 
     internal void OnTailCallReturn()
@@ -254,11 +262,14 @@ public sealed class PendingQuestion : IPromisedAnswer
 
     private void AutoFinish()
     {
-        if (StateFlags.HasFlag(State.FinishRequested)) return;
+        if (StateFlags.HasFlag(State.FinishRequested))
+            return;
 
-        if ((!IsTailCall && _inhibitFinishCounter == 0 && StateFlags.HasFlag(State.Returned)) ||
-            (IsTailCall && _refCounter == 0 && StateFlags.HasFlag(State.Returned)) ||
-            StateFlags.HasFlag(State.CanceledByDispose))
+        if (
+            (!IsTailCall && _inhibitFinishCounter == 0 && StateFlags.HasFlag(State.Returned))
+            || (IsTailCall && _refCounter == 0 && StateFlags.HasFlag(State.Returned))
+            || StateFlags.HasFlag(State.CanceledByDispose)
+        )
         {
             StateFlags |= State.FinishRequested;
 
@@ -268,7 +279,8 @@ public sealed class PendingQuestion : IPromisedAnswer
 
     private void SetReturned()
     {
-        if (StateFlags.HasFlag(State.Returned)) throw new InvalidOperationException("Return state already set");
+        if (StateFlags.HasFlag(State.Returned))
+            throw new InvalidOperationException("Return state already set");
 
         StateFlags |= State.Returned;
 
@@ -278,7 +290,8 @@ public sealed class PendingQuestion : IPromisedAnswer
 
     private static void ReleaseOutCaps(DeserializerState outParams)
     {
-        foreach (var cap in outParams.Caps!) cap.Release();
+        foreach (var cap in outParams.Caps!)
+            cap.Release();
     }
 
     internal void Send()
@@ -302,7 +315,9 @@ public sealed class PendingQuestion : IPromisedAnswer
         Debug.Assert(msg.Call!.Target.which != MessageTarget.WHICH.undefined);
         var call = msg.Call;
         call.QuestionId = QuestionId;
-        call.SendResultsTo.which = IsTailCall ? Call.sendResultsTo.WHICH.Yourself : Call.sendResultsTo.WHICH.Caller;
+        call.SendResultsTo.which = IsTailCall
+            ? Call.sendResultsTo.WHICH.Yourself
+            : Call.sendResultsTo.WHICH.Caller;
 
         try
         {

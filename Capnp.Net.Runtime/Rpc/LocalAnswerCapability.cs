@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Capnp.Util;
@@ -14,20 +14,24 @@ internal class LocalAnswerCapability : RefCountingCapability, IResolvingCapabili
         _whenResolvedProxy = proxyTask.EnforceAwaitOrder();
     }
 
-    public LocalAnswerCapability(StrictlyOrderedAwaitTask<DeserializerState> answer, MemberAccessPath access) :
-        this(TransferOwnershipToDummyProxy(answer, access))
-    {
-    }
+    public LocalAnswerCapability(
+        StrictlyOrderedAwaitTask<DeserializerState> answer,
+        MemberAccessPath access
+    )
+        : this(TransferOwnershipToDummyProxy(answer, access)) { }
 
     public StrictlyOrderedAwaitTask WhenResolved => _whenResolvedProxy;
 
-    public T? GetResolvedCapability<T>() where T : class
+    public T? GetResolvedCapability<T>()
+        where T : class
     {
         return _whenResolvedProxy.WrappedTask.GetResolvedCapability<T>();
     }
 
-    private static async Task<Proxy> TransferOwnershipToDummyProxy(StrictlyOrderedAwaitTask<DeserializerState> answer,
-        MemberAccessPath access)
+    private static async Task<Proxy> TransferOwnershipToDummyProxy(
+        StrictlyOrderedAwaitTask<DeserializerState> answer,
+        MemberAccessPath access
+    )
     {
         var result = await answer;
         var cap = access.Eval(result);
@@ -55,8 +59,12 @@ internal class LocalAnswerCapability : RefCountingCapability, IResolvingCapabili
         return this.ExportAsSenderPromise(endpoint, writer);
     }
 
-    private async Task<DeserializerState> CallImpl(ulong interfaceId, ushort methodId, DynamicSerializerState args,
-        CancellationToken cancellationToken)
+    private async Task<DeserializerState> CallImpl(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args,
+        CancellationToken cancellationToken
+    )
     {
         var proxy = await _whenResolvedProxy;
 
@@ -75,7 +83,11 @@ internal class LocalAnswerCapability : RefCountingCapability, IResolvingCapabili
         return await whenReturned;
     }
 
-    internal override IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args)
+    internal override IPromisedAnswer DoCall(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args
+    )
     {
         var cts = new CancellationTokenSource();
         return new LocalAnswer(cts, CallImpl(interfaceId, methodId, args, cts.Token));
@@ -87,8 +99,6 @@ internal class LocalAnswerCapability : RefCountingCapability, IResolvingCapabili
         {
             using var _ = await _whenResolvedProxy;
         }
-        catch
-        {
-        }
+        catch { }
     }
 }

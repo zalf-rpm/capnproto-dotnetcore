@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -67,7 +67,8 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
     ///     The underlying <see cref="TcpListener" /> detected an error condition, such as the
     ///     desired endpoint is already occupied.
     /// </exception>
-    public TcpRpcServer(IPAddress localAddr, int port) : this()
+    public TcpRpcServer(IPAddress localAddr, int port)
+        : this()
     {
         StartAccepting(localAddr, port);
     }
@@ -121,7 +122,8 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
     /// </summary>
     public void Dispose()
     {
-        if (_listener != null) StopListening();
+        if (_listener != null)
+            StopListening();
 
         var connections = new List<Connection>();
 
@@ -155,7 +157,8 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
     {
         OnConnectionChanged += (_, e) =>
         {
-            if (e.Connection.State == ConnectionState.Initializing) e.Connection.InjectMidlayer(createFunc);
+            if (e.Connection.State == ConnectionState.Initializing)
+                e.Connection.InjectMidlayer(createFunc);
         };
     }
 
@@ -164,7 +167,8 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
         try
         {
             if (Thread.CurrentThread.Name == null)
-                Thread.CurrentThread.Name = $"TCP RPC Acceptor Thread {Thread.CurrentThread.ManagedThreadId}";
+                Thread.CurrentThread.Name =
+                    $"TCP RPC Acceptor Thread {Thread.CurrentThread.ManagedThreadId}";
 
             while (true)
             {
@@ -209,9 +213,7 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
         {
             _listener.Stop();
         }
-        catch (SocketException)
-        {
-        }
+        catch (SocketException) { }
         finally
         {
             _listener = null;
@@ -241,10 +243,7 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
         if (_listener != null)
             throw new InvalidOperationException("Listening activity was already started");
 
-        var listener = new TcpListener(localAddr, port)
-        {
-            ExclusiveAddressUse = true
-        };
+        var listener = new TcpListener(localAddr, port) { ExclusiveAddressUse = true };
 
         var attempt = 0;
 
@@ -260,7 +259,9 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
                 if (attempt == 5)
                     throw;
 
-                Logger.LogWarning($"Failed to listen on port {port}, attempt {attempt}: {socketException}");
+                Logger.LogWarning(
+                    $"Failed to listen on port {port}, attempt {attempt}: {socketException}"
+                );
             }
 
             ++attempt;
@@ -374,7 +375,8 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
         {
             Pump = new FramePump(_stream);
 
-            foreach (var tracer in _tracers) Pump.AttachTracer(tracer);
+            foreach (var tracer in _tracers)
+                Pump.AttachTracer(tracer);
             _tracers.Clear();
 
             OutboundEp = new OutboundTcpEndpoint(_server, Pump);
@@ -387,13 +389,16 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
             {
                 try
                 {
-                    Thread.CurrentThread.Name = $"TCP RPC Server Thread {Thread.CurrentThread.ManagedThreadId}";
+                    Thread.CurrentThread.Name =
+                        $"TCP RPC Server Thread {Thread.CurrentThread.ManagedThreadId}";
 
                     Pump.Run();
                 }
                 catch (ThreadInterruptedException)
                 {
-                    Logger.LogError($"{Thread.CurrentThread.Name} interrupted at {Environment.StackTrace}");
+                    Logger.LogError(
+                        $"{Thread.CurrentThread.Name} interrupted at {Environment.StackTrace}"
+                    );
                 }
                 finally
                 {

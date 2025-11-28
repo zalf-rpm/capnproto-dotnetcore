@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Capnp.Net.Runtime.Tests.GenImpls;
 using Capnp.Rpc;
@@ -27,7 +27,9 @@ public class ImpatientTests
         var tcs = new TaskCompletionSource<ITestInterface>();
         tcs.SetResult(null);
         Assert.IsNull(await tcs.Task.Eager(true).Unwrap());
-        var excepted = Task.FromException<ITestInterface>(new InvalidTimeZoneException("So annoying"));
+        var excepted = Task.FromException<ITestInterface>(
+            new InvalidTimeZoneException("So annoying")
+        );
         await Assert.ThrowsAsync<RpcException>(async () => await excepted.Eager(true).Unwrap());
     }
 
@@ -157,8 +159,11 @@ public class ImpatientTests
             await answer.WhenReturned;
         }
 
-        var cap = Impatient.Access(AwaitReturn(), new MemberAccessPath(),
-            Task.FromResult<IDisposable>(new TestInterfaceImpl2()));
+        var cap = Impatient.Access(
+            AwaitReturn(),
+            new MemberAccessPath(),
+            Task.FromResult<IDisposable>(new TestInterfaceImpl2())
+        );
         using (var proxy = new BareProxy(cap))
         {
             await proxy.WhenResolved;
@@ -205,8 +210,6 @@ public class ImpatientTests
             throw new NotImplementedException();
         }
 
-        public void Dispose()
-        {
-        }
+        public void Dispose() { }
     }
 }

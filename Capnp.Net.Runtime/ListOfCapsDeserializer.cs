@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Capnp.Rpc;
@@ -12,12 +12,14 @@ namespace Capnp;
 public class ListOfCapsDeserializer<T> : ListDeserializer, IReadOnlyList<T>
     where T : class
 {
-    internal ListOfCapsDeserializer(in DeserializerState state) : base(state)
+    internal ListOfCapsDeserializer(in DeserializerState state)
+        : base(state)
     {
         // increase ref count to transfer ownership on result deserialization
         // and to prevent disposing caps on DeserializeState disposal before
         // user could access the caps in the list (which causes proxy creation and AddRef)
-        foreach (var cap in state.Caps ?? []) cap.AddRef();
+        foreach (var cap in state.Caps ?? [])
+            cap.AddRef();
         CapabilityReflection.ValidateCapabilityInterface(typeof(T));
     }
 
@@ -68,6 +70,7 @@ public class ListOfCapsDeserializer<T> : ListDeserializer, IReadOnlyList<T>
     private IEnumerable<T> Enumerate()
     {
         var count = Count;
-        for (var i = 0; i < count; i++) yield return this[i];
+        for (var i = 0; i < count; i++)
+            yield return this[i];
     }
 }

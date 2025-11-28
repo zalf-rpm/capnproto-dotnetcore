@@ -1,4 +1,4 @@
-﻿namespace CapnpC.CSharp.Generator.Model;
+namespace CapnpC.CSharp.Generator.Model;
 
 internal enum TypeTag
 {
@@ -31,5 +31,5 @@ internal enum TypeTag
     AnyEnum,
     Const,
     Annotation,
-    File
+    File,
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,26 +13,37 @@ internal class InlineAssemblyCompiler
     {
         Success,
         SuccessWithWarnings,
-        Error
+        Error,
     }
 
-    public static CompileSummary TryCompileCapnp(NullableContextOptions nullableContextOptions, params string[] code)
+    public static CompileSummary TryCompileCapnp(
+        NullableContextOptions nullableContextOptions,
+        params string[] code
+    )
     {
         var options = new CSharpCompilationOptions(
             OutputKind.DynamicallyLinkedLibrary,
             optimizationLevel: OptimizationLevel.Debug,
-            nullableContextOptions: nullableContextOptions);
+            nullableContextOptions: nullableContextOptions
+        );
 
         var assemblyRoot = Path.GetDirectoryName(typeof(object).Assembly.Location);
 
-        var capnpRuntimePath = Path.GetFullPath(Path.Combine(
-            Assembly.GetExecutingAssembly().Location,
-            "..", "..", "..", "..", "..",
-            "Capnp.Net.Runtime",
-            "bin",
-            "Debug",
-            "net9.0",
-            "Capnp.Net.Runtime.dll"));
+        var capnpRuntimePath = Path.GetFullPath(
+            Path.Combine(
+                Assembly.GetExecutingAssembly().Location,
+                "..",
+                "..",
+                "..",
+                "..",
+                "..",
+                "Capnp.Net.Runtime",
+                "bin",
+                "Debug",
+                "net9.0",
+                "Capnp.Net.Runtime.dll"
+            )
+        );
 
         var parseOptions = CSharpParseOptions.Default;
         if (nullableContextOptions == NullableContextOptions.Disable)
@@ -46,12 +57,17 @@ internal class InlineAssemblyCompiler
                 MetadataReference.CreateFromFile(Path.Combine(assemblyRoot, "mscorlib.dll")),
                 MetadataReference.CreateFromFile(Path.Combine(assemblyRoot, "System.dll")),
                 MetadataReference.CreateFromFile(Path.Combine(assemblyRoot, "System.Core.dll")),
-                MetadataReference.CreateFromFile(Path.Combine(assemblyRoot, "System.Diagnostics.Tools.dll")),
+                MetadataReference.CreateFromFile(
+                    Path.Combine(assemblyRoot, "System.Diagnostics.Tools.dll")
+                ),
                 MetadataReference.CreateFromFile(Path.Combine(assemblyRoot, "System.Runtime.dll")),
-                MetadataReference.CreateFromFile(Path.Combine(assemblyRoot, "System.Private.CoreLib.dll")),
-                MetadataReference.CreateFromFile(capnpRuntimePath)
+                MetadataReference.CreateFromFile(
+                    Path.Combine(assemblyRoot, "System.Private.CoreLib.dll")
+                ),
+                MetadataReference.CreateFromFile(capnpRuntimePath),
             },
-            syntaxTrees: Array.ConvertAll(code, c => CSharpSyntaxTree.ParseText(c, parseOptions)));
+            syntaxTrees: Array.ConvertAll(code, c => CSharpSyntaxTree.ParseText(c, parseOptions))
+        );
 
         using (var stream = new MemoryStream())
         {

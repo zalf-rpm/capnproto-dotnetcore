@@ -1,4 +1,4 @@
-﻿namespace Capnp.Rpc;
+namespace Capnp.Rpc;
 
 /// <summary>
 ///     Helper struct to support tail calls

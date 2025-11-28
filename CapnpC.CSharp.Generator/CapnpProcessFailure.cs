@@ -1,4 +1,4 @@
-﻿namespace CapnpC.CSharp.Generator;
+namespace CapnpC.CSharp.Generator;
 
 /// <summary>
 ///     Why did invocation of capnpc.exe fail?
@@ -18,5 +18,5 @@ public enum CapnpProcessFailure
     /// <summary>
     ///     Because it produced an apparently bad code generation request.
     /// </summary>
-    BadOutput
+    BadOutput,
 }

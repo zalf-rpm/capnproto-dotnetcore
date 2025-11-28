@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -14,22 +14,28 @@ public class Job : IDisposable
     {
         handle = CreateJobObject(IntPtr.Zero, null);
 
-        var info = new JOBOBJECT_BASIC_LIMIT_INFORMATION
-        {
-            LimitFlags = 0x2000
-        };
+        var info = new JOBOBJECT_BASIC_LIMIT_INFORMATION { LimitFlags = 0x2000 };
 
         var extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION
         {
-            BasicLimitInformation = info
+            BasicLimitInformation = info,
         };
 
         var length = Marshal.SizeOf(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
         var extendedInfoPtr = Marshal.AllocHGlobal(length);
         Marshal.StructureToPtr(extendedInfo, extendedInfoPtr, false);
 
-        if (!SetInformationJobObject(handle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length))
-            throw new Exception(string.Format("Unable to set information.  Error: {0}", Marshal.GetLastWin32Error()));
+        if (
+            !SetInformationJobObject(
+                handle,
+                JobObjectInfoType.ExtendedLimitInformation,
+                extendedInfoPtr,
+                (uint)length
+            )
+        )
+            throw new Exception(
+                string.Format("Unable to set information.  Error: {0}", Marshal.GetLastWin32Error())
+            );
     }
 
     public void Dispose()
@@ -42,8 +48,12 @@ public class Job : IDisposable
     private static extern IntPtr CreateJobObject(IntPtr a, string lpName);
 
     [DllImport("kernel32.dll")]
-    private static extern bool SetInformationJobObject(IntPtr hJob, JobObjectInfoType infoType, IntPtr lpJobObjectInfo,
-        uint cbJobObjectInfoLength);
+    private static extern bool SetInformationJobObject(
+        IntPtr hJob,
+        JobObjectInfoType infoType,
+        IntPtr lpJobObjectInfo,
+        uint cbJobObjectInfoLength
+    );
 
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
@@ -57,9 +67,7 @@ public class Job : IDisposable
         if (disposed)
             return;
 
-        if (disposing)
-        {
-        }
+        if (disposing) { }
 
         Close();
         disposed = true;
@@ -136,7 +144,7 @@ public enum JobObjectInfoType
     EndOfJobTimeInformation = 6,
     ExtendedLimitInformation = 9,
     SecurityLimitInformation = 5,
-    GroupInformation = 11
+    GroupInformation = 11,
 }
 
 #endregion

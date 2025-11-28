@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Capnp.Util;
@@ -30,7 +30,8 @@ internal class LazyCapability : RefCountingCapability, IResolvingCapability
 
     public StrictlyOrderedAwaitTask WhenResolved => _capTask;
 
-    public T? GetResolvedCapability<T>() where T : class
+    public T? GetResolvedCapability<T>()
+        where T : class
     {
         if (_capTask.WrappedTask.IsCompleted)
             try
@@ -47,7 +48,9 @@ internal class LazyCapability : RefCountingCapability, IResolvingCapability
 
     public static LazyCapability CreateBrokenCap(string message)
     {
-        return new LazyCapability(Task.FromException<ConsumedCapability>(new RpcException(message)));
+        return new LazyCapability(
+            Task.FromException<ConsumedCapability>(new RpcException(message))
+        );
     }
 
     public static LazyCapability CreateCanceledCap(CancellationToken token)
@@ -76,17 +79,19 @@ internal class LazyCapability : RefCountingCapability, IResolvingCapability
                 {
                     using var _ = await _proxyTask!;
                 }
-                catch
-                {
-                }
+                catch { }
             }
 
             DisposeProxyWhenResolved();
         }
     }
 
-    private async Task<DeserializerState> CallImpl(ulong interfaceId, ushort methodId, DynamicSerializerState args,
-        CancellationToken cancellationToken)
+    private async Task<DeserializerState> CallImpl(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args,
+        CancellationToken cancellationToken
+    )
     {
         ConsumedCapability cap;
         try
@@ -115,7 +120,11 @@ internal class LazyCapability : RefCountingCapability, IResolvingCapability
         }
     }
 
-    internal override IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args)
+    internal override IPromisedAnswer DoCall(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args
+    )
     {
         var cts = new CancellationTokenSource();
         return new LocalAnswer(cts, CallImpl(interfaceId, methodId, args, cts.Token));

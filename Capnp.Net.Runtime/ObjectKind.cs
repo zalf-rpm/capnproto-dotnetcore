@@ -1,4 +1,4 @@
-﻿namespace Capnp;
+namespace Capnp;
 
 /// <summary>
 ///     The different kinds of Cap'n Proto objects.
@@ -64,5 +64,5 @@ public enum ObjectKind : byte
     ///     A value. This kind of object does not exist on the wire and is not specified by Capnp.
     ///     It is an internal helper to represent lists of primitive values as lists of structs.
     /// </summary>
-    Value = 16
+    Value = 16,
 }

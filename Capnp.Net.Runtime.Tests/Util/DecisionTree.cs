@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
@@ -9,21 +9,24 @@ public class DecisionTree
     private readonly List<bool> _decisions = new();
     private readonly Stack<int> _freezeStack = new();
     private readonly ILogger Logger = Logging.CreateLogger<DecisionTree>();
-    private int _pos, _freezeCounter;
+    private int _pos,
+        _freezeCounter;
 
     public DecisionTree()
     {
         _freezeStack.Push(0);
     }
 
-    public DecisionTree(params bool[] initialDecisions) : this()
+    public DecisionTree(params bool[] initialDecisions)
+        : this()
     {
         _decisions.AddRange(initialDecisions);
     }
 
     public bool MakeDecision()
     {
-        if (_pos >= _decisions.Count) _decisions.Add(false);
+        if (_pos >= _decisions.Count)
+            _decisions.Add(false);
 
         try
         {

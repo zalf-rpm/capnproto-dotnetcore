@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Capnp.Util;
@@ -17,7 +17,8 @@ public class Proxy : IDisposable, IResolvingCapability
     /// <typeparam name="T">Capability interface</typeparam>
     /// <param name="obj">instance to share</param>
     /// <returns></returns>
-    public static T Share<T>(T obj) where T : class
+    public static T Share<T>(T obj)
+        where T : class
     {
         if (obj is Proxy proxy)
             return proxy.Cast<T>(false);
@@ -28,14 +29,17 @@ public class Proxy : IDisposable, IResolvingCapability
     ///     Completes when the capability gets resolved.
     /// </summary>
     public StrictlyOrderedAwaitTask WhenResolved =>
-        ConsumedCap is IResolvingCapability resolving ? resolving.WhenResolved : Task.CompletedTask.EnforceAwaitOrder();
+        ConsumedCap is IResolvingCapability resolving
+            ? resolving.WhenResolved
+            : Task.CompletedTask.EnforceAwaitOrder();
 
     /// <summary>
     ///     Returns the resolved capability
     /// </summary>
     /// <typeparam name="T">Capability interface or <see cref="BareProxy" /></typeparam>
     /// <returns>the resolved capability, or null if it did not resolve yet</returns>
-    public T? GetResolvedCapability<T>() where T : class
+    public T? GetResolvedCapability<T>()
+        where T : class
     {
         if (ConsumedCap is IResolvingCapability resolving)
             return resolving.GetResolvedCapability<T>();
@@ -60,15 +64,16 @@ public class Proxy : IDisposable, IResolvingCapability
     /// </summary>
     public bool IsDisposed { get; private set; }
 
-    private static async void DisposeCtrWhenReturned(CancellationTokenRegistration ctr, IPromisedAnswer answer)
+    private static async void DisposeCtrWhenReturned(
+        CancellationTokenRegistration ctr,
+        IPromisedAnswer answer
+    )
     {
         try
         {
             await answer.WhenReturned;
         }
-        catch
-        {
-        }
+        catch { }
         finally
         {
             ctr.Dispose();
@@ -90,8 +95,13 @@ public class Proxy : IDisposable, IResolvingCapability
     /// <exception cref="ObjectDisposedException">This instance was disposed, or transport-layer stream was disposed.</exception>
     /// <exception cref="InvalidOperationException">Capability is broken.</exception>
     /// <exception cref="System.IO.IOException">An I/O error occurs.</exception>
-    protected internal IPromisedAnswer Call(ulong interfaceId, ushort methodId, DynamicSerializerState args,
-        bool obsoleteAndIgnored, CancellationToken cancellationToken = default)
+    protected internal IPromisedAnswer Call(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args,
+        bool obsoleteAndIgnored,
+        CancellationToken cancellationToken = default
+    )
     {
         if (IsDisposed)
         {
@@ -101,7 +111,8 @@ public class Proxy : IDisposable, IResolvingCapability
 
         var answer = ConsumedCap.DoCall(interfaceId, methodId, args);
 
-        if (cancellationToken.CanBeCanceled) DisposeCtrWhenReturned(cancellationToken.Register(answer.Dispose), answer);
+        if (cancellationToken.CanBeCanceled)
+            DisposeCtrWhenReturned(cancellationToken.Register(answer.Dispose), answer);
 
         return answer;
     }
@@ -112,11 +123,12 @@ public class Proxy : IDisposable, IResolvingCapability
     public Proxy()
     {
 #if DebugFinalizers
-            CreatorStackTrace = Environment.StackTrace;
+        CreatorStackTrace = Environment.StackTrace;
 #endif
     }
 
-    internal Proxy(ConsumedCapability cap) : this()
+    internal Proxy(ConsumedCapability cap)
+        : this()
     {
         Bind(cap);
     }
@@ -130,8 +142,8 @@ public class Proxy : IDisposable, IResolvingCapability
         cap.AddRef();
 
 #if DebugFinalizers
-            if (_consumedCap != null)
-                _consumedCap.OwningProxy = this;
+        if (_consumedCap != null)
+            _consumedCap.OwningProxy = this;
 #endif
     }
 
@@ -158,9 +170,7 @@ public class Proxy : IDisposable, IResolvingCapability
                 {
                     _consumedCap?.Release();
                 }
-                catch
-                {
-                }
+                catch { }
 
             IsDisposed = true;
         }
@@ -172,7 +182,11 @@ public class Proxy : IDisposable, IResolvingCapability
     ~Proxy()
     {
 #if DebugFinalizers
-            Debugger.Log(0, "DebugFinalizers", $"Caught orphaned Proxy, created from here: {CreatorStackTrace}.");
+        Debugger.Log(
+            0,
+            "DebugFinalizers",
+            $"Caught orphaned Proxy, created from here: {CreatorStackTrace}."
+        );
 #endif
 
         Dispose(false);
@@ -208,7 +222,8 @@ public class Proxy : IDisposable, IResolvingCapability
     /// </exception>
     /// <exception cref="MemberAccessException">Caller does not have permission to invoke the Proxy constructor.</exception>
     /// <exception cref="TypeLoadException">Problem with building the Proxy type, or problem with loading some dependent class.</exception>
-    public T Cast<T>(bool disposeThis) where T : class
+    public T Cast<T>(bool disposeThis)
+        where T : class
     {
         using (disposeThis ? this : null)
         {
@@ -231,6 +246,6 @@ public class Proxy : IDisposable, IResolvingCapability
     }
 
 #if DebugFinalizers
-        string CreatorStackTrace { get; set; }
+    string CreatorStackTrace { get; set; }
 #endif
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using CapnpC.CSharp.Generator;
 
@@ -17,7 +17,9 @@ internal class Program
         else
         {
             Console.WriteLine("Cap'n Proto C# code generator backend");
-            Console.WriteLine("expecting binary-encoded code generation request from standard input");
+            Console.WriteLine(
+                "expecting binary-encoded code generation request from standard input"
+            );
 
             input = Console.OpenStandardInput();
         }
@@ -44,7 +46,8 @@ internal class Program
                 else
                 {
                     Console.Error.WriteLine(
-                        $"Error generating {generatedFile.CapnpFilePath}: {generatedFile.Exception.Message}");
+                        $"Error generating {generatedFile.CapnpFilePath}: {generatedFile.Exception.Message}"
+                    );
                     Environment.ExitCode = -1;
                 }
         }

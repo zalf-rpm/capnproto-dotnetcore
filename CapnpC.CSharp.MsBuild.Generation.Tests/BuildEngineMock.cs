@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using Microsoft.Build.Framework;
 
@@ -14,8 +14,12 @@ internal class BuildEngineMock : IBuildEngine
 
     public string ProjectFileOfTaskNode => null;
 
-    public bool BuildProjectFile(string projectFileName, string[] targetNames, IDictionary globalProperties,
-        IDictionary targetOutputs)
+    public bool BuildProjectFile(
+        string projectFileName,
+        string[] targetNames,
+        IDictionary globalProperties,
+        IDictionary targetOutputs
+    )
     {
         return true;
     }

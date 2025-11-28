@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,9 +50,7 @@ internal class PendingAnswer : IDisposable
                     foreach (var cap in aorcq.Answer.Caps)
                         cap.AddRef();
         }
-        catch
-        {
-        }
+        catch { }
     }
 
     private async void ReleaseCapTableOwnership()
@@ -65,9 +63,7 @@ internal class PendingAnswer : IDisposable
                     foreach (var cap in aorcq.Answer.Caps)
                         cap?.Release();
         }
-        catch
-        {
-        }
+        catch { }
     }
 
     public void Cancel()
@@ -101,7 +97,9 @@ internal class PendingAnswer : IDisposable
                             }
                             catch (System.Exception)
                             {
-                                throw new RpcException("Illegal pointer field in transformation operation");
+                                throw new RpcException(
+                                    "Illegal pointer field in transformation operation"
+                                );
                             }
 
                             break;
@@ -110,7 +108,9 @@ internal class PendingAnswer : IDisposable
                             break;
 
                         default:
-                            throw new ArgumentOutOfRangeException("Unknown transformation operation");
+                            throw new ArgumentOutOfRangeException(
+                                "Unknown transformation operation"
+                            );
                     }
 
                 switch (cur.Kind)
@@ -129,7 +129,9 @@ internal class PendingAnswer : IDisposable
                         return new Proxy(NullCapability.Instance);
 
                     default:
-                        throw new ArgumentOutOfRangeException("Transformation did not result in a capability");
+                        throw new ArgumentOutOfRangeException(
+                            "Transformation did not result in a capability"
+                        );
                 }
             }
 

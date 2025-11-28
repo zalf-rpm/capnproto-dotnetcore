@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Capnp.Rpc;
@@ -12,8 +12,12 @@ internal class ProvidedCapabilityMultiCallMock : RefCountingSkeleton
 
     public Task<TestCallContext> WhenCalled => _ccs.ReceiveAsync();
 
-    public override Task<AnswerOrCounterquestion> Invoke(ulong interfaceId, ushort methodId,
-        DeserializerState args, CancellationToken cancellationToken = default)
+    public override Task<AnswerOrCounterquestion> Invoke(
+        ulong interfaceId,
+        ushort methodId,
+        DeserializerState args,
+        CancellationToken cancellationToken = default
+    )
     {
         var cc = new TestCallContext(interfaceId, methodId, args, cancellationToken);
         Assert.IsTrue(_ccs.Post(cc));

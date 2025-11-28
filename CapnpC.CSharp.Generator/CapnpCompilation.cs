@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -25,7 +25,9 @@ public static class CapnpCompilation
     /// </summary>
     public static string CapnpCompilerFilename
     {
-        get => _capnpCompilerFilename ?? (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "capnp.exe" : "capnp");
+        get =>
+            _capnpCompilerFilename
+            ?? (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "capnp.exe" : "capnp");
         set => _capnpCompilerFilename = value;
     }
 
@@ -79,7 +81,10 @@ public static class CapnpCompilation
     /// <param name="workingDirectory">optional working directory</param>
     /// <returns>generation result</returns>
     /// <exception cref="ArgumentNullException"><paramref name="arguments" />is null</exception>
-    public static GenerationResult InvokeCapnpAndGenerate(IEnumerable<string> arguments, string workingDirectory = null)
+    public static GenerationResult InvokeCapnpAndGenerate(
+        IEnumerable<string> arguments,
+        string workingDirectory = null
+    )
     {
         if (arguments == null)
             throw new ArgumentNullException(nameof(arguments));
@@ -99,7 +104,8 @@ public static class CapnpCompilation
             compiler.StartInfo.UseShellExecute = false;
             compiler.StartInfo.RedirectStandardOutput = true;
             compiler.StartInfo.RedirectStandardError = true;
-            if (!string.IsNullOrWhiteSpace(workingDirectory)) compiler.StartInfo.WorkingDirectory = workingDirectory;
+            if (!string.IsNullOrWhiteSpace(workingDirectory))
+                compiler.StartInfo.WorkingDirectory = workingDirectory;
 
             try
             {
@@ -109,7 +115,7 @@ public static class CapnpCompilation
             {
                 return new GenerationResult(exception)
                 {
-                    ErrorCategory = CapnpProcessFailure.NotFound
+                    ErrorCategory = CapnpProcessFailure.NotFound,
                 };
             }
 

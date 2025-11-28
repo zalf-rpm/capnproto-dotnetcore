@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,7 +34,11 @@ internal class LocalCapability : ConsumedCapability
         ProvidedCap.Relinquish();
     }
 
-    internal override IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args)
+    internal override IPromisedAnswer DoCall(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args
+    )
     {
         var cts = new CancellationTokenSource();
         var call = ProvidedCap.Invoke(interfaceId, methodId, args, cts.Token);
@@ -48,7 +52,5 @@ internal class LocalCapability : ConsumedCapability
         return null;
     }
 
-    protected override void ReleaseRemotely()
-    {
-    }
+    protected override void ReleaseRemotely() { }
 }

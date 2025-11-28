@@ -9,9 +9,7 @@ namespace MsBuildGenerationTest
             // Instantiate some generated classes ensures that they are really present.
             // Note that this code is not supposed to test runtime behavior, we have plenty of other test cases for that purpose.
 
-            void use(object y)
-            {
-            }
+            void use(object y) { }
 
             var vatId = new Capnp.Rpc.Twoparty.VatId();
             use(vatId);

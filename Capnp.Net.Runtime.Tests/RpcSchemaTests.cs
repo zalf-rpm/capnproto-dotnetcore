@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Capnp.FrameTracing;
 using Capnp.Rpc;
@@ -92,9 +92,15 @@ public class RpcSchemaTests
             w.Call.Params.CapTable[1].which = CapDescriptor.WHICH.ReceiverAnswer;
             w.Call.Params.CapTable[1].ReceiverAnswer.QuestionId = 0x12345678u;
             w.Call.Params.CapTable[1].ReceiverAnswer.Transform.Init(2);
-            w.Call.Params.CapTable[1].ReceiverAnswer.Transform[0].which = PromisedAnswer.Op.WHICH.GetPointerField;
+            w.Call.Params.CapTable[1].ReceiverAnswer.Transform[0].which = PromisedAnswer
+                .Op
+                .WHICH
+                .GetPointerField;
             w.Call.Params.CapTable[1].ReceiverAnswer.Transform[0].GetPointerField = 0x2222;
-            w.Call.Params.CapTable[1].ReceiverAnswer.Transform[1].which = PromisedAnswer.Op.WHICH.Noop;
+            w.Call.Params.CapTable[1].ReceiverAnswer.Transform[1].which = PromisedAnswer
+                .Op
+                .WHICH
+                .Noop;
             w.Call.Params.CapTable[2].which = CapDescriptor.WHICH.ReceiverHosted;
             w.Call.Params.CapTable[2].ReceiverHosted = 12345678u;
             w.Call.Params.CapTable[3].which = CapDescriptor.WHICH.SenderHosted;
@@ -263,7 +269,10 @@ public class RpcSchemaTests
             Assert.AreEqual(MessageTarget.WHICH.PromisedAnswer, r.Provide.Target.which);
             Assert.AreEqual(0xcccccccc, r.Provide.Target.PromisedAnswer.QuestionId);
             Assert.HasCount(1, r.Provide.Target.PromisedAnswer.Transform);
-            Assert.AreEqual(PromisedAnswer.Op.WHICH.Noop, r.Provide.Target.PromisedAnswer.Transform[0].which);
+            Assert.AreEqual(
+                PromisedAnswer.Op.WHICH.Noop,
+                r.Provide.Target.PromisedAnswer.Transform[0].which
+            );
         }
     }
 
@@ -341,8 +350,7 @@ public class RpcSchemaTests
             Assert.AreEqual(CapDescriptor.WHICH.SenderHosted, r.Return.Results.CapTable[0].which);
             Assert.AreEqual(0x22222222u, r.Return.Results.CapTable[0].SenderHosted);
             Assert.AreEqual(double.MinValue, r.Return.Results.Content.ReadDataDouble(0));
-            Assert.AreEqual(double.MaxValue,
-                r.Return.Results.Content.ReadDataDouble(64));
+            Assert.AreEqual(double.MaxValue, r.Return.Results.Content.ReadDataDouble(64));
             Assert.IsFalse(r.Return.ReleaseParamCaps);
         }
     }
@@ -396,13 +404,7 @@ public class RpcSchemaTests
     public void DcMessageAbort()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Abort = new Exception
-                {
-                    Reason = "problem"
-                }
-            },
+            () => new Message { Abort = new Exception { Reason = "problem" } },
             msg =>
             {
                 Assert.IsNotNull(msg.Abort);
@@ -416,14 +418,11 @@ public class RpcSchemaTests
     public void DcMessageAccept()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Accept = new Accept
+            () =>
+                new Message
                 {
-                    QuestionId = 123u,
-                    Embargo = true
-                }
-            },
+                    Accept = new Accept { QuestionId = 123u, Embargo = true },
+                },
             msg =>
             {
                 Assert.IsNotNull(msg.Accept);
@@ -437,20 +436,18 @@ public class RpcSchemaTests
     public void DcMessageUnimplementedJoin()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Unimplemented = new Message
+            () =>
+                new Message
                 {
-                    Join = new Join
+                    Unimplemented = new Message
                     {
-                        QuestionId = 456u,
-                        Target = new MessageTarget
+                        Join = new Join
                         {
-                            ImportedCap = 789u
-                        }
-                    }
-                }
-            },
+                            QuestionId = 456u,
+                            Target = new MessageTarget { ImportedCap = 789u },
+                        },
+                    },
+                },
             msg =>
             {
                 Assert.IsNotNull(msg.Unimplemented);
@@ -466,66 +463,49 @@ public class RpcSchemaTests
     public void DcMessageCall()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Call = new Call
+            () =>
+                new Message
                 {
-                    AllowThirdPartyTailCall = true,
-                    InterfaceId = 0x12345678abcdef,
-                    MethodId = 0x5555,
-                    Params = new Payload
+                    Call = new Call
                     {
-                        CapTable = new List<CapDescriptor>
+                        AllowThirdPartyTailCall = true,
+                        InterfaceId = 0x12345678abcdef,
+                        MethodId = 0x5555,
+                        Params = new Payload
                         {
-                            new()
+                            CapTable = new List<CapDescriptor>
                             {
-                                ReceiverAnswer = new PromisedAnswer
+                                new()
                                 {
-                                    QuestionId = 42u,
-                                    Transform = new List<PromisedAnswer.Op>
+                                    ReceiverAnswer = new PromisedAnswer
                                     {
-                                        new()
+                                        QuestionId = 42u,
+                                        Transform = new List<PromisedAnswer.Op>
                                         {
-                                            GetPointerField = 3
-                                        }
-                                    }
-                                }
-                            },
-                            new()
-                            {
-                                ReceiverHosted = 7u
-                            },
-                            new()
-                            {
-                                SenderHosted = 8u
-                            },
-                            new()
-                            {
-                                SenderPromise = 9u
-                            },
-                            new()
-                            {
-                                ThirdPartyHosted = new ThirdPartyCapDescriptor
+                                            new() { GetPointerField = 3 },
+                                        },
+                                    },
+                                },
+                                new() { ReceiverHosted = 7u },
+                                new() { SenderHosted = 8u },
+                                new() { SenderPromise = 9u },
+                                new()
                                 {
-                                    VineId = 10u
-                                }
-                            }
-                        }
-                    },
-                    QuestionId = 57u,
-                    SendResultsTo = new Call.sendResultsTo
-                    {
-                        which = Call.sendResultsTo.WHICH.Caller
-                    },
-                    Target = new MessageTarget
-                    {
-                        PromisedAnswer = new PromisedAnswer
+                                    ThirdPartyHosted = new ThirdPartyCapDescriptor { VineId = 10u },
+                                },
+                            },
+                        },
+                        QuestionId = 57u,
+                        SendResultsTo = new Call.sendResultsTo
                         {
-                            QuestionId = 12u
-                        }
-                    }
-                }
-            },
+                            which = Call.sendResultsTo.WHICH.Caller,
+                        },
+                        Target = new MessageTarget
+                        {
+                            PromisedAnswer = new PromisedAnswer { QuestionId = 12u },
+                        },
+                    },
+                },
             msg =>
             {
                 Assert.IsNotNull(msg.Call);
@@ -539,7 +519,10 @@ public class RpcSchemaTests
                 Assert.AreEqual(42u, msg.Call.Params.CapTable[0].ReceiverAnswer.QuestionId);
                 Assert.IsNotNull(msg.Call.Params.CapTable[0].ReceiverAnswer.Transform);
                 Assert.HasCount(1, msg.Call.Params.CapTable[0].ReceiverAnswer.Transform);
-                Assert.AreEqual((ushort)3, msg.Call.Params.CapTable[0].ReceiverAnswer.Transform[0].GetPointerField);
+                Assert.AreEqual(
+                    (ushort)3,
+                    msg.Call.Params.CapTable[0].ReceiverAnswer.Transform[0].GetPointerField
+                );
                 Assert.AreEqual(7u, msg.Call.Params.CapTable[1].ReceiverHosted);
                 Assert.AreEqual(8u, msg.Call.Params.CapTable[2].SenderHosted);
                 Assert.AreEqual(9u, msg.Call.Params.CapTable[3].SenderPromise);
@@ -559,18 +542,16 @@ public class RpcSchemaTests
     public void DcMessageReturnResults()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Return = new Return
+            () =>
+                new Message
                 {
-                    AnswerId = 123u,
-                    ReleaseParamCaps = false,
-                    Results = new Payload
+                    Return = new Return
                     {
-                        CapTable = new List<CapDescriptor>()
-                    }
-                }
-            },
+                        AnswerId = 123u,
+                        ReleaseParamCaps = false,
+                        Results = new Payload { CapTable = new List<CapDescriptor>() },
+                    },
+                },
             msg =>
             {
                 Assert.IsNotNull(msg.Return);
@@ -587,19 +568,20 @@ public class RpcSchemaTests
     public void DcMessageReturnException()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Return = new Return
+            () =>
+                new Message
                 {
-                    AnswerId = 123u,
-                    ReleaseParamCaps = true,
-                    Exception = new Exception
+                    Return = new Return
                     {
-                        Reason = "bad",
-                        TheType = Exception.Type.overloaded
-                    }
-                }
-            },
+                        AnswerId = 123u,
+                        ReleaseParamCaps = true,
+                        Exception = new Exception
+                        {
+                            Reason = "bad",
+                            TheType = Exception.Type.overloaded,
+                        },
+                    },
+                },
             msg =>
             {
                 Assert.IsNotNull(msg.Return);
@@ -616,15 +598,16 @@ public class RpcSchemaTests
     public void DcMessageReturnTakeFromOtherQuestion()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Return = new Return
+            () =>
+                new Message
                 {
-                    AnswerId = 123u,
-                    ReleaseParamCaps = true,
-                    TakeFromOtherQuestion = 321u
-                }
-            },
+                    Return = new Return
+                    {
+                        AnswerId = 123u,
+                        ReleaseParamCaps = true,
+                        TakeFromOtherQuestion = 321u,
+                    },
+                },
             msg =>
             {
                 Assert.IsNotNull(msg.Return);
@@ -639,14 +622,11 @@ public class RpcSchemaTests
     public void DcMessageFinish()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Finish = new Finish
+            () =>
+                new Message
                 {
-                    QuestionId = 321u,
-                    ReleaseResultCaps = true
-                }
-            },
+                    Finish = new Finish { QuestionId = 321u, ReleaseResultCaps = true },
+                },
             msg =>
             {
                 Assert.IsNotNull(msg.Finish);
@@ -660,18 +640,19 @@ public class RpcSchemaTests
     public void DcMessageResolve()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Resolve = new Resolve
+            () =>
+                new Message
                 {
-                    PromiseId = 555u,
-                    Exception = new Exception
+                    Resolve = new Resolve
                     {
-                        Reason = "error",
-                        TheType = Exception.Type.failed
-                    }
-                }
-            },
+                        PromiseId = 555u,
+                        Exception = new Exception
+                        {
+                            Reason = "error",
+                            TheType = Exception.Type.failed,
+                        },
+                    },
+                },
             msg =>
             {
                 Assert.IsNotNull(msg.Resolve);
@@ -686,14 +667,11 @@ public class RpcSchemaTests
     public void DcMessageRelease()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Release = new Release
+            () =>
+                new Message
                 {
-                    Id = 6000u,
-                    ReferenceCount = 6u
-                }
-            },
+                    Release = new Release { Id = 6000u, ReferenceCount = 6u },
+                },
             msg =>
             {
                 Assert.IsNotNull(msg.Release);
@@ -707,13 +685,7 @@ public class RpcSchemaTests
     public void DcMessageBootstrap()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Bootstrap = new Bootstrap
-                {
-                    QuestionId = 99u
-                }
-            },
+            () => new Message { Bootstrap = new Bootstrap { QuestionId = 99u } },
             msg =>
             {
                 Assert.IsNotNull(msg.Bootstrap);
@@ -726,16 +698,11 @@ public class RpcSchemaTests
     public void DcMessageProvide()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Provide = new Provide
+            () =>
+                new Message
                 {
-                    Target = new MessageTarget
-                    {
-                        ImportedCap = 7u
-                    }
-                }
-            },
+                    Provide = new Provide { Target = new MessageTarget { ImportedCap = 7u } },
+                },
             msg =>
             {
                 Assert.IsNotNull(msg.Provide);
@@ -749,17 +716,15 @@ public class RpcSchemaTests
     public void DcMessageDisembargo()
     {
         ConstructReconstructTest<Message, Message.WRITER>(
-            () => new Message
-            {
-                Disembargo = new Disembargo
+            () =>
+                new Message
                 {
-                    Context = new Disembargo.context
+                    Disembargo = new Disembargo
                     {
-                        ReceiverLoopback = 900u
+                        Context = new Disembargo.context { ReceiverLoopback = 900u },
+                        Target = new MessageTarget(),
                     },
-                    Target = new MessageTarget()
-                }
-            },
+                },
             msg =>
             {
                 Assert.IsNotNull(msg.Disembargo);

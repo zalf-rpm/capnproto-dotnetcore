@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,9 +7,7 @@ namespace Capnp;
 /// <summary>
 ///     SerializerState specialization for List(Text)
 /// </summary>
-public class ListOfTextSerializer :
-    SerializerState,
-    IReadOnlyList<string?>
+public class ListOfTextSerializer : SerializerState, IReadOnlyList<string?>
 {
     /// <summary>
     ///     Gets or sets the text at given index. Once an element is set, it cannot be overwritten.
@@ -62,7 +60,8 @@ public class ListOfTextSerializer :
     {
         var count = Count;
 
-        for (var i = 0; i < count; i++) yield return this[i];
+        for (var i = 0; i < count; i++)
+            yield return this[i];
     }
 
     /// <summary>
@@ -93,10 +92,12 @@ public class ListOfTextSerializer :
     /// </exception>
     public void Init(IReadOnlyList<string?>? items)
     {
-        if (items == null) return;
+        if (items == null)
+            return;
 
         Init(items.Count);
 
-        for (var i = 0; i < items.Count; i++) this[i] = items[i];
+        for (var i = 0; i < items.Count; i++)
+            this[i] = items[i];
     }
 }

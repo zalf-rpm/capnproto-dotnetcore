@@ -1,4 +1,4 @@
-﻿namespace CapnpC.CSharp.Generator.Model;
+namespace CapnpC.CSharp.Generator.Model;
 
 internal class Field
 {
@@ -27,7 +27,7 @@ internal class Field
             DefaultValueIsExplicit = DefaultValueIsExplicit,
             DiscValue = DiscValue,
             Offset = Offset,
-            CodeOrder = CodeOrder
+            CodeOrder = CodeOrder,
         };
         field.InheritFreeGenericParameters();
         return field;
@@ -40,9 +40,7 @@ internal class Field
 
     public override bool Equals(object obj)
     {
-        return obj is Field other &&
-               DeclaringType == other.DeclaringType &&
-               Name == other.Name;
+        return obj is Field other && DeclaringType == other.DeclaringType && Name == other.Name;
     }
 
     public override int GetHashCode()

@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 using Capnp.Util;
 
@@ -12,15 +12,15 @@ internal abstract class RemoteResolvingCapability : RemoteCapability, IResolving
     // overhead for creating the Logger object, calling the Logger methods and deciding to
     // filter the output. This justifies the precompiler switch.
 #if DebugEmbargos
-        ILogger Logger { get; } = Logging.CreateLogger<RemoteResolvingCapability>();
+    ILogger Logger { get; } = Logging.CreateLogger<RemoteResolvingCapability>();
 #endif
 
     public abstract StrictlyOrderedAwaitTask WhenResolved { get; }
-    public abstract T? GetResolvedCapability<T>() where T : class;
+    public abstract T? GetResolvedCapability<T>()
+        where T : class;
 
-    protected RemoteResolvingCapability(IRpcEndpoint ep) : base(ep)
-    {
-    }
+    protected RemoteResolvingCapability(IRpcEndpoint ep)
+        : base(ep) { }
 
     protected int _pendingCallsOnPromise;
     private StrictlyOrderedAwaitTask? _disembargo;
@@ -29,26 +29,34 @@ internal abstract class RemoteResolvingCapability : RemoteCapability, IResolving
 
     protected abstract void GetMessageTarget(MessageTarget.WRITER wr);
 
-    protected IPromisedAnswer CallOnResolution(ulong interfaceId, ushort methodId, DynamicSerializerState args)
+    protected IPromisedAnswer CallOnResolution(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args
+    )
     {
         var resolvedCap = ResolvedCap!;
 
         try
         {
-            if (resolvedCap is NullCapability ||
+            if (
+                resolvedCap is NullCapability
+                ||
                 // Must not request disembargo on null cap
-                resolvedCap is RemoteCapability ||
+                resolvedCap is RemoteCapability
+                ||
                 //# Note that in the case where Carol actually lives in Vat B (i.e., the same vat that the promise
                 //# already pointed at), no embargo is needed, because the pipelined calls are delivered over the
                 //# same path as the later direct calls.
-                (_disembargo == null && _pendingCallsOnPromise == 0) ||
+                (_disembargo == null && _pendingCallsOnPromise == 0)
+                ||
                 // No embargo is needed since all outstanding replies have returned
                 _disembargo?.IsCompleted == true
-               // Disembargo has returned
-               )
+            // Disembargo has returned
+            )
             {
 #if DebugEmbargos
-                    Logger.LogDebug("Direct call");
+                Logger.LogDebug("Direct call");
 #endif
                 using var proxy = new Proxy(resolvedCap);
                 return proxy.Call(interfaceId, methodId, args, default);
@@ -57,14 +65,14 @@ internal abstract class RemoteResolvingCapability : RemoteCapability, IResolving
             if (_disembargo == null)
             {
 #if DebugEmbargos
-                        Logger.LogDebug("Requesting disembargo");
+                Logger.LogDebug("Requesting disembargo");
 #endif
                 _disembargo = _ep.RequestSenderLoopback(GetMessageTarget).EnforceAwaitOrder();
             }
             else
             {
 #if DebugEmbargos
-                        Logger.LogDebug("Waiting for requested disembargo");
+                Logger.LogDebug("Waiting for requested disembargo");
 #endif
             }
 
@@ -100,7 +108,8 @@ internal abstract class RemoteResolvingCapability : RemoteCapability, IResolving
             // Wrap exception into local answer, since otherwise we'd get an AggregateException (which we don't want).
             return new LocalAnswer(
                 new CancellationTokenSource(),
-                Task.FromException<DeserializerState>(exception));
+                Task.FromException<DeserializerState>(exception)
+            );
         }
     }
 }

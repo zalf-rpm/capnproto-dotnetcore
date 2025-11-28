@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Capnp;
@@ -27,5 +27,10 @@ public interface ISegmentAllocator
     /// <param name="slice">Position of allocated memory block (undefined in case of failure)</param>
     /// <param name="forcePreferredSegment">Whether the segment specified by <paramref name="preferredSegment" /> is mandatory</param>
     /// <returns>Whether allocation was successful</returns>
-    bool Allocate(uint nwords, uint preferredSegment, out SegmentSlice slice, bool forcePreferredSegment);
+    bool Allocate(
+        uint nwords,
+        uint preferredSegment,
+        out SegmentSlice slice,
+        bool forcePreferredSegment
+    );
 }

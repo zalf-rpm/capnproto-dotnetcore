@@ -1,4 +1,4 @@
-﻿namespace Capnp.Rpc;
+namespace Capnp.Rpc;
 
 /// <summary>
 ///     Will be thrown if a type did not qualify as capability interface.
@@ -11,15 +11,12 @@ public class InvalidCapabilityInterfaceException : System.Exception
     /// <summary>
     ///     Constructs an instance.
     /// </summary>
-    public InvalidCapabilityInterfaceException(string message) : base(message)
-    {
-    }
+    public InvalidCapabilityInterfaceException(string message)
+        : base(message) { }
 
     /// <summary>
     ///     Constructs an instance with message an inner exception.
     /// </summary>
-    public InvalidCapabilityInterfaceException(string message, System.Exception innerException) : base(message,
-        innerException)
-    {
-    }
+    public InvalidCapabilityInterfaceException(string message, System.Exception innerException)
+        : base(message, innerException) { }
 }

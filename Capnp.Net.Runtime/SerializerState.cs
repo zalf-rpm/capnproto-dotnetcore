@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -60,15 +60,17 @@ public class SerializerState : IStructSerializer, IDisposable
     /// </summary>
     public bool IsAllocated => Offset >= 0;
 
-    private Span<ulong> SegmentSpan => IsAllocated && Allocator != null
-        ? Allocator.Segments[(int)SegmentIndex].Span
-        : Span<ulong>.Empty;
+    private Span<ulong> SegmentSpan =>
+        IsAllocated && Allocator != null
+            ? Allocator.Segments[(int)SegmentIndex].Span
+            : Span<ulong>.Empty;
 
     /// <summary>
     ///     Returns the allocated memory slice (given this state already is allocated). Note that this definition is somewhat
     ///     non-symmetric to <code>DeserializerState.RawData</code>. Never mind: You should not use it directly, anyway.
     /// </summary>
-    public Span<ulong> RawData => IsAllocated ? SegmentSpan.Slice(Offset, (int)WordsAllocated) : Span<ulong>.Empty;
+    public Span<ulong> RawData =>
+        IsAllocated ? SegmentSpan.Slice(Offset, (int)WordsAllocated) : Span<ulong>.Empty;
 
     /// <summary>
     ///     The kind of object this state currently represents.
@@ -82,7 +84,8 @@ public class SerializerState : IStructSerializer, IDisposable
     {
         if (Caps != null && !_disposed)
         {
-            foreach (var cap in Caps) cap.Release();
+            foreach (var cap in Caps)
+                cap.Release();
 
             Caps.Clear();
             _disposed = true;
@@ -170,7 +173,8 @@ public class SerializerState : IStructSerializer, IDisposable
 
         var word = data[index];
 
-        if (count == 64) return word;
+        if (count == 64)
+            return word;
 
         var mask = (1ul << count) - 1;
         return (word >> relBitOffset) & mask;
@@ -182,7 +186,8 @@ public class SerializerState : IStructSerializer, IDisposable
     /// </summary>
     /// <typeparam name="T">Type of state (must inherit from SerializerState)</typeparam>
     /// <returns>root object state</returns>
-    public static T CreateForRpc<T>() where T : SerializerState, new()
+    public static T CreateForRpc<T>()
+        where T : SerializerState, new()
     {
         var mb = MessageBuilder.Create();
         mb.InitCapTable();
@@ -227,7 +232,8 @@ public class SerializerState : IStructSerializer, IDisposable
     ///     The target serializer state is incompatible to this instance, because the instances do not agree on the
     ///     kind of underlying object (e.g. struct with particular data/pointer section size, list of something)
     /// </exception>
-    public TS Rewrap<TS>() where TS : SerializerState, new()
+    public TS Rewrap<TS>()
+        where TS : SerializerState, new()
     {
         if (this is TS ts)
             return ts;
@@ -245,9 +251,11 @@ public class SerializerState : IStructSerializer, IDisposable
             {
                 case ObjectKind.Struct:
                 case ObjectKind.ListOfStructs:
-                    if (ts.Kind != Kind ||
-                        ts.StructDataCount != StructDataCount ||
-                        ts.StructPtrCount != StructPtrCount)
+                    if (
+                        ts.Kind != Kind
+                        || ts.StructDataCount != StructDataCount
+                        || ts.StructPtrCount != StructPtrCount
+                    )
                         throw InvalidWrap();
                     break;
 
@@ -330,7 +338,11 @@ public class SerializerState : IStructSerializer, IDisposable
                     break;
 
                 case ObjectKind.ListOfStructs:
-                    AllocateWords(checked(1u + (uint)ListElementCount * (uint)(StructDataCount + StructPtrCount)));
+                    AllocateWords(
+                        checked(
+                            1u + (uint)ListElementCount * (uint)(StructDataCount + StructPtrCount)
+                        )
+                    );
                     var tag = default(WirePointer);
                     tag.BeginStruct(StructDataCount, StructPtrCount);
                     tag.ListOfStructsElementCount = ListElementCount;
@@ -355,16 +367,19 @@ public class SerializerState : IStructSerializer, IDisposable
         if (Caps == null)
             throw new InvalidOperationException("Capbility table not set");
 
-        if (!IsAllocated) return NullCapability.Instance;
+        if (!IsAllocated)
+            return NullCapability.Instance;
 
         WirePointer pointer = RawData[offset];
 
-        if (pointer.IsNull) return NullCapability.Instance;
+        if (pointer.IsNull)
+            return NullCapability.Instance;
 
         if (pointer.Kind != PointerKind.Other)
             throw new RpcException("Expected a capability pointer, but got something different");
 
-        if (pointer.CapabilityIndex >= Caps.Count) throw new RpcException("Capability index out of range");
+        if (pointer.CapabilityIndex >= Caps.Count)
+            throw new RpcException("Capability index out of range");
 
         return Caps[(int)pointer.CapabilityIndex];
     }
@@ -373,10 +388,10 @@ public class SerializerState : IStructSerializer, IDisposable
     {
         if (SegmentSpan[offset] != 0)
             throw new InvalidOperationException(
-                "Won't replace an already allocated pointer to prevent memory leaks and security flaws");
+                "Won't replace an already allocated pointer to prevent memory leaks and security flaws"
+            );
 
-        if (target.Allocator != null &&
-            target.Allocator != Allocator)
+        if (target.Allocator != null && target.Allocator != Allocator)
         {
             if (allowCopy)
             {
@@ -388,7 +403,9 @@ public class SerializerState : IStructSerializer, IDisposable
             }
             else
             {
-                throw new InvalidOperationException("target was allocated on a different segment allocator");
+                throw new InvalidOperationException(
+                    "target was allocated on a different segment allocator"
+                );
             }
         }
         else
@@ -429,7 +446,8 @@ public class SerializerState : IStructSerializer, IDisposable
                 break;
 
             case ObjectKind.ListOfStructs:
-                var wordCount = target.ListElementCount * (target.StructDataCount + target.StructPtrCount);
+                var wordCount =
+                    target.ListElementCount * (target.StructDataCount + target.StructPtrCount);
                 targetPtr.BeginList(ListKind.ListOfStructs, wordCount);
                 break;
 
@@ -536,7 +554,8 @@ public class SerializerState : IStructSerializer, IDisposable
             Allocate();
         }
 
-        if (!target.IsAllocated) target.Allocate();
+        if (!target.IsAllocated)
+            target.Allocate();
 
         switch (Kind)
         {
@@ -557,7 +576,9 @@ public class SerializerState : IStructSerializer, IDisposable
                 break;
 
             default:
-                throw new InvalidOperationException("This object cannot own pointers to sub-objects");
+                throw new InvalidOperationException(
+                    "This object cannot own pointers to sub-objects"
+                );
         }
 
         _linkedStates![slot] = target;
@@ -601,7 +622,9 @@ public class SerializerState : IStructSerializer, IDisposable
     private void VerifyNotYetAllocated()
     {
         if (IsAllocated)
-            throw new InvalidOperationException("Not permitted since the state is already allocated");
+            throw new InvalidOperationException(
+                "Not permitted since the state is already allocated"
+            );
     }
 
     /// <summary>
@@ -622,7 +645,11 @@ public class SerializerState : IStructSerializer, IDisposable
 
             _linkedStates = new SerializerState[ptrCount];
         }
-        else if (Kind != ObjectKind.Struct || StructDataCount != dataCount || StructPtrCount != ptrCount)
+        else if (
+            Kind != ObjectKind.Struct
+            || StructDataCount != dataCount
+            || StructPtrCount != ptrCount
+        )
         {
             throw AlreadySet();
         }
@@ -652,7 +679,8 @@ public class SerializerState : IStructSerializer, IDisposable
         }
         else
         {
-            if (Kind != ObjectKind.Nil) throw AlreadySet();
+            if (Kind != ObjectKind.Nil)
+                throw AlreadySet();
         }
     }
 
@@ -676,7 +704,7 @@ public class SerializerState : IStructSerializer, IDisposable
             16 => ObjectKind.ListOfShorts,
             32 => ObjectKind.ListOfInts,
             64 => ObjectKind.ListOfLongs,
-            _ => throw new ArgumentOutOfRangeException(nameof(bitsPerElement))
+            _ => throw new ArgumentOutOfRangeException(nameof(bitsPerElement)),
         };
         if (Kind == ObjectKind.Nil)
         {
@@ -753,10 +781,12 @@ public class SerializerState : IStructSerializer, IDisposable
 
             Allocate();
         }
-        else if (Kind != ObjectKind.ListOfStructs ||
-                 ListElementCount != totalCount ||
-                 StructDataCount != dataCount ||
-                 StructPtrCount != ptrCount)
+        else if (
+            Kind != ObjectKind.ListOfStructs
+            || ListElementCount != totalCount
+            || StructDataCount != dataCount
+            || StructPtrCount != ptrCount
+        )
         {
             throw AlreadySet();
         }
@@ -810,7 +840,8 @@ public class SerializerState : IStructSerializer, IDisposable
     ///     </list>
     /// </exception>
     /// <exception cref="IndexOutOfRangeException"><paramref name="index" /> is out of bounds.</exception>
-    public TS BuildPointer<TS>(int index) where TS : SerializerState, new()
+    public TS BuildPointer<TS>(int index)
+        where TS : SerializerState, new()
     {
         if (Kind != ObjectKind.Struct && Kind != ObjectKind.ListOfPointers)
             throw new InvalidOperationException("This is not a struct or list of pointers");
@@ -846,7 +877,8 @@ public class SerializerState : IStructSerializer, IDisposable
     ///     </list>
     /// </exception>
     /// <exception cref="IndexOutOfRangeException"><paramref name="index" /> is out of bounds.</exception>
-    public TS? TryGetPointer<TS>(int index) where TS : SerializerState, new()
+    public TS? TryGetPointer<TS>(int index)
+        where TS : SerializerState, new()
     {
         if (Kind != ObjectKind.Struct && Kind != ObjectKind.ListOfPointers)
             throw new InvalidOperationException("This is not a struct or list of pointers");
@@ -856,7 +888,8 @@ public class SerializerState : IStructSerializer, IDisposable
 
         var state = _linkedStates![index];
 
-        if (state == null) return null;
+        if (state == null)
+            return null;
 
         return state.Rewrap<TS>();
     }
@@ -1118,7 +1151,8 @@ public class SerializerState : IStructSerializer, IDisposable
         if (values.Count != ListElementCount)
             throw new ArgumentOutOfRangeException(nameof(values));
 
-        int i, w = Offset;
+        int i,
+            w = Offset;
         ulong v;
 
         for (i = 0; i < ListElementCount - 63; i += 64)
@@ -1128,10 +1162,12 @@ public class SerializerState : IStructSerializer, IDisposable
             for (var j = 63; j >= 0; j--)
             {
                 v <<= 1;
-                if (values[i + j]) v |= 1;
+                if (values[i + j])
+                    v |= 1;
             }
 
-            if (defaultValue) v = ~v;
+            if (defaultValue)
+                v = ~v;
 
             SegmentSpan[w++] = v;
         }
@@ -1143,10 +1179,12 @@ public class SerializerState : IStructSerializer, IDisposable
             for (var k = ListElementCount - 1; k >= i; k--)
             {
                 v <<= 1;
-                if (values[k]) v |= 1;
+                if (values[k])
+                    v |= 1;
             }
 
-            if (defaultValue) v = ~v;
+            if (defaultValue)
+                v = ~v;
 
             SegmentSpan[w] = v;
         }
@@ -1182,7 +1220,9 @@ public class SerializerState : IStructSerializer, IDisposable
         if (Kind != ObjectKind.ListOfBytes)
             throw new InvalidOperationException("This is not a list of bytes");
 
-        return MemoryMarshal.Cast<ulong, byte>(SegmentSpan.Slice(Offset)).Slice(0, ListElementCount);
+        return MemoryMarshal
+            .Cast<ulong, byte>(SegmentSpan.Slice(Offset))
+            .Slice(0, ListElementCount);
     }
 
     /// <summary>
@@ -1194,7 +1234,8 @@ public class SerializerState : IStructSerializer, IDisposable
     public string ListReadAsText()
     {
         var bytes = ListGetBytes();
-        if (bytes.Length == 0) return string.Empty;
+        if (bytes.Length == 0)
+            return string.Empty;
         return Encoding.UTF8.GetString(bytes.Slice(0, bytes.Length - 1));
     }
 
@@ -1361,7 +1402,9 @@ public class SerializerState : IStructSerializer, IDisposable
             return null;
 
         if (Caps == null)
-            throw new InvalidOperationException("Underlying MessageBuilder was not enabled to support capabilities");
+            throw new InvalidOperationException(
+                "Underlying MessageBuilder was not enabled to support capabilities"
+            );
 
         var index = Caps.IndexOf(capability);
 
@@ -1508,7 +1551,8 @@ public class SerializerState : IStructSerializer, IDisposable
                     var builder = BuildPointer(slot);
                     builder.SetListOfPointers(list.Count);
                     var i = 0;
-                    foreach (var item in list) builder.LinkObject(i++, item);
+                    foreach (var item in list)
+                        builder.LinkObject(i++, item);
                 }
                 break;
 
@@ -1517,12 +1561,15 @@ public class SerializerState : IStructSerializer, IDisposable
                 {
                     LinkToCapability(slot, ProvideCapability(obj));
                 }
-                catch (Exception exception) when (
-                    exception is InvalidCapabilityInterfaceException ||
-                    exception is InvalidOperationException)
+                catch (Exception exception)
+                    when (exception is InvalidCapabilityInterfaceException
+                        || exception is InvalidOperationException
+                    )
                 {
                     throw new InvalidOperationException(
-                        "Object neither describes a struct, nor a list of pointers, nor a capability", exception);
+                        "Object neither describes a struct, nor a list of pointers, nor a capability",
+                        exception
+                    );
                 }
 
                 break;
@@ -1552,7 +1599,8 @@ public class SerializerState : IStructSerializer, IDisposable
     ///     <see cref="Rpc.ProxyAttribute" />)
     /// </exception>
     /// <exception cref="InvalidOperationException">This state does not represent a struct.</exception>
-    public T ReadCap<T>(int slot) where T : class
+    public T ReadCap<T>(int slot)
+        where T : class
     {
         var cap = StructReadRawCap(slot);
         return (CapabilityReflection.CreateProxy<T>(cap) as T)!;

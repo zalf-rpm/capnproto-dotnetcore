@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using CapnpC.CSharp.Generator.Schema;
 
@@ -9,7 +9,7 @@ internal static class SupportedAnnotations
     public enum TypeVisibility
     {
         Public = 0,
-        Internal = 1
+        Internal = 1,
     }
 
     public static string[] GetNamespaceAnnotation(Node.READER fileNode)
@@ -65,7 +65,10 @@ internal static class SupportedAnnotations
     public static bool? GetNullableEnable(Node.READER node)
     {
         foreach (var annotation in node.Annotations)
-            if (annotation.Id == AnnotationIds.Cs.NullableEnable && annotation.Value.which == Schema.Value.WHICH.Bool)
+            if (
+                annotation.Id == AnnotationIds.Cs.NullableEnable
+                && annotation.Value.which == Schema.Value.WHICH.Bool
+            )
                 return annotation.Value.Bool;
 
         return null;
@@ -74,8 +77,10 @@ internal static class SupportedAnnotations
     public static bool? GetEmitNullableDirective(Node.READER node)
     {
         foreach (var annotation in node.Annotations)
-            if (annotation.Id == AnnotationIds.Cs.EmitNullableDirective &&
-                annotation.Value.which == Schema.Value.WHICH.Bool)
+            if (
+                annotation.Id == AnnotationIds.Cs.EmitNullableDirective
+                && annotation.Value.which == Schema.Value.WHICH.Bool
+            )
                 return annotation.Value.Bool;
 
         return null;
@@ -84,8 +89,10 @@ internal static class SupportedAnnotations
     public static bool? GetEmitDomainClassesAndInterfaces(Node.READER node)
     {
         foreach (var annotation in node.Annotations)
-            if (annotation.Id == AnnotationIds.Cs.EmitDomainClassesAndInterfaces &&
-                annotation.Value.which == Schema.Value.WHICH.Bool)
+            if (
+                annotation.Id == AnnotationIds.Cs.EmitDomainClassesAndInterfaces
+                && annotation.Value.which == Schema.Value.WHICH.Bool
+            )
                 return annotation.Value.Bool;
 
         return null;
@@ -94,7 +101,10 @@ internal static class SupportedAnnotations
     public static TypeVisibility? GetTypeVisibility(Node.READER node)
     {
         foreach (var annotation in node.Annotations)
-            if (annotation.Id == AnnotationIds.Cs.TypeVisibility && annotation.Value.which == Schema.Value.WHICH.Enum)
+            if (
+                annotation.Id == AnnotationIds.Cs.TypeVisibility
+                && annotation.Value.which == Schema.Value.WHICH.Enum
+            )
                 return (TypeVisibility)annotation.Value.Enum;
 
         return null;
@@ -105,8 +115,8 @@ internal static class SupportedAnnotations
         if (sourceInfo.DocComment == null)
             return null;
 
-        var lines = sourceInfo.DocComment
-            .Split('\n')
+        var lines = sourceInfo
+            .DocComment.Split('\n')
             .Select(line => line.Trim())
             .SkipWhile(line => !line.Equals("$$embed", StringComparison.OrdinalIgnoreCase))
             .Skip(1);
