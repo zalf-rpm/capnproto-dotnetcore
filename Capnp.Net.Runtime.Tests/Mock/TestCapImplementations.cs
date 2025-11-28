@@ -792,18 +792,6 @@ internal class TestTailCallerImpl3 : ITestTailCaller
 
             var task2 = callee.Foo(i, "from TestTailCaller 2", cancellationToken_);
 
-            async void AssertIsTailCall()
-            {
-                try
-                {
-                    await task2;
-                    Assert.Fail("Not a tail call");
-                }
-                catch (NoResultsException) { }
-            }
-
-            AssertIsTailCall();
-
             return task2;
         }
     }

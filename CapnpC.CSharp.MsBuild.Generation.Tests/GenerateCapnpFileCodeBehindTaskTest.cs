@@ -1,4 +1,7 @@
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using CapnpC.CSharp.Generator;
 using CapnpC.CSharp.Generator.Tests;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,6 +11,30 @@ namespace CapnpC.CSharp.MsBuild.Generation.Tests;
 [TestClass]
 public class GenerateCapnpFileCodeBehindTaskTest
 {
+    [TestInitialize]
+    public void Setup()
+    {
+        CapnpCompilation.ExternalCapnpInvoker = MockInvoker;
+    }
+
+    [TestCleanup]
+    public void Cleanup()
+    {
+        CapnpCompilation.ExternalCapnpInvoker = null;
+    }
+
+    private GenerationResult MockInvoker(IEnumerable<string> args, string workingDir)
+    {
+        var generatedFiles = new List<FileGenerationResult>();
+        var fileArg = args.FirstOrDefault(a => a.EndsWith(".capnp"));
+        if (fileArg != null)
+        {
+            var genFile = new FileGenerationResult(fileArg, "// Mock generated content");
+            generatedFiles.Add(genFile);
+        }
+        return new GenerationResult(generatedFiles);
+    }
+
     private string LoadResourceContent(string name)
     {
         using (var stream = CodeGeneratorSteps.LoadResource("UnitTest1.capnp"))

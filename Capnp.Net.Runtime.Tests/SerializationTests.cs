@@ -100,10 +100,10 @@ public class SerializationTests
         values[65] = true;
         list.ListWriteValues(values, true);
         var los = list.Rewrap<ListOfBitsSerializer>();
-        Assert.IsTrue(!los[63]);
-        Assert.IsFalse(!los[64]);
-        Assert.IsTrue(!los[65]);
-        Assert.IsFalse(!los[66]);
+        Assert.IsFalse(los[63]);
+        Assert.IsTrue(los[64]);
+        Assert.IsFalse(los[65]);
+        Assert.IsTrue(los[66]);
         Assert.Throws<ArgumentNullException>(() => list.ListWriteValues(null));
         Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValues(new bool[1]));
         Assert.Throws<ArgumentOutOfRangeException>(() => list.ListWriteValues(new bool[71]));
@@ -248,7 +248,6 @@ public class SerializationTests
         DeserializerState d = list;
         var list3 = d.RequireList().Cast(_ => _);
         Assert.HasCount(7, list3);
-        Assert.IsNotNull(list3[0]);
         Assert.AreEqual(ObjectKind.Nil, list3[0].Kind);
         Assert.AreEqual(ObjectKind.Capability, list3[1].Kind);
         Assert.AreEqual(ObjectKind.Struct, list3[2].Kind);

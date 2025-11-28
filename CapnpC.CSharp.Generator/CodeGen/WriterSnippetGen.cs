@@ -234,9 +234,6 @@ internal class WriterSnippetGen
                 Argument(secondArg)
             );
 
-        if (pasd)
-            setter.AddArgumentListArguments(Argument(secondArg));
-
         return MakeWriterProperty(outerType, name, getter, setter, cast, cond);
     }
 
