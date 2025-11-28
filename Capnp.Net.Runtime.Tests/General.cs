@@ -81,6 +81,7 @@ public class General : TestBase
                 Console.WriteLine("Aborted");
             }
         });
+        thread.IsBackground = true;
         thread.Start();
         thread.SafeJoin(null, 5);
     }
@@ -158,6 +159,7 @@ public class General : TestBase
                     Console.WriteLine("Aborted");
                 }
         });
+        thread.IsBackground = true;
         thread.Start();
         thread.SafeJoin(null, 5);
     }

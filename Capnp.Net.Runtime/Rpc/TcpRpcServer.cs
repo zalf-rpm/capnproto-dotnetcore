@@ -269,6 +269,7 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
         }
 
         _acceptorThread = new Thread(() => AcceptClients(listener));
+        _acceptorThread.IsBackground = true;
         _listener = listener;
         _acceptorThread.Start();
     }
@@ -415,6 +416,7 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
                     }
                 }
             });
+            PumpRunner.IsBackground = true;
             PumpRunner.Start();
         }
     }

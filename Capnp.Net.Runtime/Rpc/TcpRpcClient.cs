@@ -228,6 +228,7 @@ public class TcpRpcClient : IConnection, IDisposable
         });
 
         _pump.FrameReceived += _inboundEndpoint.Forward;
+        _pumpThread.IsBackground = true;
         _pumpThread.Start();
     }
 
