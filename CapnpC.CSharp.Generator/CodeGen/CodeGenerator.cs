@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Capnp;
 using CapnpC.CSharp.Generator.Model;
+using CSharpier;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -245,7 +246,26 @@ internal class CodeGenerator
         if (!string.IsNullOrWhiteSpace(file.HeaderText))
             content = file.HeaderText + content;
 
-        return content;
+        try
+        {
+            var result = CSharpier
+                .Core.CSharp.CSharpFormatter.FormatAsync(
+                    content,
+                    new CSharpier.Core.CodeFormatterOptions()
+                )
+                .Result;
+            if (result.CompilationErrors.Any() || string.IsNullOrEmpty(result.Code))
+            {
+                throw new Exception(
+                    $"CSharpier failed for {file.Name}. Errors: {string.Join(", ", result.CompilationErrors)}"
+                );
+            }
+            return result.Code;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"CSharpier exception for {file.Name}: {ex.Message}", ex);
+        }
     }
 
     public IReadOnlyList<FileGenerationResult> Generate()
