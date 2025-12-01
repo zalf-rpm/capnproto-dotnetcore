@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net10.0;net8.0;net9.0</TargetFrameworks>
+    <UseAppHost>true</UseAppHost>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <RootNamespace>CapnpC</RootNamespace>
     <LangVersion>13.0</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
