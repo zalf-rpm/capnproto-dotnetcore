@@ -1,31 +1,31 @@
-﻿namespace Capnp
+namespace Capnp;
+
+/// <summary>
+///     Generic <see cref="ICapnpSerializable" /> implementation, based on a wrapper around
+///     <see cref="DeserializerState" />.
+/// </summary>
+public class AnyPointer : ICapnpSerializable
 {
     /// <summary>
-    /// Generic <see cref="ICapnpSerializable"/> implementation, based on a wrapper around <see cref="DeserializerState"/>.
+    ///     The <see cref="DeserializerState" /> will be set by the Deserialize method.
     /// </summary>
-    public class AnyPointer : ICapnpSerializable
+    public DeserializerState State { get; private set; }
+
+    /// <summary>
+    ///     Sets the State property.
+    /// </summary>
+    /// <param name="state">deserializer state</param>
+    public void Deserialize(DeserializerState state)
     {
-        /// <summary>
-        /// The <see cref="DeserializerState"/> will be set by the Deserialize method.
-        /// </summary>
-        public DeserializerState State { get; private set; }
+        State = state;
+    }
 
-        /// <summary>
-        /// Sets the State property.
-        /// </summary>
-        /// <param name="state">deserializer state</param>
-        public void Deserialize(DeserializerState state)
-        {
-            State = state;
-        }
-
-        /// <summary>
-        /// Performs a deep copy from State to given state.
-        /// </summary>
-        /// <param name="state">serializer state</param>
-        public void Serialize(SerializerState state)
-        {
-            Reserializing.DeepCopy(State, state);
-        }
+    /// <summary>
+    ///     Performs a deep copy from State to given state.
+    /// </summary>
+    /// <param name="state">serializer state</param>
+    public void Serialize(SerializerState state)
+    {
+        Reserializing.DeepCopy(State, state);
     }
 }

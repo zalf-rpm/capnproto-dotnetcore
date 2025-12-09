@@ -1,122 +1,123 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Capnp.Rpc;
 
-namespace Capnp
+namespace Capnp;
+
+/// <summary>
+///     SerializerState specialization for a list of capabilities.
+/// </summary>
+/// <typeparam name="T">Capability interface</typeparam>
+public class ListOfCapsSerializer<T> : SerializerState, IReadOnlyList<T?>
+    where T : class
 {
     /// <summary>
-    /// SerializerState specialization for a list of capabilities.
+    ///     Constructs an instance.
     /// </summary>
-    /// <typeparam name="T">Capability interface</typeparam>
-    public class ListOfCapsSerializer<T> :
-        SerializerState,
-        IReadOnlyList<T?>
-        where T : class
+    /// <exception cref="Rpc.InvalidCapabilityInterfaceException">
+    ///     <typeparamref name="T" /> does not quality as capability interface.
+    ///     The implementation might attempt to throw this exception earlier in the static constructor (during type load).
+    ///     Currently it doesn't
+    ///     because there is a significant risk of messing something up and ending with a hard-to-debug
+    ///     <see cref="TypeLoadException" />.
+    /// </exception>
+    public ListOfCapsSerializer()
     {
-        /// <summary>
-        /// Constructs an instance.
-        /// </summary>
-        /// <exception cref="Rpc.InvalidCapabilityInterfaceException"><typeparamref name="T"/> does not quality as capability interface.
-        /// The implementation might attempt to throw this exception earlier in the static constructor (during type load). Currently it doesn't
-        /// because there is a significant risk of messing something up and ending with a hard-to-debug <see cref="TypeLoadException"/>.</exception>
-        public ListOfCapsSerializer()
-        {
-            Rpc.CapabilityReflection.ValidateCapabilityInterface(typeof(T));
-        }
+        CapabilityReflection.ValidateCapabilityInterface(typeof(T));
+    }
 
-        /// <summary>
-        /// Gets or sets the capability at given element index.
-        /// </summary>
-        /// <param name="index">Element index</param>
-        /// <returns>Proxy object of capability at given element index</returns>
-        /// <exception cref="InvalidOperationException">List was not initialized, or attempting to overwrite an already set element.</exception>
-        /// <exception cref="IndexOutOfRangeException"><paramref name="index"/> is out of range.</exception>
-        [AllowNull]
-        public T this[int index]
+    /// <summary>
+    ///     Gets or sets the capability at given element index.
+    /// </summary>
+    /// <param name="index">Element index</param>
+    /// <returns>Proxy object of capability at given element index</returns>
+    /// <exception cref="InvalidOperationException">
+    ///     List was not initialized, or attempting to overwrite an already set
+    ///     element.
+    /// </exception>
+    /// <exception cref="IndexOutOfRangeException"><paramref name="index" /> is out of range.</exception>
+    [AllowNull]
+    public T this[int index]
+    {
+        get
         {
-            get
+            ListSerializerHelper.EnsureAllocated(this);
+
+            try
             {
-                ListSerializerHelper.EnsureAllocated(this);
-
-                try
-                {
-                    return (Rpc.CapabilityReflection.CreateProxy<T>(DecodeCapPointer(index)) as T)!;
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    throw new IndexOutOfRangeException();
-                }
+                return (CapabilityReflection.CreateProxy<T>(DecodeCapPointer(index)) as T)!;
             }
-            set
+            catch (ArgumentOutOfRangeException)
             {
-                ListSerializerHelper.EnsureAllocated(this);
-
-                if (index < 0 || index >= RawData.Length)
-                    throw new IndexOutOfRangeException("index out of range");
-
-                var p = default(WirePointer);
-                p.SetCapability(ProvideCapability(value));
-                RawData[index] = p;
+                throw new IndexOutOfRangeException();
             }
         }
-
-        /// <summary>
-        /// Initializes this list with a specific size. The list can be initialized only once.
-        /// </summary>
-        /// <param name="count">List element count</param>
-        /// <exception cref="InvalidOperationException">The list was already initialized</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative or greater than 2^29-1</exception>
-        public void Init(int count)
+        set
         {
-            SetListOfPointers(count);
+            ListSerializerHelper.EnsureAllocated(this);
+
+            if (index < 0 || index >= RawData.Length)
+                throw new IndexOutOfRangeException("index out of range");
+
+            var p = default(WirePointer);
+            p.SetCapability(ProvideCapability(value));
+            RawData[index] = p;
         }
+    }
 
-        /// <summary>
-        /// Initializes the list with given content.
-        /// </summary>
-        /// <param name="caps">List content. Can be null in which case the list is simply not initialized.</param>
-        /// <exception cref="InvalidOperationException">The list was already initialized</exception>
-        /// <exception cref="ArgumentOutOfRangeException">More than 2^29-1 items.</exception>
-        public void Init(IReadOnlyList<T?>? caps)
-        {
-            if (caps == null)
-            {
-                return;
-            }
+    /// <summary>
+    ///     This list's element count.
+    /// </summary>
+    public int Count => ListElementCount;
 
-            Init(caps.Count);
+    /// <summary>
+    ///     Implements <see cref="IEnumerable{T}" />.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator<T> GetEnumerator()
+    {
+        return Enumerate().GetEnumerator();
+    }
 
-            for (int i = 0; i < caps.Count; i++)
-            {
-                this[i] = caps[i];
-            }
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
-        /// <summary>
-        /// This list's element count.
-        /// </summary>
-        public int Count => ListElementCount;
+    /// <summary>
+    ///     Initializes this list with a specific size. The list can be initialized only once.
+    /// </summary>
+    /// <param name="count">List element count</param>
+    /// <exception cref="InvalidOperationException">The list was already initialized</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="count" /> is negative or greater than 2^29-1</exception>
+    public void Init(int count)
+    {
+        SetListOfPointers(count);
+    }
 
-        IEnumerable<T> Enumerate()
-        {
-            int count = Count;
-            for (int i = 0; i < count; i++)
-                yield return this[i];
-        }
+    /// <summary>
+    ///     Initializes the list with given content.
+    /// </summary>
+    /// <param name="caps">List content. Can be null in which case the list is simply not initialized.</param>
+    /// <exception cref="InvalidOperationException">The list was already initialized</exception>
+    /// <exception cref="ArgumentOutOfRangeException">More than 2^29-1 items.</exception>
+    public void Init(IReadOnlyList<T?>? caps)
+    {
+        if (caps == null)
+            return;
 
-        /// <summary>
-        /// Implements <see cref="IEnumerable{T}"/>.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<T> GetEnumerator()
-        {
-            return Enumerate().GetEnumerator();
-        }
+        Init(caps.Count);
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        for (var i = 0; i < caps.Count; i++)
+            this[i] = caps[i];
+    }
+
+    private IEnumerable<T> Enumerate()
+    {
+        var count = Count;
+        for (var i = 0; i < count; i++)
+            yield return this[i];
     }
 }

@@ -1,44 +1,41 @@
-﻿using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 
-namespace Capnp.Util
+namespace Capnp.Util;
+
+internal static class ThreadExtensions
 {
-    internal static class ThreadExtensions
+    private static readonly Lazy<ThreadExtensionsLoggingContext> LoggingContext = new(
+        () => new ThreadExtensionsLoggingContext(),
+        LazyThreadSafetyMode.PublicationOnly
+    );
+
+    public static void SafeJoin(this Thread thread, ILogger? logger = null, int timeout = 5000)
     {
-        class ThreadExtensionsLoggingContext
+        if (!thread.Join(timeout))
         {
-            public ILogger Logger { get; } = Logging.CreateLogger<ThreadExtensionsLoggingContext>();
-        }
+            logger ??= LoggingContext.Value.Logger;
 
-        static Lazy<ThreadExtensionsLoggingContext> LoggingContext = new Lazy<ThreadExtensionsLoggingContext>(
-            () => new ThreadExtensionsLoggingContext(),
-            LazyThreadSafetyMode.PublicationOnly);
+            var name = thread.Name ?? thread.ManagedThreadId.ToString();
 
-        public static void SafeJoin(this Thread thread, ILogger? logger = null, int timeout = 5000)
-        {
-            if (!thread.Join(timeout))
+            try
             {
-                logger ??= LoggingContext.Value.Logger;
-
-                string name = thread.Name ?? thread.ManagedThreadId.ToString();
-
-                try
-                {
-                    logger.LogError($"Unable to join thread {name}. Thread is in state {thread.ThreadState}.");
-                    thread.Interrupt();
-                    if (!thread.Join(timeout))
-                    {
-                        logger.LogError($"Still unable to join thread {name} after Interrupt(). Thread is in state {thread.ThreadState}.");
-                    }
-                }
-                catch
-                {
-                }
+                logger.LogError(
+                    $"Unable to join thread {name}. Thread is in state {thread.ThreadState}."
+                );
+                thread.Interrupt();
+                if (!thread.Join(timeout))
+                    logger.LogError(
+                        $"Still unable to join thread {name} after Interrupt(). Thread is in state {thread.ThreadState}."
+                    );
             }
+            catch { }
         }
+    }
+
+    private class ThreadExtensionsLoggingContext
+    {
+        public ILogger Logger { get; } = Logging.CreateLogger<ThreadExtensionsLoggingContext>();
     }
 }

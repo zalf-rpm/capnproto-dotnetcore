@@ -1,6 +1,6 @@
-﻿using Capnp;
+﻿using System.Collections.Generic;
+using Capnp;
 using Capnp.Rpc;
-using System.Collections.Generic;
 
 namespace CapnpProfile
 {
@@ -11,14 +11,11 @@ namespace CapnpProfile
             readonly Queue<WireFrame> _frameBuffer = new Queue<WireFrame>();
             bool _dismissed;
 
-            public EngineChannel()
-            {
-            }
+            public EngineChannel() { }
 
             public RpcEngine.RpcEndpoint OtherEndpoint { get; set; }
             public bool HasBufferedFrames => _frameBuffer.Count > 0;
             public int FrameCounter { get; private set; }
-
 
             public void Dismiss()
             {
@@ -38,7 +35,8 @@ namespace CapnpProfile
             }
         }
 
-        readonly EngineChannel _channel1, _channel2;
+        readonly EngineChannel _channel1,
+            _channel2;
 
         public RpcEngine Engine1 { get; }
         public RpcEngine Engine2 { get; }

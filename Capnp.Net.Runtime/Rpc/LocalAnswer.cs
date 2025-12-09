@@ -1,47 +1,55 @@
-﻿using Capnp.Util;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Capnp.Util;
 
-namespace Capnp.Rpc
+namespace Capnp.Rpc;
+
+internal class LocalAnswer : IPromisedAnswer
 {
-    class LocalAnswer : IPromisedAnswer
+    private readonly CancellationTokenSource _cts;
+
+    public LocalAnswer(CancellationTokenSource cts, Task<DeserializerState> call)
     {
-        readonly CancellationTokenSource _cts;
+        _cts = cts ?? throw new ArgumentNullException(nameof(cts));
+        WhenReturned = call?.EnforceAwaitOrder() ?? throw new ArgumentNullException(nameof(call));
 
-        public LocalAnswer(CancellationTokenSource cts, Task<DeserializerState> call)
+        CleanupAfterReturn();
+    }
+
+    public StrictlyOrderedAwaitTask<DeserializerState> WhenReturned { get; }
+
+    public bool IsTailCall => false;
+
+    public ConsumedCapability Access(MemberAccessPath access)
+    {
+        return new LocalAnswerCapability(WhenReturned, access);
+    }
+
+    public ConsumedCapability Access(MemberAccessPath _, Task<IDisposable?> task)
+    {
+        return new LocalAnswerCapability(task.AsProxyTask());
+    }
+
+    public void Dispose()
+    {
+        try
         {
-            _cts = cts ?? throw new ArgumentNullException(nameof(cts));
-            WhenReturned = call?.EnforceAwaitOrder() ?? throw new ArgumentNullException(nameof(call));
-
-            CleanupAfterReturn();
+            _cts.Cancel();
         }
+        catch (ObjectDisposedException) { }
+    }
 
-        async void CleanupAfterReturn()
+    private async void CleanupAfterReturn()
+    {
+        try
         {
-            try { await WhenReturned; }
-            catch { }
-            finally { _cts.Dispose(); }
+            await WhenReturned;
         }
-
-        public StrictlyOrderedAwaitTask<DeserializerState> WhenReturned { get; }
-
-        public bool IsTailCall => false;
-
-        public ConsumedCapability Access(MemberAccessPath access)
+        catch { }
+        finally
         {
-            return new LocalAnswerCapability(WhenReturned, access);
-        }
-
-        public ConsumedCapability Access(MemberAccessPath _, Task<IDisposable?> task)
-        {
-            return new LocalAnswerCapability(task.AsProxyTask());
-        }
-
-        public void Dispose()
-        {
-            try { _cts.Cancel(); }
-            catch (ObjectDisposedException) { }
+            _cts.Dispose();
         }
     }
 }

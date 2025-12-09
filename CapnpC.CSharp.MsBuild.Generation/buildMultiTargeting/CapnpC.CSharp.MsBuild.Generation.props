@@ -1,5 +1,3 @@
 ﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
-
-  <Import Project="..\build\CapnpC.CSharp.MsBuild.Generation.props"/>
-  
+  <Import Project="..\build\CapnpC.CSharp.MsBuild.Generation.props" />
 </Project>

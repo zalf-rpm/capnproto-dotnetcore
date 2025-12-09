@@ -1,96 +1,89 @@
-﻿using System;
+using System;
 using System.IO;
 
-namespace Capnp.Util
+namespace Capnp.Util;
+
+internal class DuplexBufferedStream : Stream
 {
-    internal class DuplexBufferedStream : Stream
+    // A buffer size of 1024 bytes seems to be a good comprise, giving good performance
+    // in TCP/IP-over-localhost scenarios for small to medium (200kiB) frame sizes.
+    private const int DefaultBufferSize = 1024;
+    private readonly int _bufferSize;
+
+    private readonly BufferedStream _readStream;
+    private readonly object _reentrancyBlocker = new();
+    private readonly BufferedStream _writeStream;
+
+    public DuplexBufferedStream(Stream stream, int bufferSize)
     {
-        // A buffer size of 1024 bytes seems to be a good comprise, giving good performance 
-        // in TCP/IP-over-localhost scenarios for small to medium (200kiB) frame sizes.
-        const int DefaultBufferSize = 1024;
+        _readStream = new BufferedStream(stream, bufferSize);
+        _writeStream = new BufferedStream(stream, bufferSize);
+        _bufferSize = bufferSize;
+    }
 
-        readonly BufferedStream _readStream;
-        readonly BufferedStream _writeStream;
-        readonly int _bufferSize;
-        readonly object _reentrancyBlocker = new object();
+    public DuplexBufferedStream(Stream stream)
+        : this(stream, DefaultBufferSize) { }
 
-        public DuplexBufferedStream(Stream stream, int bufferSize)
-        {
-            _readStream = new BufferedStream(stream, bufferSize);
-            _writeStream = new BufferedStream(stream, bufferSize);
-            _bufferSize = bufferSize;
-        }
+    public override bool CanRead => true;
 
-        public DuplexBufferedStream(Stream stream): this(stream, DefaultBufferSize)
-        {
-        }
+    public override bool CanSeek => false;
 
-        public override bool CanRead => true;
+    public override bool CanWrite => true;
 
-        public override bool CanSeek => false;
+    public override long Length => 0;
 
-        public override bool CanWrite => true;
+    public override long Position
+    {
+        get => 0;
+        set => throw new NotSupportedException();
+    }
 
-        public override long Length => 0;
+    public override void Flush()
+    {
+        _writeStream.Flush();
+    }
 
-        public override long Position 
-        { 
-            get => 0; 
-            set => throw new NotSupportedException(); 
-        }
+    public override int Read(byte[] buffer, int offset, int count)
+    {
+        return _readStream.Read(buffer, offset, count);
+    }
 
-        public override void Flush()
-        {
+    public override long Seek(long offset, SeekOrigin origin)
+    {
+        throw new NotSupportedException();
+    }
+
+    public override void SetLength(long value)
+    {
+        throw new NotSupportedException();
+    }
+
+    public override void Write(byte[] buffer, int offset, int count)
+    {
+        if (buffer.Length > _bufferSize) // avoid moiré-like timing effects
             _writeStream.Flush();
-        }
 
-        public override int Read(byte[] buffer, int offset, int count)
-        {
-            return _readStream.Read(buffer, offset, count);
-        }
+        _writeStream.Write(buffer, offset, count);
+    }
 
-        public override long Seek(long offset, SeekOrigin origin)
-        {
-            throw new NotSupportedException();
-        }
-
-        public override void SetLength(long value)
-        {
-            throw new NotSupportedException();
-        }
-
-        public override void Write(byte[] buffer, int offset, int count)
-        {
-            if (buffer.Length > _bufferSize) // avoid moiré-like timing effects
-                _writeStream.Flush();        
-
-            _writeStream.Write(buffer, offset, count);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+            lock (_reentrancyBlocker)
             {
-                lock (_reentrancyBlocker)
+                try
                 {
-                    try
-                    {
-                        _readStream.Dispose();
-                    }
-                    catch
-                    {
-                    }
-                    try
-                    {
-                        _writeStream.Dispose();
-                    }
-                    catch
-                    {
-                    }
+                    _readStream.Dispose();
                 }
+                catch { }
+
+                try
+                {
+                    _writeStream.Dispose();
+                }
+                catch { }
             }
 
-            base.Dispose(disposing);
-        }
+        base.Dispose(disposing);
     }
 }

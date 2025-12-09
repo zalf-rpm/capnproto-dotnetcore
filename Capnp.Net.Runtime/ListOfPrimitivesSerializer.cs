@@ -1,133 +1,128 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Capnp
+namespace Capnp;
+
+/// <summary>
+///     SerializerState specialization for unmanaged primitive types (including enum).
+/// </summary>
+/// <typeparam name="T">List element type, must be primitive. Static constructor will throw if the type does not work.</typeparam>
+public class ListOfPrimitivesSerializer<T> : SerializerState, IReadOnlyList<T>
+    where T : unmanaged
 {
-    /// <summary>
-    /// SerializerState specialization for unmanaged primitive types (including enum).
-    /// </summary>
-    /// <typeparam name="T">List element type, must be primitive. Static constructor will throw if the type does not work.</typeparam>
-    public class ListOfPrimitivesSerializer<T> :
-        SerializerState,
-        IReadOnlyList<T>
-        where T : unmanaged
+    private static readonly int ElementSize;
+
+    static ListOfPrimitivesSerializer()
     {
-        static readonly int ElementSize;
+        if (typeof(T).IsEnum)
+            ElementSize = Marshal.SizeOf(Enum.GetUnderlyingType(typeof(T)));
+        else
+            ElementSize = Marshal.SizeOf<T>();
+    }
 
-        static ListOfPrimitivesSerializer()
+    /// <summary>
+    ///     The list's data
+    /// </summary>
+    public Span<T> Data => MemoryMarshal.Cast<ulong, T>(RawData).Slice(0, Count);
+
+    /// <summary>
+    ///     Gets or sets the value at given index.
+    /// </summary>
+    /// <param name="index">Element index</param>
+    /// <returns>Element value</returns>
+    public T this[int index]
+    {
+        get
         {
-            if (typeof(T).IsEnum)
-            {
-                ElementSize = Marshal.SizeOf(Enum.GetUnderlyingType(typeof(T)));
-            }
-            else
-            {
-                ElementSize = Marshal.SizeOf<T>();
-            }
+            ListSerializerHelper.EnsureAllocated(this);
+            return Data[index];
         }
-
-        /// <summary>
-        /// The list's data
-        /// </summary>
-        public Span<T> Data => MemoryMarshal.Cast<ulong, T>(RawData).Slice(0, Count);
-
-        /// <summary>
-        /// Gets or sets the value at given index.
-        /// </summary>
-        /// <param name="index">Element index</param>
-        /// <returns>Element value</returns>
-        public T this[int index]
+        set
         {
-            get
-            {
-                ListSerializerHelper.EnsureAllocated(this);
-                return Data[index];
-            }
-            set
-            {
-                ListSerializerHelper.EnsureAllocated(this);
-                Data[index] = value;
-            }
+            ListSerializerHelper.EnsureAllocated(this);
+            Data[index] = value;
         }
+    }
 
-        /// <summary>
-        /// This list's element count.
-        /// </summary>
-        public int Count => ListElementCount;
+    /// <summary>
+    ///     This list's element count.
+    /// </summary>
+    public int Count => ListElementCount;
 
-        /// <summary>
-        /// Initializes this list with a specific size. The list can be initialized only once.
-        /// </summary>
-        /// <param name="count">List element count</param>
-        /// <exception cref="InvalidOperationException">The list was already initialized</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is negative or greater than 2^29-1</exception>
-        public void Init(int count)
+    /// <summary>
+    ///     Implements <see cref="IEnumerable{T}" />.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator<T> GetEnumerator()
+    {
+        return Enumerate().GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    /// <summary>
+    ///     Initializes this list with a specific size. The list can be initialized only once.
+    /// </summary>
+    /// <param name="count">List element count</param>
+    /// <exception cref="InvalidOperationException">The list was already initialized</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="count" /> is negative or greater than 2^29-1</exception>
+    public void Init(int count)
+    {
+        if (IsAllocated)
+            throw new InvalidOperationException("Already initialized");
+
+        if (count < 0)
+            throw new ArgumentOutOfRangeException(nameof(count));
+
+        SetListOfValues((byte)(8 * ElementSize), count);
+    }
+
+    /// <summary>
+    ///     Initializes the list with given content.
+    /// </summary>
+    /// <param name="items">List content. Can be null in which case the list is simply not initialized.</param>
+    /// <exception cref="InvalidOperationException">The list was already initialized</exception>
+    /// <exception cref="ArgumentOutOfRangeException">More than 2^29-1 items.</exception>
+    public void Init(IReadOnlyList<T>? items)
+    {
+        if (items == null)
+            return;
+
+        Init(items.Count);
+
+        switch (items)
         {
-            if (IsAllocated)
-                throw new InvalidOperationException("Already initialized");
+            case T[] array:
+                array.CopyTo(Data);
+                break;
 
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count));
+            case ArraySegment<T> segment:
+                segment.AsSpan().CopyTo(Data);
+                break;
 
-            SetListOfValues((byte)(8 * ElementSize), count);
+            case ListOfPrimitivesDeserializer<T> deser:
+                deser.Span.CopyTo(Data);
+                break;
+
+            case ListOfPrimitivesSerializer<T> ser:
+                ser.Data.CopyTo(Data);
+                break;
+
+            default:
+                for (var i = 0; i < items.Count; i++)
+                    this[i] = items[i];
+                break;
         }
+    }
 
-        /// <summary>
-        /// Initializes the list with given content.
-        /// </summary>
-        /// <param name="items">List content. Can be null in which case the list is simply not initialized.</param>
-        /// <exception cref="InvalidOperationException">The list was already initialized</exception>
-        /// <exception cref="ArgumentOutOfRangeException">More than 2^29-1 items.</exception>
-        public void Init(IReadOnlyList<T>? items)
-        {
-            if (items == null)
-            {
-                return;
-            }
-
-            Init(items.Count);
-
-            switch (items)
-            {
-                case T[] array:
-                    array.CopyTo(Data);
-                    break;
-
-                case ArraySegment<T> segment:
-                    segment.AsSpan().CopyTo(Data);
-                    break;
-
-                case ListOfPrimitivesDeserializer<T> deser:
-                    deser.Span.CopyTo(Data);
-                    break;
-
-                case ListOfPrimitivesSerializer<T> ser:
-                    ser.Data.CopyTo(Data);
-                    break;
-
-                default:
-                    for (int i = 0; i < items.Count; i++)
-                    {
-                        this[i] = items[i];
-                    }
-                    break;
-            }
-        }
-
-        IEnumerable<T> Enumerate()
-        {
-            for (int i = 0; i < Count; i++)
-                yield return Data[i];
-        }
-
-        /// <summary>
-        /// Implements <see cref="IEnumerable{T}"/>.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<T> GetEnumerator() => Enumerate().GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    private IEnumerable<T> Enumerate()
+    {
+        for (var i = 0; i < Count; i++)
+            yield return Data[i];
     }
 }

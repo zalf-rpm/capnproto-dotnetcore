@@ -1,43 +1,49 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 
-namespace Capnp.Rpc
+namespace Capnp.Rpc;
+
+internal abstract class RemoteCapability : RefCountingCapability
 {
+    protected readonly IRpcEndpoint _ep;
 
-    abstract class RemoteCapability : RefCountingCapability
+    protected RemoteCapability(IRpcEndpoint ep)
     {
-        protected readonly IRpcEndpoint _ep;
+        _ep = ep;
+    }
 
-        protected RemoteCapability(IRpcEndpoint ep)
-        {
-            _ep = ep;
-        }
+    internal IRpcEndpoint Endpoint => _ep;
 
-        internal IRpcEndpoint Endpoint => _ep;
+    internal override IPromisedAnswer DoCall(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args
+    )
+    {
+        var call = SetupMessage(args, interfaceId, methodId);
+        Debug.Assert(call.Target.which != MessageTarget.WHICH.undefined);
+        return _ep.BeginQuestion(this, args);
+    }
 
-        internal override IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args)
-        {
-            var call = SetupMessage(args, interfaceId, methodId);
-            Debug.Assert(call.Target.which != MessageTarget.WHICH.undefined);
-            return _ep.BeginQuestion(this, args);
-        }
+    protected virtual Call.WRITER SetupMessage(
+        DynamicSerializerState args,
+        ulong interfaceId,
+        ushort methodId
+    )
+    {
+        if (args.MsgBuilder == null)
+            throw new ArgumentException("Unbound serializer state", nameof(args));
 
-        protected virtual Call.WRITER SetupMessage(DynamicSerializerState args, ulong interfaceId, ushort methodId)
-        {
-            if (args.MsgBuilder == null)
-                throw new ArgumentException("Unbound serializer state", nameof(args));
+        var callMsg = args.MsgBuilder.BuildRoot<Message.WRITER>();
 
-            var callMsg = args.MsgBuilder.BuildRoot<Message.WRITER>();
+        callMsg.which = Message.WHICH.Call;
 
-            callMsg.which = Message.WHICH.Call;
+        var call = callMsg.Call!;
+        call.AllowThirdPartyTailCall = false;
+        call.InterfaceId = interfaceId;
+        call.MethodId = methodId;
+        call.Params.Content = args;
 
-            var call = callMsg.Call!;
-            call.AllowThirdPartyTailCall = false;
-            call.InterfaceId = interfaceId;
-            call.MethodId = methodId;
-            call.Params.Content = args;
-
-            return call;
-        }
+        return call;
     }
 }

@@ -1,5 +1,9 @@
 <Project>
-  <Target Name="SetNuspecProperties" BeforeTargets="GenerateNuspec" DependsOnTargets="GetBuildVersion">
+  <Target
+    Name="SetNuspecProperties"
+    BeforeTargets="GenerateNuspec"
+    DependsOnTargets="GetBuildVersion"
+  >
     <PropertyGroup>
       <NuspecProperties>$(NuspecProperties);config=$(Configuration)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);version=$(NuGetPackageVersion)</NuspecProperties>
@@ -7,17 +11,20 @@
     </PropertyGroup>
   </Target>
 
-  <Target Name="CleanupNupkgs" BeforeTargets="Build" >
+  <Target Name="CleanupNupkgs" BeforeTargets="Build">
     <ItemGroup>
-      <Nupkgs2Delete Include="$(PackageOutputAbsolutePath)\*.nupkg"/>
+      <Nupkgs2Delete Include="$(PackageOutputAbsolutePath)\*.nupkg" />
     </ItemGroup>
     <Delete Files="@(Nupkgs2Delete)" />
   </Target>
 
   <Target Name="CopyNupkgToFolder" AfterTargets="Pack">
     <ItemGroup>
-      <GeneratedNupkgs Include="$(PackageOutputAbsolutePath)\*.nupkg"/>
+      <GeneratedNupkgs Include="$(PackageOutputAbsolutePath)\*.nupkg" />
     </ItemGroup>
-    <Copy SourceFiles="@(GeneratedNupkgs)" DestinationFolder="$(SolutionDir)GeneratedNuGetPackages\$(Configuration)" />
+    <Copy
+      SourceFiles="@(GeneratedNupkgs)"
+      DestinationFolder="$(SolutionDir)GeneratedNuGetPackages\$(Configuration)"
+    />
   </Target>
 </Project>

@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="../Capnp.Net.Runtime/Capnp.Net.Runtime.csproj" />
+  <Project Path="../CapnpC.CSharp.MsBuild.Generation/CapnpC.CSharp.MsBuild.Generation.csproj" />
+  <Project Path="Benchmark/Benchmark.csproj" />
+  <Project Path="EchoServiceCapnp/EchoServiceCapnp.csproj" />
+  <Project Path="EchoServiceGrpc/EchoServiceGrpc.csproj" />
+</Solution>

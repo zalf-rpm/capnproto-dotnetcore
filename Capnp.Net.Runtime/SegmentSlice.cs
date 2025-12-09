@@ -1,18 +1,17 @@
-﻿namespace Capnp
+namespace Capnp;
+
+/// <summary>
+///     Helper struct to represent the tuple (segment index, offset)
+/// </summary>
+public struct SegmentSlice
 {
     /// <summary>
-    /// Helper struct to represent the tuple (segment index, offset)
+    ///     Segment index
     /// </summary>
-    public struct SegmentSlice
-    {
-        /// <summary>
-        /// Segment index
-        /// </summary>
-        public uint SegmentIndex;
+    public uint SegmentIndex;
 
-        /// <summary>
-        /// Word offset within segment
-        /// </summary>
-        public int Offset;
-    }
+    /// <summary>
+    ///     Word offset within segment
+    /// </summary>
+    public int Offset;
 }

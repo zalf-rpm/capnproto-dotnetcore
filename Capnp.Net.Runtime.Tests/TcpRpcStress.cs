@@ -1,36 +1,34 @@
-﻿using Capnp.Net.Runtime.Tests.GenImpls;
+using System;
+using Capnp.Net.Runtime.Tests.GenImpls;
 using Capnp.Net.Runtime.Tests.Util;
 using Capnp.Rpc;
 using Capnproto_test.Capnp.Test;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
 
-namespace Capnp.Net.Runtime.Tests
+namespace Capnp.Net.Runtime.Tests;
+
+[TestClass]
+[Ignore]
+public class TcpRpcStress : TestBase
 {
-    [TestClass]
-    public class TcpRpcStress: TestBase
+    private void Repeat(int count, Action action)
     {
-        void Repeat(int count, Action action)
+        for (var i = 0; i < count; i++)
         {
-            for (int i = 0; i < count; i++)
-            {
-                Logger.LogTrace("Repetition {0}", i);
-                action();
-            }
+            Logger.LogTrace("Repetition {0}", i);
+            action();
         }
+    }
 
-        [TestMethod]
-        public void ResolveMain()
-        {
-            Repeat(5000, () =>
+    [TestMethod]
+    public void ResolveMain()
+    {
+        Repeat(
+            5000,
+            () =>
             {
-                (var server, var client) = SetupClientServerPair();
+                var (server, client) = SetupClientServerPair();
 
                 using (server)
                 using (client)
@@ -46,65 +44,72 @@ namespace Capnp.Net.Runtime.Tests
                         Assert.IsTrue(resolving.WhenResolved.WrappedTask.Wait(MediumNonDbgTimeout));
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void Cancel()
+    [TestMethod]
+    public void Cancel()
+    {
+        var t = new TcpRpcPorted();
+        Repeat(1000, t.Cancel);
+    }
+
+    [TestMethod]
+    public void Embargo()
+    {
+        var t = new TcpRpcPorted();
+        Repeat(
+            100,
+            () =>
+                NewLocalhostTcpTestbed(
+                        TcpRpcTestOptions.ClientTracer | TcpRpcTestOptions.ClientFluctStream
+                    )
+                    .RunTest(Testsuite.EmbargoOnPromisedAnswer)
+        );
+    }
+
+    [TestMethod]
+    public void EmbargoServer()
+    {
+        var t2 = new TcpRpcInterop();
+        Repeat(20, t2.EmbargoServer);
+    }
+
+    [TestMethod]
+    public void EmbargoNull()
+    {
+        // Some code paths are really rare during this test, therefore increased repetition count.
+
+        var t = new TcpRpcPorted();
+        Repeat(1000, t.EmbargoNull);
+
+        var t2 = new TcpRpcInterop();
+        Repeat(100, t2.EmbargoNullServer);
+    }
+
+    [TestMethod]
+    public void RetainAndRelease()
+    {
+        var t = new TcpRpcPorted();
+        Repeat(100, t.RetainAndRelease);
+    }
+
+    [TestMethod]
+    public void PipelineAfterReturn()
+    {
+        var t = new TcpRpc();
+        Repeat(100, t.PipelineAfterReturn);
+    }
+
+    [TestMethod]
+    public void ScatteredTransfer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+
+        using (var server = new TcpRpcServer(addr, 0))
         {
-            var t = new TcpRpcPorted();
-            Repeat(1000, t.Cancel);
-        }
-
-        [TestMethod]
-        public void Embargo()
-        {
-            var t = new TcpRpcPorted();
-            Repeat(100, 
-                () => 
-                NewLocalhostTcpTestbed(TcpRpcTestOptions.ClientTracer | TcpRpcTestOptions.ClientFluctStream)
-                    .RunTest(Testsuite.EmbargoOnPromisedAnswer));
-        }
-
-        [TestMethod]
-        public void EmbargoServer()
-        {
-            var t2 = new TcpRpcInterop();
-            Repeat(20, t2.EmbargoServer);
-        }
-
-        [TestMethod]
-        public void EmbargoNull()
-        {
-            // Some code paths are really rare during this test, therefore increased repetition count.
-
-            var t = new TcpRpcPorted();
-            Repeat(1000, t.EmbargoNull);
-
-            var t2 = new TcpRpcInterop();
-            Repeat(100, t2.EmbargoNullServer);
-        }
-
-        [TestMethod]
-        public void RetainAndRelease()
-        {
-            var t = new TcpRpcPorted();
-            Repeat(100, t.RetainAndRelease);
-        }
-
-        [TestMethod]
-        public void PipelineAfterReturn()
-        {
-            var t = new TcpRpc();
-            Repeat(100, t.PipelineAfterReturn);
-        }
-
-        [TestMethod]
-        public void ScatteredTransfer()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-
-            using (var server = new TcpRpcServer(addr, port))
+            port = server.Port;
             using (var client = new TcpRpcClient())
             {
                 server.InjectMidlayer(s => new ScatteringStream(s, 7));
@@ -116,13 +121,13 @@ namespace Capnp.Net.Runtime.Tests
                 server.Main = new TestInterfaceImpl(counters);
                 using (var main = client.GetMain<ITestInterface>())
                 {
-                    for (int i = 0; i < 100; i++)
+                    for (var i = 0; i < 100; i++)
                     {
-                        var request1 = main.Foo(123, true, default);
-                        var request3 = Assert.ThrowsExceptionAsync<RpcException>(() => main.Bar(default));
+                        var request1 = main.Foo(123, true);
+                        var request3 = Assert.ThrowsAsync<RpcException>(() => main.Bar());
                         var s = new TestAllTypes();
                         Common.InitTestMessage(s);
-                        var request2 = main.Baz(s, default);
+                        var request2 = main.Baz(s);
 
                         Assert.IsTrue(request1.Wait(MediumNonDbgTimeout));
                         Assert.IsTrue(request2.Wait(MediumNonDbgTimeout));

@@ -1,11 +1,9 @@
-﻿
-namespace CapnpC.CSharp.Generator.Model
+namespace CapnpC.CSharp.Generator.Model;
+
+internal interface IDefinition
 {
-    interface IDefinition
-    {
-        ulong Id { get;  }
-        bool IsGenerated { get; }
-        TypeTag Tag { get; }
-        IHasNestedDefinitions DeclaringElement { get; }
-    }
+    ulong Id { get; }
+    bool IsGenerated { get; }
+    TypeTag Tag { get; }
+    IHasNestedDefinitions DeclaringElement { get; }
 }

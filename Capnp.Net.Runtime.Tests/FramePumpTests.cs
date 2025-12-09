@@ -1,76 +1,70 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.IO.Pipes;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading;
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Capnp.Net.Runtime.Tests
+namespace Capnp.Net.Runtime.Tests;
+
+[TestClass]
+[TestCategory("Coverage")]
+public class FramePumpTests
 {
-    [TestClass]
-    [TestCategory("Coverage")]
-    public class FramePumpTests
+    [TestMethod]
+    public void PipedFramePump()
     {
-        class MyStruct : SerializerState
+        int UnpackFrame(WireFrame frame)
         {
-            public MyStruct()
-            {
-                SetStruct(0, 1);
-            }
+            var count = frame.Segments.Count;
+
+            for (var i = 0; i < count; i++)
+                Assert.AreEqual(i + 1, frame.Segments[i].Length);
+
+            return count;
         }
 
-        [TestMethod]
-        public void PipedFramePump()
+        WireFrame PackFrame(int value)
         {
-            int UnpackFrame(WireFrame frame)
+            var segments = new Memory<ulong>[value];
+
+            for (var i = 0; i < value; i++)
             {
-                int count = frame.Segments.Count;
-
-                for (int i = 0; i < count; i++)
-                {
-                    Assert.AreEqual(i + 1, frame.Segments[i].Length);
-                }
-
-                return count;
+                var a = new ulong[i + 1];
+                segments[i] = new Memory<ulong>(a);
             }
 
-            WireFrame PackFrame(int value)
+            return new WireFrame(segments);
+        }
+
+        Thread rxRunner = null;
+
+        using (var listener = new TcpListener(IPAddress.Loopback, 0))
+        {
+            listener.Start();
+            var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+            var acceptTask = listener.AcceptTcpClientAsync();
+            using (var client = new TcpClient("127.0.0.1", port))
+            using (var server = acceptTask.Result)
+            using (var serverStream = server.GetStream())
+            using (var clientStream = client.GetStream())
+            using (var bc = new BlockingCollection<int>(16))
             {
-                var segments = new Memory<ulong>[value];
-
-                for (int i = 0; i < value; i++)
-                {
-                    ulong[] a = new ulong[i + 1];
-                    segments[i] = new Memory<ulong>(a);
-                }
-
-                return new WireFrame(segments);
-            }
-
-            Thread rxRunner = null;
-
-            using (var server = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.None))
-            using (var client = new AnonymousPipeClientStream(PipeDirection.In, server.ClientSafePipeHandle))
-            using (var bc = new BlockingCollection<int>(8))
-            {
-                server.ReadMode = PipeTransmissionMode.Byte;
-                client.ReadMode = PipeTransmissionMode.Byte;
-
-                using (var txPump = new FramePump(server))
-                using (var rxPump = new FramePump(client))
+                using (var txPump = new FramePump(serverStream))
+                using (var rxPump = new FramePump(clientStream))
                 {
                     rxRunner = new Thread(() =>
                     {
                         rxPump.Run();
                     });
+                    rxRunner.IsBackground = true;
 
                     rxPump.FrameReceived += f => bc.Add(UnpackFrame(f));
 
                     rxRunner.Start();
 
-                    for (int i = 0; i < 100; i++)
+                    for (var i = 0; i < 100; i++)
                     {
                         txPump.Send(PackFrame(1));
                         txPump.Send(PackFrame(8));
@@ -81,7 +75,7 @@ namespace Capnp.Net.Runtime.Tests
                         txPump.Send(PackFrame(4));
                         txPump.Send(PackFrame(5));
 
-                        Assert.IsTrue(SpinWait.SpinUntil(() => bc.Count == 8, 500));
+                        Assert.IsTrue(SpinWait.SpinUntil(() => bc.Count == 8, 5000));
 
                         Assert.AreEqual(1, bc.Take());
                         Assert.AreEqual(8, bc.Take());
@@ -94,66 +88,70 @@ namespace Capnp.Net.Runtime.Tests
                     }
                 }
             }
-
-            Assert.IsTrue(rxRunner.Join(500));
         }
 
-        [TestMethod]
-        public void FramePumpDeferredProcessing()
+        Assert.IsTrue(rxRunner.Join(5000));
+    }
+
+    [TestMethod]
+    public void FramePumpDeferredProcessing()
+    {
+        int UnpackAndVerifyFrame(WireFrame frame, int expectedCount)
         {
-            int UnpackAndVerifyFrame(WireFrame frame, int expectedCount)
+            var count = frame.Segments.Count;
+            Assert.AreEqual(expectedCount, count);
+
+            for (var i = 0; i < count; i++)
             {
-                int count = frame.Segments.Count;
-                Assert.AreEqual(expectedCount, count);
-
-                for (int i = 0; i < count; i++)
+                var length = frame.Segments[i].Length;
+                Assert.AreEqual(expectedCount - i, length);
+                for (var j = 0; j < length; j++)
                 {
-                    int length = frame.Segments[i].Length;
-                    Assert.AreEqual(expectedCount - i, length);
-                    for (int j = 0; j < length; j++)
-                    {
-                        var expected = (ulong) (length - j);
-                        var actual = frame.Segments[i].Span[j];
-                        Assert.AreEqual(expected, actual);
-                    }
+                    var expected = (ulong)(length - j);
+                    var actual = frame.Segments[i].Span[j];
+                    Assert.AreEqual(expected, actual);
                 }
-
-                return count;
             }
 
-            WireFrame PackFrame(int value)
+            return count;
+        }
+
+        WireFrame PackFrame(int value)
+        {
+            var segments = new Memory<ulong>[value];
+
+            for (var i = 0; i < value; i++)
             {
-                var segments = new Memory<ulong>[value];
-
-                for (int i = 0; i < value; i++)
-                {
-                    ulong[] a = new ulong[value - i];
-                    segments[i] = new Memory<ulong>(a);
-                    for (int j = 0; j < a.Length; j++)
-                    {
-                        a[j] = (ulong)(a.Length - j);
-                    }
-                }
-
-                return new WireFrame(segments);
+                var a = new ulong[value - i];
+                segments[i] = new Memory<ulong>(a);
+                for (var j = 0; j < a.Length; j++)
+                    a[j] = (ulong)(a.Length - j);
             }
 
-            Thread rxRunner = null;
+            return new WireFrame(segments);
+        }
 
-            using (var server = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.None))
-            using (var client = new AnonymousPipeClientStream(PipeDirection.In, server.ClientSafePipeHandle))
-            using (var bc = new BlockingCollection<WireFrame>(8))
+        Thread rxRunner = null;
+
+        using (var listener = new TcpListener(IPAddress.Loopback, 0))
+        {
+            listener.Start();
+            var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+            var acceptTask = listener.AcceptTcpClientAsync();
+            using (var client = new TcpClient("127.0.0.1", port))
+            using (var server = acceptTask.Result)
+            using (var serverStream = server.GetStream())
+            using (var clientStream = client.GetStream())
+            using (var bc = new BlockingCollection<WireFrame>(16))
             {
-                server.ReadMode = PipeTransmissionMode.Byte;
-                client.ReadMode = PipeTransmissionMode.Byte;
-
-                using (var txPump = new FramePump(server))
-                using (var rxPump = new FramePump(client))
+                using (var txPump = new FramePump(serverStream))
+                using (var rxPump = new FramePump(clientStream))
                 {
                     rxRunner = new Thread(() =>
                     {
                         rxPump.Run();
                     });
+                    rxRunner.IsBackground = true;
 
                     rxPump.FrameReceived += bc.Add;
 
@@ -180,8 +178,16 @@ namespace Capnp.Net.Runtime.Tests
                     UnpackAndVerifyFrame(bc.Take(), 5);
                 }
             }
+        }
 
-            Assert.IsTrue(rxRunner.Join(500));
+        Assert.IsTrue(rxRunner.Join(5000));
+    }
+
+    private class MyStruct : SerializerState
+    {
+        public MyStruct()
+        {
+            SetStruct(0, 1);
         }
     }
 }

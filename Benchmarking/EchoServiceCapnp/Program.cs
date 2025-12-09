@@ -1,22 +1,21 @@
-﻿using Capnp.Rpc;
-using EchoServiceCapnp.Services;
-using System;
+﻿using System;
 using System.Net;
+using Capnp.Rpc;
+using EchoServiceCapnp.Services;
 
-namespace EchoServiceCapnp
+namespace EchoServiceCapnp;
+
+internal class Program
 {
-    class Program
+    private static void Main(string[] args)
     {
-        static void Main(string[] args)
+        using (var server = new TcpRpcServer())
         {
-            using (var server = new TcpRpcServer())
-            {
-                server.AddBuffering();
-                server.Main = new CapnpEchoService();
-                server.StartAccepting(IPAddress.Any, 5002);
-                Console.WriteLine("Press RETURN to stop listening");
-                Console.ReadLine();
-            }
+            server.AddBuffering();
+            server.Main = new CapnpEchoService();
+            server.StartAccepting(IPAddress.Loopback, 5002);
+            Console.WriteLine("Press RETURN to stop listening");
+            Console.ReadLine();
         }
     }
 }

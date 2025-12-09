@@ -1,13 +1,12 @@
-﻿using Capnp.Rpc;
-using CapnpGen;
-using CapnpProfile.Services;
-using System;
+﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Capnp.Rpc;
+using CapnpGen;
+using CapnpProfile.Services;
 
 namespace CapnpProfile
 {
-
     class Program
     {
         static async Task Run(IEchoer echoer)
@@ -31,9 +30,15 @@ namespace CapnpProfile
                     counter = 0;
 
                     Console.WriteLine($"StrictlyOrderedTask performance statistics:");
-                    Console.WriteLine($"AwaitInternal: max. {Capnp.Util.StrictlyOrderedTaskExtensions.Stats.AwaitInternalMaxOuterIterations} outer iterations");
-                    Console.WriteLine($"AwaitInternal: max. {Capnp.Util.StrictlyOrderedTaskExtensions.Stats.AwaitInternalMaxInnerIterations} inner iterations");
-                    Console.WriteLine($"OnCompleted: max. {Capnp.Util.StrictlyOrderedTaskExtensions.Stats.OnCompletedMaxSpins} iterations");
+                    Console.WriteLine(
+                        $"AwaitInternal: max. {Capnp.Util.StrictlyOrderedTaskExtensions.Stats.AwaitInternalMaxOuterIterations} outer iterations"
+                    );
+                    Console.WriteLine(
+                        $"AwaitInternal: max. {Capnp.Util.StrictlyOrderedTaskExtensions.Stats.AwaitInternalMaxInnerIterations} inner iterations"
+                    );
+                    Console.WriteLine(
+                        $"OnCompleted: max. {Capnp.Util.StrictlyOrderedTaskExtensions.Stats.OnCompletedMaxSpins} iterations"
+                    );
                 }
 #endif
             }
@@ -41,12 +46,13 @@ namespace CapnpProfile
 
         static async Task Main(string[] args)
         {
-
             if (args.Length > 0)
             {
                 var pair = new EnginePair();
                 pair.Engine1.Main = new CapnpEchoService();
-                var echoer = (CapabilityReflection.CreateProxy<IEchoer>(pair.Endpoint2.QueryMain()) as IEchoer);
+                var echoer = (
+                    CapabilityReflection.CreateProxy<IEchoer>(pair.Endpoint2.QueryMain()) as IEchoer
+                );
 
                 await Run(echoer);
             }

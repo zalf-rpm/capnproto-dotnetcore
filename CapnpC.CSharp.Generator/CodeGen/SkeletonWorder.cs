@@ -1,10 +1,9 @@
-﻿using System;
+using Capnp.Rpc;
 
-namespace CapnpC.CSharp.Generator.CodeGen
+namespace CapnpC.CSharp.Generator.CodeGen;
+
+internal abstract class SkeletonWorder : Skeleton<object>
 {
-    abstract class SkeletonWorder : Capnp.Rpc.Skeleton<object>
-    {
-        public const string SetMethodTableName = nameof(SkeletonWorder.SetMethodTable);
-        public const string ImplName = nameof(SkeletonWorder.Impl);
-    }
+    public const string SetMethodTableName = nameof(SetMethodTable);
+    public const string ImplName = nameof(Impl);
 }

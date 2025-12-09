@@ -1,144 +1,180 @@
-﻿using Capnp.FrameTracing;
-using Capnp.Net.Runtime.Tests.GenImpls;
-using Capnp.Net.Runtime.Tests.Util;
-using Capnp.Rpc;
-using Capnproto_test.Capnp.Test;
-using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Capnp.FrameTracing;
+using Capnp.Net.Runtime.Tests.GenImpls;
+using Capnp.Net.Runtime.Tests.Util;
+using Capnp.Rpc;
+using Capnproto_test.Capnp.Test;
+using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Exception = System.Exception;
 
-namespace Capnp.Net.Runtime.Tests
+namespace Capnp.Net.Runtime.Tests;
+
+[TestClass]
+public class TcpRpcInterop : TestBase
 {
-    [TestClass]
-    public class TcpRpcInterop: TestBase
+    private Process _currentProcess;
+
+    private Process StartProcess(ProcessStartInfo processStartInfo)
     {
-        Process StartProcess(ProcessStartInfo processStartInfo)
+        try
         {
+            return Process.Start(processStartInfo);
+        }
+        catch (Win32Exception exception) when (exception.ErrorCode == 2 || exception.ErrorCode == 3)
+        {
+            Assert.Fail(
+                $"Did not find test executable {processStartInfo.FileName}. Did you build CapnpCompatTest.sln in Release configuration?"
+            );
+        }
+        catch (Exception exception)
+        {
+            Assert.Fail($"Could not execute {processStartInfo.FileName}: {exception.Message}");
+        }
+
+        return null;
+    }
+
+    private bool TryLaunchCompatTestProcess(
+        IPAddress addr,
+        int port,
+        string whichTest,
+        Action<StreamReader, int> test
+    )
+    {
+        var myPath = Path.GetDirectoryName(typeof(TcpRpcInterop).Assembly.Location);
+        string config;
+#if DEBUG
+        config = "Debug";
+#else
+        config = "Release";
+#endif
+        // Adjusted for Linux build location
+        var path = Path.Combine(myPath, "../../../../CapnpCompatTest/CapnpCompatTest");
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+        {
+            path = Path.Combine(myPath, $@"..\..\..\..\{config}\CapnpCompatTest.exe");
+        }
+
+        path = Path.GetFullPath(path);
+        var arguments = $"{whichTest} {addr}:{port}";
+        var startInfo = new ProcessStartInfo(path, arguments)
+        {
+            UseShellExecute = false,
+            RedirectStandardError = true,
+            RedirectStandardOutput = true,
+            RedirectStandardInput = true,
+        };
+
+        using (_currentProcess = StartProcess(startInfo))
+        using (var job = new Job())
+        {
+            job.AddProcess(_currentProcess.Handle);
+
             try
             {
-                return Process.Start(processStartInfo);
-            }
-            catch (Win32Exception exception) when (exception.ErrorCode == 2 || exception.ErrorCode == 3)
-            {
-                Assert.Fail($"Did not find test executable {processStartInfo.FileName}. Did you build CapnpCompatTest.sln in Release configuration?");
-            }
-            catch (System.Exception exception)
-            {
-                Assert.Fail($"Could not execute {processStartInfo.FileName}: {exception.Message}");
-            }
-            return null;
-        }
-
-        Process _currentProcess;
-
-        bool TryLaunchCompatTestProcess(IPAddress addr, int port, string whichTest, Action<StreamReader> test)
-        {
-            string myPath = Path.GetDirectoryName(typeof(TcpRpcInterop).Assembly.Location);
-            string config;
-#if DEBUG
-            config = "Debug";
-#else
-            config = "Release";
-#endif
-            string path = Path.Combine(myPath, $@"..\..\..\..\{config}\CapnpCompatTest.exe");
-            path = Path.GetFullPath(path);
-            string arguments = $"{whichTest} {addr}:{port}";
-            var startInfo = new ProcessStartInfo(path, arguments)
-            {
-                UseShellExecute = false,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                RedirectStandardInput = true
-            };
-
-            using (_currentProcess = StartProcess(startInfo))
-            using (var job = new Job())
-            {
-                job.AddProcess(_currentProcess.Handle);
-
+                var actualPort = port;
                 try
                 {
-                    try
-                    {
-                        _currentProcess.StandardError.ReadToEndAsync().ContinueWith(t => Console.Error.WriteLine(t.Result));
-                        var firstLine = _currentProcess.StandardOutput.ReadLineAsync();
-                        Assert.IsTrue(firstLine.Wait(MediumNonDbgTimeout), "Problem after launching test process");
-                        Assert.IsNotNull(firstLine.Result, "Problem after launching test process");
-                        Assert.IsTrue(firstLine.Result.StartsWith("Listening") || firstLine.Result.StartsWith("Connecting"),
-                            "Problem after launching test process");
-                    }
-                    catch (AssertFailedException exception)
-                    {
-                        Logger.LogError(exception.Message);
-                        return false;
-                    }
+                    _currentProcess
+                        .StandardError.ReadToEndAsync()
+                        .ContinueWith(t => Console.Error.WriteLine(t.Result));
+                    var firstLine = _currentProcess.StandardOutput.ReadLineAsync();
+                    Assert.IsTrue(
+                        firstLine.Wait(MediumNonDbgTimeout),
+                        "Problem after launching test process"
+                    );
+                    Assert.IsNotNull(firstLine.Result, "Problem after launching test process");
+                    Assert.IsTrue(
+                        firstLine.Result.StartsWith("Listening")
+                            || firstLine.Result.StartsWith("Connecting"),
+                        "Problem after launching test process"
+                    );
 
-                    test(_currentProcess.StandardOutput);
-
-                    return true;
+                    if (firstLine.Result.StartsWith("Listening on port "))
+                    {
+                        var parts = firstLine.Result.Split(' ');
+                        if (parts.Length >= 4 && int.TryParse(parts[3].Trim('.'), out var p))
+                        {
+                            actualPort = p;
+                        }
+                    }
                 }
-                finally
+                catch (AssertFailedException exception)
                 {
-                    try
-                    {
-                        _currentProcess.Kill();
-                    }
-                    catch
-                    {
-                    }
+                    Logger.LogError(exception.Message);
+                    return false;
                 }
+
+                test(_currentProcess.StandardOutput, actualPort);
+
+                return true;
+            }
+            finally
+            {
+                try
+                {
+                    _currentProcess.Kill();
+                }
+                catch { }
             }
         }
+    }
 
-        void LaunchCompatTestProcess(string whichTest, IPAddress addr, int port, Action<StreamReader> test)
-        {
-            for (int retry = 0; retry < 5; retry++)
+    private void LaunchCompatTestProcess(
+        string whichTest,
+        IPAddress addr,
+        int port,
+        Action<StreamReader, int> test
+    )
+    {
+        for (var retry = 0; retry < 5; retry++)
+            if (TryLaunchCompatTestProcess(addr, port, whichTest, test))
+                return;
+
+        Assert.Fail("Problem after launching test process");
+    }
+
+    private void SendInput(string line)
+    {
+        _currentProcess.StandardInput.WriteLine(line);
+    }
+
+    private void AssertOutput(StreamReader stdout, string expected)
+    {
+        var line = stdout.ReadLineAsync();
+        Assert.IsTrue(line.Wait(MediumNonDbgTimeout));
+        Assert.AreEqual(expected, line.Result);
+    }
+
+    [TestMethod]
+    public void BasicClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:Interface",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
-                if (TryLaunchCompatTestProcess(addr, port, whichTest, test))
-                    return;
-
-            }
-
-            Assert.Fail("Problem after launching test process");
-        }
-
-        void SendInput(string line)
-        {
-            _currentProcess.StandardInput.WriteLine(line);
-        }
-
-        void AssertOutput(StreamReader stdout, string expected)
-        {
-            var line = stdout.ReadLineAsync();
-            Assert.IsTrue(line.Wait(MediumNonDbgTimeout));
-            Assert.AreEqual(expected, line.Result);
-        }
-
-        [TestMethod]
-        public void BasicClient()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:Interface", addr, port, stdout =>
-            {
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //client.WhenConnected.Wait();
 
                     using (var main = client.GetMain<ITestInterface>())
                     {
-                        var request1 = main.Foo(123, true, default);
-                        var request3 = Assert.ThrowsExceptionAsync<RpcException>(() => main.Bar(default));
+                        var request1 = main.Foo(123, true);
+                        var request3 = Assert.ThrowsAsync<RpcException>(() => main.Bar());
                         var s = new TestAllTypes();
                         Common.InitTestMessage(s);
-                        var request2 = main.Baz(s, default);
+                        var request2 = main.Baz(s);
 
                         AssertOutput(stdout, "foo 123 1");
                         Assert.IsTrue(request1.Wait(MediumNonDbgTimeout));
@@ -151,49 +187,60 @@ namespace Capnp.Net.Runtime.Tests
                         Assert.IsTrue(request3.Wait(MediumNonDbgTimeout));
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void BasicServer()
+    [TestMethod]
+    public void BasicServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestInterfaceImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestInterfaceImpl(counters);
 
-                LaunchCompatTestProcess("client:Basic", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:Basic",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "Basic test start");
                     AssertOutput(stdout, "Basic test end");
                     Assert.AreEqual(2, counters.CallCount);
-                });
-            }
+                }
+            );
         }
+    }
 
-        [TestMethod]
-        public void PipelineClient()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:Pipeline", addr, port, stdout =>
+    [TestMethod]
+    public void PipelineClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:Pipeline",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
                 stdout.ReadToEndAsync().ContinueWith(t => Console.WriteLine(t.Result));
 
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //client.WhenConnected.Wait();
 
                     using (var main = client.GetMain<ITestPipeline>())
                     {
                         var chainedCallCount = new Counters();
-                        var request = main.GetCap(234, new TestInterfaceImpl(chainedCallCount), default);
+                        var request = main.GetCap(234, new TestInterfaceImpl(chainedCallCount));
                         using (var box = request.OutBox_Cap())
                         {
-                            var pipelineRequest = box.Foo(321, false, default);
+                            var pipelineRequest = box.Foo(321, false);
                             using (var box2 = ((Proxy)box).Cast<ITestExtends>(false))
                             {
-                                var pipelineRequest2 = box2.Grault(default);
+                                var pipelineRequest2 = box2.Grault();
 
                                 Assert.IsTrue(pipelineRequest.Wait(MediumNonDbgTimeout));
                                 Assert.IsTrue(pipelineRequest2.Wait(MediumNonDbgTimeout));
@@ -204,46 +251,58 @@ namespace Capnp.Net.Runtime.Tests
                                 Assert.AreEqual(1, chainedCallCount.CallCount);
                             }
                         }
+
                         request.ContinueWith(t => t.Result.Item2.Cap.Dispose());
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void PipelineServer()
+    [TestMethod]
+    public void PipelineServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestPipelineImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestPipelineImpl(counters);
 
-                LaunchCompatTestProcess("client:Pipelining", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:Pipelining",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "Pipelining test start");
                     AssertOutput(stdout, "foo 123 1");
                     AssertOutput(stdout, "~");
                     AssertOutput(stdout, "Pipelining test end");
                     Assert.AreEqual(3, counters.CallCount);
-                });
-            }
+                }
+            );
         }
+    }
 
-        [TestMethod]
-        public void ReleaseClient()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+    [TestMethod]
+    public void ReleaseClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //client.WhenConnected.Wait();
 
                     using (var main = client.GetMain<ITestMoreStuff>())
                     {
-                        var task1 = main.GetHandle(default);
-                        var task2 = main.GetHandle(default);
+                        var task1 = main.GetHandle();
+                        var task2 = main.GetHandle();
                         Assert.IsTrue(task1.Wait(MediumNonDbgTimeout));
                         Assert.IsTrue(task2.Wait(MediumNonDbgTimeout));
 
@@ -261,50 +320,67 @@ namespace Capnp.Net.Runtime.Tests
                         AssertOutput(stdout, "--");
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void ReleaseServer()
+    [TestMethod]
+    public void ReleaseServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestMoreStuffImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestMoreStuffImpl(counters);
 
-                LaunchCompatTestProcess("client:Release", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:Release",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "Release test start");
                     AssertOutput(stdout, "sync");
                     Assert.AreEqual(2, counters.HandleCount);
                     SendInput("x");
                     AssertOutput(stdout, "handle1 null");
-                    Assert.IsTrue(SpinWait.SpinUntil(() => counters.HandleCount == 1, MediumNonDbgTimeout));
+                    Assert.IsTrue(
+                        SpinWait.SpinUntil(() => counters.HandleCount == 1, MediumNonDbgTimeout)
+                    );
                     SendInput("x");
                     AssertOutput(stdout, "handle2 null");
-                    Assert.IsTrue(SpinWait.SpinUntil(() => counters.HandleCount == 1, MediumNonDbgTimeout));
+                    Assert.IsTrue(
+                        SpinWait.SpinUntil(() => counters.HandleCount == 1, MediumNonDbgTimeout)
+                    );
                     SendInput("x");
                     AssertOutput(stdout, "promise null");
-                    Assert.IsTrue(SpinWait.SpinUntil(() => counters.HandleCount == 0, MediumNonDbgTimeout));
+                    Assert.IsTrue(
+                        SpinWait.SpinUntil(() => counters.HandleCount == 0, MediumNonDbgTimeout)
+                    );
                     SendInput("x");
                     AssertOutput(stdout, "Release test end");
-                });
-            }
+                }
+            );
         }
+    }
 
-        [TestMethod]
-        public void ReleaseOnCancelClient()
-        {
-            // Since we have a threaded model, there is no way to deterministically provoke the situation
-            // where Cancel and Finish message cross paths. Instead, we'll do a lot of such requests and
-            // later on verify that the handle count is 0.
-            int iterationCount = 5000;
+    [TestMethod]
+    public void ReleaseOnCancelClient()
+    {
+        // Since we have a threaded model, there is no way to deterministically provoke the situation
+        // where Cancel and Finish message cross paths. Instead, we'll do a lot of such requests and
+        // later on verify that the handle count is 0.
+        var iterationCount = 5000;
 
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //client.WhenConnected.Wait();
 
@@ -314,11 +390,11 @@ namespace Capnp.Net.Runtime.Tests
 
                         async Task VerifyOutput()
                         {
-                            int handleCount = 0;
+                            var handleCount = 0;
 
-                            for (int i = 0; i < 2 * iterationCount; i++)
+                            for (var i = 0; i < 2 * iterationCount; i++)
                             {
-                                string line = await stdout.ReadLineAsync();
+                                var line = await stdout.ReadLineAsync();
 
                                 switch (line)
                                 {
@@ -326,11 +402,11 @@ namespace Capnp.Net.Runtime.Tests
                                         line = await stdout.ReadLineAsync();
                                         Assert.AreEqual("++", line);
                                         ++handleCount;
-                                        Assert.IsTrue(handleCount <= iterationCount);
+                                        Assert.IsLessThanOrEqualTo(iterationCount, handleCount);
                                         break;
 
                                     case "--":
-                                        Assert.IsTrue(handleCount > 0);
+                                        Assert.IsGreaterThan(0, handleCount);
                                         --handleCount;
                                         break;
 
@@ -346,21 +422,19 @@ namespace Capnp.Net.Runtime.Tests
                         var verifyOutputTask = VerifyOutput();
                         var taskList = new List<Task>();
 
-                        for (int i = 0; i < iterationCount; i++)
+                        for (var i = 0; i < iterationCount; i++)
                         {
-                            var task = main.GetHandle(default);
+                            var task = main.GetHandle();
+
                             async Task TerminateAnswer()
                             {
                                 try
                                 {
-                                    using (var proxy = await task)
-                                    {
-                                    }
+                                    using (var proxy = await task) { }
                                 }
-                                catch (TaskCanceledException)
-                                {
-                                }
+                                catch (TaskCanceledException) { }
                             }
+
                             taskList.Add(TerminateAnswer());
                         }
 
@@ -371,44 +445,58 @@ namespace Capnp.Net.Runtime.Tests
 
                         // Not part of original test. Ensure that there is no unwanted extra output
                         // arising from the test sequence above.
-                        var sync = main.GetCallSequence(0, default);
+                        var sync = main.GetCallSequence(0);
                         AssertOutput(stdout, "getCallSequence");
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void ReleaseOnCancelServer()
+    [TestMethod]
+    public void ReleaseOnCancelServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestMoreStuffImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestMoreStuffImpl(counters);
 
-                LaunchCompatTestProcess("client:ReleaseOnCancel", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:ReleaseOnCancel",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "ReleaseOnCancel test start");
                     AssertOutput(stdout, "ReleaseOnCancel test end");
-                    Assert.IsTrue(SpinWait.SpinUntil(() => counters.HandleCount == 0, MediumNonDbgTimeout), $"Handle count stuck at {counters.HandleCount}");
-                });
-            }
+                    Assert.IsTrue(
+                        SpinWait.SpinUntil(() => counters.HandleCount == 0, MediumNonDbgTimeout),
+                        $"Handle count stuck at {counters.HandleCount}"
+                    );
+                }
+            );
         }
+    }
 
-        [TestMethod]
-        [TestCategory("Coverage")]
-        public void TestTailCallClient()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:TailCaller", addr, port, stdout =>
+    [TestMethod]
+    [TestCategory("Coverage")]
+    public void TestTailCallClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:TailCaller",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
                 using (var client = new TcpRpcClient())
                 {
                     var tracer = new RpcFrameTracer(Console.Out);
 
                     client.AttachTracer(tracer);
-                    client.Connect(addr.ToString(), port);
+                    client.Connect(addr.ToString(), actualPort);
 
                     //client.WhenConnected.Wait();
 
@@ -417,67 +505,80 @@ namespace Capnp.Net.Runtime.Tests
                         var calleeCallCount = new Counters();
                         var callee = new TestTailCalleeImpl(calleeCallCount);
 
-                        var promise = main.Foo(456, callee, default);
+                        var promise = main.Foo(456, callee);
                         using (var c = promise.C())
                         {
-                            var dependentCall0 = c.GetCallSequence(0, default);
+                            var dependentCall0 = c.GetCallSequence(0);
 
                             Assert.IsTrue(promise.Wait(MediumNonDbgTimeout));
                             Assert.AreEqual(456u, promise.Result.I);
                             Assert.AreEqual("from TestTailCaller", promise.Result.T);
 
-                            var dependentCall1 = c.GetCallSequence(1, default);
-                            var dependentCall2 = c.GetCallSequence(2, default);
+                            var dependentCall1 = c.GetCallSequence(1);
+                            var dependentCall2 = c.GetCallSequence(2);
 
                             AssertOutput(stdout, "foo");
                             Assert.IsTrue(dependentCall0.Wait(MediumNonDbgTimeout));
                             Assert.IsTrue(dependentCall1.Wait(MediumNonDbgTimeout));
                             Assert.IsTrue(dependentCall2.Wait(MediumNonDbgTimeout));
                         }
+
                         Assert.AreEqual(1, calleeCallCount.CallCount);
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod, Ignore]
-        // For details on why this test is ignored, see https://github.com/capnproto/capnproto/issues/876
-        public void TestTailCallServer()
+    [TestMethod]
+    [Ignore]
+    // For details on why this test is ignored, see https://github.com/capnproto/capnproto/issues/876
+    public void TestTailCallServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
+            port = server.Port;
+            var tracer = new RpcFrameTracer(Console.Out);
+
+            server.OnConnectionChanged += (s, a) =>
             {
-                var tracer = new RpcFrameTracer(Console.Out);
+                if (a.Connection.State == ConnectionState.Initializing)
+                    a.Connection.AttachTracer(tracer);
+            };
 
-                server.OnConnectionChanged += (s, a) =>
-                {
-                    if (a.Connection.State == ConnectionState.Initializing)
-                        a.Connection.AttachTracer(tracer);
-                };
+            var counters = new Counters();
+            server.Main = new TestTailCallerImpl(counters);
 
-                var counters = new Counters();
-                server.Main = new TestTailCallerImpl(counters);
-
-                LaunchCompatTestProcess("client:TailCall", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:TailCall",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "TailCall test start");
                     AssertOutput(stdout, "foo");
                     AssertOutput(stdout, "TailCall test end");
 
                     Assert.AreEqual(1, counters.CallCount);
-                });
-            }
+                }
+            );
         }
+    }
 
-        [TestMethod]
-        public void CancelationServer()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+    [TestMethod]
+    public void CancelationServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
                 stdout.ReadToEndAsync().ContinueWith(t => Console.WriteLine(t.Result));
 
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //client.WhenConnected.Wait();
 
@@ -489,7 +590,12 @@ namespace Capnp.Net.Runtime.Tests
                         var cts = new CancellationTokenSource();
                         var cancelTask = main.ExpectCancel(impl, cts.Token);
 
-                        Assert.IsFalse(SpinWait.SpinUntil(() => destroyed.Task.IsCompleted || cancelTask.IsCompleted, ShortTimeout));
+                        Assert.IsFalse(
+                            SpinWait.SpinUntil(
+                                () => destroyed.Task.IsCompleted || cancelTask.IsCompleted,
+                                ShortTimeout
+                            )
+                        );
 
                         cts.Cancel();
 
@@ -497,34 +603,45 @@ namespace Capnp.Net.Runtime.Tests
                         Assert.IsFalse(cancelTask.IsCompleted && !cancelTask.IsCanceled);
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void CancelationClient()
+    [TestMethod]
+    public void CancelationClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestMoreStuffImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestMoreStuffImpl(counters);
 
-                LaunchCompatTestProcess("client:Cancelation", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:Cancelation",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "Cancelation test start");
                     AssertOutput(stdout, "~");
                     AssertOutput(stdout, "Cancelation test end");
-                });
-            }
+                }
+            );
         }
+    }
 
-        [TestMethod]
-        public void PromiseResolveServer()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+    [TestMethod]
+    public void PromiseResolveServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //client.WhenConnected.Wait();
 
@@ -533,12 +650,12 @@ namespace Capnp.Net.Runtime.Tests
                         var tcs = new TaskCompletionSource<ITestInterface>();
                         using (var eager = tcs.Task.Eager(true))
                         {
-                            var request = main.CallFoo(Proxy.Share(eager), default);
+                            var request = main.CallFoo(Proxy.Share(eager));
                             AssertOutput(stdout, "callFoo");
-                            var request2 = main.CallFooWhenResolved(Proxy.Share(eager), default);
+                            var request2 = main.CallFooWhenResolved(Proxy.Share(eager));
                             AssertOutput(stdout, "callFooWhenResolved");
 
-                            var gcs = main.GetCallSequence(0, default);
+                            var gcs = main.GetCallSequence(0);
                             AssertOutput(stdout, "getCallSequence");
                             Assert.IsTrue(gcs.Wait(MediumNonDbgTimeout));
                             Assert.AreEqual(2u, gcs.Result);
@@ -553,26 +670,31 @@ namespace Capnp.Net.Runtime.Tests
                             Assert.AreEqual("bar", request.Result);
                             Assert.AreEqual("bar", request2.Result);
                             Assert.AreEqual(2, chainedCallCount.CallCount);
-
                         }
 
                         AssertOutput(stdout, "fin");
                         AssertOutput(stdout, "fin");
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void PromiseResolveClient()
+    [TestMethod]
+    public void PromiseResolveClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestMoreStuffImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestMoreStuffImpl(counters);
 
-                LaunchCompatTestProcess("client:PromiseResolve", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:PromiseResolve",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "PromiseResolve test start");
                     AssertOutput(stdout, "foo 123 1");
@@ -580,65 +702,72 @@ namespace Capnp.Net.Runtime.Tests
                     AssertOutput(stdout, "~");
                     AssertOutput(stdout, "PromiseResolve test end");
                     Assert.AreEqual(3, counters.CallCount);
-                });
-            }
+                }
+            );
         }
+    }
 
-        [TestMethod]
-        public void RetainAndReleaseServer()
-        {
-            var destructionPromise = new TaskCompletionSource<int>();
-            var destructionTask = destructionPromise.Task;
+    [TestMethod]
+    public void RetainAndReleaseServer()
+    {
+        var destructionPromise = new TaskCompletionSource<int>();
+        var destructionTask = destructionPromise.Task;
 
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
                 stdout.ReadToEndAsync().ContinueWith(t => Console.WriteLine(t.Result));
 
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //client.WhenConnected.Wait();
 
                     using (var main = client.GetMain<ITestMoreStuff>())
                     {
-                        var holdTask = main.Hold(new TestInterfaceImpl(new Counters(), destructionPromise), default);
+                        var holdTask = main.Hold(
+                            new TestInterfaceImpl(new Counters(), destructionPromise)
+                        );
                         Assert.IsTrue(holdTask.Wait(MediumNonDbgTimeout));
 
-                        var cstask = main.GetCallSequence(0, default);
+                        var cstask = main.GetCallSequence(0);
                         Assert.IsTrue(cstask.Wait(MediumNonDbgTimeout));
                         Assert.AreEqual(1u, cstask.Result);
 
                         Assert.IsFalse(destructionTask.IsCompleted);
 
-                        var htask = main.CallHeld(default);
+                        var htask = main.CallHeld();
                         Assert.IsTrue(htask.Wait(MediumNonDbgTimeout));
                         Assert.AreEqual("bar", htask.Result);
 
-                        var gtask = main.GetHeld(default);
+                        var gtask = main.GetHeld();
                         Assert.IsTrue(gtask.Wait(MediumNonDbgTimeout));
                         // We can get the cap back from it.
                         using (var cap = gtask.Result)
                         {
                             // And call it, without any network communications.
-                            long oldSendCount = client.SendCount;
-                            var ftask = cap.Foo(123, true, default);
+                            var oldSendCount = client.SendCount;
+                            var ftask = cap.Foo(123, true);
                             Assert.IsTrue(ftask.Wait(MediumNonDbgTimeout));
                             Assert.AreEqual("foo", ftask.Result);
                             Assert.AreEqual(oldSendCount, client.SendCount);
 
                             // We can send another copy of the same cap to another method, and it works.
-                            var ctask = main.CallFoo(cap, default);
+                            var ctask = main.CallFoo(cap);
                             Assert.IsTrue(ctask.Wait(MediumNonDbgTimeout));
                             Assert.AreEqual("bar", ctask.Result);
 
                             // Give some time to settle.
-                            cstask = main.GetCallSequence(0, default);
+                            cstask = main.GetCallSequence(0);
                             Assert.IsTrue(cstask.Wait(MediumNonDbgTimeout));
                             Assert.AreEqual(5u, cstask.Result);
-                            cstask = main.GetCallSequence(0, default);
+                            cstask = main.GetCallSequence(0);
                             Assert.IsTrue(cstask.Wait(MediumNonDbgTimeout));
                             Assert.AreEqual(6u, cstask.Result);
-                            cstask = main.GetCallSequence(0, default);
+                            cstask = main.GetCallSequence(0);
                             Assert.IsTrue(cstask.Wait(MediumNonDbgTimeout));
                             Assert.AreEqual(7u, cstask.Result);
 
@@ -655,24 +784,30 @@ namespace Capnp.Net.Runtime.Tests
                         // The bootstrap capbility is held as long as the TCP server is running.
                         // Instead, the test requests the server to hold the "null" capability, which will replace the
                         // existing one, which in turn will release the cap pointing back to us.
-                        holdTask = main.Hold(null, default);
+                        holdTask = main.Hold(null);
                         Assert.IsTrue(holdTask.Wait(MediumNonDbgTimeout));
                         Assert.IsTrue(destructionTask.Wait(MediumNonDbgTimeout));
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void RetainAndReleaseClient()
+    [TestMethod]
+    public void RetainAndReleaseClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestMoreStuffImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestMoreStuffImpl(counters);
 
-                LaunchCompatTestProcess("client:RetainAndRelease", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:RetainAndRelease",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "RetainAndRelease test start");
                     AssertOutput(stdout, "foo 123 1");
@@ -680,17 +815,22 @@ namespace Capnp.Net.Runtime.Tests
                     AssertOutput(stdout, "foo 123 1");
                     AssertOutput(stdout, "~");
                     AssertOutput(stdout, "RetainAndRelease test end");
-                });
-            }
+                }
+            );
         }
+    }
 
-        [TestMethod]
-        public void CancelServer()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+    [TestMethod]
+    public void CancelServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //client.WhenConnected.Wait();
 
@@ -701,13 +841,16 @@ namespace Capnp.Net.Runtime.Tests
                     using (var cts = new CancellationTokenSource())
                     {
                         var counters = new Counters();
-                        var ntask = main.NeverReturn(new TestInterfaceImpl(counters, destructionPromise), cts.Token);
+                        var ntask = main.NeverReturn(
+                            new TestInterfaceImpl(counters, destructionPromise),
+                            cts.Token
+                        );
 
                         // Allow some time to settle.
-                        var cstask = main.GetCallSequence(0, default);
+                        var cstask = main.GetCallSequence(0);
                         Assert.IsTrue(cstask.Wait(MediumNonDbgTimeout));
                         Assert.AreEqual(1u, cstask.Result);
-                        cstask = main.GetCallSequence(0, default);
+                        cstask = main.GetCallSequence(0);
                         Assert.IsTrue(cstask.Wait(MediumNonDbgTimeout));
                         Assert.AreEqual(2u, cstask.Result);
 
@@ -723,34 +866,45 @@ namespace Capnp.Net.Runtime.Tests
                         Assert.IsTrue(destructionTask.Wait(MediumNonDbgTimeout));
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void CancelClient()
+    [TestMethod]
+    public void CancelClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestMoreStuffImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestMoreStuffImpl(counters);
 
-                LaunchCompatTestProcess("client:Cancel", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:Cancel",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "Cancel test start");
                     AssertOutput(stdout, "~");
                     AssertOutput(stdout, "Cancel test end");
-                });
-            }
+                }
+            );
         }
+    }
 
-        [TestMethod]
-        public void SendTwiceServer()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+    [TestMethod]
+    public void SendTwiceServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //client.WhenConnected.Wait();
 
@@ -761,20 +915,21 @@ namespace Capnp.Net.Runtime.Tests
 
                         var cap = new TestInterfaceImpl(new Counters(), destructionPromise);
 
-                        Task<string> ftask1, ftask2;
+                        Task<string> ftask1,
+                            ftask2;
 
                         using (Skeleton.Claim(cap))
                         {
-                            var ftask = main.CallFoo(cap, default);
+                            var ftask = main.CallFoo(cap);
                             Assert.IsTrue(ftask.Wait(MediumNonDbgTimeout));
                             Assert.AreEqual("bar", ftask.Result);
 
-                            var ctask = main.GetCallSequence(0, default);
+                            var ctask = main.GetCallSequence(0);
                             Assert.IsTrue(ctask.Wait(MediumNonDbgTimeout));
                             Assert.AreEqual(1u, ctask.Result);
 
-                            ftask1 = main.CallFoo(cap, default);
-                            ftask2 = main.CallFoo(cap, default);
+                            ftask1 = main.CallFoo(cap);
+                            ftask2 = main.CallFoo(cap);
                         }
 
                         Assert.IsTrue(ftask1.Wait(MediumNonDbgTimeout));
@@ -786,19 +941,25 @@ namespace Capnp.Net.Runtime.Tests
                         Assert.IsTrue(destructionTask.Wait(MediumNonDbgTimeout));
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void SendTwiceClient()
+    [TestMethod]
+    public void SendTwiceClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestMoreStuffImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestMoreStuffImpl(counters);
 
-                LaunchCompatTestProcess("client:SendTwice", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:SendTwice",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "SendTwice test start");
                     AssertOutput(stdout, "foo 123 1");
@@ -806,17 +967,22 @@ namespace Capnp.Net.Runtime.Tests
                     AssertOutput(stdout, "foo 123 1");
                     AssertOutput(stdout, "~");
                     AssertOutput(stdout, "SendTwice test end");
-                });
-            }
+                }
+            );
         }
+    }
 
-        [TestMethod]
-        public void EmbargoServer()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+    [TestMethod]
+    public void EmbargoServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //Assert.IsTrue(client.WhenConnected.Wait(MediumNonDbgTimeout), "client connect");
 
@@ -831,25 +997,28 @@ namespace Capnp.Net.Runtime.Tests
 #if DEBUG_DISPOSE
                         Skeleton.BeginAssertNotDisposed(cap);
 #endif
-                        var earlyCall = main.GetCallSequence(0, default);
+                        var earlyCall = main.GetCallSequence(0);
 
-                        var echo = main.Echo(cap, default);
+                        var echo = main.Echo(cap);
 
                         using (var pipeline = echo.Eager())
                         {
-                            var call0 = pipeline.GetCallSequence(0, default);
-                            var call1 = pipeline.GetCallSequence(1, default);
+                            var call0 = pipeline.GetCallSequence(0);
+                            var call1 = pipeline.GetCallSequence(1);
 
-                            Assert.IsTrue(earlyCall.Wait(MediumNonDbgTimeout), "early call returns");
+                            Assert.IsTrue(
+                                earlyCall.Wait(MediumNonDbgTimeout),
+                                "early call returns"
+                            );
 
-                            var call2 = pipeline.GetCallSequence(2, default);
+                            var call2 = pipeline.GetCallSequence(2);
 
                             Assert.IsTrue(echo.Wait(MediumNonDbgTimeout));
                             using (var resolved = echo.Result)
                             {
-                                var call3 = pipeline.GetCallSequence(3, default);
-                                var call4 = pipeline.GetCallSequence(4, default);
-                                var call5 = pipeline.GetCallSequence(5, default);
+                                var call3 = pipeline.GetCallSequence(3);
+                                var call4 = pipeline.GetCallSequence(4);
+                                var call5 = pipeline.GetCallSequence(5);
 
                                 Assert.IsTrue(call0.Wait(MediumNonDbgTimeout), "call 0 returns");
                                 Assert.IsTrue(call1.Wait(MediumNonDbgTimeout), "call 1 returns");
@@ -872,19 +1041,24 @@ namespace Capnp.Net.Runtime.Tests
                         }
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void EmbargoServer2()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+    [TestMethod]
+    public void EmbargoServer2()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
-                int retry = 0;
+                var retry = 0;
 
                 label:
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //Assert.IsTrue(client.WhenConnected.Wait(MediumNonDbgTimeout), "client connect");
 
@@ -906,9 +1080,9 @@ namespace Capnp.Net.Runtime.Tests
                         if (!success)
                         {
                             if (++retry == 5)
-                            {
-                                Assert.Fail("Attempting to obtain bootstrap interface failed. Bailing out.");
-                            }
+                                Assert.Fail(
+                                    "Attempting to obtain bootstrap interface failed. Bailing out."
+                                );
                             goto label;
                         }
 
@@ -917,24 +1091,27 @@ namespace Capnp.Net.Runtime.Tests
 #if DEBUG_DISPOSE
                         Skeleton.BeginAssertNotDisposed(cap);
 #endif
-                        var earlyCall = main.GetCallSequence(0, default);
+                        var earlyCall = main.GetCallSequence(0);
 
-                        var echo = main.Echo(cap, default);
+                        var echo = main.Echo(cap);
 
                         using (var pipeline = echo.Result)
                         {
-                            var call0 = pipeline.GetCallSequence(0, default);
-                            var call1 = pipeline.GetCallSequence(1, default);
+                            var call0 = pipeline.GetCallSequence(0);
+                            var call1 = pipeline.GetCallSequence(1);
 
-                            Assert.IsTrue(earlyCall.Wait(MediumNonDbgTimeout), "early call returns");
+                            Assert.IsTrue(
+                                earlyCall.Wait(MediumNonDbgTimeout),
+                                "early call returns"
+                            );
 
-                            var call2 = pipeline.GetCallSequence(2, default);
+                            var call2 = pipeline.GetCallSequence(2);
 
                             Assert.IsTrue(echo.Wait(MediumNonDbgTimeout));
 
-                            var call3 = pipeline.GetCallSequence(3, default);
-                            var call4 = pipeline.GetCallSequence(4, default);
-                            var call5 = pipeline.GetCallSequence(5, default);
+                            var call3 = pipeline.GetCallSequence(3);
+                            var call4 = pipeline.GetCallSequence(4);
+                            var call5 = pipeline.GetCallSequence(5);
 
                             Assert.IsTrue(call0.Wait(MediumNonDbgTimeout), "call 0 returns");
                             Assert.IsTrue(call1.Wait(MediumNonDbgTimeout), "call 1 returns");
@@ -956,127 +1133,152 @@ namespace Capnp.Net.Runtime.Tests
                         }
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void EmbargoClient()
+    [TestMethod]
+    public void EmbargoClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestMoreStuffImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestMoreStuffImpl(counters);
 
-                LaunchCompatTestProcess("client:Embargo", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:Embargo",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "Embargo test start");
                     AssertOutput(stdout, "Embargo test end");
-                });
-            }
+                }
+            );
         }
+    }
 
-        public void EmbargoErrorImpl(IPAddress addr, int port, StreamReader stdout)
+    public void EmbargoErrorImpl(IPAddress addr, int port, StreamReader stdout)
+    {
+        using (var client = new TcpRpcClient(addr.ToString(), port))
         {
-            using (var client = new TcpRpcClient(addr.ToString(), port))
+            //Assert.IsTrue(client.WhenConnected.Wait(MediumNonDbgTimeout));
+
+            using (var main = client.GetMain<ITestMoreStuff>())
             {
+                var resolving = main as IResolvingCapability;
+                Assert.IsTrue(resolving.WhenResolved.WrappedTask.Wait(MediumNonDbgTimeout));
 
-                //Assert.IsTrue(client.WhenConnected.Wait(MediumNonDbgTimeout));
+                var cap = new TaskCompletionSource<ITestCallOrder>();
 
-                using (var main = client.GetMain<ITestMoreStuff>())
+                var earlyCall = main.GetCallSequence(0);
+
+                using (var eager = cap.Task.Eager(true))
                 {
-                    var resolving = main as IResolvingCapability;
-                    Assert.IsTrue(resolving.WhenResolved.WrappedTask.Wait(MediumNonDbgTimeout));
+                    var echo = main.Echo(eager);
 
-                    var cap = new TaskCompletionSource<ITestCallOrder>();
-
-                    var earlyCall = main.GetCallSequence(0, default);
-
-                    using (var eager = cap.Task.Eager(true))
+                    using (var pipeline = echo.Eager())
                     {
-                        var echo = main.Echo(eager, default);
+                        var call0 = pipeline.GetCallSequence(0);
+                        var call1 = pipeline.GetCallSequence(1);
 
-                        using (var pipeline = echo.Eager())
+                        Assert.IsTrue(earlyCall.Wait(MediumNonDbgTimeout));
+
+                        var call2 = pipeline.GetCallSequence(2);
+
+                        Assert.IsTrue(echo.Wait(MediumNonDbgTimeout));
+                        using (var resolved = echo.Result)
                         {
-                            var call0 = pipeline.GetCallSequence(0, default);
-                            var call1 = pipeline.GetCallSequence(1, default);
+                            var call3 = pipeline.GetCallSequence(3);
+                            var call4 = pipeline.GetCallSequence(4);
+                            var call5 = pipeline.GetCallSequence(5);
 
-                            Assert.IsTrue(earlyCall.Wait(MediumNonDbgTimeout));
+                            cap.SetException(new InvalidOperationException("I'm annoying"));
 
-                            var call2 = pipeline.GetCallSequence(2, default);
-
-                            Assert.IsTrue(echo.Wait(MediumNonDbgTimeout));
-                            using (var resolved = echo.Result)
-                            {
-                                var call3 = pipeline.GetCallSequence(3, default);
-                                var call4 = pipeline.GetCallSequence(4, default);
-                                var call5 = pipeline.GetCallSequence(5, default);
-
-                                cap.SetException(new InvalidOperationException("I'm annoying"));
-
-                                ExpectPromiseThrows(call0);
-                                ExpectPromiseThrows(call1);
-                                ExpectPromiseThrows(call2);
-                                ExpectPromiseThrows(call3);
-                                ExpectPromiseThrows(call4);
-                                ExpectPromiseThrows(call5);
-                            }
+                            ExpectPromiseThrows(call0);
+                            ExpectPromiseThrows(call1);
+                            ExpectPromiseThrows(call2);
+                            ExpectPromiseThrows(call3);
+                            ExpectPromiseThrows(call4);
+                            ExpectPromiseThrows(call5);
                         }
                     }
-
-                    // Verify that we're still connected (there were no protocol errors).
-                    Assert.IsTrue(main.GetCallSequence(1, default).Wait(MediumNonDbgTimeout));
                 }
+
+                // Verify that we're still connected (there were no protocol errors).
+                Assert.IsTrue(main.GetCallSequence(1).Wait(MediumNonDbgTimeout));
             }
         }
+    }
 
-        [TestMethod]
-        public void EmbargoErrorServer()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, r => EmbargoErrorImpl(addr, port, r));
-        }
+    [TestMethod]
+    public void EmbargoErrorServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (r, actualPort) => EmbargoErrorImpl(addr, actualPort, r)
+        );
+    }
 
-        [TestMethod, Timeout(240000)]
-        public void RepeatedEmbargoError()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+    [TestMethod]
+    [Timeout(240000, CooperativeCancellation = true)]
+    public void RepeatedEmbargoError()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
-                for (int i = 0; i < 20; i++)
-                {
-                    EmbargoErrorImpl(addr, port, stdout);
-                }
-            });
-        }
+                for (var i = 0; i < 20; i++)
+                    EmbargoErrorImpl(addr, actualPort, stdout);
+            }
+        );
+    }
 
-        [TestMethod]
-        public void EmbargoErrorClient()
+    [TestMethod]
+    public void EmbargoErrorClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestMoreStuffImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestMoreStuffImpl(counters);
 
-                LaunchCompatTestProcess("client:EmbargoError", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:EmbargoError",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "EmbargoError test start");
                     AssertOutput(stdout, "EmbargoError test end");
-                });
-            }
+                }
+            );
         }
+    }
 
-        [TestMethod]
-        public void EmbargoNullServer()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+    [TestMethod]
+    public void EmbargoNullServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
-                int retry = 0;
+                var retry = 0;
 
                 label:
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //client.WhenConnected.Wait();
 
@@ -1098,60 +1300,70 @@ namespace Capnp.Net.Runtime.Tests
                         if (!success)
                         {
                             if (++retry == 5)
-                            {
-                                Assert.Fail("Attempting to obtain bootstrap interface failed. Bailing out.");
-                            }
+                                Assert.Fail(
+                                    "Attempting to obtain bootstrap interface failed. Bailing out."
+                                );
                             goto label;
                         }
 
-                        var promise = main.GetNull(default);
+                        var promise = main.GetNull();
 
                         using (var cap = promise.Eager())
                         {
-                            var call0 = cap.GetCallSequence(0, default);
+                            var call0 = cap.GetCallSequence(0);
 
                             Assert.IsTrue(promise.Wait(MediumNonDbgTimeout));
                             using (promise.Result)
                             {
-                                var call1 = cap.GetCallSequence(1, default);
+                                var call1 = cap.GetCallSequence(1);
 
                                 ExpectPromiseThrows(call0);
                                 ExpectPromiseThrows(call1);
 
                                 // Verify that we're still connected (there were no protocol errors).
-                                Assert.IsTrue(main.GetCallSequence(1, default).Wait(MediumNonDbgTimeout));
+                                Assert.IsTrue(main.GetCallSequence(1).Wait(MediumNonDbgTimeout));
                             }
                         }
                     }
                 }
+            }
+        );
+    }
 
-            });
-        }
-
-        [TestMethod]
-        public void EmbargoNullClient()
+    [TestMethod]
+    public void EmbargoNullClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestMoreStuffImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestMoreStuffImpl(counters);
 
-                LaunchCompatTestProcess("client:EmbargoNull", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:EmbargoNull",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "EmbargoNull test start");
                     AssertOutput(stdout, "EmbargoNull test end");
-                });
-            }
+                }
+            );
         }
+    }
 
-        [TestMethod]
-        public void CallBrokenPromiseServer()
-        {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            LaunchCompatTestProcess("server:MoreStuff", addr, port, stdout =>
+    [TestMethod]
+    public void CallBrokenPromiseServer()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        LaunchCompatTestProcess(
+            "server:MoreStuff",
+            addr,
+            0,
+            (stdout, actualPort) =>
             {
-                using (var client = new TcpRpcClient(addr.ToString(), port))
+                using (var client = new TcpRpcClient(addr.ToString(), actualPort))
                 {
                     //client.WhenConnected.Wait();
 
@@ -1164,11 +1376,11 @@ namespace Capnp.Net.Runtime.Tests
 
                         using (var eager = tcs.Task.Eager(true))
                         {
-                            var req = main.Hold(eager, default);
+                            var req = main.Hold(eager);
                             Assert.IsTrue(req.Wait(MediumNonDbgTimeout));
                         }
 
-                        var req2 = main.CallHeld(default);
+                        var req2 = main.CallHeld();
 
                         Assert.IsFalse(req2.Wait(ShortTimeout));
 
@@ -1177,27 +1389,33 @@ namespace Capnp.Net.Runtime.Tests
                         ExpectPromiseThrows(req2);
 
                         // Verify that we're still connected (there were no protocol errors).
-                        Assert.IsTrue(main.GetCallSequence(1, default).Wait(MediumNonDbgTimeout));
+                        Assert.IsTrue(main.GetCallSequence(1).Wait(MediumNonDbgTimeout));
                     }
                 }
-            });
-        }
+            }
+        );
+    }
 
-        [TestMethod]
-        public void CallBrokenPromiseClient()
+    [TestMethod]
+    public void CallBrokenPromiseClient()
+    {
+        var (addr, port) = TcpManager.Instance.GetLocalAddressAndPort();
+        using (var server = SetupServer(addr, 0))
         {
-            (var addr, int port) = TcpManager.Instance.GetLocalAddressAndPort();
-            using (var server = SetupServer(addr, port))
-            {
-                var counters = new Counters();
-                server.Main = new TestMoreStuffImpl(counters);
+            port = server.Port;
+            var counters = new Counters();
+            server.Main = new TestMoreStuffImpl(counters);
 
-                LaunchCompatTestProcess("client:CallBrokenPromise", addr, port, stdout =>
+            LaunchCompatTestProcess(
+                "client:CallBrokenPromise",
+                addr,
+                port,
+                (stdout, _) =>
                 {
                     AssertOutput(stdout, "CallBrokenPromise test start");
                     AssertOutput(stdout, "CallBrokenPromise test end");
-                });
-            }
+                }
+            );
         }
     }
 }

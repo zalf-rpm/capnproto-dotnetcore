@@ -1,89 +1,104 @@
-﻿using Capnp.Util;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Capnp.Util;
 
-namespace Capnp.Rpc
+namespace Capnp.Rpc;
+
+internal class LocalAnswerCapability : RefCountingCapability, IResolvingCapability
 {
+    private readonly StrictlyOrderedAwaitTask<Proxy> _whenResolvedProxy;
 
-    class LocalAnswerCapability : RefCountingCapability, IResolvingCapability
+    public LocalAnswerCapability(Task<Proxy> proxyTask)
     {
-        static async Task<Proxy> TransferOwnershipToDummyProxy(StrictlyOrderedAwaitTask<DeserializerState> answer, MemberAccessPath access)
+        _whenResolvedProxy = proxyTask.EnforceAwaitOrder();
+    }
+
+    public LocalAnswerCapability(
+        StrictlyOrderedAwaitTask<DeserializerState> answer,
+        MemberAccessPath access
+    )
+        : this(TransferOwnershipToDummyProxy(answer, access)) { }
+
+    public StrictlyOrderedAwaitTask WhenResolved => _whenResolvedProxy;
+
+    public T? GetResolvedCapability<T>()
+        where T : class
+    {
+        return _whenResolvedProxy.WrappedTask.GetResolvedCapability<T>();
+    }
+
+    private static async Task<Proxy> TransferOwnershipToDummyProxy(
+        StrictlyOrderedAwaitTask<DeserializerState> answer,
+        MemberAccessPath access
+    )
+    {
+        var result = await answer;
+        var cap = access.Eval(result);
+        var proxy = new Proxy(cap);
+        cap?.Release();
+        return proxy;
+    }
+
+    internal override Action? Export(IRpcEndpoint endpoint, CapDescriptor.WRITER writer)
+    {
+        if (_whenResolvedProxy.IsCompleted)
         {
-            var result = await answer;
-            var cap = access.Eval(result);
-            var proxy = new Proxy(cap);
-            cap?.Release();
-            return proxy;
-        }
-
-        readonly StrictlyOrderedAwaitTask<Proxy> _whenResolvedProxy;
-
-        public LocalAnswerCapability(Task<Proxy> proxyTask)
-        {
-            _whenResolvedProxy = proxyTask.EnforceAwaitOrder();
-        }
-
-        public LocalAnswerCapability(StrictlyOrderedAwaitTask<DeserializerState> answer, MemberAccessPath access):
-            this(TransferOwnershipToDummyProxy(answer, access))
-        {
-
-        }
-
-        public StrictlyOrderedAwaitTask WhenResolved => _whenResolvedProxy;
-
-        public T? GetResolvedCapability<T>() where T : class => _whenResolvedProxy.WrappedTask.GetResolvedCapability<T>();
-
-        internal override Action? Export(IRpcEndpoint endpoint, CapDescriptor.WRITER writer)
-        {
-            if (_whenResolvedProxy.IsCompleted)
+            try
             {
-                try
-                {
-                    _whenResolvedProxy.Result.Export(endpoint, writer);
-                }
-                catch (AggregateException exception)
-                {
-                    throw exception.InnerException!;
-                }
-
-                return null;
+                _whenResolvedProxy.Result.Export(endpoint, writer);
             }
-            else
+            catch (AggregateException exception)
             {
-                return this.ExportAsSenderPromise(endpoint, writer);
-            }
-        }
-
-        async Task<DeserializerState> CallImpl(ulong interfaceId, ushort methodId, DynamicSerializerState args, CancellationToken cancellationToken)
-        {
-            var proxy = await _whenResolvedProxy;
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            if (proxy.IsNull)
-            {
-                args.Dispose();
-                throw new RpcException("Broken capability");
+                throw exception.InnerException!;
             }
 
-            var call = proxy.Call(interfaceId, methodId, args, default);
-            var whenReturned = call.WhenReturned;
-
-            using var registration = cancellationToken.Register(() => call.Dispose());
-            return await whenReturned;
+            return null;
         }
 
-        internal override IPromisedAnswer DoCall(ulong interfaceId, ushort methodId, DynamicSerializerState args)
+        return this.ExportAsSenderPromise(endpoint, writer);
+    }
+
+    private async Task<DeserializerState> CallImpl(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args,
+        CancellationToken cancellationToken
+    )
+    {
+        var proxy = await _whenResolvedProxy;
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (proxy.IsNull)
         {
-            var cts = new CancellationTokenSource();
-            return new LocalAnswer(cts, CallImpl(interfaceId, methodId, args, cts.Token));
+            args.Dispose();
+            throw new RpcException("Broken capability");
         }
 
-        protected async override void ReleaseRemotely()
+        var call = proxy.Call(interfaceId, methodId, args, default);
+        var whenReturned = call.WhenReturned;
+
+        using var registration = cancellationToken.Register(() => call.Dispose());
+        return await whenReturned;
+    }
+
+    internal override IPromisedAnswer DoCall(
+        ulong interfaceId,
+        ushort methodId,
+        DynamicSerializerState args
+    )
+    {
+        var cts = new CancellationTokenSource();
+        return new LocalAnswer(cts, CallImpl(interfaceId, methodId, args, cts.Token));
+    }
+
+    protected override async void ReleaseRemotely()
+    {
+        try
         {
-            try { using var _ = await _whenResolvedProxy; }
-            catch { }
+            using var _ = await _whenResolvedProxy;
         }
+        catch { }
     }
 }
