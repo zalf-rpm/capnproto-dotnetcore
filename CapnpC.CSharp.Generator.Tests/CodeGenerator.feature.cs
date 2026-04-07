@@ -122,7 +122,7 @@ namespace CapnpC.CSharp.Generator.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("CodeGenerator.feature.ndjson", 27);
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(DisplayName="Comparing backend output with reference")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 8, DisplayName="Comparing backend output with reference")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Comparing backend output with reference")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CodeGenerator")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Coverage")]
@@ -162,7 +162,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(DisplayName="Invalid binary code generator requests")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 15, DisplayName="Invalid binary code generator requests")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invalid binary code generator requests")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CodeGenerator")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Coverage")]
@@ -207,7 +207,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(DisplayName="Combining frontend and backend")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 26, DisplayName="Combining frontend and backend")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Combining frontend and backend")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CodeGenerator")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Coverage")]
@@ -247,7 +247,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(DisplayName="Missing frontend")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 33, DisplayName="Missing frontend")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Missing frontend")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CodeGenerator")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Coverage")]
@@ -287,7 +287,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(DisplayName="Schema without ID")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 40, DisplayName="Schema without ID")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Schema without ID")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CodeGenerator")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Coverage")]
@@ -333,7 +333,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(DisplayName="Multiple errors")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 49, DisplayName="Multiple errors")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple errors")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CodeGenerator")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Coverage")]
@@ -379,7 +379,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(DisplayName="Valid generator output")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 58, DisplayName="Valid generator output")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Valid generator output")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CodeGenerator")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Coverage")]
