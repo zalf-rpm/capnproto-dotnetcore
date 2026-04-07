@@ -258,8 +258,7 @@
       >
       <exception cref="T:Capnp.DeserializationException"
         >invalid pointer data or traversal limit exceeded
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.DeserializerState.DecodeCapPointer(System.Int32)">
       <summary>
@@ -306,8 +305,7 @@
       <exception cref="T:Capnp.DeserializationException"
         >this state does not represent a struct,
                 invalid pointer, or traversal limit exceeded
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.DeserializerState.RequireList">
       <summary>
@@ -337,8 +335,7 @@
       <exception cref="T:Capnp.DeserializationException"
         >state does not represent a struct, invalid pointer,
                 non-list-of-bytes pointer, traversal limit exceeded
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.DeserializerState.ReadList(System.Int32)">
       <summary>
@@ -351,8 +348,7 @@
       <exception cref="T:Capnp.DeserializationException"
         >state does not represent a struct, invalid pointer,
                 non-list pointer, traversal limit exceeded
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.DeserializerState.ReadCapList``1(System.Int32)">
       <summary>
@@ -366,8 +362,7 @@
       <exception cref="T:Capnp.DeserializationException"
         >state does not represent a struct, invalid pointer,
                 non-list-of-pointers pointer, traversal limit exceeded
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.DeserializerState.ReadListOfStructs``1(System.Int32,System.Func{Capnp.DeserializerState,``0})">
       <summary>
@@ -378,15 +373,13 @@
       <param name="index">index within this struct's pointer table</param>
       <param name="cons"
         >constructs a target representation type instance from the underlying deserializer state
-            </param
-      >
+            </param>
       <returns>the decoded list of structs</returns>
       <exception cref="T:System.IndexOutOfRangeException">negative index</exception>
       <exception cref="T:Capnp.DeserializationException"
         >state does not represent a struct, invalid pointer,
                 non-list-of-{structs,pointers} pointer, traversal limit exceeded
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.DeserializerState.ReadStruct``1(System.Int32,System.Func{Capnp.DeserializerState,``0})">
       <summary>
@@ -396,15 +389,13 @@
       <param name="index">index within this struct's pointer table</param>
       <param name="cons"
         >constructs a target representation type instance from the underlying deserializer state
-            </param
-      >
+            </param>
       <returns>the decoded struct</returns>
       <exception cref="T:System.IndexOutOfRangeException">negative index</exception>
       <exception cref="T:Capnp.DeserializationException"
         >state does not represent a struct, invalid pointer,
                 non-struct pointer, traversal limit exceeded
-            </exception
-      >
+            </exception>
     </member>
     <member name="P:Capnp.DeserializerState.CapabilityIndex">
       <summary>
@@ -425,8 +416,7 @@
       <exception cref="T:Capnp.DeserializationException"
         >state does not represent a struct, invalid pointer,
                 non-capability pointer, traversal limit exceeded
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.DeserializerState.ReadCap(System.Int32)">
       <summary>
@@ -439,8 +429,7 @@
       <exception cref="T:Capnp.DeserializationException"
         >state does not represent a struct, invalid pointer,
                 non-capability pointer, traversal limit exceeded
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.DeserializerState.RequireCap``1">
       <summary>
@@ -497,14 +486,12 @@
       <param name="slot"
         >If this state describes a struct: Index into this struct's pointer table.
                 If this state describes a list of pointers: List element index.
-            </param
-      >
+            </param>
       <param name="target">state to be linked</param>
       <param name="allowCopy"
         >Whether to deep copy the target state if it belongs to a different message builder
                 than this state.
-            </param
-      >
+            </param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="target" />
                 is null
@@ -545,8 +532,7 @@
       <param name="slot"
         >If this state describes a struct: Index into this struct's pointer table.
                 If this state describes a list of pointers: List element index.
-            </param
-      >
+            </param>
       <param name="capabilityIndex">capability index inside the capability table</param>
       <exception cref="T:System.InvalidOperationException">
         <list type="bullet">
@@ -570,8 +556,7 @@
       <exception cref="T:System.InvalidOperationException"
         >The object type was already set to something
                 different
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.DynamicSerializerState.SetListOfValues(System.Byte,System.Int32)">
       <summary>
@@ -584,8 +569,7 @@
       <exception cref="T:System.InvalidOperationException"
         >The object type was already set to something
                 different
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="bitsPerElement" />
                 outside allowed range,
@@ -602,8 +586,7 @@
       <exception cref="T:System.InvalidOperationException"
         >The object type was already set to something
                 different
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="totalCount" />
                 negative or exceeding 2^29-1
@@ -620,8 +603,7 @@
       <exception cref="T:System.InvalidOperationException"
         >The object type was already set to something
                 different
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="totalCount" />
                 negative, or total word count would exceed 2^29-1
@@ -951,8 +933,7 @@
         >The stream for message I/O.
                 If you intend to receive messages, the stream must support reading (CanRead).
                 If you intend to send messages, the stream must support writing (CanWrite).
-            </param
-      >
+            </param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="stream" />
                 is null.
@@ -976,13 +957,11 @@
       <param name="frame">Message to be sent</param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying stream does not support writing.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentException"
         >The message does not provide at least one segment, or one of
                 its segments is empty.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
       <exception cref="T:System.ObjectDisposedException"
         >This instance or stream is diposed.</exception
@@ -1004,16 +983,14 @@
       <exception cref="T:System.ArgumentException"
         >The underlying stream does not support reading or is already
                 closed.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.IO.InvalidDataException"
         >Encountered Invalid Framing Data</exception
       >
       <exception cref="T:System.OutOfMemoryException"
         >Received a message with too many or too big segments,
                 probably dues to invalid data.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
     </member>
     <member name="T:Capnp.Framing">
@@ -1037,8 +1014,7 @@
       <exception cref="T:System.ArgumentException"
         >The stream does not support reading, is null, or is already
                 closed.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.IO.EndOfStreamException"
         >The end of the stream is reached.</exception
       >
@@ -1047,13 +1023,11 @@
       <exception cref="T:System.IO.InvalidDataException"
         >Encountered invalid framing data, too many or too large
                 segments
-            </exception
-      >
+            </exception>
       <exception cref="T:System.OutOfMemoryException"
         >Too many or too large segments, probably due to invalid
                 framing data.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.Framing.ReadWireFrame(System.IO.BinaryReader)">
       <summary>
@@ -1157,8 +1131,7 @@
       <param name="data">Data bits to write</param>
       <exception cref="T:System.InvalidOperationException"
         >The object was not determined to be a struct
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException"
         >The data slice specified by
                 <paramref name="bitOffset" />
@@ -1220,8 +1193,7 @@
       <exception cref="T:System.NotSupportedException"
         >If this kind of list cannot be represented as list of lists
                 (because it is a list of non-pointers)
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastCapList``1">
       <summary>
@@ -1232,8 +1204,7 @@
       <exception cref="T:System.NotSupportedException"
         >If this kind of list cannot be represented as list of
                 capabilities (because it is a list of non-pointers)
-            </exception
-      >
+            </exception>
       <exception cref="T:Capnp.Rpc.InvalidCapabilityInterfaceException"
         >If
                 <typeparamref name="T" />
@@ -1257,8 +1228,7 @@
       >
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastND``1(System.Int32,System.Func{Capnp.DeserializerState,``0})">
       <summary>
@@ -1287,8 +1257,7 @@
       >
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastEnumsND``1(System.Int32,System.Func{System.UInt16,``0})">
       <summary>
@@ -1312,8 +1281,7 @@
       >
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastVoidND(System.Int32)">
       <summary>
@@ -1330,8 +1298,7 @@
       >
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.Cast2D``1">
       <summary>
@@ -1341,8 +1308,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastData">
       <summary>
@@ -1351,8 +1317,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.Cast2D``1(System.Func{Capnp.DeserializerState,``0})">
       <summary>
@@ -1373,8 +1338,7 @@
       >
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastEnums2D``1(System.Func{System.UInt16,``0})">
       <summary>
@@ -1390,8 +1354,7 @@
       >
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.Cast3D``1">
       <summary>
@@ -1401,8 +1364,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.Cast3D``1(System.Func{Capnp.DeserializerState,``0})">
       <summary>
@@ -1423,8 +1385,7 @@
       >
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastEnums3D``1(System.Func{System.UInt16,``0})">
       <summary>
@@ -1440,8 +1401,7 @@
       >
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastEnums``1(System.Func{System.UInt16,``0})">
       <summary>
@@ -1457,8 +1417,7 @@
       >
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastVoid">
       <summary>
@@ -1473,8 +1432,7 @@
       <returns>A list of integers whereby each number equals the sublist's element count.</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastVoid3D">
       <summary>
@@ -1485,8 +1443,7 @@
             </returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastText2">
       <summary>
@@ -1496,8 +1453,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastText">
       <summary>
@@ -1522,8 +1478,7 @@
       <returns>The decoded text</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastBool">
       <summary>
@@ -1532,8 +1487,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastSByte">
       <summary>
@@ -1542,8 +1496,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastByte">
       <summary>
@@ -1552,8 +1505,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastShort">
       <summary>
@@ -1562,8 +1514,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastUShort">
       <summary>
@@ -1572,8 +1523,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastInt">
       <summary>
@@ -1582,8 +1532,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastUInt">
       <summary>
@@ -1592,8 +1541,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastLong">
       <summary>
@@ -1602,8 +1550,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastULong">
       <summary>
@@ -1612,8 +1559,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastFloat">
       <summary>
@@ -1622,8 +1568,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastDouble">
       <summary>
@@ -1632,8 +1577,7 @@
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException"
         >If this list cannot be represented in the desired manner.
-            </exception
-      >
+            </exception>
     </member>
     <member name="T:Capnp.ListKind">
       <summary>
@@ -1736,8 +1680,7 @@
       <exception cref="T:System.InvalidOperationException"
         >List was not initialized, or attempting to overwrite a
                 non-null element.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
                 is out of range.
@@ -1841,8 +1784,7 @@
       <exception cref="T:System.InvalidOperationException"
         >List was not initialized, or attempting to overwrite an
                 already set element.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
                 is out of range.
@@ -2017,8 +1959,7 @@
       <exception cref="T:System.InvalidOperationException"
         >List was not initialized, or attempting to overwrite a
                 non-null element.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
                 is out of range.
@@ -2218,8 +2159,7 @@
       <typeparam name="T"
         >List element type, must be primitive. Static constructor will throw if the type does not
                 work.
-            </typeparam
-      >
+            </typeparam>
     </member>
     <member name="P:Capnp.ListOfPrimitivesSerializer`1.Item(System.Int32)">
       <summary>
@@ -2411,8 +2351,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException"
         >More than 2^29-1 items, or the UTF-8 encoding of an
                 individual string requires more than 2^29-2 bytes.
-            </exception
-      >
+            </exception>
     </member>
     <member name="T:Capnp.Logging">
       <summary>
@@ -2630,14 +2569,12 @@
       <exception cref="T:System.InvalidOperationException"
         >Target state was already set to a different object type
                 than the source state.
-            </exception
-      >
+            </exception>
       <exception cref="T:Capnp.DeserializationException"
         >Security violation due to amplification attack or stack
                 overflow DoS attack,
                 or illegal pointer detected during deserialization.
-            </exception
-      >
+            </exception>
     </member>
     <member name="T:Capnp.Rpc.AnswerOrCounterquestion">
       <summary>
@@ -2691,28 +2628,23 @@
       <exception cref="T:System.InvalidOperationException"
         >Mismatch between generic type arguments (if capability
                 interface is generic).
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentException"
         >Mismatch between generic type arguments (if capability
                 interface is generic).
-            </exception
-      >
+            </exception>
       <exception cref="T:System.Reflection.TargetInvocationException"
         >Problem with instatiating the Skeleton
                 (constructor threw exception).
-            </exception
-      >
+            </exception>
       <exception cref="T:System.MemberAccessException"
         >Caller does not have permission to invoke the Skeleton
                 constructor.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.TypeLoadException"
         >Problem with building the Skeleton type, or problem with
                 loading some dependent class.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.Rpc.BareProxy.#ctor">
       <summary>
@@ -2771,28 +2703,23 @@
       <exception cref="T:System.InvalidOperationException"
         >Mismatch between generic type arguments (if capability
                 interface is generic).
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentException"
         >Mismatch between generic type arguments (if capability
                 interface is generic).
-            </exception
-      >
+            </exception>
       <exception cref="T:System.Reflection.TargetInvocationException"
         >Problem with instatiating the Skeleton
                 (constructor threw exception).
-            </exception
-      >
+            </exception>
       <exception cref="T:System.MemberAccessException"
         >Caller does not have permission to invoke the Skeleton
                 constructor.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.TypeLoadException"
         >Problem with building the Skeleton type, or problem with
                 loading some dependent class.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.Rpc.CapabilityReflection.ValidateCapabilityInterface(System.Type)">
       <summary>
@@ -2811,8 +2738,7 @@
         >Given typ did not qualify as capability
                 interface.
                 Message and probably InnterException give more details.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.Rpc.CapabilityReflection.IsValidCapabilityInterface(System.Type)">
       <summary>
@@ -2860,28 +2786,23 @@
       <exception cref="T:System.InvalidOperationException"
         >Mismatch between generic type arguments (if capability
                 interface is generic).
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentException"
         >Mismatch between generic type arguments (if capability
                 interface is generic).
-            </exception
-      >
+            </exception>
       <exception cref="T:System.Reflection.TargetInvocationException"
         >Problem with instatiating the Proxy
                 (constructor threw exception).
-            </exception
-      >
+            </exception>
       <exception cref="T:System.MemberAccessException"
         >Caller does not have permission to invoke the Proxy
                 constructor.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.TypeLoadException"
         >Problem with building the Proxy type, or problem with loading
                 some dependent class.
-            </exception
-      >
+            </exception>
     </member>
     <member name="T:Capnp.Rpc.ConsumedCapability">
       <summary>
@@ -2960,8 +2881,7 @@
       >
       <exception cref="T:System.ArgumentException"
         >The task was not registered using MakePipelineAware.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.Rpc.Impatient.PseudoEager``1(System.Threading.Tasks.Task{``0},System.String,System.String,System.Int32)">
       <summary>
@@ -3216,8 +3136,7 @@
       <returns>Resulting low-level capability</returns>
       <exception cref="T:Capnp.DeserializationException"
         >Evaluation of this path did not give a capability
-            </exception
-      >
+            </exception>
     </member>
     <member name="T:Capnp.Rpc.PendingQuestion">
       <summary>
@@ -3285,8 +3204,7 @@
       <exception cref="T:Capnp.DeserializationException"
         >The referenced member does not exist or does not resolve
                 to a capability pointer.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.Rpc.PendingQuestion.Finalize">
       <summary>
@@ -3373,8 +3291,7 @@
       <exception cref="T:System.ObjectDisposedException"
         >This instance was disposed, or transport-layer stream was
                 disposed.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.InvalidOperationException">Capability is broken.</exception>
       <exception cref="T:System.IO.IOException">An I/O error occurs.</exception>
     </member>
@@ -3413,28 +3330,23 @@
       <exception cref="T:System.InvalidOperationException"
         >This capability is broken, or mismatch between generic
                 type arguments (if capability interface is generic).
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentException"
         >Mismatch between generic type arguments (if capability
                 interface is generic).
-            </exception
-      >
+            </exception>
       <exception cref="T:System.Reflection.TargetInvocationException"
         >Problem with instatiating the Proxy
                 (constructor threw exception).
-            </exception
-      >
+            </exception>
       <exception cref="T:System.MemberAccessException"
         >Caller does not have permission to invoke the Proxy
                 constructor.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.TypeLoadException"
         >Problem with building the Proxy type, or problem with loading
                 some dependent class.
-            </exception
-      >
+            </exception>
     </member>
     <member name="T:Capnp.Rpc.ProxyAttribute">
       <summary>
@@ -3636,8 +3548,7 @@
       >
       <exception cref="T:System.Net.Sockets.SocketException"
         >An error occurred when accessing the socket.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.Rpc.TcpRpcClient.GetMain``1">
       <summary>
@@ -3790,8 +3701,7 @@
                 a bigger size, a bigger dedicated segment will be allocated. On the wire, segments will be truncated to
                 their actual
                 occupancies.
-            </param
-      >
+            </param>
     </member>
     <member name="P:Capnp.SegmentAllocator.Segments">
       <summary>
@@ -3817,8 +3727,7 @@
         >Whether using the preferred segment is mandatory. If it is and there is
                 not
                 enough space available, allocation will fail.
-            </param
-      >
+            </param>
       <returns>Whether allocation was successful.</returns>
     </member>
     <member name="T:Capnp.SegmentSlice">
@@ -4199,8 +4108,7 @@
         >The target serializer state is incompatible to this
                 instance, because the instances do not agree on the
                 kind of underlying object (e.g. struct with particular data/pointer section size, list of something)
-            </exception
-      >
+            </exception>
     </member>
     <member name="P:Capnp.SerializerState.IsAllocated">
       <summary>
@@ -4241,14 +4149,12 @@
       <param name="slot"
         >If this state describes a struct: Index into this struct's pointer table.
                 If this state describes a list of pointers: List element index.
-            </param
-      >
+            </param>
       <param name="target">state to be linked</param>
       <param name="allowCopy"
         >Whether to deep copy the target state if it belongs to a different message builder
                 than this state.
-            </param
-      >
+            </param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="target" />
                 is null
@@ -4289,8 +4195,7 @@
       <param name="slot"
         >If this state describes a struct: Index into this struct's pointer table.
                 If this state describes a list of pointers: List element index.
-            </param
-      >
+            </param>
       <param name="capabilityIndex">capability index inside the capability table</param>
       <exception cref="T:System.InvalidOperationException">
         <list type="bullet">
@@ -4314,8 +4219,7 @@
       <exception cref="T:System.InvalidOperationException"
         >The object type was already set to something
                 different
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.SerializerState.SetListOfValues(System.Byte,System.Int32)">
       <summary>
@@ -4328,8 +4232,7 @@
       <exception cref="T:System.InvalidOperationException"
         >The object type was already set to something
                 different
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="bitsPerElement" />
                 outside allowed range,
@@ -4346,8 +4249,7 @@
       <exception cref="T:System.InvalidOperationException"
         >The object type was already set to something
                 different
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="totalCount" />
                 negative or exceeding 2^29-1
@@ -4364,8 +4266,7 @@
       <exception cref="T:System.InvalidOperationException"
         >The object type was already set to something
                 different
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="totalCount" />
                 negative, or total word count would exceed 2^29-1
@@ -4385,13 +4286,11 @@
       <exception cref="T:System.Text.EncoderFallbackException"
         >Trying to obtain the UTF-8 encoding might throw
                 this exception.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.InvalidOperationException"
         >The object type was already set to something
                 different
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException"
         >UTF-8 encoding exceeds 2^29-2 bytes</exception
       >
@@ -4406,8 +4305,7 @@
       <param name="value">Data bits to write</param>
       <exception cref="T:System.InvalidOperationException"
         >The object was not determined to be a struct
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException"
         >The data slice specified by
                 <paramref name="bitOffset" />
@@ -4429,8 +4327,7 @@
       <returns>Data bits which were read</returns>
       <exception cref="T:System.InvalidOperationException"
         >The object was not determined to be a struct
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException"
         >The data slice specified by
                 <paramref name="bitOffset" />
@@ -4451,8 +4348,7 @@
       <param name="index"
         >If the underlying object is a struct: index into the struct's pointer section.
                 If the underlying object is a list of pointers: Element index
-            </param
-      >
+            </param>
       <returns>Bound serializer state instance</returns>
       <exception cref="T:System.InvalidOperationException">
         <list type="bullet">
@@ -4482,8 +4378,7 @@
       <param name="index"
         >If the underlying object is a struct: index into the struct's pointer section.
                 If the underlying object is a list of pointers: Element index
-            </param
-      >
+            </param>
       <returns>Bound serializer state instance</returns>
       <exception cref="T:System.InvalidOperationException">
         <list type="bullet">
@@ -4514,8 +4409,7 @@
       <param name="index"
         >If the underlying object is a struct: index into the struct's pointer section.
                 If the underlying object is a list of pointers: Element index
-            </param
-      >
+            </param>
       <returns>Bound serializer state instance</returns>
       <exception cref="T:System.InvalidOperationException">
         <list type="bullet">
@@ -4546,8 +4440,7 @@
       <param name="index"
         >If the underlying object is a struct: index into the struct's pointer section.
                 If the underlying object is a list of pointers: Element index
-            </param
-      >
+            </param>
       <returns>Bound serializer state instance</returns>
       <exception cref="T:System.InvalidOperationException">
         <list type="bullet">
@@ -4575,8 +4468,7 @@
       <param name="index"
         >If the underlying object is a struct: index into the struct's pointer section.
                 If the underlying object is a list of pointers: Element index
-            </param
-      >
+            </param>
       <param name="defaultText">String to return in case of null</param>
       <returns>The decoded text</returns>
     </member>
@@ -4587,8 +4479,7 @@
       <param name="index"
         >If the underlying object is a struct: index into the struct's pointer section.
                 If the underlying object is a list of pointers: Element index
-            </param
-      >
+            </param>
       <param name="text">Text to encode</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="text" />is null
@@ -4618,8 +4509,7 @@
       <param name="index"
         >If the underlying object is a struct: index into the struct's pointer section.
                 If the underlying object is a list of pointers: Element index
-            </param
-      >
+            </param>
       <param name="text">Text to encode</param>
       <param name="defaultText"
         >Default text of<paramref name="text" />> is null
@@ -4659,8 +4549,7 @@
       <exception cref="T:System.InvalidOperationException"
         >Underlying object was not determined to be a
                 fixed-width composite list.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />is out of bounds.
             </exception
@@ -4676,8 +4565,7 @@
       <exception cref="T:System.InvalidOperationException"
         >Underlying object was not determined to be a
                 fixed-width composite list.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />is out of bounds.
             </exception
@@ -4691,12 +4579,10 @@
       <param name="value">Element value</param>
       <param name="defaultValue"
         >Element default value (serialized value will be XORed with the default value)
-            </param
-      >
+            </param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of bits.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
                 is out of bounds.
@@ -4710,12 +4596,10 @@
       <param name="values">Content to set</param>
       <param name="defaultValue"
         >Element default value (serialized value will be XORed with the default value)
-            </param
-      >
+            </param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of bits.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="values" />
                 is null.
@@ -4724,8 +4608,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException"
         >The given element count does not match the underlying
                 list's element count.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListWriteValue(System.Int32,System.Byte,System.Byte)">
       <summary>
@@ -4735,12 +4618,10 @@
       <param name="value">Element value</param>
       <param name="defaultValue"
         >Element default value (serialized value will be XORed with the default value)
-            </param
-      >
+            </param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of bytes.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
                 is out of bounds.
@@ -4754,8 +4635,7 @@
       <returns>The list bytes</returns>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of bytes.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListReadAsText">
       <summary>
@@ -4764,12 +4644,10 @@
       <returns>The decoded text.</returns>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of bytes.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.Text.DecoderFallbackException"
         >Might theoretically be thrown during decoding.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListWriteValue(System.Int32,System.SByte,System.SByte)">
       <summary>
@@ -4779,12 +4657,10 @@
       <param name="value">Element value</param>
       <param name="defaultValue"
         >Element default value (serialized value will be XORed with the default value)
-            </param
-      >
+            </param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of bytes.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
                 is out of bounds.
@@ -4799,13 +4675,11 @@
       <param name="value">Element value</param>
       <param name="defaultValue"
         >Element default value (serialized value will be XORed with the default value)
-            </param
-      >
+            </param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of 16 bit
                 words.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
                 is out of bounds.
@@ -4820,13 +4694,11 @@
       <param name="value">Element value</param>
       <param name="defaultValue"
         >Element default value (serialized value will be XORed with the default value)
-            </param
-      >
+            </param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of 16 bit
                 words.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
                 is out of bounds.
@@ -4841,13 +4713,11 @@
       <param name="value">Element value</param>
       <param name="defaultValue"
         >Element default value (serialized value will be XORed with the default value)
-            </param
-      >
+            </param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of 32 bit
                 words.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
                 is out of bounds.
@@ -4862,13 +4732,11 @@
       <param name="value">Element value</param>
       <param name="defaultValue"
         >Element default value (serialized value will be XORed with the default value)
-            </param
-      >
+            </param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of 32 bit
                 words.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
                 is out of bounds.
@@ -4883,13 +4751,11 @@
       <param name="value">Element value</param>
       <param name="defaultValue"
         >Element default value (serialized value will be XORed with the default value)
-            </param
-      >
+            </param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of 32 bit
                 words.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
                 is out of bounds.
@@ -4904,13 +4770,11 @@
       <param name="value">Element value</param>
       <param name="defaultValue"
         >Element default value (serialized value will be XORed with the default value)
-            </param
-      >
+            </param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of 64 bit
                 words.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
                 is out of bounds.
@@ -4925,13 +4789,11 @@
       <param name="value">Element value</param>
       <param name="defaultValue"
         >Element default value (serialized value will be XORed with the default value)
-            </param
-      >
+            </param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of 64 bit
                 words.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
                 is out of bounds.
@@ -4946,13 +4808,11 @@
       <param name="value">Element value</param>
       <param name="defaultValue"
         >Element default value (serialized value will be XORed with the default value)
-            </param
-      >
+            </param>
       <exception cref="T:System.InvalidOperationException"
         >The underlying object was not set to a list of 64 bit
                 words.
-            </exception
-      >
+            </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
                 is out of bounds.
@@ -4968,8 +4828,7 @@
       <exception cref="T:System.InvalidOperationException"
         >The underlying message builder was not configured for
                 capability table support.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.SerializerState.ProvideCapability(Capnp.Rpc.Skeleton)">
       <summary>
@@ -4980,8 +4839,7 @@
       <exception cref="T:System.InvalidOperationException"
         >The underlying message builder was not configured for
                 capability table support.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.SerializerState.ProvideCapability(System.Object)">
       <summary>
@@ -5017,8 +4875,7 @@
       <exception cref="T:System.InvalidOperationException"
         >The underlying message builder was not configured for
                 capability table support.
-            </exception
-      >
+            </exception>
     </member>
     <member name="M:Capnp.SerializerState.LinkObject``1(System.Int32,``0)">
       <summary>
@@ -5031,8 +4888,7 @@
       <param name="slot"
         >If this state describes a struct: Index into this struct's pointer table.
                 If this state describes a list of pointers: List element index.
-            </param
-      >
+            </param>
       <param name="obj"
         >Object to be linked. Must be one of the following:
                 <list type="bullet">
@@ -5248,8 +5104,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException"
         >Thrown by setter if encoded value would require more
                 than 30 bits
-            </exception
-      >
+            </exception>
     </member>
     <member name="P:Capnp.WirePointer.LandingPadOffset">
       <summary>
@@ -5290,8 +5145,7 @@
       <exception cref="T:System.OverflowException"
         >negative value, or encoded value would require more than 30
                 bits
-            </exception
-      >
+            </exception>
     </member>
     <member name="P:Capnp.WirePointer.ListElementCount">
       <summary>
@@ -5307,8 +5161,7 @@
       <param name="count">element count</param>
       <exception cref="T:System.ArgumentOutOfRangeException"
         >element count would require more than 29 bits
-            </exception
-      >
+            </exception>
     </member>
     <member name="P:Capnp.WirePointer.TargetSegmentIndex">
       <summary>
@@ -5330,8 +5183,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException"
         >negative landing pad offset, or encoding would
                 require more than 29 bits
-            </exception
-      >
+            </exception>
     </member>
     <member name="P:Capnp.WirePointer.OtherPointerKind">
       <summary>
