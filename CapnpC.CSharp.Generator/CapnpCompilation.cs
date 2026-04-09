@@ -10,6 +10,7 @@ using CapnpC.CSharp.Generator.Model;
 using CapnpC.CSharp.Generator.Schema;
 
 [assembly: InternalsVisibleTo("CapnpC.CSharp.Generator.Tests")]
+[assembly: InternalsVisibleTo("capnpc-csharp")]
 
 namespace CapnpC.CSharp.Generator;
 

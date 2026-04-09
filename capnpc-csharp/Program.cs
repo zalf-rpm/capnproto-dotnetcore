@@ -31,11 +31,9 @@ internal class Program
             foreach (var generatedFile in result.GeneratedFiles)
                 if (generatedFile.IsSuccess)
                 {
-                    var outputFile = generatedFile.CapnpFilePath + ".cs";
-
                     try
                     {
-                        File.WriteAllText(outputFile, generatedFile.GeneratedContent);
+                        GeneratedFileWriter.Write(generatedFile);
                     }
                     catch (Exception exception)
                     {
