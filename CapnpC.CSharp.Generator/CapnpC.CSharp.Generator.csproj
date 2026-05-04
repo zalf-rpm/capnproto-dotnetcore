@@ -21,7 +21,7 @@
     <PackageReference Include="CSharpier.Core" Version="1.2.6" />
     <PackageReference
       Include="Microsoft.SourceLink.GitHub"
-      Version="10.0.201"
+      Version="10.0.203"
       PrivateAssets="all"
     />
     <PackageReference Update="Nerdbank.GitVersioning">

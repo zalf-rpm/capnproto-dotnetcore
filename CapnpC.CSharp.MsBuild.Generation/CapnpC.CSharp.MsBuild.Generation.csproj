@@ -64,10 +64,10 @@
     />
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
     <PackageReference Update="Microsoft.Xaml" Version="4.0.0.1" />
-    <PackageReference Update="System.Collections.Immutable" Version="10.0.5" />
+    <PackageReference Update="System.Collections.Immutable" Version="10.0.7" />
     <PackageReference
       Include="Microsoft.SourceLink.GitHub"
-      Version="10.0.201"
+      Version="10.0.203"
       PrivateAssets="all"
     />
   </ItemGroup>
