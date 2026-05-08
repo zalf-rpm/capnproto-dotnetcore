@@ -12,6 +12,7 @@ namespace Capnp.Rpc;
 public static class Impatient
 {
     private static readonly ConditionalWeakTable<Task, IPromisedAnswer> _taskTable = new();
+
     private static readonly ThreadLocal<Stack<IRpcEndpoint>> _askingEndpoint = new(() =>
         new Stack<IRpcEndpoint>()
     );
@@ -37,14 +38,16 @@ public static class Impatient
     {
         async Task<T> AwaitAnswer()
         {
-            var result = await promise.WhenReturned;
+            DeserializerState result = await promise.WhenReturned;
             if (promise.IsTailCall)
+            {
                 throw new NoResultsException();
+            }
 
             return then(result);
         }
 
-        var rtask = AwaitAnswer();
+        Task<T> rtask = AwaitAnswer();
 
         // Rare situation: .NET maintains a cache of some pre-computed tasks for standard results (such as (int)0, (object)null).
         // AwaitAnswer() might indeed have chosen a fast-path optimization, such that rtask is a cached object instead of a new instance.
@@ -67,15 +70,17 @@ public static class Impatient
     )]
     public static IPromisedAnswer GetAnswer(Task task)
     {
-        if (!_taskTable.TryGetValue(task, out var answer))
+        if (!_taskTable.TryGetValue(task, out IPromisedAnswer? answer))
+        {
             throw new ArgumentException("Unknown task");
+        }
 
         return answer;
     }
 
     internal static IPromisedAnswer? TryGetAnswer(Task task)
     {
-        _taskTable.TryGetValue(task, out var answer);
+        _taskTable.TryGetValue(task, out IPromisedAnswer? answer);
         return answer;
     }
 
@@ -92,9 +97,12 @@ public static class Impatient
         Task<IDisposable?> proxyTask
     )
     {
-        var answer = TryGetAnswer(task);
+        IPromisedAnswer? answer = TryGetAnswer(task);
         if (answer != null)
+        {
             return answer.Access(access, proxyTask);
+        }
+
         return new LazyCapability(proxyTask.AsProxyTask());
     }
 
@@ -114,7 +122,7 @@ public static class Impatient
     public static TInterface PseudoEager<TInterface>(this Task<TInterface> task)
         where TInterface : class, IDisposable
     {
-        var lazyCap = new LazyCapability(task.AsProxyTask());
+        LazyCapability lazyCap = new(task.AsProxyTask());
         return (CapabilityReflection.CreateProxy<TInterface>(lazyCap) as TInterface)!;
     }
 
@@ -160,19 +168,23 @@ public static class Impatient
     )
         where TInterface : class, IDisposable
     {
-        var answer = TryGetAnswer(task);
+        IPromisedAnswer? answer = TryGetAnswer(task);
         if (answer == null)
         {
             if (!allowNoPipeliningFallback)
+            {
                 throw new ArgumentException(
                     "The task was not returned from a remote method invocation. See documentation for details."
                 );
+            }
 
-            var proxyTask = task.AsProxyTask();
+            Task<Proxy> proxyTask = task.AsProxyTask();
             if (proxyTask.IsCompletedSuccessfully)
+            {
                 return proxyTask.Result.Cast<TInterface>(true);
+            }
 
-            var lazyCap = new LazyCapability(proxyTask);
+            LazyCapability lazyCap = new(proxyTask);
             return (CapabilityReflection.CreateProxy<TInterface>(lazyCap) as TInterface)!;
         }
 
@@ -201,14 +213,18 @@ public static class Impatient
     public static async Task<TInterface?> Unwrap<TInterface>(this TInterface cap)
         where TInterface : class, IDisposable
     {
-        using var proxy = cap as Proxy;
+        using Proxy? proxy = cap as Proxy;
 
         if (proxy == null)
+        {
             return cap;
+        }
 
-        var unwrapped = await proxy.ConsumedCap.Unwrap();
+        ConsumedCapability? unwrapped = await proxy.ConsumedCap.Unwrap();
         if (unwrapped == null || unwrapped == NullCapability.Instance)
+        {
             return null;
+        }
 
         return (CapabilityReflection.CreateProxy<TInterface>(unwrapped) as TInterface)!;
     }

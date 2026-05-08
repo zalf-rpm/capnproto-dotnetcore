@@ -71,9 +71,11 @@ public class SegmentAllocator : ISegmentAllocator
         }
 
         if (forcePreferredSegment)
+        {
             return false;
+        }
 
-        for (var i = 0; i < _nonFullSegments.Count; i++)
+        for (int i = 0; i < _nonFullSegments.Count; i++)
         {
             segment = _nonFullSegments[i];
 
@@ -83,15 +85,15 @@ public class SegmentAllocator : ISegmentAllocator
 
                 if (segment.IsFull)
                 {
-                    var n = _nonFullSegments.Count - 1;
-                    var tmp = _nonFullSegments[i];
+                    int n = _nonFullSegments.Count - 1;
+                    Segment tmp = _nonFullSegments[i];
                     _nonFullSegments[i] = _nonFullSegments[n];
                     _nonFullSegments[n] = tmp;
                     _nonFullSegments.RemoveAt(n);
                 }
                 else if (i > 0)
                 {
-                    var tmp = _nonFullSegments[i];
+                    Segment tmp = _nonFullSegments[i];
                     _nonFullSegments[i] = _nonFullSegments[0];
                     _nonFullSegments[0] = tmp;
                 }
@@ -100,15 +102,17 @@ public class SegmentAllocator : ISegmentAllocator
             }
         }
 
-        var size = Math.Max((int)nwords, _defaultSegmentSize);
-        var storage = new ulong[size];
-        var mem = new Memory<ulong>(storage);
+        int size = Math.Max((int)nwords, _defaultSegmentSize);
+        ulong[] storage = new ulong[size];
+        Memory<ulong> mem = new(storage);
         segment = new Segment(mem, (uint)_segments.Count);
 
         _segments.Add(segment);
 
         if (!segment.TryAllocate(nwords, out result.Offset))
+        {
             throw new InvalidProgramException();
+        }
 
         result.SegmentIndex = segment.Id;
 
@@ -116,8 +120,8 @@ public class SegmentAllocator : ISegmentAllocator
         {
             _nonFullSegments.Add(segment);
 
-            var n = _nonFullSegments.Count - 1;
-            var tmp = _nonFullSegments[0];
+            int n = _nonFullSegments.Count - 1;
+            Segment tmp = _nonFullSegments[0];
             _nonFullSegments[0] = _nonFullSegments[n];
             _nonFullSegments[n] = tmp;
         }
@@ -144,7 +148,7 @@ public class SegmentAllocator : ISegmentAllocator
             if (checked(FreeOffset + (int)nwords) <= Mem.Length)
             {
                 offset = FreeOffset;
-                var count = (int)nwords;
+                int count = (int)nwords;
                 FreeOffset += count;
                 return true;
             }

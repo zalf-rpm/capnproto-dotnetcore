@@ -83,7 +83,9 @@ public struct WirePointer
         set
         {
             if (value >= 1 << 29 || value < -(1 << 29))
+            {
                 throw new ArgumentOutOfRangeException(nameof(value));
+            }
 
             _ptrData |= (uint)(value << 2);
         }
@@ -148,7 +150,9 @@ public struct WirePointer
     public void BeginList(ListKind kind, int count)
     {
         if (count < 0 || count >= 1 << 29)
+        {
             throw new ArgumentOutOfRangeException(nameof(count));
+        }
 
         _ptrData = ((ulong)count << 35) | ((ulong)kind << 32) | (ulong)PointerKind.List;
     }
@@ -173,14 +177,18 @@ public struct WirePointer
     public void SetFarPointer(uint targetSegmentIndex, int landingPadOffset, bool isDoubleFar)
     {
         if (landingPadOffset < 0 || landingPadOffset >= 1 << 29)
+        {
             throw new ArgumentOutOfRangeException(nameof(landingPadOffset));
+        }
 
         _ptrData =
             ((ulong)targetSegmentIndex << 32)
             | ((uint)landingPadOffset << 3)
             | (ulong)PointerKind.Far;
         if (isDoubleFar)
+        {
             _ptrData |= 4;
+        }
     }
 
     /// <summary>
@@ -201,8 +209,12 @@ public struct WirePointer
     public void SetCapability(uint? index)
     {
         if (index.HasValue)
+        {
             _ptrData = ((ulong)index << 32) | (ulong)PointerKind.Other;
+        }
         else
+        {
             _ptrData = 0;
+        }
     }
 }

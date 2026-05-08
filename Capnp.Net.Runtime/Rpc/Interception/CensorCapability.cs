@@ -25,7 +25,7 @@ internal class CensorCapability : RefCountingCapability
         DynamicSerializerState args
     )
     {
-        var cc = new CallContext(this, interfaceId, methodId, args);
+        CallContext cc = new(this, interfaceId, methodId, args);
         Policy.OnCallFromAlice(cc);
         return cc.Answer;
     }

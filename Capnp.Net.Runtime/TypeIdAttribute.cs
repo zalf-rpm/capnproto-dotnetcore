@@ -19,7 +19,10 @@ public class TypeIdAttribute : Attribute
     public TypeIdAttribute(ulong typeId)
     {
         if (typeId == 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(typeId), "The value cannot be zero.");
+        }
+
         Id = typeId;
     }
 

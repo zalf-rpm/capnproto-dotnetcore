@@ -72,10 +72,14 @@ public class TcpRpcClient : IConnection, IDisposable
     public void AttachTracer(IFrameTracer tracer)
     {
         if (tracer == null)
+        {
             throw new ArgumentNullException(nameof(tracer));
+        }
 
         if (State != ConnectionState.Initializing)
+        {
             throw new InvalidOperationException("Connection is not in state 'Initializing'");
+        }
 
         _attachTracerAction += () =>
         {
@@ -96,12 +100,16 @@ public class TcpRpcClient : IConnection, IDisposable
     public void InjectMidlayer(Func<Stream, Stream> createFunc)
     {
         if (createFunc == null)
+        {
             throw new ArgumentNullException(nameof(createFunc));
+        }
 
         if (State != ConnectionState.Initializing)
+        {
             throw new InvalidOperationException("Connection is not in state 'Initializing'");
+        }
 
-        var last = _createLayers;
+        Func<Stream, Stream> last = _createLayers;
         _createLayers = _ => createFunc(last(_));
     }
 
@@ -160,7 +168,9 @@ public class TcpRpcClient : IConnection, IDisposable
         try
         {
             if (WhenConnected != null && !WhenConnected.Wait(500))
+            {
                 Logger.LogError("Unable to join connection task within timeout");
+            }
         }
         catch (System.Exception e)
         {
@@ -174,7 +184,8 @@ public class TcpRpcClient : IConnection, IDisposable
 
     private async Task ConnectAsync(string host, int port)
     {
-        for (var retry = 0; ; retry++)
+        for (int retry = 0; ; retry++)
+        {
             try
             {
                 await _client.ConnectAsync(host, port);
@@ -190,6 +201,7 @@ public class TcpRpcClient : IConnection, IDisposable
             {
                 throw new RpcException("TcpRpcClient is unable to connect", exception);
             }
+        }
     }
 
     private async Task ConnectAndRunAsync(string host, int port)
@@ -198,7 +210,7 @@ public class TcpRpcClient : IConnection, IDisposable
 
         State = ConnectionState.Active;
 
-        var stream = _createLayers(_client.GetStream());
+        Stream stream = _createLayers(_client.GetStream());
         _pump = new FramePump(stream);
         _attachTracerAction?.Invoke();
         _outboundEndpoint = new OutboundTcpEndpoint(_pump);
@@ -247,7 +259,9 @@ public class TcpRpcClient : IConnection, IDisposable
     public void Connect(string host, int port)
     {
         if (WhenConnected != null)
+        {
             throw new InvalidOperationException("Connection was already requested");
+        }
 
         WhenConnected = ConnectAndRunAsync(host, port);
     }
@@ -262,7 +276,9 @@ public class TcpRpcClient : IConnection, IDisposable
         where TProxy : class, IDisposable
     {
         if (WhenConnected == null)
+        {
             throw new InvalidOperationException("Not connecting");
+        }
 
         async Task<TProxy> GetMainAsync()
         {

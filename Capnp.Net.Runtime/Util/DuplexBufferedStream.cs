@@ -61,7 +61,9 @@ internal class DuplexBufferedStream : Stream
     public override void Write(byte[] buffer, int offset, int count)
     {
         if (buffer.Length > _bufferSize) // avoid moiré-like timing effects
+        {
             _writeStream.Flush();
+        }
 
         _writeStream.Write(buffer, offset, count);
     }
@@ -69,6 +71,7 @@ internal class DuplexBufferedStream : Stream
     protected override void Dispose(bool disposing)
     {
         if (disposing)
+        {
             lock (_reentrancyBlocker)
             {
                 try
@@ -83,6 +86,7 @@ internal class DuplexBufferedStream : Stream
                 }
                 catch { }
             }
+        }
 
         base.Dispose(disposing);
     }

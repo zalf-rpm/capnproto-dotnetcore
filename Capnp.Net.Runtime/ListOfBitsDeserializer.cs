@@ -33,10 +33,12 @@ public class ListOfBitsDeserializer : ListDeserializer, IReadOnlyList<bool>
         get
         {
             if (index < 0 || index >= Count)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
-            var wi = index / 64;
-            var bi = index % 64;
+            int wi = index / 64;
+            int bi = index % 64;
 
             return ((State.CurrentSegment[State.Offset + wi] >> bi) & 1)
                 != (_defaultValue ? 1u : 0);
@@ -59,8 +61,10 @@ public class ListOfBitsDeserializer : ListDeserializer, IReadOnlyList<bool>
 
     private IEnumerable<bool> Enumerate()
     {
-        for (var i = 0; i < Count; i++)
+        for (int i = 0; i < Count; i++)
+        {
             yield return this[i];
+        }
     }
 
     /// <summary>

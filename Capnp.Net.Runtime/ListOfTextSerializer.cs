@@ -23,7 +23,9 @@ public class ListOfTextSerializer : SerializerState, IReadOnlyList<string?>
             ListSerializerHelper.EnsureAllocated(this);
 
             if (index < 0 || index >= Count)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
             return ReadText(index);
         }
@@ -32,7 +34,9 @@ public class ListOfTextSerializer : SerializerState, IReadOnlyList<string?>
             ListSerializerHelper.EnsureAllocated(this);
 
             if (index < 0 || index >= Count)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
             WriteText(index, value);
         }
@@ -58,10 +62,12 @@ public class ListOfTextSerializer : SerializerState, IReadOnlyList<string?>
 
     private IEnumerable<string?> Enumerate()
     {
-        var count = Count;
+        int count = Count;
 
-        for (var i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
+        {
             yield return this[i];
+        }
     }
 
     /// <summary>
@@ -73,10 +79,14 @@ public class ListOfTextSerializer : SerializerState, IReadOnlyList<string?>
     public void Init(int count)
     {
         if (IsAllocated)
+        {
             throw new InvalidOperationException("Already initialized");
+        }
 
         if (count < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(count));
+        }
 
         SetListOfPointers(count);
     }
@@ -93,11 +103,15 @@ public class ListOfTextSerializer : SerializerState, IReadOnlyList<string?>
     public void Init(IReadOnlyList<string?>? items)
     {
         if (items == null)
+        {
             return;
+        }
 
         Init(items.Count);
 
-        for (var i = 0; i < items.Count; i++)
+        for (int i = 0; i < items.Count; i++)
+        {
             this[i] = items[i];
+        }
     }
 }

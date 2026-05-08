@@ -31,9 +31,11 @@ public static class CapabilityReflection
         Type[] genericArguments
     )
     {
-        var skeletonClass = attr.SkeletonClass;
+        Type skeletonClass = attr.SkeletonClass;
         if (genericArguments.Length > 0)
+        {
             skeletonClass = skeletonClass.MakeGenericType(genericArguments);
+        }
 
         return (SkeletonFactory)
             Activator.CreateInstance(typeof(SkeletonFactory<>).MakeGenericType(skeletonClass))!;
@@ -47,7 +49,7 @@ public static class CapabilityReflection
             {
                 try
                 {
-                    var attrs = (
+                    (SkeletonAttribute Attr, Type[] Generics)[] attrs = (
                         from iface in _.GetInterfaces()
                         let generics = iface.GetGenericArguments()
                         from attr in iface.GetCustomAttributes(typeof(SkeletonAttribute), false)
@@ -55,14 +57,18 @@ public static class CapabilityReflection
                     ).ToArray();
 
                     if (attrs.Length == 0)
+                    {
                         throw new InvalidCapabilityInterfaceException(
                             "No 'Skeleton' attribute defined, don't know how to create the skeleton"
                         );
+                    }
 
                     if (attrs.Length == 1)
+                    {
                         return CreateMonoSkeletonFactory(attrs[0].Attr, attrs[0].Generics);
+                    }
 
-                    var monoFactories = attrs
+                    SkeletonFactory[] monoFactories = attrs
                         .Select(a => CreateMonoSkeletonFactory(a.Attr, a.Generics))
                         .ToArray();
                     return new PolySkeletonFactory(monoFactories);
@@ -113,14 +119,16 @@ public static class CapabilityReflection
     internal static Skeleton CreateSkeletonInternal(object obj)
     {
         if (obj == null)
+        {
             throw new ArgumentNullException(nameof(obj));
+        }
 
-        var result = _implMap.GetValue(
+        Skeleton result = _implMap.GetValue(
             obj,
             _ =>
             {
-                var factory = GetSkeletonFactory(_.GetType());
-                var skeleton = factory.NewSkeleton();
+                SkeletonFactory factory = GetSkeletonFactory(_.GetType());
+                Skeleton skeleton = factory.NewSkeleton();
                 skeleton.Bind(obj);
                 return skeleton;
             }
@@ -137,21 +145,25 @@ public static class CapabilityReflection
             {
                 try
                 {
-                    var attrs = type.GetCustomAttributes(typeof(ProxyAttribute), false)
+                    ProxyAttribute[] attrs = type.GetCustomAttributes(typeof(ProxyAttribute), false)
                         .Cast<ProxyAttribute>()
                         .ToArray();
 
                     if (attrs.Length == 0)
+                    {
                         throw new InvalidCapabilityInterfaceException(
                             "No 'Proxy' attribute defined, don't know how to create the proxy"
                         );
+                    }
 
                     if (attrs.Length == 1)
                     {
-                        var proxyClass = attrs[0].ProxyClass;
-                        var genericArguments = type.GetGenericArguments();
+                        Type proxyClass = attrs[0].ProxyClass;
+                        Type[] genericArguments = type.GetGenericArguments();
                         if (genericArguments.Length > 0)
+                        {
                             proxyClass = proxyClass.MakeGenericType(genericArguments);
+                        }
 
                         return (ProxyFactory)
                             Activator.CreateInstance(
@@ -184,15 +196,19 @@ public static class CapabilityReflection
     public static void ValidateCapabilityInterface(Type interfaceType)
     {
         if (interfaceType == null)
+        {
             throw new ArgumentNullException(nameof(interfaceType));
+        }
 
-        var proxyFactory = GetProxyFactory(interfaceType);
+        ProxyFactory proxyFactory = GetProxyFactory(interfaceType);
 
         if (proxyFactory is IBrokenFactory brokenFactory)
+        {
             throw new InvalidCapabilityInterfaceException(
                 "Given type did not qualify as capability interface, see inner exception.",
                 brokenFactory.Exception
             );
+        }
     }
 
     /// <summary>
@@ -204,9 +220,11 @@ public static class CapabilityReflection
     public static bool IsValidCapabilityInterface(Type interfaceType)
     {
         if (interfaceType == null)
+        {
             throw new ArgumentNullException(nameof(interfaceType));
+        }
 
-        var proxyFactory = GetProxyFactory(interfaceType);
+        ProxyFactory proxyFactory = GetProxyFactory(interfaceType);
 
         return !(proxyFactory is IBrokenFactory);
     }
@@ -235,8 +253,8 @@ public static class CapabilityReflection
     /// <exception cref="TypeLoadException">Problem with building the Proxy type, or problem with loading some dependent class.</exception>
     public static Proxy CreateProxy<TInterface>(ConsumedCapability cap)
     {
-        var factory = GetProxyFactory(typeof(TInterface));
-        var proxy = factory.NewProxy();
+        ProxyFactory factory = GetProxyFactory(typeof(TInterface));
+        Proxy proxy = factory.NewProxy();
         proxy.Bind(cap);
         return proxy;
     }
@@ -315,9 +333,12 @@ public static class CapabilityReflection
 
         public override Skeleton NewSkeleton()
         {
-            var poly = new PolySkeleton();
-            foreach (var fac in _monoFactories)
+            PolySkeleton poly = new();
+            foreach (SkeletonFactory fac in _monoFactories)
+            {
                 poly.AddInterface(fac.NewSkeleton());
+            }
+
             return poly;
         }
     }

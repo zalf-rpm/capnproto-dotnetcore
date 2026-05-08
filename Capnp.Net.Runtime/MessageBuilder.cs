@@ -69,7 +69,7 @@ public class MessageBuilder
     public TS CreateObject<TS>()
         where TS : SerializerState, new()
     {
-        var ts = new TS();
+        TS ts = new();
         ts.Bind(this);
         return ts;
     }
@@ -83,11 +83,15 @@ public class MessageBuilder
         where TS : SerializerState, new()
     {
         if (Root != null)
+        {
             throw new InvalidOperationException("Root already set");
+        }
 
-        var root = CreateObject<TS>();
+        TS root = CreateObject<TS>();
         if (root.Kind != ObjectKind.Struct)
+        {
             throw new InvalidOperationException("Root object must be a struct");
+        }
 
         Root = root;
         return root;
@@ -99,7 +103,9 @@ public class MessageBuilder
     public void InitCapTable()
     {
         if (Caps != null)
+        {
             throw new InvalidOperationException("Capability table was already initialized");
+        }
 
         Caps = new List<ConsumedCapability>();
     }

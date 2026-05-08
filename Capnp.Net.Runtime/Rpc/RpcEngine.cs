@@ -51,7 +51,7 @@ public class RpcEngine
     /// <returns>endpoint for handling incoming messages</returns>
     public RpcEndpoint AddEndpoint(IEndpoint outboundEndpoint)
     {
-        var inboundEndpoint = new RpcEndpoint(this, outboundEndpoint);
+        RpcEndpoint inboundEndpoint = new(this, outboundEndpoint);
         _inboundEndpoints.Add(inboundEndpoint);
         return inboundEndpoint;
     }
@@ -80,7 +80,9 @@ public class RpcEngine
         public void Release(int count)
         {
             if (count > RefCount)
+            {
                 throw new ArgumentOutOfRangeException(nameof(count));
+            }
 
             RefCount -= count;
         }
@@ -218,10 +220,12 @@ public class RpcEngine
                 _exportTable.Clear();
                 _revExportTable.Clear();
 
-                foreach (var question in _questionTable.Values.ToList())
+                foreach (PendingQuestion question in _questionTable.Values.ToList())
+                {
                     question.OnException(
                         new RpcException("RPC connection is broken. Task would never return.")
                     );
+                }
 
                 Debug.Assert(_questionTable.Count == 0);
 
@@ -241,9 +245,11 @@ public class RpcEngine
         public void Forward(WireFrame frame)
         {
             if (State == EndpointState.Dismissed)
+            {
                 throw new InvalidOperationException(
                     "Endpoint is in dismissed state and doesn't accept frames anymore"
                 );
+            }
 
             Interlocked.Increment(ref _recvCount);
             ProcessFrame(frame);
@@ -257,29 +263,31 @@ public class RpcEngine
             Func<ConsumedCapability> resolvedCapGetter
         )
         {
-            using var fc = SetupFlushContext();
+            using FlushContextKeeper fc = SetupFlushContext();
 
             lock (_reentrancyBlocker)
             {
                 if (
-                    !_exportTable.TryGetValue(preliminaryId, out var existing)
+                    !_exportTable.TryGetValue(preliminaryId, out RefCounted<Skeleton>? existing)
                     || existing.Cap != preliminaryCap
                 )
-                    // Resolved too late. Capability was already released.
+                // Resolved too late. Capability was already released.
+                {
                     return;
+                }
 
                 existing.AddRef();
                 existing.Cap.Claim();
             }
 
-            var mb = MessageBuilder.Create();
-            var msg = mb.BuildRoot<Message.WRITER>();
+            MessageBuilder mb = MessageBuilder.Create();
+            Message.WRITER msg = mb.BuildRoot<Message.WRITER>();
             msg.which = Message.WHICH.Resolve;
-            var resolve = msg.Resolve!;
+            Resolve.WRITER resolve = msg.Resolve!;
 
             try
             {
-                var resolvedCap = resolvedCapGetter();
+                ConsumedCapability resolvedCap = resolvedCapGetter();
                 resolve.which = Resolve.WHICH.Cap;
                 resolvedCap.Export(this, resolve.Cap!);
             }
@@ -306,8 +314,8 @@ public class RpcEngine
             SerializerState inParams
         )
         {
-            using var fc = SetupFlushContext();
-            var question = AllocateQuestion(target, inParams);
+            using FlushContextKeeper fc = SetupFlushContext();
+            PendingQuestion question = AllocateQuestion(target, inParams);
 
             if (_canDeferCalls.Value)
             {
@@ -329,20 +337,20 @@ public class RpcEngine
 
         void IRpcEndpoint.Finish(uint questionId)
         {
-            using var fc = SetupFlushContext();
+            using FlushContextKeeper fc = SetupFlushContext();
             Finish(questionId);
         }
 
         void IRpcEndpoint.ReleaseImport(uint importId)
         {
-            using var fc = SetupFlushContext();
+            using FlushContextKeeper fc = SetupFlushContext();
 
             bool exists;
-            var count = 0;
+            int count = 0;
 
             lock (_reentrancyBlocker)
             {
-                exists = _importTable.TryGetValue(importId, out var rc);
+                exists = _importTable.TryGetValue(importId, out RefCounted<RemoteCapability>? rc);
                 if (rc != null)
                 {
                     count = rc.RefCount;
@@ -350,13 +358,15 @@ public class RpcEngine
                 }
 
                 if (exists)
+                {
                     _importTable.Remove(importId);
+                }
             }
 
             if (exists && count > 0)
             {
-                var mb = MessageBuilder.Create();
-                var msg = mb.BuildRoot<Message.WRITER>();
+                MessageBuilder mb = MessageBuilder.Create();
+                Message.WRITER msg = mb.BuildRoot<Message.WRITER>();
                 msg.which = Message.WHICH.Release;
                 msg.Release!.Id = importId;
                 msg.Release!.ReferenceCount = (uint)count;
@@ -377,16 +387,16 @@ public class RpcEngine
 
         Task IRpcEndpoint.RequestSenderLoopback(Action<MessageTarget.WRITER> describe)
         {
-            using var fc = SetupFlushContext();
+            using FlushContextKeeper fc = SetupFlushContext();
 
-            var (tcs, id) = AllocateDisembargo();
+            (TaskCompletionSource<int> tcs, uint id) = AllocateDisembargo();
 
-            var mb = MessageBuilder.Create();
+            MessageBuilder mb = MessageBuilder.Create();
             mb.InitCapTable();
-            var msg = mb.BuildRoot<Message.WRITER>();
+            Message.WRITER msg = mb.BuildRoot<Message.WRITER>();
             msg.which = Message.WHICH.Disembargo;
             describe(msg.Disembargo!.Target);
-            var ctx = msg.Disembargo.Context;
+            Disembargo.context.WRITER ctx = msg.Disembargo.Context;
             ctx.which = Disembargo.context.WHICH.SenderLoopback;
             ctx.SenderLoopback = id;
 
@@ -397,19 +407,23 @@ public class RpcEngine
 
         void IRpcEndpoint.DeleteQuestion(PendingQuestion question)
         {
-            using var fc = SetupFlushContext();
+            using FlushContextKeeper fc = SetupFlushContext();
 
             lock (_reentrancyBlocker)
             {
                 if (!_questionTable.Remove(question.QuestionId))
+                {
                     Logger.LogError("Attempting to delete unknown question ID.");
+                }
             }
         }
 
         private FlushContextKeeper SetupFlushContext()
         {
             if (_flushRequests.Value?.Ep == this)
+            {
                 return new FlushContextKeeper(_flushRequests.Value, false);
+            }
 
             _flushRequests.Value = new FlushContext(_flushRequests.Value, this);
             return new FlushContextKeeper(_flushRequests.Value, true);
@@ -418,9 +432,13 @@ public class RpcEngine
         private void RequestFlush()
         {
             if (_flushRequests.Value?.Ep == this)
+            {
                 _flushRequests.Value.Request();
+            }
             else
+            {
                 _tx.Flush();
+            }
         }
 
         private void Tx(WireFrame frame)
@@ -442,8 +460,8 @@ public class RpcEngine
         {
             try
             {
-                var mb = MessageBuilder.Create();
-                var msg = mb.BuildRoot<Message.WRITER>();
+                MessageBuilder mb = MessageBuilder.Create();
+                Message.WRITER msg = mb.BuildRoot<Message.WRITER>();
                 msg.which = Message.WHICH.Abort;
                 msg.Abort!.Reason = reason;
                 Tx(mb.Frame);
@@ -463,7 +481,7 @@ public class RpcEngine
             {
                 providedCapability.Claim();
 
-                if (_revExportTable.TryGetValue(providedCapability, out var id))
+                if (_revExportTable.TryGetValue(providedCapability, out uint id))
                 {
                     _exportTable[id].AddRef();
                     first = false;
@@ -491,11 +509,13 @@ public class RpcEngine
         {
             lock (_reentrancyBlocker)
             {
-                var questionId = NextId();
+                uint questionId = NextId();
                 while (_questionTable.ContainsKey(questionId))
+                {
                     questionId = NextId();
+                }
 
-                var question = new PendingQuestion(this, questionId, target, inParams);
+                PendingQuestion question = new(this, questionId, target, inParams);
                 _questionTable.Add(questionId, question);
 
                 return question;
@@ -504,14 +524,16 @@ public class RpcEngine
 
         private (TaskCompletionSource<int>, uint) AllocateDisembargo()
         {
-            var tcs = new TaskCompletionSource<int>();
+            TaskCompletionSource<int> tcs = new();
 
             lock (_reentrancyBlocker)
             {
-                var id = NextId();
+                uint id = NextId();
 
                 while (!_pendingDisembargos.TryAdd(id, tcs))
+                {
                     id = NextId();
+                }
 
                 return (tcs, id);
             }
@@ -519,17 +541,17 @@ public class RpcEngine
 
         private void ProcessBootstrap(Bootstrap.READER req)
         {
-            var q = req.QuestionId;
+            uint q = req.QuestionId;
 
-            var bootstrap = DynamicSerializerState.CreateForRpc();
-            var ans = bootstrap.MsgBuilder!.BuildRoot<Message.WRITER>();
+            DynamicSerializerState bootstrap = DynamicSerializerState.CreateForRpc();
+            Message.WRITER ans = bootstrap.MsgBuilder!.BuildRoot<Message.WRITER>();
 
             ans.which = Message.WHICH.Return;
-            var ret = ans.Return!;
+            Return.WRITER ret = ans.Return!;
             ret.AnswerId = q;
 
             Task<AnswerOrCounterquestion> bootstrapTask;
-            var bootstrapCap = _host.BootstrapCap;
+            Skeleton? bootstrapCap = _host.BootstrapCap;
 
             if (bootstrapCap != null)
             {
@@ -553,7 +575,7 @@ public class RpcEngine
                 );
             }
 
-            var pendingAnswer = new PendingAnswer(bootstrapTask, null);
+            PendingAnswer pendingAnswer = new(bootstrapTask, null);
 
             bool added;
             lock (_reentrancyBlocker)
@@ -570,14 +592,18 @@ public class RpcEngine
             }
 
             if (ret.Results != null)
+            {
                 ExportCapTableAndSend(bootstrap, ret.Results);
+            }
             else
+            {
                 Tx(bootstrap.MsgBuilder.Frame);
+            }
         }
 
         private void DispatchDeferredCalls()
         {
-            var call = _deferredCall.Value;
+            PendingQuestion? call = _deferredCall.Value;
             _deferredCall.Value = null;
             call?.Send();
         }
@@ -594,9 +620,9 @@ public class RpcEngine
         {
             Return.WRITER SetupReturn(MessageBuilder mb)
             {
-                var rmsg = mb.BuildRoot<Message.WRITER>();
+                Message.WRITER rmsg = mb.BuildRoot<Message.WRITER>();
                 rmsg.which = Message.WHICH.Return;
-                var ret = rmsg.Return!;
+                Return.WRITER ret = rmsg.Return!;
                 ret.AnswerId = req.QuestionId;
 
                 return ret;
@@ -606,9 +632,9 @@ public class RpcEngine
             {
                 DispatchDeferredCalls();
 
-                var mb = MessageBuilder.Create();
+                MessageBuilder mb = MessageBuilder.Create();
                 mb.InitCapTable();
-                var ret = SetupReturn(mb);
+                Return.WRITER ret = SetupReturn(mb);
 
                 why(ret);
 
@@ -626,7 +652,7 @@ public class RpcEngine
 
             Skeleton callTargetCap;
             PendingAnswer pendingAnswer;
-            var releaseParamCaps = true;
+            bool releaseParamCaps = true;
 
             void AwaitAnswerAndReply()
             {
@@ -657,7 +683,7 @@ public class RpcEngine
                         {
                             try
                             {
-                                var aorcq = await t;
+                                AnswerOrCounterquestion aorcq = await t;
 
                                 if (aorcq.Answer == null && aorcq.Counterquestion == null)
                                 {
@@ -668,11 +694,11 @@ public class RpcEngine
                                     || aorcq.Counterquestion != _deferredCall.Value
                                 )
                                 {
-                                    var results =
+                                    SerializerState results =
                                         aorcq.Answer
                                         ?? (DynamicSerializerState)
                                             await aorcq.Counterquestion!.WhenReturned;
-                                    var ret = SetupReturn(results.MsgBuilder!);
+                                    Return.WRITER ret = SetupReturn(results.MsgBuilder!);
 
                                     switch (req.SendResultsTo.which)
                                     {
@@ -754,14 +780,14 @@ public class RpcEngine
 
             void CreateAnswerAwaitItAndReply()
             {
-                var inParams = req.Params.Content;
+                DeserializerState inParams = req.Params.Content;
                 inParams.Caps = ImportCapTable(req.Params);
                 releaseParamCaps = false;
 
                 try
                 {
-                    var cts = new CancellationTokenSource();
-                    var callTask = callTargetCap.Invoke(
+                    CancellationTokenSource cts = new();
+                    Task<AnswerOrCounterquestion> callTask = callTargetCap.Invoke(
                         req.InterfaceId,
                         req.MethodId,
                         inParams,
@@ -771,8 +797,10 @@ public class RpcEngine
                 }
                 catch (System.Exception exception)
                 {
-                    foreach (var cap in inParams.Caps)
+                    foreach (ConsumedCapability cap in inParams.Caps)
+                    {
                         cap.Release();
+                    }
 
                     pendingAnswer = new PendingAnswer(
                         Task.FromException<AnswerOrCounterquestion>(exception),
@@ -817,7 +845,12 @@ public class RpcEngine
 
                         lock (_reentrancyBlocker)
                         {
-                            if (_exportTable.TryGetValue(req.Target.ImportedCap, out var rc))
+                            if (
+                                _exportTable.TryGetValue(
+                                    req.Target.ImportedCap,
+                                    out RefCounted<Skeleton>? rc
+                                )
+                            )
                             {
                                 callTargetCap = rc.Cap;
                                 callTargetCap.Claim();
@@ -859,7 +892,7 @@ public class RpcEngine
                                     {
                                         try
                                         {
-                                            using var proxy = await t;
+                                            using Proxy proxy = await t;
                                             callTargetCap = await proxy.GetProvider();
                                             callTargetCap.Claim();
                                             CreateAnswerAwaitItAndReply();
@@ -930,12 +963,14 @@ public class RpcEngine
             }
 
             if (req.ReleaseParamCaps)
+            {
                 ReleaseExports(question.CapTable);
+            }
 
             switch (req.which)
             {
                 case Return.WHICH.Results:
-                    var content = req.Results.Content;
+                    DeserializerState content = req.Results.Content;
                     content.Caps = ImportCapTable(req.Results);
                     question.OnReturn(content);
                     break;
@@ -978,13 +1013,17 @@ public class RpcEngine
                             {
                                 try
                                 {
-                                    var aorcq = await t;
-                                    var results = aorcq.Answer;
+                                    AnswerOrCounterquestion aorcq = await t;
+                                    SerializerState? results = aorcq.Answer;
 
                                     if (results != null)
+                                    {
                                         question.OnReturn(results);
+                                    }
                                     else
+                                    {
                                         question.OnTailCallReturn();
+                                    }
                                 }
                                 catch (TaskCanceledException)
                                 {
@@ -1015,14 +1054,19 @@ public class RpcEngine
         {
             lock (_reentrancyBlocker)
             {
-                if (!_importTable.TryGetValue(resolve.PromiseId, out var rcc))
+                if (
+                    !_importTable.TryGetValue(
+                        resolve.PromiseId,
+                        out RefCounted<RemoteCapability>? rcc
+                    )
+                )
                 {
                     // May happen if Resolve arrives late. Not an actual error.
 
                     if (resolve.which == Resolve.WHICH.Cap)
                     {
                         // Import and release immediately
-                        var imp = ImportCap(resolve.Cap);
+                        ConsumedCapability imp = ImportCap(resolve.Cap);
                         imp.AddRef();
                         imp.Release();
                     }
@@ -1030,7 +1074,7 @@ public class RpcEngine
                     return;
                 }
 
-                var cap = rcc.Cap;
+                RemoteCapability cap = rcc.Cap;
 
                 if (!(cap is PromisedCapability resolvableCap))
                 {
@@ -1045,7 +1089,7 @@ public class RpcEngine
                     switch (resolve.which)
                     {
                         case Resolve.WHICH.Cap:
-                            var resolvedCap = ImportCap(resolve.Cap);
+                            ConsumedCapability resolvedCap = ImportCap(resolve.Cap);
                             resolvableCap.ResolveTo(resolvedCap);
                             break;
 
@@ -1069,19 +1113,24 @@ public class RpcEngine
 
         private void ProcessSenderLoopback(Disembargo.READER disembargo)
         {
-            var mb = MessageBuilder.Create();
+            MessageBuilder mb = MessageBuilder.Create();
             mb.InitCapTable();
-            var wr = mb.BuildRoot<Message.WRITER>();
+            Message.WRITER wr = mb.BuildRoot<Message.WRITER>();
             wr.which = Message.WHICH.Disembargo;
             wr.Disembargo!.Context.which = Disembargo.context.WHICH.ReceiverLoopback;
             wr.Disembargo!.Context.ReceiverLoopback = disembargo.Context.SenderLoopback;
-            var reply = wr.Disembargo;
+            Disembargo.WRITER? reply = wr.Disembargo;
 
             switch (disembargo.Target.which)
             {
                 case MessageTarget.WHICH.ImportedCap:
 
-                    if (!_exportTable.TryGetValue(disembargo.Target.ImportedCap, out var cap))
+                    if (
+                        !_exportTable.TryGetValue(
+                            disembargo.Target.ImportedCap,
+                            out RefCounted<Skeleton>? cap
+                        )
+                    )
                     {
                         Logger.LogWarning(
                             "Sender loopback request: Peer asked for invalid (already released?) capability ID."
@@ -1099,14 +1148,14 @@ public class RpcEngine
 
                 case MessageTarget.WHICH.PromisedAnswer:
 
-                    var promisedAnswer = disembargo.Target.PromisedAnswer;
+                    PromisedAnswer.READER promisedAnswer = disembargo.Target.PromisedAnswer;
                     reply.Target.which = MessageTarget.WHICH.PromisedAnswer;
-                    var replyPromisedAnswer = reply.Target.PromisedAnswer;
+                    PromisedAnswer.WRITER? replyPromisedAnswer = reply.Target.PromisedAnswer;
                     replyPromisedAnswer!.QuestionId = disembargo.Target.PromisedAnswer.QuestionId;
-                    var count = promisedAnswer.Transform.Count;
+                    int count = promisedAnswer.Transform.Count;
                     replyPromisedAnswer.Transform.Init(count);
 
-                    for (var i = 0; i < count; i++)
+                    for (int i = 0; i < count; i++)
                     {
                         replyPromisedAnswer.Transform[i].which = promisedAnswer.Transform[i].which;
                         replyPromisedAnswer.Transform[i].GetPointerField = promisedAnswer
@@ -1114,13 +1163,18 @@ public class RpcEngine
                             .GetPointerField;
                     }
 
-                    if (_answerTable.TryGetValue(promisedAnswer.QuestionId, out var previousAnswer))
+                    if (
+                        _answerTable.TryGetValue(
+                            promisedAnswer.QuestionId,
+                            out PendingAnswer? previousAnswer
+                        )
+                    )
                     {
                         previousAnswer.Chain(
                             disembargo.Target.PromisedAnswer,
                             async t =>
                             {
-                                using var proxy = await t;
+                                using Proxy proxy = await t;
 
                                 if (
                                     proxy.ConsumedCap is RemoteCapability remote
@@ -1221,7 +1275,9 @@ public class RpcEngine
         private void ReleaseExports(IReadOnlyList<CapDescriptor.WRITER>? caps)
         {
             if (caps != null)
-                foreach (var capDesc in caps)
+            {
+                foreach (CapDescriptor.WRITER capDesc in caps)
+                {
                     switch (capDesc.which)
                     {
                         case CapDescriptor.WHICH.SenderHosted:
@@ -1232,6 +1288,8 @@ public class RpcEngine
                             ReleaseExport(capDesc.SenderPromise, 1);
                             break;
                     }
+                }
+            }
         }
 
         private void ReleaseResultCaps(PendingAnswer answer)
@@ -1240,7 +1298,7 @@ public class RpcEngine
             {
                 try
                 {
-                    var aorcq = await t;
+                    AnswerOrCounterquestion aorcq = await t;
                     ReleaseExports(answer.CapTable);
                 }
                 catch { }
@@ -1260,7 +1318,9 @@ public class RpcEngine
             if (exists)
             {
                 if (finish.ReleaseResultCaps)
+                {
                     ReleaseResultCaps(answer!);
+                }
 
                 answer!.Cancel();
                 answer!.Dispose();
@@ -1279,12 +1339,13 @@ public class RpcEngine
 
             lock (_reentrancyBlocker)
             {
-                exists = _exportTable.TryGetValue(id, out var rc);
+                exists = _exportTable.TryGetValue(id, out RefCounted<Skeleton>? rc);
 
                 if (exists)
+                {
                     try
                     {
-                        var icount = checked((int)count);
+                        int icount = checked((int)count);
                         rc!.Release(icount);
                         rc!.Cap.Relinquish(icount);
 
@@ -1302,6 +1363,7 @@ public class RpcEngine
 
                         throw new RpcProtocolErrorException("Invalid reference count");
                     }
+                }
             }
 
             if (!exists)
@@ -1320,6 +1382,7 @@ public class RpcEngine
         private void ProcessUnimplementedResolve(Resolve.READER resolve)
         {
             if (resolve.which == Resolve.WHICH.Cap)
+            {
                 switch (resolve.Cap.which)
                 {
                     case CapDescriptor.WHICH.SenderHosted:
@@ -1331,6 +1394,7 @@ public class RpcEngine
                         ReleaseExport(resolve.Cap.SenderPromise, 1);
                         break;
                 }
+            }
         }
 
         private void ProcessUnimplementedCall(Call.READER call)
@@ -1384,29 +1448,26 @@ public class RpcEngine
         /// <returns>low-level capability</returns>
         public ConsumedCapability QueryMain()
         {
-            var mb = MessageBuilder.Create();
+            MessageBuilder mb = MessageBuilder.Create();
             mb.InitCapTable();
-            var req = mb.BuildRoot<Message.WRITER>();
+            Message.WRITER req = mb.BuildRoot<Message.WRITER>();
             req.which = Message.WHICH.Bootstrap;
-            var pendingBootstrap = AllocateQuestion(NullCapability.Instance, null);
+            PendingQuestion pendingBootstrap = AllocateQuestion(NullCapability.Instance, null);
             req.Bootstrap!.QuestionId = pendingBootstrap.QuestionId;
 
             Tx(mb.Frame);
             _tx.Flush();
 
-            var main = new RemoteAnswerCapability(
-                pendingBootstrap,
-                MemberAccessPath.BootstrapAccess
-            );
+            RemoteAnswerCapability main = new(pendingBootstrap, MemberAccessPath.BootstrapAccess);
 
             return main;
         }
 
         private void ProcessFrame(WireFrame frame)
         {
-            using var fc = SetupFlushContext();
-            var dec = DeserializerState.CreateRoot(frame);
-            var msg = Message.READER.create(dec);
+            using FlushContextKeeper fc = SetupFlushContext();
+            DeserializerState dec = DeserializerState.CreateRoot(frame);
+            Message.READER msg = Message.READER.create(dec);
 
             try
             {
@@ -1467,9 +1528,9 @@ public class RpcEngine
             }
             catch (RpcUnimplementedException)
             {
-                var mb = MessageBuilder.Create();
+                MessageBuilder mb = MessageBuilder.Create();
                 mb.InitCapTable();
-                var reply = mb.BuildRoot<Message.WRITER>();
+                Message.WRITER reply = mb.BuildRoot<Message.WRITER>();
                 reply.which = Message.WHICH.Unimplemented;
                 Reserializing.DeepCopy(msg, reply.Unimplemented!.Rewrap<DynamicSerializerState>());
 
@@ -1501,40 +1562,57 @@ public class RpcEngine
                 switch (capDesc.which)
                 {
                     case CapDescriptor.WHICH.SenderHosted:
-                        if (_importTable.TryGetValue(capDesc.SenderHosted, out var rcc))
+                        if (
+                            _importTable.TryGetValue(
+                                capDesc.SenderHosted,
+                                out RefCounted<RemoteCapability>? rcc
+                            )
+                        )
                         {
-                            var impCap = rcc.Cap;
+                            RemoteCapability impCap = rcc.Cap;
                             impCap.Validate();
                             rcc.AddRef();
                             return impCap;
                         }
 
                         {
-                            var newCap = new ImportedCapability(this, capDesc.SenderHosted);
+                            ImportedCapability newCap = new(this, capDesc.SenderHosted);
                             rcc = new RefCounted<RemoteCapability>(newCap);
                             _importTable.Add(capDesc.SenderHosted, rcc);
                             return newCap;
                         }
 
                     case CapDescriptor.WHICH.SenderPromise:
-                        if (_importTable.TryGetValue(capDesc.SenderPromise, out var rccp))
+                        if (
+                            _importTable.TryGetValue(
+                                capDesc.SenderPromise,
+                                out RefCounted<RemoteCapability>? rccp
+                            )
+                        )
                         {
-                            var impCap = rccp.Cap;
+                            RemoteCapability impCap = rccp.Cap;
                             impCap.Validate();
                             rccp.AddRef();
                             return impCap;
                         }
 
                         {
-                            var newCap = new PromisedCapability(this, capDesc.SenderPromise);
+                            PromisedCapability newCap = new(this, capDesc.SenderPromise);
                             rccp = new RefCounted<RemoteCapability>(newCap);
                             _importTable.Add(capDesc.SenderPromise, rccp);
                             return newCap;
                         }
 
                     case CapDescriptor.WHICH.ReceiverHosted:
-                        if (_exportTable.TryGetValue(capDesc.ReceiverHosted, out var rc))
+                        if (
+                            _exportTable.TryGetValue(
+                                capDesc.ReceiverHosted,
+                                out RefCounted<Skeleton>? rc
+                            )
+                        )
+                        {
                             return rc.Cap.AsCapability();
+                        }
 
                         Logger.LogWarning(
                             "Peer refers to receiver-hosted capability which does not exist."
@@ -1547,11 +1625,11 @@ public class RpcEngine
                         if (
                             _answerTable.TryGetValue(
                                 capDesc.ReceiverAnswer.QuestionId,
-                                out var pendingAnswer
+                                out PendingAnswer? pendingAnswer
                             )
                         )
                         {
-                            var tcs = new TaskCompletionSource<Proxy>();
+                            TaskCompletionSource<Proxy> tcs = new();
 
                             pendingAnswer.Chain(
                                 capDesc.ReceiverAnswer,
@@ -1559,7 +1637,7 @@ public class RpcEngine
                                 {
                                     try
                                     {
-                                        var proxy = await t;
+                                        Proxy proxy = await t;
                                         tcs.SetResult(proxy);
                                     }
                                     catch (TaskCanceledException)
@@ -1582,19 +1660,21 @@ public class RpcEngine
                         );
 
                     case CapDescriptor.WHICH.ThirdPartyHosted:
-                        if (_importTable.TryGetValue(capDesc.ThirdPartyHosted.VineId, out var rcv))
+                        if (
+                            _importTable.TryGetValue(
+                                capDesc.ThirdPartyHosted.VineId,
+                                out RefCounted<RemoteCapability>? rcv
+                            )
+                        )
                         {
-                            var impCap = rcv.Cap;
+                            RemoteCapability impCap = rcv.Cap;
                             rcv.AddRef();
                             impCap.Validate();
                             return impCap;
                         }
 
                         {
-                            var newCap = new ImportedCapability(
-                                this,
-                                capDesc.ThirdPartyHosted.VineId
-                            );
+                            ImportedCapability newCap = new(this, capDesc.ThirdPartyHosted.VineId);
                             rcv = new RefCounted<RemoteCapability>(newCap);
                             return newCap;
                         }
@@ -1611,18 +1691,20 @@ public class RpcEngine
 
         internal IList<ConsumedCapability> ImportCapTable(Payload.READER payload)
         {
-            var list = new List<ConsumedCapability>();
+            List<ConsumedCapability> list = new();
 
             if (payload.CapTable != null)
+            {
                 lock (_reentrancyBlocker)
                 {
-                    foreach (var capDesc in payload.CapTable)
+                    foreach (CapDescriptor.READER capDesc in payload.CapTable)
                     {
-                        var cap = ImportCap(capDesc);
+                        ConsumedCapability cap = ImportCap(capDesc);
                         cap.AddRef();
                         list.Add(cap);
                     }
                 }
+            }
 
             return list;
         }
@@ -1632,10 +1714,10 @@ public class RpcEngine
             payload.CapTable.Init(state.MsgBuilder!.Caps!.Count);
 
             Action? postAction = null;
-            var i = 0;
-            foreach (var cap in state.MsgBuilder.Caps)
+            int i = 0;
+            foreach (ConsumedCapability cap in state.MsgBuilder.Caps)
             {
-                var capDesc = payload.CapTable[i++];
+                CapDescriptor.WRITER capDesc = payload.CapTable[i++];
                 postAction += cap.Export(this, capDesc);
                 cap.Release();
             }
@@ -1653,8 +1735,8 @@ public class RpcEngine
 
         private void Finish(uint questionId)
         {
-            var mb = MessageBuilder.Create();
-            var msg = mb.BuildRoot<Message.WRITER>();
+            MessageBuilder mb = MessageBuilder.Create();
+            Message.WRITER msg = mb.BuildRoot<Message.WRITER>();
             msg.which = Message.WHICH.Finish;
             msg.Finish!.QuestionId = questionId;
             msg.Finish!.ReleaseResultCaps = false;
@@ -1696,7 +1778,9 @@ public class RpcEngine
                 _flushRequests.Value = _prev;
 
                 if (_requested)
+                {
                     Ep._tx.Flush();
+                }
             }
         }
 
@@ -1714,7 +1798,9 @@ public class RpcEngine
             public void Dispose()
             {
                 if (_owner)
+                {
                     _context.Remove();
+                }
             }
         }
     }

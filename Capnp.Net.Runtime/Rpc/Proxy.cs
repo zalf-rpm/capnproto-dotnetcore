@@ -21,7 +21,10 @@ public class Proxy : IDisposable, IResolvingCapability
         where T : class
     {
         if (obj is Proxy proxy)
+        {
             return proxy.Cast<T>(false);
+        }
+
         return BareProxy.FromImpl(obj).Cast<T>(true);
     }
 
@@ -42,7 +45,10 @@ public class Proxy : IDisposable, IResolvingCapability
         where T : class
     {
         if (ConsumedCap is IResolvingCapability resolving)
+        {
             return resolving.GetResolvedCapability<T>();
+        }
+
         return CapabilityReflection.CreateProxy<T>(ConsumedCap) as T;
     }
 
@@ -109,10 +115,12 @@ public class Proxy : IDisposable, IResolvingCapability
             throw new ObjectDisposedException(nameof(Proxy));
         }
 
-        var answer = ConsumedCap.DoCall(interfaceId, methodId, args);
+        IPromisedAnswer answer = ConsumedCap.DoCall(interfaceId, methodId, args);
 
         if (cancellationToken.CanBeCanceled)
+        {
             DisposeCtrWhenReturned(cancellationToken.Register(answer.Dispose), answer);
+        }
 
         return answer;
     }
@@ -136,7 +144,9 @@ public class Proxy : IDisposable, IResolvingCapability
     internal void Bind(ConsumedCapability cap)
     {
         if (ConsumedCap != NullCapability.Instance)
+        {
             throw new InvalidOperationException("Proxy was already bound");
+        }
 
         _consumedCap = cap ?? throw new ArgumentNullException(nameof(cap));
         cap.AddRef();
@@ -149,7 +159,7 @@ public class Proxy : IDisposable, IResolvingCapability
 
     internal async Task<Skeleton> GetProvider()
     {
-        var unwrapped = await ConsumedCap.Unwrap();
+        ConsumedCapability unwrapped = await ConsumedCap.Unwrap();
         return unwrapped.AsSkeleton();
     }
 
@@ -161,16 +171,20 @@ public class Proxy : IDisposable, IResolvingCapability
         if (!IsDisposed)
         {
             if (disposing)
+            {
                 _consumedCap.Release();
+            }
             else
-                // When called from the Finalizer, we must not throw.
-                // But when reference counting goes wrong, ConsumedCapability.Release() will throw an InvalidOperationException.
-                // The only option here is to suppress that exception.
+            // When called from the Finalizer, we must not throw.
+            // But when reference counting goes wrong, ConsumedCapability.Release() will throw an InvalidOperationException.
+            // The only option here is to suppress that exception.
+            {
                 try
                 {
                     _consumedCap?.Release();
                 }
                 catch { }
+            }
 
             IsDisposed = true;
         }
@@ -234,7 +248,9 @@ public class Proxy : IDisposable, IResolvingCapability
     internal Action? Export(IRpcEndpoint endpoint, CapDescriptor.WRITER writer)
     {
         if (IsDisposed)
+        {
             throw new ObjectDisposedException(nameof(Proxy));
+        }
 
         if (ConsumedCap == null)
         {

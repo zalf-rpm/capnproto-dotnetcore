@@ -24,20 +24,28 @@ public class ListOfPointersSerializer<TS> : SerializerState, IReadOnlyList<TS?>
         get
         {
             if (!IsAllocated)
+            {
                 throw new InvalidOperationException("Not initialized");
+            }
 
             if (index < 0 || index >= Count)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
             return BuildPointer<TS>(index);
         }
         set
         {
             if (!IsAllocated)
+            {
                 throw new InvalidOperationException("Not initialized");
+            }
 
             if (index < 0 || index >= Count)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
             Link(index, value);
         }
@@ -63,10 +71,12 @@ public class ListOfPointersSerializer<TS> : SerializerState, IReadOnlyList<TS?>
 
     private IEnumerable<TS?> Enumerate()
     {
-        var count = Count;
+        int count = Count;
 
-        for (var i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
+        {
             yield return TryGetPointer<TS>(i);
+        }
     }
 
     /// <summary>
@@ -78,10 +88,14 @@ public class ListOfPointersSerializer<TS> : SerializerState, IReadOnlyList<TS?>
     public void Init(int count)
     {
         if (IsAllocated)
+        {
             throw new InvalidOperationException("Already initialized");
+        }
 
         if (count < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(count));
+        }
 
         SetListOfPointers(count);
     }
@@ -97,11 +111,15 @@ public class ListOfPointersSerializer<TS> : SerializerState, IReadOnlyList<TS?>
     public void Init<T>(IReadOnlyList<T>? items, Action<TS, T> init)
     {
         if (items == null)
+        {
             return;
+        }
 
         Init(items.Count);
 
-        for (var i = 0; i < items.Count; i++)
+        for (int i = 0; i < items.Count; i++)
+        {
             init(this[i], items[i]);
+        }
     }
 }

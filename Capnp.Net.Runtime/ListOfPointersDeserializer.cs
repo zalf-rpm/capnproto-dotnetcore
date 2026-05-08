@@ -28,9 +28,11 @@ public class ListOfPointersDeserializer : ListDeserializer, IReadOnlyList<Deseri
         get
         {
             if (index < 0 || index >= Count)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
-            var state = State;
+            DeserializerState state = State;
 
             state.DecodePointer(index);
 
@@ -53,8 +55,10 @@ public class ListOfPointersDeserializer : ListDeserializer, IReadOnlyList<Deseri
 
     private IEnumerable<DeserializerState> Enumerate()
     {
-        for (var i = 0; i < Count; i++)
+        for (int i = 0; i < Count; i++)
+        {
             yield return this[i];
+        }
     }
 
     /// <summary>

@@ -84,8 +84,10 @@ public class SerializerState : IStructSerializer, IDisposable
     {
         if (Caps != null && !_disposed)
         {
-            foreach (var cap in Caps)
+            foreach (ConsumedCapability cap in Caps)
+            {
                 cap.Release();
+            }
 
             Caps.Clear();
             _disposed = true;
@@ -113,17 +115,21 @@ public class SerializerState : IStructSerializer, IDisposable
     public void StructWriteData(ulong bitOffset, int bitCount, ulong value)
     {
         if (Kind != ObjectKind.Struct)
+        {
             throw new InvalidOperationException("This is not a struct");
+        }
 
         Allocate();
 
-        var index = checked((int)(bitOffset / 64));
-        var relBitOffset = (int)(bitOffset % 64);
+        int index = checked((int)(bitOffset / 64));
+        int relBitOffset = (int)(bitOffset % 64);
 
-        var data = StructDataSection;
+        Span<ulong> data = StructDataSection;
 
         if (relBitOffset + bitCount > 64)
+        {
             throw new ArgumentOutOfRangeException(nameof(bitCount));
+        }
 
         if (bitCount == 64)
         {
@@ -131,7 +137,7 @@ public class SerializerState : IStructSerializer, IDisposable
         }
         else
         {
-            var mask = ~(((1ul << bitCount) - 1) << relBitOffset);
+            ulong mask = ~(((1ul << bitCount) - 1) << relBitOffset);
             data[index] = (data[index] & mask) | (value << relBitOffset);
         }
     }
@@ -152,31 +158,43 @@ public class SerializerState : IStructSerializer, IDisposable
     public ulong StructReadData(ulong bitOffset, int count)
     {
         if (Kind != ObjectKind.Struct)
+        {
             throw new InvalidOperationException("This is not a struct");
+        }
 
         if (!IsAllocated)
+        {
             return 0;
+        }
 
-        var index = checked((int)(bitOffset / 64));
-        var relBitOffset = (int)(bitOffset % 64);
+        int index = checked((int)(bitOffset / 64));
+        int relBitOffset = (int)(bitOffset % 64);
 
-        var data = StructDataSection;
+        Span<ulong> data = StructDataSection;
 
         if (index >= data.Length)
+        {
             return 0; // Assume backwards-compatible change
+        }
 
         if (count < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(count));
+        }
 
         if (relBitOffset + count > 64)
+        {
             throw new ArgumentOutOfRangeException(nameof(count));
+        }
 
-        var word = data[index];
+        ulong word = data[index];
 
         if (count == 64)
+        {
             return word;
+        }
 
-        var mask = (1ul << count) - 1;
+        ulong mask = (1ul << count) - 1;
         return (word >> relBitOffset) & mask;
     }
 
@@ -189,9 +207,9 @@ public class SerializerState : IStructSerializer, IDisposable
     public static T CreateForRpc<T>()
         where T : SerializerState, new()
     {
-        var mb = MessageBuilder.Create();
+        MessageBuilder mb = MessageBuilder.Create();
         mb.InitCapTable();
-        var s = new T();
+        T s = new();
         s.Bind(mb);
         return s;
     }
@@ -236,7 +254,9 @@ public class SerializerState : IStructSerializer, IDisposable
         where TS : SerializerState, new()
     {
         if (this is TS ts)
+        {
             return ts;
+        }
 
         ts = new TS();
 
@@ -256,7 +276,10 @@ public class SerializerState : IStructSerializer, IDisposable
                         || ts.StructDataCount != StructDataCount
                         || ts.StructPtrCount != StructPtrCount
                     )
+                    {
                         throw InvalidWrap();
+                    }
+
                     break;
 
                 case ObjectKind.Nil:
@@ -264,7 +287,10 @@ public class SerializerState : IStructSerializer, IDisposable
 
                 default:
                     if (ts.Kind != Kind)
+                    {
                         throw InvalidWrap();
+                    }
+
                     break;
             }
 
@@ -272,9 +298,13 @@ public class SerializerState : IStructSerializer, IDisposable
         }
 
         if (Owner != null)
+        {
             ts.Bind(Owner, OwnerSlot);
+        }
         else
+        {
             ts.Bind(MsgBuilder ?? throw Unbound());
+        }
 
         return ts;
     }
@@ -294,10 +324,12 @@ public class SerializerState : IStructSerializer, IDisposable
         else
         {
             if (Allocator == null)
+            {
                 throw Unbound();
+            }
 
             SegmentIndex = Owner?.SegmentIndex ?? SegmentIndex;
-            Allocator.Allocate(count, SegmentIndex, out var slice, false);
+            Allocator.Allocate(count, SegmentIndex, out SegmentSlice slice, false);
             SegmentIndex = slice.SegmentIndex;
             Offset = slice.Offset;
         }
@@ -340,10 +372,10 @@ public class SerializerState : IStructSerializer, IDisposable
                 case ObjectKind.ListOfStructs:
                     AllocateWords(
                         checked(
-                            1u + (uint)ListElementCount * (uint)(StructDataCount + StructPtrCount)
+                            1u + ((uint)ListElementCount * (uint)(StructDataCount + StructPtrCount))
                         )
                     );
-                    var tag = default(WirePointer);
+                    WirePointer tag = default;
                     tag.BeginStruct(StructDataCount, StructPtrCount);
                     tag.ListOfStructsElementCount = ListElementCount;
                     SegmentSpan[Offset] = tag;
@@ -365,21 +397,31 @@ public class SerializerState : IStructSerializer, IDisposable
     internal ConsumedCapability DecodeCapPointer(int offset)
     {
         if (Caps == null)
+        {
             throw new InvalidOperationException("Capbility table not set");
+        }
 
         if (!IsAllocated)
+        {
             return NullCapability.Instance;
+        }
 
         WirePointer pointer = RawData[offset];
 
         if (pointer.IsNull)
+        {
             return NullCapability.Instance;
+        }
 
         if (pointer.Kind != PointerKind.Other)
+        {
             throw new RpcException("Expected a capability pointer, but got something different");
+        }
 
         if (pointer.CapabilityIndex >= Caps.Count)
+        {
             throw new RpcException("Capability index out of range");
+        }
 
         return Caps[(int)pointer.CapabilityIndex];
     }
@@ -387,9 +429,11 @@ public class SerializerState : IStructSerializer, IDisposable
     private void EncodePointer(int offset, SerializerState target, bool allowCopy)
     {
         if (SegmentSpan[offset] != 0)
+        {
             throw new InvalidOperationException(
                 "Won't replace an already allocated pointer to prevent memory leaks and security flaws"
             );
+        }
 
         if (target.Allocator != null && target.Allocator != Allocator)
         {
@@ -397,7 +441,7 @@ public class SerializerState : IStructSerializer, IDisposable
             {
                 Allocate();
 
-                var targetCopy = new DynamicSerializerState(MsgBuilder!);
+                DynamicSerializerState targetCopy = new(MsgBuilder!);
                 Reserializing.DeepCopy(target, targetCopy);
                 target = targetCopy;
             }
@@ -446,7 +490,7 @@ public class SerializerState : IStructSerializer, IDisposable
                 break;
 
             case ObjectKind.ListOfStructs:
-                var wordCount =
+                int wordCount =
                     target.ListElementCount * (target.StructDataCount + target.StructPtrCount);
                 targetPtr.BeginList(ListKind.ListOfStructs, wordCount);
                 break;
@@ -479,7 +523,7 @@ public class SerializerState : IStructSerializer, IDisposable
         {
             WirePointer farPtr = default;
 
-            if (Allocator!.Allocate(1, target.SegmentIndex, out var landingPadSlice, true))
+            if (Allocator!.Allocate(1, target.SegmentIndex, out SegmentSlice landingPadSlice, true))
             {
                 farPtr.SetFarPointer(target.SegmentIndex, landingPadSlice.Offset, false);
                 SegmentSpan[offset] = farPtr;
@@ -493,7 +537,7 @@ public class SerializerState : IStructSerializer, IDisposable
                 SegmentSpan[offset] = farPtr;
                 WirePointer farPtr2 = default;
                 farPtr2.SetFarPointer(target.SegmentIndex, target.Offset, false);
-                var farSpan = FarSpan(landingPadSlice.SegmentIndex);
+                Span<ulong> farSpan = FarSpan(landingPadSlice.SegmentIndex);
                 farSpan[landingPadSlice.Offset] = farPtr2;
                 targetPtr.Offset = 0;
                 farSpan[landingPadSlice.Offset + 1] = targetPtr;
@@ -543,10 +587,14 @@ public class SerializerState : IStructSerializer, IDisposable
     protected void Link(int slot, SerializerState target, bool allowCopy = true)
     {
         if (target == null)
+        {
             throw new ArgumentNullException(nameof(target));
+        }
 
         if (slot < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(slot));
+        }
 
         if (!IsAllocated)
         {
@@ -555,13 +603,17 @@ public class SerializerState : IStructSerializer, IDisposable
         }
 
         if (!target.IsAllocated)
+        {
             target.Allocate();
+        }
 
         switch (Kind)
         {
             case ObjectKind.Struct:
                 if (slot >= StructPtrCount)
+                {
                     throw new ArgumentOutOfRangeException(nameof(slot));
+                }
 
                 EncodePointer(Offset + StructDataCount + slot, target, allowCopy);
 
@@ -569,7 +621,9 @@ public class SerializerState : IStructSerializer, IDisposable
 
             case ObjectKind.ListOfPointers:
                 if (slot >= ListElementCount)
+                {
                     throw new ArgumentOutOfRangeException(nameof(slot));
+                }
 
                 EncodePointer(Offset + slot, target, allowCopy);
 
@@ -604,7 +658,7 @@ public class SerializerState : IStructSerializer, IDisposable
     /// </exception>
     protected void LinkToCapability(int slot, uint? capabilityIndex)
     {
-        var cstate = new SerializerState();
+        SerializerState cstate = new();
         cstate.SetCapability(capabilityIndex);
         Link(slot, cstate);
     }
@@ -622,9 +676,11 @@ public class SerializerState : IStructSerializer, IDisposable
     private void VerifyNotYetAllocated()
     {
         if (IsAllocated)
+        {
             throw new InvalidOperationException(
                 "Not permitted since the state is already allocated"
             );
+        }
     }
 
     /// <summary>
@@ -680,7 +736,9 @@ public class SerializerState : IStructSerializer, IDisposable
         else
         {
             if (Kind != ObjectKind.Nil)
+            {
                 throw AlreadySet();
+            }
         }
     }
 
@@ -696,7 +754,7 @@ public class SerializerState : IStructSerializer, IDisposable
     /// </exception>
     protected void SetListOfValues(byte bitsPerElement, int totalCount)
     {
-        var kind = bitsPerElement switch
+        ObjectKind kind = bitsPerElement switch
         {
             0 => ObjectKind.ListOfEmpty,
             1 => ObjectKind.ListOfBits,
@@ -709,7 +767,9 @@ public class SerializerState : IStructSerializer, IDisposable
         if (Kind == ObjectKind.Nil)
         {
             if (totalCount < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(totalCount));
+            }
 
             VerifyNotYetAllocated();
 
@@ -735,7 +795,9 @@ public class SerializerState : IStructSerializer, IDisposable
         if (Kind == ObjectKind.Nil)
         {
             if (totalCount < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(totalCount));
+            }
 
             VerifyNotYetAllocated();
 
@@ -768,7 +830,9 @@ public class SerializerState : IStructSerializer, IDisposable
         if (Kind == ObjectKind.Nil)
         {
             if (totalCount < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(totalCount));
+            }
 
             VerifyNotYetAllocated();
 
@@ -808,10 +872,10 @@ public class SerializerState : IStructSerializer, IDisposable
         }
         else
         {
-            var srcBytes = Encoding.UTF8.GetBytes(text);
+            byte[] srcBytes = Encoding.UTF8.GetBytes(text);
             SetListOfValues(8, srcBytes.Length + 1);
-            var srcSpan = new ReadOnlySpan<byte>(srcBytes);
-            var dstSpan = ListGetBytes();
+            ReadOnlySpan<byte> srcSpan = new(srcBytes);
+            Span<byte> dstSpan = ListGetBytes();
             dstSpan = dstSpan.Slice(0, dstSpan.Length - 1);
             srcSpan.CopyTo(dstSpan);
         }
@@ -844,9 +908,11 @@ public class SerializerState : IStructSerializer, IDisposable
         where TS : SerializerState, new()
     {
         if (Kind != ObjectKind.Struct && Kind != ObjectKind.ListOfPointers)
+        {
             throw new InvalidOperationException("This is not a struct or list of pointers");
+        }
 
-        ref var state = ref _linkedStates![index];
+        ref SerializerState state = ref _linkedStates![index];
 
         if (state == null)
         {
@@ -881,15 +947,21 @@ public class SerializerState : IStructSerializer, IDisposable
         where TS : SerializerState, new()
     {
         if (Kind != ObjectKind.Struct && Kind != ObjectKind.ListOfPointers)
+        {
             throw new InvalidOperationException("This is not a struct or list of pointers");
+        }
 
         if (index < 0 || index >= _linkedStates!.Length)
+        {
             throw new ArgumentOutOfRangeException(nameof(index));
+        }
 
-        var state = _linkedStates![index];
+        SerializerState? state = _linkedStates![index];
 
         if (state == null)
+        {
             return null;
+        }
 
         return state.Rewrap<TS>();
     }
@@ -956,10 +1028,13 @@ public class SerializerState : IStructSerializer, IDisposable
     /// <returns>The decoded text</returns>
     public string? ReadText(int index, string? defaultText = null)
     {
-        var b = BuildPointer(index);
+        DynamicSerializerState b = BuildPointer(index);
 
         if (b.IsAllocated)
+        {
             return b.ListReadAsText();
+        }
+
         return defaultText;
     }
 
@@ -1024,19 +1099,23 @@ public class SerializerState : IStructSerializer, IDisposable
     public SerializerState ListBuildStruct(int index)
     {
         if (Kind != ObjectKind.ListOfStructs)
+        {
             throw new InvalidOperationException("This is not a list of structs");
+        }
 
         if (index < 0 || index >= _linkedStates!.Length)
+        {
             throw new ArgumentOutOfRangeException(nameof(index));
+        }
 
-        ref var state = ref _linkedStates![index];
+        ref SerializerState state = ref _linkedStates![index];
 
         if (state == null)
         {
             state = new SerializerState(MsgBuilder!);
             state.SetStruct(StructDataCount, StructPtrCount);
             state.SegmentIndex = SegmentIndex;
-            state.Offset = Offset + 1 + index * (StructDataCount + StructPtrCount);
+            state.Offset = Offset + 1 + (index * (StructDataCount + StructPtrCount));
         }
 
         return _linkedStates[index];
@@ -1054,12 +1133,16 @@ public class SerializerState : IStructSerializer, IDisposable
         where TS : SerializerState, new()
     {
         if (Kind != ObjectKind.ListOfStructs)
+        {
             throw new InvalidOperationException("This is not a list of structs");
+        }
 
         if (index < 0 || index >= _linkedStates!.Length)
+        {
             throw new ArgumentOutOfRangeException(nameof(index));
+        }
 
-        ref var state = ref _linkedStates![index];
+        ref SerializerState state = ref _linkedStates![index];
 
         if (state == null)
         {
@@ -1067,8 +1150,8 @@ public class SerializerState : IStructSerializer, IDisposable
             state.Bind(MsgBuilder!);
             state.SetStruct(StructDataCount, StructPtrCount);
             state.SegmentIndex = SegmentIndex;
-            var stride = StructDataCount + StructPtrCount;
-            state.Offset = Offset + stride * index + 1;
+            int stride = StructDataCount + StructPtrCount;
+            state.Offset = Offset + (stride * index) + 1;
         }
 
         return (TS)state;
@@ -1078,17 +1161,21 @@ public class SerializerState : IStructSerializer, IDisposable
         where TS : SerializerState, new()
     {
         if (Kind != ObjectKind.ListOfStructs)
+        {
             throw new InvalidOperationException("This is not a list of structs");
+        }
 
         if (ListElementCount < 0)
-            throw new InvalidOperationException("Define element count first");
-
-        var minOffset = Offset + 1;
-        var maxOffset = minOffset + ListElementCount;
-
-        for (var offset = minOffset; offset < maxOffset; offset++)
         {
-            ref var state = ref _linkedStates![offset - minOffset];
+            throw new InvalidOperationException("Define element count first");
+        }
+
+        int minOffset = Offset + 1;
+        int maxOffset = minOffset + ListElementCount;
+
+        for (int offset = minOffset; offset < maxOffset; offset++)
+        {
+            ref SerializerState state = ref _linkedStates![offset - minOffset];
 
             if (state == null)
             {
@@ -1114,19 +1201,27 @@ public class SerializerState : IStructSerializer, IDisposable
     public void ListWriteValue(int index, bool value, bool defaultValue = false)
     {
         if (Kind != ObjectKind.ListOfBits)
+        {
             throw new InvalidOperationException("This is not a list of bits");
+        }
 
         if (index < 0 || index >= ListElementCount)
+        {
             throw new ArgumentOutOfRangeException(nameof(index));
+        }
 
-        var bit = value != defaultValue;
-        var wordIndex = index / 64;
-        var relBitOffset = index % 64;
+        bool bit = value != defaultValue;
+        int wordIndex = index / 64;
+        int relBitOffset = index % 64;
 
         if (bit)
+        {
             SegmentSpan[Offset + wordIndex] |= 1ul << relBitOffset;
+        }
         else
+        {
             SegmentSpan[Offset + wordIndex] &= ~(1ul << relBitOffset);
+        }
     }
 
     /// <summary>
@@ -1143,13 +1238,19 @@ public class SerializerState : IStructSerializer, IDisposable
     public void ListWriteValues(IReadOnlyList<bool> values, bool defaultValue = false)
     {
         if (Kind != ObjectKind.ListOfBits)
+        {
             throw new InvalidOperationException("This is not a list of bits");
+        }
 
         if (values == null)
+        {
             throw new ArgumentNullException(nameof(values));
+        }
 
         if (values.Count != ListElementCount)
+        {
             throw new ArgumentOutOfRangeException(nameof(values));
+        }
 
         int i,
             w = Offset;
@@ -1159,15 +1260,19 @@ public class SerializerState : IStructSerializer, IDisposable
         {
             v = 0;
 
-            for (var j = 63; j >= 0; j--)
+            for (int j = 63; j >= 0; j--)
             {
                 v <<= 1;
                 if (values[i + j])
+                {
                     v |= 1;
+                }
             }
 
             if (defaultValue)
+            {
                 v = ~v;
+            }
 
             SegmentSpan[w++] = v;
         }
@@ -1176,15 +1281,19 @@ public class SerializerState : IStructSerializer, IDisposable
         {
             v = 0;
 
-            for (var k = ListElementCount - 1; k >= i; k--)
+            for (int k = ListElementCount - 1; k >= i; k--)
             {
                 v <<= 1;
                 if (values[k])
+                {
                     v |= 1;
+                }
             }
 
             if (defaultValue)
+            {
                 v = ~v;
+            }
 
             SegmentSpan[w] = v;
         }
@@ -1201,12 +1310,16 @@ public class SerializerState : IStructSerializer, IDisposable
     public void ListWriteValue(int index, byte value, byte defaultValue = 0)
     {
         if (Kind != ObjectKind.ListOfBytes)
+        {
             throw new InvalidOperationException("This is not a list of bytes");
+        }
 
         if (index < 0 || index >= ListElementCount)
+        {
             throw new ArgumentOutOfRangeException(nameof(index));
+        }
 
-        var x = (byte)(value ^ defaultValue);
+        byte x = (byte)(value ^ defaultValue);
         MemoryMarshal.Cast<ulong, byte>(SegmentSpan.Slice(Offset))[index] = x;
     }
 
@@ -1218,7 +1331,9 @@ public class SerializerState : IStructSerializer, IDisposable
     public Span<byte> ListGetBytes()
     {
         if (Kind != ObjectKind.ListOfBytes)
+        {
             throw new InvalidOperationException("This is not a list of bytes");
+        }
 
         return MemoryMarshal
             .Cast<ulong, byte>(SegmentSpan.Slice(Offset))
@@ -1233,9 +1348,12 @@ public class SerializerState : IStructSerializer, IDisposable
     /// <exception cref="DecoderFallbackException">Might theoretically be thrown during decoding.</exception>
     public string ListReadAsText()
     {
-        var bytes = ListGetBytes();
+        Span<byte> bytes = ListGetBytes();
         if (bytes.Length == 0)
+        {
             return string.Empty;
+        }
+
         return Encoding.UTF8.GetString(bytes.Slice(0, bytes.Length - 1));
     }
 
@@ -1263,14 +1381,18 @@ public class SerializerState : IStructSerializer, IDisposable
     public void ListWriteValue(int index, ushort value, ushort defaultValue = 0)
     {
         if (Kind != ObjectKind.ListOfShorts)
+        {
             throw new InvalidOperationException("This is not a list of 16-bit values");
+        }
 
         if (index < 0 || index >= ListElementCount)
+        {
             throw new ArgumentOutOfRangeException(nameof(index));
+        }
 
         Allocate();
 
-        var x = (ushort)(value ^ defaultValue);
+        ushort x = (ushort)(value ^ defaultValue);
         MemoryMarshal.Cast<ulong, ushort>(SegmentSpan.Slice(Offset))[index] = x;
     }
 
@@ -1298,14 +1420,18 @@ public class SerializerState : IStructSerializer, IDisposable
     public void ListWriteValue(int index, uint value, uint defaultValue = 0)
     {
         if (Kind != ObjectKind.ListOfInts)
+        {
             throw new InvalidOperationException("This is not a list of 32-bit values");
+        }
 
         if (index < 0 || index >= ListElementCount)
+        {
             throw new ArgumentOutOfRangeException(nameof(index));
+        }
 
         Allocate();
 
-        var x = value ^ defaultValue;
+        uint x = value ^ defaultValue;
         MemoryMarshal.Cast<ulong, uint>(SegmentSpan.Slice(Offset))[index] = x;
     }
 
@@ -1332,8 +1458,8 @@ public class SerializerState : IStructSerializer, IDisposable
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="index" /> is out of bounds.</exception>
     public void ListWriteValue(int index, float value, float defaultValue = 0)
     {
-        var rcastValue = BitConverter.SingleToInt32Bits(value);
-        var rcastDefaultValue = BitConverter.SingleToInt32Bits(defaultValue);
+        int rcastValue = BitConverter.SingleToInt32Bits(value);
+        int rcastDefaultValue = BitConverter.SingleToInt32Bits(defaultValue);
         ListWriteValue(index, rcastValue, rcastDefaultValue);
     }
 
@@ -1348,14 +1474,18 @@ public class SerializerState : IStructSerializer, IDisposable
     public void ListWriteValue(int index, ulong value, ulong defaultValue = 0)
     {
         if (Kind != ObjectKind.ListOfLongs)
+        {
             throw new InvalidOperationException("This is not a list of 64-bit values");
+        }
 
         if (index < 0 || index >= ListElementCount)
+        {
             throw new ArgumentOutOfRangeException(nameof(index));
+        }
 
         Allocate();
 
-        var x = value ^ defaultValue;
+        ulong x = value ^ defaultValue;
         SegmentSpan.Slice(Offset)[index] = x;
     }
 
@@ -1382,8 +1512,8 @@ public class SerializerState : IStructSerializer, IDisposable
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="index" /> is out of bounds.</exception>
     public void ListWriteValue(int index, double value, double defaultValue = 0)
     {
-        var rcastValue = BitConverter.DoubleToInt64Bits(value);
-        var rcastDefaultValue = BitConverter.DoubleToInt64Bits(defaultValue);
+        long rcastValue = BitConverter.DoubleToInt64Bits(value);
+        long rcastDefaultValue = BitConverter.DoubleToInt64Bits(defaultValue);
         ListWriteValue(index, rcastValue, rcastDefaultValue);
     }
 
@@ -1399,14 +1529,18 @@ public class SerializerState : IStructSerializer, IDisposable
     public uint? ProvideCapability(ConsumedCapability capability)
     {
         if (capability == null || capability == NullCapability.Instance)
+        {
             return null;
+        }
 
         if (Caps == null)
+        {
             throw new InvalidOperationException(
                 "Underlying MessageBuilder was not enabled to support capabilities"
             );
+        }
 
-        var index = Caps.IndexOf(capability);
+        int index = Caps.IndexOf(capability);
 
         if (index < 0)
         {
@@ -1548,11 +1682,13 @@ public class SerializerState : IStructSerializer, IDisposable
 
             case IReadOnlyList<object> list:
                 {
-                    var builder = BuildPointer(slot);
+                    DynamicSerializerState builder = BuildPointer(slot);
                     builder.SetListOfPointers(list.Count);
-                    var i = 0;
-                    foreach (var item in list)
+                    int i = 0;
+                    foreach (object item in list)
+                    {
                         builder.LinkObject(i++, item);
+                    }
                 }
                 break;
 
@@ -1579,10 +1715,14 @@ public class SerializerState : IStructSerializer, IDisposable
     internal ConsumedCapability StructReadRawCap(int index)
     {
         if (Kind != ObjectKind.Struct && Kind != ObjectKind.Nil)
+        {
             throw new InvalidOperationException("Allowed on structs only");
+        }
 
         if (index < 0 || index >= StructPtrCount)
+        {
             throw new ArgumentOutOfRangeException(nameof(index));
+        }
 
         return DecodeCapPointer(index + StructDataCount);
     }
@@ -1602,7 +1742,7 @@ public class SerializerState : IStructSerializer, IDisposable
     public T ReadCap<T>(int slot)
         where T : class
     {
-        var cap = StructReadRawCap(slot);
+        ConsumedCapability cap = StructReadRawCap(slot);
         return (CapabilityReflection.CreateProxy<T>(cap) as T)!;
     }
 
@@ -1615,7 +1755,7 @@ public class SerializerState : IStructSerializer, IDisposable
     /// <exception cref="InvalidOperationException">This state does not represent a struct.</exception>
     public BareProxy ReadCap(int slot)
     {
-        var cap = StructReadRawCap(slot);
+        ConsumedCapability cap = StructReadRawCap(slot);
         return new BareProxy(cap);
     }
 }

@@ -38,9 +38,9 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
         MemberAccessPath access
     )
     {
-        var result = await question.WhenReturned;
-        var cap = access.Eval(result);
-        var proxy = new Proxy(cap);
+        DeserializerState result = await question.WhenReturned;
+        ConsumedCapability? cap = access.Eval(result);
+        Proxy proxy = new(cap);
         cap?.Release();
         return proxy;
     }
@@ -77,6 +77,7 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
                     !_question.IsTailCall
                     && _question.StateFlags.HasFlag(PendingQuestion.State.Returned)
                 )
+                {
                     try
                     {
                         return _whenResolvedProxy.Result.ConsumedCap;
@@ -85,6 +86,7 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
                     {
                         throw exception.InnerException!;
                     }
+                }
 
                 return null;
             }
@@ -118,7 +120,9 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
                 !_question.StateFlags.HasFlag(PendingQuestion.State.TailCall)
                 && _question.StateFlags.HasFlag(PendingQuestion.State.Returned)
             )
+            {
                 return CallOnResolution(interfaceId, methodId, args);
+            }
 #if DebugEmbargos
             Logger.LogDebug("Call by proxy");
 #endif
@@ -133,7 +137,7 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
 
             _question.DisallowFinish();
             ++_pendingCallsOnPromise;
-            var promisedAnswer = base.DoCall(interfaceId, methodId, args);
+            IPromisedAnswer promisedAnswer = base.DoCall(interfaceId, methodId, args);
             ReAllowFinishWhenDone(promisedAnswer.WhenReturned);
 
             async void DecrementPendingCallsOnPromiseWhenReturned()
@@ -163,7 +167,7 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
         ushort methodId
     )
     {
-        var call = base.SetupMessage(args, interfaceId, methodId);
+        Call.WRITER call = base.SetupMessage(args, interfaceId, methodId);
 
         call.Target.which = MessageTarget.WHICH.PromisedAnswer;
         call.Target.PromisedAnswer!.QuestionId = _question.QuestionId;
@@ -177,7 +181,9 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
         lock (_question.ReentrancyBlocker)
         {
             if (_question.StateFlags.HasFlag(PendingQuestion.State.CanceledByDispose))
+            {
                 throw new ObjectDisposedException(nameof(PendingQuestion));
+            }
 
             if (
                 _question.StateFlags.HasFlag(PendingQuestion.State.Returned)
@@ -189,7 +195,9 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
             else
             {
                 if (_question.StateFlags.HasFlag(PendingQuestion.State.FinishRequested))
+                {
                     throw new InvalidOperationException("Finish request was already sent");
+                }
 
                 if (endpoint == _ep)
                 {
@@ -199,7 +207,7 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
                 }
                 else if (_question.IsTailCall)
                 {
-                    var id = endpoint.AllocateExport(AsSkeleton(), out var first);
+                    uint id = endpoint.AllocateExport(AsSkeleton(), out bool first);
 
                     writer.which = CapDescriptor.WHICH.SenderHosted;
                     writer.SenderHosted = id;
@@ -217,11 +225,13 @@ internal class RemoteAnswerCapability : RemoteResolvingCapability
     protected override async void ReleaseRemotely()
     {
         if (!_question.IsTailCall)
+        {
             try
             {
-                using var _ = await _whenResolvedProxy;
+                using Proxy _ = await _whenResolvedProxy;
             }
             catch { }
+        }
     }
 
     internal override void AddRef()

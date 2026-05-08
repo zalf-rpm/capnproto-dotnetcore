@@ -33,9 +33,9 @@ internal class LocalAnswerCapability : RefCountingCapability, IResolvingCapabili
         MemberAccessPath access
     )
     {
-        var result = await answer;
-        var cap = access.Eval(result);
-        var proxy = new Proxy(cap);
+        DeserializerState result = await answer;
+        ConsumedCapability? cap = access.Eval(result);
+        Proxy proxy = new(cap);
         cap?.Release();
         return proxy;
     }
@@ -66,7 +66,7 @@ internal class LocalAnswerCapability : RefCountingCapability, IResolvingCapabili
         CancellationToken cancellationToken
     )
     {
-        var proxy = await _whenResolvedProxy;
+        Proxy proxy = await _whenResolvedProxy;
 
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -76,10 +76,12 @@ internal class LocalAnswerCapability : RefCountingCapability, IResolvingCapabili
             throw new RpcException("Broken capability");
         }
 
-        var call = proxy.Call(interfaceId, methodId, args, default);
-        var whenReturned = call.WhenReturned;
+        IPromisedAnswer call = proxy.Call(interfaceId, methodId, args, default);
+        StrictlyOrderedAwaitTask<DeserializerState> whenReturned = call.WhenReturned;
 
-        using var registration = cancellationToken.Register(() => call.Dispose());
+        using CancellationTokenRegistration registration = cancellationToken.Register(() =>
+            call.Dispose()
+        );
         return await whenReturned;
     }
 
@@ -89,7 +91,7 @@ internal class LocalAnswerCapability : RefCountingCapability, IResolvingCapabili
         DynamicSerializerState args
     )
     {
-        var cts = new CancellationTokenSource();
+        CancellationTokenSource cts = new();
         return new LocalAnswer(cts, CallImpl(interfaceId, methodId, args, cts.Token));
     }
 
@@ -97,7 +99,7 @@ internal class LocalAnswerCapability : RefCountingCapability, IResolvingCapabili
     {
         try
         {
-            using var _ = await _whenResolvedProxy;
+            using Proxy _ = await _whenResolvedProxy;
         }
         catch { }
     }

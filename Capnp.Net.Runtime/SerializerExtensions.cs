@@ -201,7 +201,7 @@ public static class SerializerExtensions
     public static ref U RefData<U>(this IStructSerializer d, int woffset)
         where U : struct
     {
-        var data = MemoryMarshal.Cast<ulong, U>(d.StructDataSection);
+        Span<U> data = MemoryMarshal.Cast<ulong, U>(d.StructDataSection);
         return ref MemoryMarshal.GetReference(data.Slice(woffset, 1));
     }
 
@@ -300,8 +300,8 @@ public static class SerializerExtensions
     public static float ReadDataFloat<T>(this T d, ulong bitOffset, float defaultValue = 0)
         where T : IStructDeserializer
     {
-        var defaultBits = BitConverter.SingleToInt32Bits(defaultValue);
-        var bits = (int)d.StructReadData(bitOffset, 32) ^ defaultBits;
+        int defaultBits = BitConverter.SingleToInt32Bits(defaultValue);
+        int bits = (int)d.StructReadData(bitOffset, 32) ^ defaultBits;
         return BitConverter.Int32BitsToSingle(bits);
     }
 
@@ -321,9 +321,9 @@ public static class SerializerExtensions
     )
         where T : IStructSerializer
     {
-        var bits = BitConverter.SingleToInt32Bits(value);
-        var defaultBits = BitConverter.SingleToInt32Bits(defaultValue);
-        WriteData(d, bitOffset, bits, defaultBits);
+        int bits = BitConverter.SingleToInt32Bits(value);
+        int defaultBits = BitConverter.SingleToInt32Bits(defaultValue);
+        d.WriteData(bitOffset, bits, defaultBits);
     }
 
     /// <summary>
@@ -337,8 +337,8 @@ public static class SerializerExtensions
     public static double ReadDataDouble<T>(this T d, ulong bitOffset, double defaultValue = 0)
         where T : IStructDeserializer
     {
-        var defaultBits = BitConverter.DoubleToInt64Bits(defaultValue);
-        var bits = (long)d.StructReadData(bitOffset, 64) ^ defaultBits;
+        long defaultBits = BitConverter.DoubleToInt64Bits(defaultValue);
+        long bits = (long)d.StructReadData(bitOffset, 64) ^ defaultBits;
         return BitConverter.Int64BitsToDouble(bits);
     }
 
@@ -358,8 +358,8 @@ public static class SerializerExtensions
     )
         where T : IStructSerializer
     {
-        var bits = BitConverter.DoubleToInt64Bits(value);
-        var defaultBits = BitConverter.DoubleToInt64Bits(defaultValue);
-        WriteData(d, bitOffset, bits, defaultBits);
+        long bits = BitConverter.DoubleToInt64Bits(value);
+        long defaultBits = BitConverter.DoubleToInt64Bits(defaultValue);
+        d.WriteData(bitOffset, bits, defaultBits);
     }
 }

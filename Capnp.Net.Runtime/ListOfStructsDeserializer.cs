@@ -29,14 +29,16 @@ public class ListOfStructsDeserializer : ListDeserializer, IReadOnlyList<Deseria
         get
         {
             if (index < 0 || index >= Count)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
-            var stride = State.StructDataCount + State.StructPtrCount;
+            int stride = State.StructDataCount + State.StructPtrCount;
 
-            var state = State;
+            DeserializerState state = State;
             // the “traversal limit” should count a list of zero-sized elements as if each element were one word instead.
             state.IncrementBytesTraversed(checked(8u * (uint)(stride == 0 ? 1 : stride)));
-            state.Offset = checked(state.Offset + 1 + index * stride);
+            state.Offset = checked(state.Offset + 1 + (index * stride));
             state.Kind = ObjectKind.Struct;
 
             return state;
@@ -69,7 +71,9 @@ public class ListOfStructsDeserializer : ListDeserializer, IReadOnlyList<Deseria
 
     private IEnumerable<DeserializerState> Enumerate()
     {
-        for (var i = 0; i < Count; i++)
+        for (int i = 0; i < Count; i++)
+        {
             yield return this[i];
+        }
     }
 }

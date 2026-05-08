@@ -18,8 +18,11 @@ public class ListOfCapsDeserializer<T> : ListDeserializer, IReadOnlyList<T>
         // increase ref count to transfer ownership on result deserialization
         // and to prevent disposing caps on DeserializeState disposal before
         // user could access the caps in the list (which causes proxy creation and AddRef)
-        foreach (var cap in state.Caps ?? [])
+        foreach (ConsumedCapability cap in state.Caps ?? [])
+        {
             cap.AddRef();
+        }
+
         CapabilityReflection.ValidateCapabilityInterface(typeof(T));
     }
 
@@ -38,7 +41,9 @@ public class ListOfCapsDeserializer<T> : ListDeserializer, IReadOnlyList<T>
         get
         {
             if (index < 0 || index >= Count)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
             return (CapabilityReflection.CreateProxy<T>(State.DecodeCapPointer(index)) as T)!;
         }
@@ -69,8 +74,10 @@ public class ListOfCapsDeserializer<T> : ListDeserializer, IReadOnlyList<T>
 
     private IEnumerable<T> Enumerate()
     {
-        var count = Count;
-        for (var i = 0; i < count; i++)
+        int count = Count;
+        for (int i = 0; i < count; i++)
+        {
             yield return this[i];
+        }
     }
 }

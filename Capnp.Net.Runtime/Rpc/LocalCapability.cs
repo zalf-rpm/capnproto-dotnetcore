@@ -15,7 +15,7 @@ internal class LocalCapability : ConsumedCapability
 
     private static async Task<DeserializerState> AwaitAnswer(Task<AnswerOrCounterquestion> call)
     {
-        var aorcq = await call;
+        AnswerOrCounterquestion aorcq = await call;
         return aorcq.Answer ?? await aorcq.Counterquestion!.WhenReturned;
     }
 
@@ -40,8 +40,13 @@ internal class LocalCapability : ConsumedCapability
         DynamicSerializerState args
     )
     {
-        var cts = new CancellationTokenSource();
-        var call = ProvidedCap.Invoke(interfaceId, methodId, args, cts.Token);
+        CancellationTokenSource cts = new();
+        Task<AnswerOrCounterquestion> call = ProvidedCap.Invoke(
+            interfaceId,
+            methodId,
+            args,
+            cts.Token
+        );
         return new LocalAnswer(cts, AwaitAnswer(call));
     }
 

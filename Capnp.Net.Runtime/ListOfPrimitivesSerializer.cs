@@ -17,9 +17,13 @@ public class ListOfPrimitivesSerializer<T> : SerializerState, IReadOnlyList<T>
     static ListOfPrimitivesSerializer()
     {
         if (typeof(T).IsEnum)
+        {
             ElementSize = Marshal.SizeOf(Enum.GetUnderlyingType(typeof(T)));
+        }
         else
+        {
             ElementSize = Marshal.SizeOf<T>();
+        }
     }
 
     /// <summary>
@@ -74,10 +78,14 @@ public class ListOfPrimitivesSerializer<T> : SerializerState, IReadOnlyList<T>
     public void Init(int count)
     {
         if (IsAllocated)
+        {
             throw new InvalidOperationException("Already initialized");
+        }
 
         if (count < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(count));
+        }
 
         SetListOfValues((byte)(8 * ElementSize), count);
     }
@@ -91,7 +99,9 @@ public class ListOfPrimitivesSerializer<T> : SerializerState, IReadOnlyList<T>
     public void Init(IReadOnlyList<T>? items)
     {
         if (items == null)
+        {
             return;
+        }
 
         Init(items.Count);
 
@@ -114,15 +124,20 @@ public class ListOfPrimitivesSerializer<T> : SerializerState, IReadOnlyList<T>
                 break;
 
             default:
-                for (var i = 0; i < items.Count; i++)
+                for (int i = 0; i < items.Count; i++)
+                {
                     this[i] = items[i];
+                }
+
                 break;
         }
     }
 
     private IEnumerable<T> Enumerate()
     {
-        for (var i = 0; i < Count; i++)
+        for (int i = 0; i < Count; i++)
+        {
             yield return Data[i];
+        }
     }
 }

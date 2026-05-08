@@ -30,7 +30,9 @@ public class MemberAccessPath
     public MemberAccessPath(params uint[] offsets)
     {
         if (offsets == null)
+        {
             throw new ArgumentNullException(nameof(offsets));
+        }
 
         Path = offsets.Select(i => new StructMemberAccess(checked((ushort)i))).ToArray();
     }
@@ -47,11 +49,13 @@ public class MemberAccessPath
     /// <returns>The MemberAccessPath</returns>
     public static MemberAccessPath Deserialize(PromisedAnswer.READER promisedAnswer)
     {
-        var ops = new MemberAccess[promisedAnswer.Transform.Count];
+        MemberAccess[] ops = new MemberAccess[promisedAnswer.Transform.Count];
 
-        var i = 0;
-        foreach (var op in promisedAnswer.Transform)
+        int i = 0;
+        foreach (PromisedAnswer.Op.READER op in promisedAnswer.Transform)
+        {
             ops[i++] = MemberAccess.Deserialize(op);
+        }
 
         return new MemberAccessPath(ops);
     }
@@ -64,8 +68,10 @@ public class MemberAccessPath
     {
         promisedAnswer.Transform.Init(Path.Count);
 
-        for (var i = 0; i < Path.Count; i++)
+        for (int i = 0; i < Path.Count; i++)
+        {
             Path[i].Serialize(promisedAnswer.Transform[i]);
+        }
     }
 
     /// <summary>
@@ -76,10 +82,12 @@ public class MemberAccessPath
     /// <exception cref="DeserializationException">Evaluation of this path did not give a capability</exception>
     public ConsumedCapability Eval(DeserializerState rpcState)
     {
-        var cur = rpcState;
+        DeserializerState cur = rpcState;
 
-        foreach (var op in Path)
+        foreach (MemberAccess op in Path)
+        {
             cur = op.Eval(cur);
+        }
 
         switch (cur.Kind)
         {
@@ -172,10 +180,14 @@ public class MemberAccessPath
         public override DeserializerState Eval(DeserializerState state)
         {
             if (state.Kind == ObjectKind.Nil)
+            {
                 return default;
+            }
 
             if (state.Kind != ObjectKind.Struct)
+            {
                 throw new ArgumentException("Expected a struct");
+            }
 
             return state.StructReadPointer(Offset);
         }

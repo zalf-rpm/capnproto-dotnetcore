@@ -20,7 +20,7 @@ internal abstract class RemoteCapability : RefCountingCapability
         DynamicSerializerState args
     )
     {
-        var call = SetupMessage(args, interfaceId, methodId);
+        Call.WRITER call = SetupMessage(args, interfaceId, methodId);
         Debug.Assert(call.Target.which != MessageTarget.WHICH.undefined);
         return _ep.BeginQuestion(this, args);
     }
@@ -32,13 +32,15 @@ internal abstract class RemoteCapability : RefCountingCapability
     )
     {
         if (args.MsgBuilder == null)
+        {
             throw new ArgumentException("Unbound serializer state", nameof(args));
+        }
 
-        var callMsg = args.MsgBuilder.BuildRoot<Message.WRITER>();
+        Message.WRITER callMsg = args.MsgBuilder.BuildRoot<Message.WRITER>();
 
         callMsg.which = Message.WHICH.Call;
 
-        var call = callMsg.Call!;
+        Call.WRITER call = callMsg.Call!;
         call.AllowThirdPartyTailCall = false;
         call.InterfaceId = interfaceId;
         call.MethodId = methodId;

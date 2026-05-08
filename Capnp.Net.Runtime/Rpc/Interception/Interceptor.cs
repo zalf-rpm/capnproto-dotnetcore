@@ -23,17 +23,23 @@ public static class Interceptor
         where TCap : class
     {
         if (policy == null)
+        {
             throw new ArgumentNullException(nameof(policy));
+        }
 
         if (cap == null)
+        {
             throw new ArgumentNullException(nameof(cap));
+        }
 
-        var cur = cap as CensorCapability;
+        CensorCapability? cur = cap as CensorCapability;
 
         while (cur != null)
         {
             if (policy.Equals(cur.Policy))
+            {
                 return cap;
+            }
 
             cur = cur.InterceptedCapability as CensorCapability;
         }
@@ -42,7 +48,7 @@ public static class Interceptor
         {
             case Proxy proxy:
                 return (
-                    CapabilityReflection.CreateProxy<TCap>(Attach(policy, proxy.ConsumedCap!))
+                    CapabilityReflection.CreateProxy<TCap>(policy.Attach(proxy.ConsumedCap!))
                     as TCap
                 )!;
 
@@ -50,11 +56,11 @@ public static class Interceptor
                 return (new CensorCapability(ccap, policy) as TCap)!;
 
             default:
-                var temp =
+                TCap? temp =
                     CapabilityReflection.CreateProxy<TCap>(
                         CapabilityReflection.CreateSkeletonInternal(cap).AsCapability()
                     ) as TCap;
-                return Attach(policy, temp!)!;
+                return policy.Attach(temp!)!;
         }
     }
 
@@ -73,32 +79,39 @@ public static class Interceptor
         where TCap : class
     {
         if (policy == null)
+        {
             throw new ArgumentNullException(nameof(policy));
+        }
 
         if (cap == null)
+        {
             throw new ArgumentNullException(nameof(cap));
+        }
 
         switch (cap)
         {
             case Proxy proxy:
                 return (
-                    CapabilityReflection.CreateProxy<TCap>(Detach(policy, proxy.ConsumedCap!))
+                    CapabilityReflection.CreateProxy<TCap>(policy.Detach(proxy.ConsumedCap!))
                     as TCap
                 )!;
 
             case CensorCapability ccap:
             {
-                var cur = ccap;
-                var stk = new Stack<IInterceptionPolicy>();
+                CensorCapability? cur = ccap;
+                Stack<IInterceptionPolicy> stk = new();
 
                 do
                 {
                     if (policy.Equals(cur.Policy))
                     {
-                        var cur2 = cur.InterceptedCapability;
+                        ConsumedCapability cur2 = cur.InterceptedCapability;
 
-                        foreach (var p in stk)
+                        foreach (IInterceptionPolicy p in stk)
+                        {
                             cur2 = p.Attach(cur2);
+                        }
+
                         return (cur2 as TCap)!;
                     }
 

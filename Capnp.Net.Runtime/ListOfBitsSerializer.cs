@@ -23,10 +23,12 @@ public class ListOfBitsSerializer : SerializerState, IReadOnlyList<bool>
             ListSerializerHelper.EnsureAllocated(this);
 
             if (index < 0 || index >= Count)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
-            var wi = index / 64;
-            var bi = index % 64;
+            int wi = index / 64;
+            int bi = index % 64;
 
             return ((RawData[wi] >> bi) & 1) != 0;
         }
@@ -35,15 +37,21 @@ public class ListOfBitsSerializer : SerializerState, IReadOnlyList<bool>
             ListSerializerHelper.EnsureAllocated(this);
 
             if (index < 0 || index >= Count)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
-            var wi = index / 64;
-            var bi = index % 64;
+            int wi = index / 64;
+            int bi = index % 64;
 
             if (value)
+            {
                 RawData[wi] |= 1ul << bi;
+            }
             else
+            {
                 RawData[wi] &= ~(1ul << bi);
+            }
         }
     }
 
@@ -74,10 +82,14 @@ public class ListOfBitsSerializer : SerializerState, IReadOnlyList<bool>
     public void Init(int count)
     {
         if (IsAllocated)
+        {
             throw new InvalidOperationException("Already initialized");
+        }
 
         if (count < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(count));
+        }
 
         SetListOfValues(1, count);
     }
@@ -91,17 +103,23 @@ public class ListOfBitsSerializer : SerializerState, IReadOnlyList<bool>
     public void Init(IReadOnlyList<bool>? items)
     {
         if (items == null)
+        {
             return;
+        }
 
         Init(items.Count);
 
-        for (var i = 0; i < items.Count; i++)
+        for (int i = 0; i < items.Count; i++)
+        {
             this[i] = items[i];
+        }
     }
 
     private IEnumerable<bool> Enumerate()
     {
-        for (var i = 0; i < Count; i++)
+        for (int i = 0; i < Count; i++)
+        {
             yield return this[i];
+        }
     }
 }

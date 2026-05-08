@@ -38,7 +38,9 @@ public abstract class RefCountingSkeleton : Skeleton
         {
             count = Volatile.Read(ref _refCount);
             if (count < 0)
+            {
                 throw new ObjectDisposedException(nameof(RefCountingSkeleton));
+            }
 
             newCount = count + 1;
         } while (Interlocked.CompareExchange(ref _refCount, newCount, count) != count);
@@ -53,7 +55,9 @@ public abstract class RefCountingSkeleton : Skeleton
         {
             count = Volatile.Read(ref _refCount);
             if (count < 0)
+            {
                 throw new ObjectDisposedException(nameof(RefCountingSkeleton));
+            }
 
             newCount = count > 0 ? count - 1 : int.MinValue;
         } while (Interlocked.CompareExchange(ref _refCount, newCount, count) != count);
@@ -67,9 +71,12 @@ public abstract class RefCountingSkeleton : Skeleton
 
     internal override ConsumedCapability AsCapability()
     {
-        var cap = Volatile.Read(ref _localCap);
+        LocalCapability? cap = Volatile.Read(ref _localCap);
         if (cap == null)
+        {
             Interlocked.CompareExchange(ref _localCap, new LocalCapability(this), null);
+        }
+
         return Volatile.Read(ref _localCap)!;
     }
 }

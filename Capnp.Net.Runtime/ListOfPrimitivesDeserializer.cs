@@ -58,9 +58,11 @@ public class ListOfPrimitivesDeserializer<T> : ListDeserializer, IReadOnlyList<T
         where U : unmanaged
     {
         if (Marshal.SizeOf<U>() != Marshal.SizeOf<T>())
+        {
             throw new NotSupportedException(
                 "Source and target types have different sizes, cannot cast"
             );
+        }
 
         return new ListOfPrimitivesDeserializer<U>(State, Kind);
     }
@@ -205,17 +207,22 @@ public class ListOfPrimitivesDeserializer<T> : ListDeserializer, IReadOnlyList<T
     /// <exception cref="NotSupportedException">Element size is different from 1 byte.</exception>
     public override string CastText()
     {
-        var utf8Bytes = PrimitiveCast<byte>().Span;
+        ReadOnlySpan<byte> utf8Bytes = PrimitiveCast<byte>().Span;
         if (utf8Bytes.Length == 0)
+        {
             return string.Empty;
-        var utf8GytesNoZterm = utf8Bytes.Slice(0, utf8Bytes.Length - 1);
+        }
+
+        ReadOnlySpan<byte> utf8GytesNoZterm = utf8Bytes.Slice(0, utf8Bytes.Length - 1);
         return Encoding.UTF8.GetString(utf8GytesNoZterm.ToArray());
     }
 
     private IEnumerable<T> Enumerate()
     {
-        for (var i = 0; i < Count; i++)
+        for (int i = 0; i < Count; i++)
+        {
             yield return this[i];
+        }
     }
 
     private class ListOfULongAsStructView<U> : IReadOnlyList<U>
@@ -236,10 +243,12 @@ public class ListOfPrimitivesDeserializer<T> : ListDeserializer, IReadOnlyList<T
         {
             get
             {
-                var state = _lpd.State;
+                DeserializerState state = _lpd.State;
 
                 if (index < 0 || index >= _lpd.Count)
+                {
                     throw new IndexOutOfRangeException();
+                }
 
                 state.Offset += index;
                 state.Kind = ObjectKind.Struct;
@@ -264,13 +273,13 @@ public class ListOfPrimitivesDeserializer<T> : ListDeserializer, IReadOnlyList<T
 
         private IEnumerable<U> Enumerate()
         {
-            var state = _lpd.State;
+            DeserializerState state = _lpd.State;
 
             state.Kind = ObjectKind.Struct;
             state.StructDataCount = 1;
             state.StructPtrCount = 0;
 
-            for (var i = 0; i < Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 yield return _sel(state);
                 ++state.Offset;

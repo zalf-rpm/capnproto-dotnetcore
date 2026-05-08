@@ -34,6 +34,7 @@ internal class LazyCapability : RefCountingCapability, IResolvingCapability
         where T : class
     {
         if (_capTask.WrappedTask.IsCompleted)
+        {
             try
             {
                 return (CapabilityReflection.CreateProxy<T>(_capTask.Result) as T)!;
@@ -42,6 +43,7 @@ internal class LazyCapability : RefCountingCapability, IResolvingCapability
             {
                 throw exception.InnerException!;
             }
+        }
 
         return null;
     }
@@ -62,7 +64,7 @@ internal class LazyCapability : RefCountingCapability, IResolvingCapability
     {
         if (WhenResolved.IsCompleted && WhenResolved.WrappedTask.IsCompletedSuccessfully)
         {
-            using var proxy = GetResolvedCapability<BareProxy>()!;
+            using BareProxy proxy = GetResolvedCapability<BareProxy>()!;
             return proxy.Export(endpoint, writer);
         }
 
@@ -77,7 +79,7 @@ internal class LazyCapability : RefCountingCapability, IResolvingCapability
             {
                 try
                 {
-                    using var _ = await _proxyTask!;
+                    using Proxy? _ = await _proxyTask!;
                 }
                 catch { }
             }
@@ -110,11 +112,13 @@ internal class LazyCapability : RefCountingCapability, IResolvingCapability
             cancellationToken.ThrowIfCancellationRequested();
         }
 
-        using var proxy = new Proxy(cap);
-        var call = proxy.Call(interfaceId, methodId, args, default);
-        var whenReturned = call.WhenReturned;
+        using Proxy proxy = new(cap);
+        IPromisedAnswer call = proxy.Call(interfaceId, methodId, args, default);
+        StrictlyOrderedAwaitTask<DeserializerState> whenReturned = call.WhenReturned;
 
-        using (var registration = cancellationToken.Register(call.Dispose))
+        using (
+            CancellationTokenRegistration registration = cancellationToken.Register(call.Dispose)
+        )
         {
             return await whenReturned;
         }
@@ -126,7 +130,7 @@ internal class LazyCapability : RefCountingCapability, IResolvingCapability
         DynamicSerializerState args
     )
     {
-        var cts = new CancellationTokenSource();
+        CancellationTokenSource cts = new();
         return new LocalAnswer(cts, CallImpl(interfaceId, methodId, args, cts.Token));
     }
 }

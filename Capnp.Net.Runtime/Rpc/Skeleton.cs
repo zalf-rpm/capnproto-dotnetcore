@@ -43,10 +43,14 @@ public abstract class Skeleton : IProvidedCapability
     internal void Relinquish(int count)
     {
         if (count < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(count));
+        }
 
         while (count-- > 0)
+        {
             Relinquish();
+        }
     }
 
     internal virtual void Bind(object impl)
@@ -114,10 +118,14 @@ public abstract class Skeleton<T> : RefCountingSkeleton, IMonoSkeleton
     )
     {
         if (InterfaceId != InterfaceId)
+        {
             throw new NotImplementedException("Wrong interface id");
+        }
 
         if (methodId >= _methods.Length)
+        {
             throw new NotImplementedException("Wrong method id");
+        }
 
         return await _methods[methodId](args, cancellationToken);
     }
@@ -140,13 +148,17 @@ public abstract class Skeleton<T> : RefCountingSkeleton, IMonoSkeleton
     protected override void Dispose(bool disposing)
     {
         if (disposing && Impl is IDisposable disposable)
+        {
             disposable.Dispose();
+        }
     }
 
     internal override void Bind(object impl)
     {
         if (Impl != null)
+        {
             throw new InvalidOperationException("Skeleton was already bound");
+        }
 
         Impl = (T)impl;
     }

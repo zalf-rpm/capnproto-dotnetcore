@@ -60,9 +60,11 @@ public sealed class PendingQuestion : IPromisedAnswer
         "Peer sent the results of this questions somewhere else. This was not expected and is a protocol error.";
 
     private readonly TaskCompletionSource<DeserializerState> _tcs = new();
+    private SerializerState? _inParams;
+
     private int _inhibitFinishCounter,
         _refCounter;
-    private SerializerState? _inParams;
+
     private ConsumedCapability? _target;
 
     internal PendingQuestion(
@@ -104,9 +106,13 @@ public sealed class PendingQuestion : IPromisedAnswer
         internal set
         {
             if (value)
+            {
                 StateFlags |= State.TailCall;
+            }
             else
+            {
                 StateFlags &= ~State.TailCall;
+            }
         }
     }
 
@@ -138,7 +144,7 @@ public sealed class PendingQuestion : IPromisedAnswer
     /// </exception>
     public ConsumedCapability Access(MemberAccessPath access, Task<IDisposable?> task)
     {
-        var proxyTask = task.AsProxyTask();
+        Task<Proxy> proxyTask = task.AsProxyTask();
         return new RemoteAnswerCapability(this, access, proxyTask);
     }
 
@@ -147,7 +153,7 @@ public sealed class PendingQuestion : IPromisedAnswer
     /// </summary>
     public void Dispose()
     {
-        var justDisposed = false;
+        bool justDisposed = false;
 
         lock (ReentrancyBlocker)
         {
@@ -161,7 +167,9 @@ public sealed class PendingQuestion : IPromisedAnswer
         }
 
         if (justDisposed)
+        {
             _tcs.TrySetCanceled();
+        }
     }
 
     internal void DisallowFinish()
@@ -206,7 +214,9 @@ public sealed class PendingQuestion : IPromisedAnswer
         }
 
         if (!_tcs.TrySetResult(results))
+        {
             ReleaseOutCaps(results);
+        }
     }
 
     internal void OnTailCallReturn()
@@ -263,7 +273,9 @@ public sealed class PendingQuestion : IPromisedAnswer
     private void AutoFinish()
     {
         if (StateFlags.HasFlag(State.FinishRequested))
+        {
             return;
+        }
 
         if (
             (!IsTailCall && _inhibitFinishCounter == 0 && StateFlags.HasFlag(State.Returned))
@@ -280,7 +292,9 @@ public sealed class PendingQuestion : IPromisedAnswer
     private void SetReturned()
     {
         if (StateFlags.HasFlag(State.Returned))
+        {
             throw new InvalidOperationException("Return state already set");
+        }
 
         StateFlags |= State.Returned;
 
@@ -290,8 +304,10 @@ public sealed class PendingQuestion : IPromisedAnswer
 
     private static void ReleaseOutCaps(DeserializerState outParams)
     {
-        foreach (var cap in outParams.Caps!)
+        foreach (ConsumedCapability cap in outParams.Caps!)
+        {
             cap.Release();
+        }
     }
 
     internal void Send()
@@ -302,7 +318,9 @@ public sealed class PendingQuestion : IPromisedAnswer
         lock (ReentrancyBlocker)
         {
             if (StateFlags.HasFlag(State.Sent))
+            {
                 throw new InvalidOperationException("Already sent");
+            }
 
             inParams = _inParams;
             _inParams = null;
@@ -311,9 +329,9 @@ public sealed class PendingQuestion : IPromisedAnswer
             StateFlags |= State.Sent;
         }
 
-        var msg = (Message.WRITER)inParams!.MsgBuilder!.Root!;
+        Message.WRITER msg = (Message.WRITER)inParams!.MsgBuilder!.Root!;
         Debug.Assert(msg.Call!.Target.which != MessageTarget.WHICH.undefined);
-        var call = msg.Call;
+        Call.WRITER? call = msg.Call;
         call.QuestionId = QuestionId;
         call.SendResultsTo.which = IsTailCall
             ? Call.sendResultsTo.WHICH.Yourself

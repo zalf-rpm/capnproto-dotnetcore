@@ -32,7 +32,9 @@ public class ListOfEmptyDeserializer : ListDeserializer, IReadOnlyList<Deseriali
         get
         {
             if (index < 0 || index >= Count)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
             return default;
         }

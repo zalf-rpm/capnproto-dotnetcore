@@ -97,11 +97,13 @@ public abstract class ListDeserializer
     private object CastND(int n, Func<ListDeserializer, object> func)
     {
         if (n <= 0)
-            throw new ArgumentOutOfRangeException(nameof(n));
-
-        for (var i = 1; i < n; i++)
         {
-            var copy = func; // This copy assignment is intentional. Try to optimize it away and be amazed!
+            throw new ArgumentOutOfRangeException(nameof(n));
+        }
+
+        for (int i = 1; i < n; i++)
+        {
+            Func<ListDeserializer, object> copy = func; // This copy assignment is intentional. Try to optimize it away and be amazed!
             func = ld => ld.CastList().LazyListSelect(copy);
         }
 

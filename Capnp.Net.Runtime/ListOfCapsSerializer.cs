@@ -59,9 +59,11 @@ public class ListOfCapsSerializer<T> : SerializerState, IReadOnlyList<T?>
             ListSerializerHelper.EnsureAllocated(this);
 
             if (index < 0 || index >= RawData.Length)
+            {
                 throw new IndexOutOfRangeException("index out of range");
+            }
 
-            var p = default(WirePointer);
+            WirePointer p = default;
             p.SetCapability(ProvideCapability(value));
             RawData[index] = p;
         }
@@ -106,18 +108,24 @@ public class ListOfCapsSerializer<T> : SerializerState, IReadOnlyList<T?>
     public void Init(IReadOnlyList<T?>? caps)
     {
         if (caps == null)
+        {
             return;
+        }
 
         Init(caps.Count);
 
-        for (var i = 0; i < caps.Count; i++)
+        for (int i = 0; i < caps.Count; i++)
+        {
             this[i] = caps[i];
+        }
     }
 
     private IEnumerable<T> Enumerate()
     {
-        var count = Count;
-        for (var i = 0; i < count; i++)
+        int count = Count;
+        for (int i = 0; i < count; i++)
+        {
             yield return this[i];
+        }
     }
 }

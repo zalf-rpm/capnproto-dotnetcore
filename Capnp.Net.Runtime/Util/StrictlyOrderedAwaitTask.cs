@@ -44,7 +44,7 @@ public class StrictlyOrderedAwaitTask : INotifyCompletion
     /// </summary>
     public void OnCompleted(Action continuation)
     {
-        var first = false;
+        bool first = false;
 
 #if SOTASK_PERF
         long spinCount = 0;
@@ -88,7 +88,9 @@ public class StrictlyOrderedAwaitTask : INotifyCompletion
 #endif
 
         if (first)
+        {
             AwaitInternal();
+        }
     }
 
     /// <summary>
@@ -127,9 +129,13 @@ public class StrictlyOrderedAwaitTask : INotifyCompletion
                     continuations = (Action?)Interlocked.Exchange(ref _state, null);
 
                     if (continuations != null)
+                    {
                         continuations();
+                    }
                     else
+                    {
                         break;
+                    }
                 }
 
 #if SOTASK_PERF

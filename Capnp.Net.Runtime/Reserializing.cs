@@ -28,7 +28,9 @@ public static class Reserializing
     public static void DeepCopy(DeserializerState from, SerializerState to)
     {
         if (to == null)
+        {
             throw new ArgumentNullException(nameof(to));
+        }
 
         if (from.Caps != null && to.Caps != null)
         {
@@ -36,7 +38,7 @@ public static class Reserializing
             to.Caps.AddRange(from.Caps);
         }
 
-        var ds = to.Rewrap<DynamicSerializerState>();
+        DynamicSerializerState ds = to.Rewrap<DynamicSerializerState>();
 
         IReadOnlyList<DeserializerState> items;
 
@@ -46,8 +48,11 @@ public static class Reserializing
                 ds.SetStruct(from.StructDataCount, from.StructPtrCount);
                 ds.Allocate();
                 from.StructDataSection.CopyTo(ds.StructDataSection);
-                for (var i = 0; i < from.StructPtrCount; i++)
+                for (int i = 0; i < from.StructPtrCount; i++)
+                {
                     DeepCopy(from.StructReadPointer(i), ds.BuildPointer(i));
+                }
+
                 break;
 
             case ObjectKind.ListOfBits:
@@ -82,8 +87,11 @@ public static class Reserializing
             case ObjectKind.ListOfPointers:
                 ds.SetListOfPointers(from.ListElementCount);
                 items = (IReadOnlyList<DeserializerState>)from.RequireList();
-                for (var i = 0; i < from.ListElementCount; i++)
+                for (int i = 0; i < from.ListElementCount; i++)
+                {
                     DeepCopy(items[i], ds.BuildPointer(i));
+                }
+
                 break;
 
             case ObjectKind.ListOfStructs:
@@ -93,8 +101,11 @@ public static class Reserializing
                     from.StructPtrCount
                 );
                 items = (IReadOnlyList<DeserializerState>)from.RequireList();
-                for (var i = 0; i < from.ListElementCount; i++)
+                for (int i = 0; i < from.ListElementCount; i++)
+                {
                     DeepCopy(items[i], ds.ListBuildStruct(i));
+                }
+
                 break;
 
             case ObjectKind.Capability:

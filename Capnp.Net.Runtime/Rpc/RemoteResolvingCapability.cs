@@ -16,6 +16,7 @@ internal abstract class RemoteResolvingCapability : RemoteCapability, IResolving
 #endif
 
     public abstract StrictlyOrderedAwaitTask WhenResolved { get; }
+
     public abstract T? GetResolvedCapability<T>()
         where T : class;
 
@@ -35,7 +36,7 @@ internal abstract class RemoteResolvingCapability : RemoteCapability, IResolving
         DynamicSerializerState args
     )
     {
-        var resolvedCap = ResolvedCap!;
+        ConsumedCapability resolvedCap = ResolvedCap!;
 
         try
         {
@@ -58,7 +59,7 @@ internal abstract class RemoteResolvingCapability : RemoteCapability, IResolving
 #if DebugEmbargos
                 Logger.LogDebug("Direct call");
 #endif
-                using var proxy = new Proxy(resolvedCap);
+                using Proxy proxy = new(resolvedCap);
                 return proxy.Call(interfaceId, methodId, args, default);
             }
 
@@ -76,7 +77,7 @@ internal abstract class RemoteResolvingCapability : RemoteCapability, IResolving
 #endif
             }
 
-            var cancellationTokenSource = new CancellationTokenSource();
+            CancellationTokenSource cancellationTokenSource = new();
 
             async Task<DeserializerState> AwaitAnswer()
             {
@@ -92,8 +93,8 @@ internal abstract class RemoteResolvingCapability : RemoteCapability, IResolving
                     cancellationTokenSource.Token.ThrowIfCancellationRequested();
                 }
 
-                using var proxy = new Proxy(resolvedCap);
-                var promisedAnswer = proxy.Call(interfaceId, methodId, args, default);
+                using Proxy proxy = new(resolvedCap);
+                IPromisedAnswer promisedAnswer = proxy.Call(interfaceId, methodId, args, default);
 
                 using (cancellationTokenSource.Token.Register(promisedAnswer.Dispose))
                 {

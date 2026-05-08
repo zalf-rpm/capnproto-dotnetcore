@@ -55,7 +55,7 @@ internal class PromisedCapability : RemoteResolvingCapability
         {
             if (_resolvedCap.Task.IsCompletedSuccessfully)
             {
-                using var proxy = new Proxy(_resolvedCap.Task.Result);
+                using Proxy proxy = new(_resolvedCap.Task.Result);
                 proxy.Export(endpoint, writer);
             }
             else
@@ -70,7 +70,7 @@ internal class PromisedCapability : RemoteResolvingCapability
 
                     return () =>
                     {
-                        var release = false;
+                        bool release = false;
 
                         lock (_reentrancyBlocker)
                         {
@@ -82,7 +82,9 @@ internal class PromisedCapability : RemoteResolvingCapability
                         }
 
                         if (release)
+                        {
                             _ep.ReleaseImport(_remoteId);
+                        }
                     };
                 }
 
@@ -102,7 +104,7 @@ internal class PromisedCapability : RemoteResolvingCapability
         catch { }
         finally
         {
-            var release = false;
+            bool release = false;
 
             lock (_reentrancyBlocker)
             {
@@ -114,7 +116,9 @@ internal class PromisedCapability : RemoteResolvingCapability
             }
 
             if (release)
+            {
                 _ep.ReleaseImport(_remoteId);
+            }
         }
     }
 
@@ -133,20 +137,22 @@ internal class PromisedCapability : RemoteResolvingCapability
         lock (_reentrancyBlocker)
         {
             if (_resolvedCap.Task.IsCompleted)
+            {
                 return CallOnResolution(interfaceId, methodId, args);
+            }
 
             Debug.Assert(!_released);
             ++_pendingCallsOnPromise;
         }
 
-        var promisedAnswer = base.DoCall(interfaceId, methodId, args);
+        IPromisedAnswer promisedAnswer = base.DoCall(interfaceId, methodId, args);
         TrackCall(promisedAnswer.WhenReturned);
         return promisedAnswer;
     }
 
     public void ResolveTo(ConsumedCapability resolvedCap)
     {
-        var release = false;
+        bool release = false;
 
         lock (_reentrancyBlocker)
         {
@@ -164,12 +170,14 @@ internal class PromisedCapability : RemoteResolvingCapability
         }
 
         if (release)
+        {
             _ep.ReleaseImport(_remoteId);
+        }
     }
 
     public void Break(string message)
     {
-        var release = false;
+        bool release = false;
 
         lock (_reentrancyBlocker)
         {
@@ -187,7 +195,9 @@ internal class PromisedCapability : RemoteResolvingCapability
         }
 
         if (release)
+        {
             _ep.ReleaseImport(_remoteId);
+        }
     }
 
     protected override async void ReleaseRemotely()
@@ -200,7 +210,7 @@ internal class PromisedCapability : RemoteResolvingCapability
 
         try
         {
-            using var _ = await _whenResolvedProxy;
+            using Proxy _ = await _whenResolvedProxy;
         }
         catch { }
     }
@@ -211,7 +221,7 @@ internal class PromisedCapability : RemoteResolvingCapability
         ushort methodId
     )
     {
-        var call = base.SetupMessage(args, interfaceId, methodId);
+        Call.WRITER call = base.SetupMessage(args, interfaceId, methodId);
 
         call.Target.which = MessageTarget.WHICH.ImportedCap;
         call.Target.ImportedCap = _remoteId;

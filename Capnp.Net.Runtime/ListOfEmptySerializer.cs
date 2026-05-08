@@ -21,10 +21,14 @@ public class ListOfEmptySerializer : SerializerState
     public void Init(int count)
     {
         if (IsAllocated)
+        {
             throw new InvalidOperationException("Already initialized");
+        }
 
         if (count < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(count));
+        }
 
         SetListOfValues(0, count);
     }

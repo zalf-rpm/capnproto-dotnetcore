@@ -48,6 +48,7 @@ public static class CapnpSerializable
     private static Func<DeserializerState, object?> CreateSerializer(Type type)
     {
         if (typeof(ICapnpSerializable).IsAssignableFrom(type))
+        {
             try
             {
                 return (
@@ -62,11 +63,13 @@ public static class CapnpSerializable
                     ex
                 );
             }
+        }
 
         if (type.IsGenericType && typeof(IReadOnlyList<>) == type.GetGenericTypeDefinition())
+        {
             try
             {
-                var elementType = type.GetGenericArguments()[0];
+                Type elementType = type.GetGenericArguments()[0];
                 return (
                     (IConstructibleFromDeserializerState)
                         Activator.CreateInstance(typeof(FromList<>).MakeGenericType(elementType))!
@@ -83,6 +86,7 @@ public static class CapnpSerializable
                     ex
                 );
             }
+        }
 
         try
         {
@@ -187,9 +191,12 @@ public static class CapnpSerializable
     {
         public object Create(DeserializerState state)
         {
-            var result = new T();
+            T result = new();
             if (state.Kind != ObjectKind.Nil)
+            {
                 result.Deserialize(state);
+            }
+
             return result;
         }
     }
@@ -201,7 +208,7 @@ public static class CapnpSerializable
 
         public FromList()
         {
-            var deser = GetSerializer(typeof(T));
+            Func<DeserializerState, object?> deser = GetSerializer(typeof(T));
             _elementSerializer = d => (deser(d) as T)!;
         }
 

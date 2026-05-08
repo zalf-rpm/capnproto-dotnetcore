@@ -63,6 +63,7 @@ internal abstract class RefCountingCapability : ConsumedCapability
         else
         {
             if (_refCount > 0)
+            {
                 Task.Run(() =>
                 {
                     try
@@ -71,6 +72,7 @@ internal abstract class RefCountingCapability : ConsumedCapability
                     }
                     catch { }
                 });
+            }
         }
     }
 
@@ -126,10 +128,12 @@ internal abstract class RefCountingCapability : ConsumedCapability
         lock (_reentrancyBlocker)
         {
             if (_refCount <= 0)
+            {
                 throw new ObjectDisposedException(
                     ToString(),
                     "Validation failed, capability is already disposed"
                 );
+            }
         }
     }
 
@@ -138,7 +142,10 @@ internal abstract class RefCountingCapability : ConsumedCapability
         lock (_reentrancyBlocker)
         {
             if (_vine == null)
+            {
                 _vine = new Vine(this);
+            }
+
             return _vine;
         }
     }

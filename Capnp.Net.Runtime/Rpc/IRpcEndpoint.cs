@@ -10,6 +10,7 @@ internal interface IRpcEndpoint
     uint AllocateExport(Skeleton providedCapability, out bool first);
     void Finish(uint questionId);
     void ReleaseImport(uint importId);
+
     void Resolve(
         uint preliminaryId,
         Skeleton preliminaryCap,

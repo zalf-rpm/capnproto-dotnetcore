@@ -39,7 +39,10 @@ public class Message : ICapnpSerializable
         set
         {
             if (value == _which)
+            {
                 return;
+            }
+
             _which = value;
             switch (value)
             {
@@ -231,7 +234,7 @@ public class Message : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         switch (reader.which)
         {
             case WHICH.Unimplemented:
@@ -363,14 +366,19 @@ public class Message : ICapnpSerializable
         }
 
         public WHICH which => (WHICH)ctx.ReadDataUShort(0U);
+
         public READER Unimplemented =>
             which == WHICH.Unimplemented ? ctx.ReadStruct(0, create) : default;
+
         public Exception.READER Abort =>
             which == WHICH.Abort ? ctx.ReadStruct(0, Exception.READER.create) : default;
+
         public Call.READER Call =>
             which == WHICH.Call ? ctx.ReadStruct(0, Rpc.Call.READER.create) : default;
+
         public Return.READER Return =>
             which == WHICH.Return ? ctx.ReadStruct(0, Rpc.Return.READER.create) : default;
+
         public Finish.READER Finish =>
             which == WHICH.Finish ? ctx.ReadStruct(0, Rpc.Finish.READER.create) : default;
 
@@ -394,6 +402,7 @@ public class Message : ICapnpSerializable
 
         public Accept.READER Accept =>
             which == WHICH.Accept ? ctx.ReadStruct(0, Rpc.Accept.READER.create) : default;
+
         public Join.READER Join =>
             which == WHICH.Join ? ctx.ReadStruct(0, Rpc.Join.READER.create) : default;
 
@@ -527,7 +536,7 @@ public class Bootstrap : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         QuestionId = reader.QuestionId;
         DeprecatedObjectId = CapnpSerializable.Create<object>(reader.DeprecatedObjectId);
         applyDefaults();
@@ -617,7 +626,7 @@ public class Call : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         QuestionId = reader.QuestionId;
         Target = CapnpSerializable.Create<MessageTarget>(reader.Target);
         InterfaceId = reader.InterfaceId;
@@ -748,7 +757,10 @@ public class Call : ICapnpSerializable
             set
             {
                 if (value == _which)
+                {
                     return;
+                }
+
                 _which = value;
                 switch (value)
                 {
@@ -775,7 +787,7 @@ public class Call : ICapnpSerializable
 
         void ICapnpSerializable.Deserialize(DeserializerState arg_)
         {
-            var reader = READER.create(arg_);
+            READER reader = READER.create(arg_);
             switch (reader.which)
             {
                 case WHICH.Caller:
@@ -839,6 +851,7 @@ public class Call : ICapnpSerializable
             }
 
             public WHICH which => (WHICH)ctx.ReadDataUShort(48U);
+
             public DeserializerState ThirdParty =>
                 which == WHICH.ThirdParty ? ctx.StructReadPointer(2) : default;
         }
@@ -888,7 +901,10 @@ public class Return : ICapnpSerializable
         set
         {
             if (value == _which)
+            {
                 return;
+            }
+
             _which = value;
             switch (value)
             {
@@ -958,7 +974,7 @@ public class Return : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         switch (reader.which)
         {
             case WHICH.Results:
@@ -1049,6 +1065,7 @@ public class Return : ICapnpSerializable
         public WHICH which => (WHICH)ctx.ReadDataUShort(48U);
         public uint AnswerId => ctx.ReadDataUInt(0UL);
         public bool ReleaseParamCaps => ctx.ReadDataBool(32UL, true);
+
         public Payload.READER Results =>
             which == WHICH.Results ? ctx.ReadStruct(0, Payload.READER.create) : default;
 
@@ -1131,7 +1148,7 @@ public class Finish : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         QuestionId = reader.QuestionId;
         ReleaseResultCaps = reader.ReleaseResultCaps;
         applyDefaults();
@@ -1221,7 +1238,10 @@ public class Resolve : ICapnpSerializable
         set
         {
             if (value == _which)
+            {
                 return;
+            }
+
             _which = value;
             switch (value)
             {
@@ -1259,7 +1279,7 @@ public class Resolve : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         switch (reader.which)
         {
             case WHICH.Cap:
@@ -1378,7 +1398,7 @@ public class Release : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         Id = reader.Id;
         ReferenceCount = reader.ReferenceCount;
         applyDefaults();
@@ -1458,7 +1478,7 @@ public class Disembargo : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         Target = CapnpSerializable.Create<MessageTarget>(reader.Target);
         Context = CapnpSerializable.Create<context>(reader.Context);
         applyDefaults();
@@ -1545,7 +1565,10 @@ public class Disembargo : ICapnpSerializable
             set
             {
                 if (value == _which)
+                {
                     return;
+                }
+
                 _which = value;
                 switch (value)
                 {
@@ -1596,7 +1619,7 @@ public class Disembargo : ICapnpSerializable
 
         void ICapnpSerializable.Deserialize(DeserializerState arg_)
         {
-            var reader = READER.create(arg_);
+            READER reader = READER.create(arg_);
             switch (reader.which)
             {
                 case WHICH.SenderLoopback:
@@ -1667,10 +1690,13 @@ public class Disembargo : ICapnpSerializable
             }
 
             public WHICH which => (WHICH)ctx.ReadDataUShort(32U);
+
             public uint SenderLoopback =>
                 which == WHICH.SenderLoopback ? ctx.ReadDataUInt(0UL) : default;
+
             public uint ReceiverLoopback =>
                 which == WHICH.ReceiverLoopback ? ctx.ReadDataUInt(0UL) : default;
+
             public uint Provide => which == WHICH.Provide ? ctx.ReadDataUInt(0UL) : default;
         }
 
@@ -1717,7 +1743,7 @@ public class Provide : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         QuestionId = reader.QuestionId;
         Target = CapnpSerializable.Create<MessageTarget>(reader.Target);
         Recipient = CapnpSerializable.Create<object>(reader.Recipient);
@@ -1808,7 +1834,7 @@ public class Accept : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         QuestionId = reader.QuestionId;
         Provision = CapnpSerializable.Create<object>(reader.Provision);
         Embargo = reader.Embargo;
@@ -1899,7 +1925,7 @@ public class Join : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         QuestionId = reader.QuestionId;
         Target = CapnpSerializable.Create<MessageTarget>(reader.Target);
         KeyPart = CapnpSerializable.Create<object>(reader.KeyPart);
@@ -1998,7 +2024,10 @@ public class MessageTarget : ICapnpSerializable
         set
         {
             if (value == _which)
+            {
                 return;
+            }
+
             _which = value;
             switch (value)
             {
@@ -2034,7 +2063,7 @@ public class MessageTarget : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         switch (reader.which)
         {
             case WHICH.ImportedCap:
@@ -2142,7 +2171,7 @@ public class Payload : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         Content = CapnpSerializable.Create<object>(reader.Content);
         CapTable = reader.CapTable?.ToReadOnlyList(_ =>
             CapnpSerializable.Create<CapDescriptor>(_)!
@@ -2188,6 +2217,7 @@ public class Payload : ICapnpSerializable
         }
 
         public DeserializerState Content => ctx.StructReadPointer(0);
+
         public IReadOnlyList<CapDescriptor.READER> CapTable =>
             ctx.ReadList(1).Cast(CapDescriptor.READER.create);
     }
@@ -2239,7 +2269,10 @@ public class CapDescriptor : ICapnpSerializable
         set
         {
             if (value == _which)
+            {
                 return;
+            }
+
             _which = value;
             switch (value)
             {
@@ -2316,7 +2349,7 @@ public class CapDescriptor : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         switch (reader.which)
         {
             case WHICH.None:
@@ -2402,8 +2435,10 @@ public class CapDescriptor : ICapnpSerializable
 
         public WHICH which => (WHICH)ctx.ReadDataUShort(0U);
         public uint SenderHosted => which == WHICH.SenderHosted ? ctx.ReadDataUInt(32UL) : default;
+
         public uint SenderPromise =>
             which == WHICH.SenderPromise ? ctx.ReadDataUInt(32UL) : default;
+
         public uint ReceiverHosted =>
             which == WHICH.ReceiverHosted ? ctx.ReadDataUInt(32UL) : default;
 
@@ -2480,7 +2515,7 @@ public class PromisedAnswer : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         QuestionId = reader.QuestionId;
         Transform = reader.Transform?.ToReadOnlyList(_ => CapnpSerializable.Create<Op>(_)!);
         applyDefaults();
@@ -2569,7 +2604,10 @@ public class PromisedAnswer : ICapnpSerializable
             set
             {
                 if (value == _which)
+                {
                     return;
+                }
+
                 _which = value;
                 switch (value)
                 {
@@ -2594,7 +2632,7 @@ public class PromisedAnswer : ICapnpSerializable
 
         void ICapnpSerializable.Deserialize(DeserializerState arg_)
         {
-            var reader = READER.create(arg_);
+            READER reader = READER.create(arg_);
             switch (reader.which)
             {
                 case WHICH.Noop:
@@ -2653,6 +2691,7 @@ public class PromisedAnswer : ICapnpSerializable
             }
 
             public WHICH which => (WHICH)ctx.ReadDataUShort(0U);
+
             public ushort GetPointerField =>
                 which == WHICH.GetPointerField ? ctx.ReadDataUShort(16UL) : default;
         }
@@ -2691,7 +2730,7 @@ public class ThirdPartyCapDescriptor : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         Id = CapnpSerializable.Create<object>(reader.Id);
         VineId = reader.VineId;
         applyDefaults();
@@ -2785,7 +2824,7 @@ public class Exception : ICapnpSerializable
 
     void ICapnpSerializable.Deserialize(DeserializerState arg_)
     {
-        var reader = READER.create(arg_);
+        READER reader = READER.create(arg_);
         Reason = reader.Reason;
         ObsoleteIsCallersFault = reader.ObsoleteIsCallersFault;
         ObsoleteDurability = reader.ObsoleteDurability;

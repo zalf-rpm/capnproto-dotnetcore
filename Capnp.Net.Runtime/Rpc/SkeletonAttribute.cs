@@ -20,10 +20,14 @@ public class SkeletonAttribute : Attribute
     public SkeletonAttribute(Type skeletonClass)
     {
         if (skeletonClass == null)
+        {
             throw new ArgumentNullException(nameof(skeletonClass));
+        }
 
         if (!typeof(Skeleton).IsAssignableFrom(skeletonClass))
+        {
             throw new ArgumentException("Must inherit from Skeleton");
+        }
 
         SkeletonClass = skeletonClass;
     }

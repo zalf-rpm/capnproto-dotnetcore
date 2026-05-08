@@ -143,7 +143,7 @@ public class CallContext
                         break;
 
                     case ConsumedCapability cap:
-                        using (var temp = CapabilityReflection.CreateProxy<object>(cap))
+                        using (Proxy temp = CapabilityReflection.CreateProxy<object>(cap))
                         {
                             Bob = temp;
                         }
@@ -151,7 +151,7 @@ public class CallContext
                         break;
 
                     case Skeleton skeleton:
-                        using (var nullProxy = new Proxy())
+                        using (Proxy nullProxy = new())
                         {
                             Bob = (object?)skeleton.AsCapability() ?? nullProxy;
                         }
@@ -175,9 +175,10 @@ public class CallContext
     private static void InterceptCaps(DeserializerState state, IInterceptionPolicy policy)
     {
         if (state.Caps != null)
-            for (var i = 0; i < state.Caps.Count; i++)
+        {
+            for (int i = 0; i < state.Caps.Count; i++)
             {
-                var cap = state.Caps[i];
+                ConsumedCapability? cap = state.Caps[i];
                 if (cap != null)
                 {
                     cap = policy.Attach(cap);
@@ -185,14 +186,16 @@ public class CallContext
                     cap.AddRef();
                 }
             }
+        }
     }
 
     private static void UninterceptCaps(DeserializerState state, IInterceptionPolicy policy)
     {
         if (state.Caps != null)
-            for (var i = 0; i < state.Caps.Count; i++)
+        {
+            for (int i = 0; i < state.Caps.Count; i++)
             {
-                var cap = state.Caps[i];
+                ConsumedCapability? cap = state.Caps[i];
                 if (cap != null)
                 {
                     cap = policy.Detach(cap);
@@ -200,6 +203,7 @@ public class CallContext
                     cap.AddRef();
                 }
             }
+        }
     }
 
     /// <summary>
@@ -243,7 +247,7 @@ public class CallContext
     /// </summary>
     public void ForwardToBob()
     {
-        var answer = BobProxy!.Call(
+        IPromisedAnswer answer = BobProxy!.Call(
             InterfaceId,
             MethodId,
             InArgs.Rewrap<DynamicSerializerState>(),
@@ -321,7 +325,7 @@ public class CallContext
 
         public ConsumedCapability Access(MemberAccessPath _, Task<IDisposable?> task)
         {
-            var proxyTask = task.AsProxyTask();
+            Task<Proxy> proxyTask = task.AsProxyTask();
             return _callContext._censorCapability.Policy.Attach<ConsumedCapability>(
                 new LocalAnswerCapability(proxyTask)
             );
@@ -346,11 +350,17 @@ public class CallContext
             try
             {
                 if (_callContext.ReturnCanceled)
+                {
                     _futureResult.SetCanceled();
+                }
                 else if (_callContext.Exception != null)
+                {
                     _futureResult.SetException(new RpcException(_callContext.Exception));
+                }
                 else
+                {
                     _futureResult.SetResult(_callContext.OutArgs);
+                }
             }
             finally
             {

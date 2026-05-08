@@ -23,11 +23,15 @@ public class PolySkeleton : RefCountingSkeleton
     public void AddInterface(ulong interfaceId, Skeleton skeleton)
     {
         if (skeleton == null)
+        {
             throw new ArgumentNullException(nameof(skeleton));
+        }
 
         _ifmap.Add(interfaceId, skeleton);
         if (_ifmap.Count == 1) // Claiming only the first one is sufficient
+        {
             skeleton.Claim();
+        }
     }
 
     internal void AddInterface(Skeleton skeleton)
@@ -50,8 +54,10 @@ public class PolySkeleton : RefCountingSkeleton
         CancellationToken cancellationToken = default
     )
     {
-        if (_ifmap.TryGetValue(interfaceId, out var skel))
+        if (_ifmap.TryGetValue(interfaceId, out Skeleton? skel))
+        {
             return skel.Invoke(interfaceId, methodId, args, cancellationToken);
+        }
 
         throw new NotImplementedException("Unknown interface id");
     }
@@ -61,14 +67,18 @@ public class PolySkeleton : RefCountingSkeleton
     /// </summary>
     protected override void Dispose(bool disposing)
     {
-        foreach (var cap in _ifmap.Values.Take(1))
-            // releasing first skeleton is sufficient. Avoid double-Dispose!
+        foreach (Skeleton cap in _ifmap.Values.Take(1))
+        // releasing first skeleton is sufficient. Avoid double-Dispose!
+        {
             cap.Relinquish();
+        }
     }
 
     internal override void Bind(object impl)
     {
-        foreach (var skel in _ifmap.Values)
+        foreach (Skeleton skel in _ifmap.Values)
+        {
             skel.Bind(impl);
+        }
     }
 }

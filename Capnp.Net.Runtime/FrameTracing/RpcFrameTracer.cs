@@ -14,8 +14,10 @@ namespace Capnp.FrameTracing;
 public class RpcFrameTracer : IFrameTracer
 {
     private const string Header = "Ticks      | Thread     | Dir | Message";
+
     private static readonly string HeaderSpace =
         new string(Enumerable.Repeat(' ', 30).ToArray()) + "|";
+
     private readonly bool _disposeWriter;
 
     private readonly Stopwatch _timer = new();
@@ -47,7 +49,9 @@ public class RpcFrameTracer : IFrameTracer
     {
         _traceWriter.WriteLine("<end of trace>");
         if (_disposeWriter)
+        {
             _traceWriter.Dispose();
+        }
     }
 
     /// <summary>
@@ -58,15 +62,17 @@ public class RpcFrameTracer : IFrameTracer
     public void TraceFrame(FrameDirection dir, WireFrame frame)
     {
         if (!_timer.IsRunning)
+        {
             _timer.Start();
+        }
 
         _traceWriter.Write(
             $@"{_timer.ElapsedTicks, 10} | {Thread.CurrentThread.ManagedThreadId, 10} | "
         );
         _traceWriter.Write(dir == FrameDirection.Tx ? "Tx  |" : "Rx  |");
 
-        var dec = DeserializerState.CreateRoot(frame);
-        var msg = Message.READER.create(dec);
+        DeserializerState dec = DeserializerState.CreateRoot(frame);
+        Message.READER msg = Message.READER.create(dec);
         string tag;
 
         switch (msg.which)
@@ -265,7 +271,7 @@ public class RpcFrameTracer : IFrameTracer
 
     private void RenderCapTable(IEnumerable<CapDescriptor.READER> caps, FrameDirection dir)
     {
-        foreach (var cap in caps)
+        foreach (CapDescriptor.READER cap in caps)
         {
             _traceWriter.Write(HeaderSpace);
             RenderCapDescriptor(cap, dir);

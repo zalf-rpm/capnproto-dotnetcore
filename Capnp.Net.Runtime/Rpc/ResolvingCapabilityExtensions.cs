@@ -11,7 +11,7 @@ internal static class ResolvingCapabilityExtensions
         while (cap is IResolvingCapability resolving)
         {
             await resolving.WhenResolved;
-            using var proxy = resolving.GetResolvedCapability<BareProxy>()!;
+            using BareProxy proxy = resolving.GetResolvedCapability<BareProxy>()!;
             cap = proxy.ConsumedCap;
         }
 
@@ -25,20 +25,21 @@ internal static class ResolvingCapabilityExtensions
     )
         where T : ConsumedCapability, IResolvingCapability
     {
-        var vine = cap.AsSkeleton();
-        var preliminaryId = endpoint.AllocateExport(vine, out var first);
+        Skeleton vine = cap.AsSkeleton();
+        uint preliminaryId = endpoint.AllocateExport(vine, out bool first);
 
         writer.which = CapDescriptor.WHICH.SenderPromise;
         writer.SenderPromise = preliminaryId;
 
         if (first)
+        {
             return async () =>
             {
                 try
                 {
                     await cap.WhenResolved;
-                    using var proxy = cap.GetResolvedCapability<BareProxy>()!;
-                    var resolvedCap = await Unwrap(proxy.ConsumedCap);
+                    using BareProxy proxy = cap.GetResolvedCapability<BareProxy>()!;
+                    ConsumedCapability resolvedCap = await proxy.ConsumedCap.Unwrap();
                     endpoint.Resolve(preliminaryId, vine, () => resolvedCap!);
                 }
                 catch (System.Exception exception)
@@ -46,6 +47,7 @@ internal static class ResolvingCapabilityExtensions
                     endpoint.Resolve(preliminaryId, vine, () => throw exception);
                 }
             };
+        }
 
         return null;
     }
@@ -60,9 +62,12 @@ internal static class ResolvingCapabilityExtensions
         }
         catch (TaskCanceledException exception)
         {
-            var token = exception.CancellationToken;
+            CancellationToken token = exception.CancellationToken;
             if (!token.IsCancellationRequested)
+            {
                 token = new CancellationToken(true);
+            }
+
             return new Proxy(LazyCapability.CreateCanceledCap(token));
         }
         catch (System.Exception exception)
@@ -85,6 +90,7 @@ internal static class ResolvingCapabilityExtensions
         where T : class
     {
         if (proxyTask.IsCompleted)
+        {
             try
             {
                 return proxyTask.Result.Cast<T>(false);
@@ -93,6 +99,7 @@ internal static class ResolvingCapabilityExtensions
             {
                 throw exception.InnerException!;
             }
+        }
 
         return null;
     }

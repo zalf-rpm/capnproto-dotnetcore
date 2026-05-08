@@ -42,7 +42,9 @@ public class FramePump : IDisposable
         _stream = stream ?? throw new ArgumentNullException(nameof(stream));
 
         if (stream.CanWrite)
+        {
             _writer = new BinaryWriter(_stream);
+        }
     }
 
     private ILogger Logger { get; } = Logging.CreateLogger<FramePump>();
@@ -63,8 +65,10 @@ public class FramePump : IDisposable
     {
         if (0 == Interlocked.Exchange(ref _disposing, 1))
         {
-            foreach (var tracer in _tracers)
+            foreach (IFrameTracer tracer in _tracers)
+            {
                 tracer.Dispose();
+            }
 
             _writer?.Dispose();
             _stream.Dispose();
@@ -87,35 +91,51 @@ public class FramePump : IDisposable
     public void Send(WireFrame frame)
     {
         if (_writer == null)
+        {
             throw new InvalidOperationException("Stream is not writable");
+        }
 
         if (frame.Segments == null)
+        {
             throw new ArgumentException("Do not pass default(WireFrame)");
+        }
 
         if (frame.Segments.Count == 0)
+        {
             throw new ArgumentException("Expected at least one segment");
+        }
 
-        foreach (var segment in frame.Segments)
+        foreach (Memory<ulong> segment in frame.Segments)
+        {
             if (segment.Length == 0)
+            {
                 throw new ArgumentException("Segment must not have zero length");
+            }
+        }
 
         lock (_writeLock)
         {
-            foreach (var tracer in _tracers)
+            foreach (IFrameTracer tracer in _tracers)
+            {
                 tracer.TraceFrame(FrameDirection.Tx, frame);
+            }
 
             _writer.Write(frame.Segments.Count - 1);
 
-            foreach (var segment in frame.Segments)
+            foreach (Memory<ulong> segment in frame.Segments)
+            {
                 _writer.Write(segment.Length);
+            }
 
             if ((frame.Segments.Count & 1) == 0)
-                // Padding
-                _writer.Write(0);
-
-            foreach (var segment in frame.Segments)
+            // Padding
             {
-                var bytes = MemoryMarshal.Cast<ulong, byte>(segment.Span);
+                _writer.Write(0);
+            }
+
+            foreach (Memory<ulong> segment in frame.Segments)
+            {
+                Span<byte> bytes = MemoryMarshal.Cast<ulong, byte>(segment.Span);
                 _writer.Write(bytes);
             }
         }
@@ -127,6 +147,7 @@ public class FramePump : IDisposable
     public void Flush()
     {
         if (Monitor.TryEnter(_writeLock))
+        {
             try
             {
                 _writer?.Flush();
@@ -135,6 +156,7 @@ public class FramePump : IDisposable
             {
                 Monitor.Exit(_writeLock);
             }
+        }
     }
 
     /// <summary>
@@ -154,15 +176,18 @@ public class FramePump : IDisposable
     {
         try
         {
-            using (var reader = new BinaryReader(_stream, Encoding.Default))
+            using (BinaryReader reader = new(_stream, Encoding.Default))
             {
                 while (true)
                 {
                     IsWaitingForData = true;
-                    var frame = reader.ReadWireFrame();
+                    WireFrame frame = reader.ReadWireFrame();
                     IsWaitingForData = false;
-                    foreach (var tracer in _tracers)
+                    foreach (IFrameTracer tracer in _tracers)
+                    {
                         tracer.TraceFrame(FrameDirection.Rx, frame);
+                    }
+
                     FrameReceived?.Invoke(frame);
                 }
             }
@@ -188,7 +213,9 @@ public class FramePump : IDisposable
             // When disposing, all kinds of errors might happen here,
             // not worth logging.
             if (_disposing == 0)
+            {
                 Logger.LogWarning(exception.Message);
+            }
         }
         finally
         {

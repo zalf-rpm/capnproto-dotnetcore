@@ -22,10 +22,14 @@ public class ListOfStructsSerializer<TS> : SerializerState, IReadOnlyList<TS>
         get
         {
             if (!IsAllocated)
+            {
                 throw new InvalidOperationException("Not initialized");
+            }
 
             if (index < 0 || index >= Count)
+            {
                 throw new IndexOutOfRangeException();
+            }
 
             return ListBuildStruct<TS>(index);
         }
@@ -43,7 +47,10 @@ public class ListOfStructsSerializer<TS> : SerializerState, IReadOnlyList<TS>
     public IEnumerator<TS> GetEnumerator()
     {
         if (Count == 0)
+        {
             return Enumerable.Empty<TS>().GetEnumerator();
+        }
+
         return ListEnumerateStructs<TS>().GetEnumerator();
     }
 
@@ -59,12 +66,16 @@ public class ListOfStructsSerializer<TS> : SerializerState, IReadOnlyList<TS>
     public void Init(int count)
     {
         if (IsAllocated)
+        {
             throw new InvalidOperationException("Already initialized");
+        }
 
         if (count < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(count));
+        }
 
-        var sample = new TS();
+        TS sample = new();
         SetListOfStructs(count, sample.StructDataCount, sample.StructPtrCount);
     }
 
@@ -79,11 +90,15 @@ public class ListOfStructsSerializer<TS> : SerializerState, IReadOnlyList<TS>
     public void Init<T>(IReadOnlyList<T>? items, Action<TS, T> init)
     {
         if (items == null)
+        {
             return;
+        }
 
         Init(items.Count);
 
-        for (var i = 0; i < items.Count; i++)
+        for (int i = 0; i < items.Count; i++)
+        {
             init(this[i], items[i]);
+        }
     }
 }

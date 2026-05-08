@@ -26,7 +26,7 @@ public static class Framing
     /// <exception cref="OutOfMemoryException">Too many or too large segments, probably due to invalid framing data.</exception>
     public static WireFrame ReadSegments(Stream stream)
     {
-        using (var reader = new BinaryReader(stream, Encoding.Default, true))
+        using (BinaryReader reader = new(stream, Encoding.Default, true))
         {
             return reader.ReadWireFrame();
         }
@@ -39,36 +39,46 @@ public static class Framing
     /// <returns>The message</returns>
     public static WireFrame ReadWireFrame(this BinaryReader reader)
     {
-        var scount = reader.ReadUInt32();
+        uint scount = reader.ReadUInt32();
         if (scount++ == uint.MaxValue)
+        {
             throw new InvalidDataException("Encountered invalid framing data");
+        }
 
         // Cannot have more segments than the traversal limit
         if (scount >= SecurityOptions.TraversalLimit)
+        {
             throw new InvalidDataException(
                 "Too many segments. Probably invalid data. Try increasing the traversal limit."
             );
+        }
 
-        var buffers = new Memory<ulong>[scount];
+        Memory<ulong>[] buffers = new Memory<ulong>[scount];
 
         for (uint i = 0; i < scount; i++)
         {
-            var size = reader.ReadUInt32();
+            uint size = reader.ReadUInt32();
 
             if (size == 0)
+            {
                 throw new EndOfStreamException("Stream closed");
+            }
 
             if (size >= SecurityOptions.TraversalLimit)
+            {
                 throw new InvalidDataException(
                     "Too large segment. Probably invalid data. Try increasing the traversal limit."
                 );
+            }
 
             buffers[i] = new Memory<ulong>(new ulong[size]);
         }
 
         if ((scount & 1) == 0)
-            // Padding
+        // Padding
+        {
             reader.ReadUInt32();
+        }
 
         FillBuffersFromFrames(buffers, scount, reader);
 
@@ -90,13 +100,16 @@ public static class Framing
     {
         for (uint i = 0; i < segmentCount; i++)
         {
-            var buffer = MemoryMarshal.Cast<ulong, byte>(buffers[i].Span);
+            Span<byte> buffer = MemoryMarshal.Cast<ulong, byte>(buffers[i].Span);
 
             do
             {
-                var obtained = reader.Read(buffer);
+                int obtained = reader.Read(buffer);
                 if (obtained == 0)
+                {
                     throw StreamClosed();
+                }
+
                 buffer = buffer.Slice(obtained);
             } while (buffer.Length > 0);
         }

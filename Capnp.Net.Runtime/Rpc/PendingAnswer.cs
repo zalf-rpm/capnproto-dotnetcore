@@ -20,7 +20,9 @@ internal class PendingAnswer : IDisposable
         }
 
         if (callTask == null)
+        {
             throw new ArgumentNullException(nameof(callTask));
+        }
 
         _cts = cts;
         _cancelCompleter = new TaskCompletionSource<AnswerOrCounterquestion>();
@@ -43,12 +45,18 @@ internal class PendingAnswer : IDisposable
     {
         try
         {
-            var aorcq = await _answerTask;
+            AnswerOrCounterquestion aorcq = await _answerTask;
 
             if (aorcq.Answer != null)
+            {
                 if (aorcq.Answer.Caps != null)
-                    foreach (var cap in aorcq.Answer.Caps)
+                {
+                    foreach (ConsumedCapability cap in aorcq.Answer.Caps)
+                    {
                         cap.AddRef();
+                    }
+                }
+            }
         }
         catch { }
     }
@@ -57,11 +65,17 @@ internal class PendingAnswer : IDisposable
     {
         try
         {
-            var aorcq = await _answerTask;
+            AnswerOrCounterquestion aorcq = await _answerTask;
             if (aorcq.Answer != null)
+            {
                 if (aorcq.Answer.Caps != null)
+                {
                     foreach (var cap in aorcq.Answer.Caps)
+                    {
                         cap?.Release();
+                    }
+                }
+            }
         }
         catch { }
     }
@@ -81,13 +95,14 @@ internal class PendingAnswer : IDisposable
     {
         async Task<Proxy> EvaluateProxy()
         {
-            var aorcq = await _answerTask;
+            AnswerOrCounterquestion aorcq = await _answerTask;
 
             if (aorcq.Answer != null)
             {
                 DeserializerState cur = aorcq.Answer;
 
-                foreach (var op in rd.Transform)
+                foreach (PromisedAnswer.Op.READER op in rd.Transform)
+                {
                     switch (op.which)
                     {
                         case PromisedAnswer.Op.WHICH.GetPointerField:
@@ -112,6 +127,7 @@ internal class PendingAnswer : IDisposable
                                 "Unknown transformation operation"
                             );
                     }
+                }
 
                 switch (cur.Kind)
                 {
@@ -135,8 +151,8 @@ internal class PendingAnswer : IDisposable
                 }
             }
 
-            var path = MemberAccessPath.Deserialize(rd);
-            var cap = new RemoteAnswerCapability(aorcq.Counterquestion!, path);
+            MemberAccessPath path = MemberAccessPath.Deserialize(rd);
+            RemoteAnswerCapability cap = new(aorcq.Counterquestion!, path);
             return new Proxy(cap);
         }
 

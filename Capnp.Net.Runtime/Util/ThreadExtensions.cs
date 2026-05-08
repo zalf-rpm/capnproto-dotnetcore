@@ -17,7 +17,7 @@ internal static class ThreadExtensions
         {
             logger ??= LoggingContext.Value.Logger;
 
-            var name = thread.Name ?? thread.ManagedThreadId.ToString();
+            string name = thread.Name ?? thread.ManagedThreadId.ToString();
 
             try
             {
@@ -26,9 +26,11 @@ internal static class ThreadExtensions
                 );
                 thread.Interrupt();
                 if (!thread.Join(timeout))
+                {
                     logger.LogError(
                         $"Still unable to join thread {name} after Interrupt(). Thread is in state {thread.ThreadState}."
                     );
+                }
             }
             catch { }
         }

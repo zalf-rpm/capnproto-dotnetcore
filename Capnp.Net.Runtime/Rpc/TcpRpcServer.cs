@@ -123,16 +123,18 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
     public void Dispose()
     {
         if (_listener != null)
+        {
             StopListening();
+        }
 
-        var connections = new List<Connection>();
+        List<Connection> connections = new();
 
         lock (_reentrancyBlocker)
         {
             connections.AddRange(_connections);
         }
 
-        foreach (var connection in connections)
+        foreach (Connection connection in connections)
         {
             connection.Client.Dispose();
             connection.Pump?.Dispose();
@@ -158,7 +160,9 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
         OnConnectionChanged += (_, e) =>
         {
             if (e.Connection.State == ConnectionState.Initializing)
+            {
                 e.Connection.InjectMidlayer(createFunc);
+            }
         };
     }
 
@@ -167,13 +171,15 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
         try
         {
             if (Thread.CurrentThread.Name == null)
+            {
                 Thread.CurrentThread.Name =
                     $"TCP RPC Acceptor Thread {Thread.CurrentThread.ManagedThreadId}";
+            }
 
             while (true)
             {
-                var client = listener.AcceptTcpClient();
-                var connection = new Connection(this, client);
+                TcpClient client = listener.AcceptTcpClient();
+                Connection connection = new(this, client);
 
                 lock (_reentrancyBlocker)
                 {
@@ -207,7 +213,9 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
     public void StopListening()
     {
         if (_listener == null)
+        {
             throw new InvalidOperationException("Listening was never started");
+        }
 
         try
         {
@@ -218,7 +226,10 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
         {
             _listener = null;
             if (Thread.CurrentThread != _acceptorThread)
+            {
                 _acceptorThread?.Join();
+            }
+
             _acceptorThread = null;
         }
     }
@@ -241,11 +252,13 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
     public void StartAccepting(IPAddress localAddr, int port)
     {
         if (_listener != null)
+        {
             throw new InvalidOperationException("Listening activity was already started");
+        }
 
-        var listener = new TcpListener(localAddr, port) { ExclusiveAddressUse = true };
+        TcpListener listener = new(localAddr, port) { ExclusiveAddressUse = true };
 
-        var attempt = 0;
+        int attempt = 0;
 
         while (true)
         {
@@ -257,7 +270,9 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
             catch (SocketException socketException)
             {
                 if (attempt == 5)
+                {
                     throw;
+                }
 
                 Logger.LogWarning(
                     $"Failed to listen on port {port}, attempt {attempt}: {socketException}"
@@ -338,10 +353,14 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
         public void AttachTracer(IFrameTracer tracer)
         {
             if (tracer == null)
+            {
                 throw new ArgumentNullException(nameof(tracer));
+            }
 
             if (State != ConnectionState.Initializing)
+            {
                 throw new InvalidOperationException("Connection is not in state 'Initializing'");
+            }
 
             _tracers.Add(tracer);
         }
@@ -359,10 +378,14 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
         public void InjectMidlayer(Func<Stream, Stream> createFunc)
         {
             if (createFunc == null)
+            {
                 throw new ArgumentNullException(nameof(createFunc));
+            }
 
             if (State != ConnectionState.Initializing)
+            {
                 throw new InvalidOperationException("Connection is not in state 'Initializing'");
+            }
 
             _stream = createFunc(_stream);
         }
@@ -376,8 +399,11 @@ public class TcpRpcServer : ISupportsMidlayers, IDisposable
         {
             Pump = new FramePump(_stream);
 
-            foreach (var tracer in _tracers)
+            foreach (IFrameTracer tracer in _tracers)
+            {
                 Pump.AttachTracer(tracer);
+            }
+
             _tracers.Clear();
 
             OutboundEp = new OutboundTcpEndpoint(_server, Pump);

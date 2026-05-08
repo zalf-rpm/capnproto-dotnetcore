@@ -34,8 +34,8 @@ internal class Vine : Skeleton
         CancellationToken cancellationToken = default
     )
     {
-        using var proxy = new Proxy(Cap);
-        var promisedAnswer = proxy.Call(
+        using Proxy proxy = new(Cap);
+        IPromisedAnswer promisedAnswer = proxy.Call(
             interfaceId,
             methodId,
             (DynamicSerializerState)args,
@@ -47,9 +47,13 @@ internal class Vine : Skeleton
             promisedAnswer is PendingQuestion pendingQuestion
             && pendingQuestion.RpcEndpoint == Impatient.AskingEndpoint
         )
+        {
             return pendingQuestion;
+        }
 
-        using var registration = cancellationToken.Register(promisedAnswer.Dispose);
+        using CancellationTokenRegistration registration = cancellationToken.Register(
+            promisedAnswer.Dispose
+        );
         return (DynamicSerializerState)await promisedAnswer.WhenReturned;
     }
 }

@@ -26,7 +26,7 @@ internal class ImportedCapability : RemoteCapability
         ushort methodId
     )
     {
-        var call = base.SetupMessage(args, interfaceId, methodId);
+        Call.WRITER call = base.SetupMessage(args, interfaceId, methodId);
         call.Target.which = MessageTarget.WHICH.ImportedCap;
         call.Target.ImportedCap = _remoteId;
 

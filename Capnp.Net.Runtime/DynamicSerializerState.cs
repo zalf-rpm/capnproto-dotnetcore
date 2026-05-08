@@ -27,7 +27,7 @@ public class DynamicSerializerState : SerializerState
     /// </summary>
     public static DynamicSerializerState CreateForRpc()
     {
-        var mb = MessageBuilder.Create();
+        MessageBuilder mb = MessageBuilder.Create();
         mb.InitCapTable();
         return new DynamicSerializerState(mb);
     }
@@ -39,10 +39,13 @@ public class DynamicSerializerState : SerializerState
     /// <param name="state">The deserializer state to convert</param>
     public static explicit operator DynamicSerializerState(DeserializerState state)
     {
-        var mb = MessageBuilder.Create();
+        MessageBuilder mb = MessageBuilder.Create();
         if (state.Caps != null)
+        {
             mb.InitCapTable();
-        var sstate = mb.CreateObject<DynamicSerializerState>();
+        }
+
+        DynamicSerializerState sstate = mb.CreateObject<DynamicSerializerState>();
         Reserializing.DeepCopy(state, sstate);
 
         return sstate;
@@ -226,7 +229,7 @@ public class DynamicSerializerState : SerializerState
         void RewrapAndInheritBack<T>(Action<T> init)
             where T : SerializerState, new()
         {
-            var r = Rewrap<T>();
+            T r = Rewrap<T>();
             init(r);
             InheritFrom(r);
         }

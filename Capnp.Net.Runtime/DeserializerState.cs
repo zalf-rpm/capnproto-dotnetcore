@@ -93,7 +93,7 @@ public struct DeserializerState : IStructDeserializer, IDisposable
     /// <returns></returns>
     public static DeserializerState CreateRoot(WireFrame frame)
     {
-        var state = new DeserializerState(frame.Segments);
+        DeserializerState state = new(frame.Segments);
         state.DecodePointer(0);
         return state;
     }
@@ -108,10 +108,14 @@ public struct DeserializerState : IStructDeserializer, IDisposable
     public static implicit operator DeserializerState(SerializerState state)
     {
         if (state == null)
+        {
             throw new ArgumentNullException(nameof(state));
+        }
 
         if (state.MsgBuilder == null)
+        {
             throw new InvalidOperationException("state is not bound to a MessageBuilder");
+        }
 
         switch (state.Kind)
         {
@@ -171,7 +175,9 @@ public struct DeserializerState : IStructDeserializer, IDisposable
         BytesTraversedOrData = checked(BytesTraversedOrData + additionalBytesTraversed);
 
         if (BytesTraversedOrData > SecurityOptions.TraversalLimit)
+        {
             throw new DeserializationException("Traversal limit was reached");
+        }
     }
 
     /// <summary>
@@ -272,11 +278,13 @@ public struct DeserializerState : IStructDeserializer, IDisposable
     internal void DecodePointer(int offset)
     {
         if (offset < 0)
+        {
             throw new IndexOutOfRangeException(nameof(offset));
+        }
 
         WirePointer pointer = CurrentSegment[Offset + offset];
 
-        var derefCount = 0;
+        int derefCount = 0;
 
         do
         {
@@ -344,16 +352,22 @@ public struct DeserializerState : IStructDeserializer, IDisposable
                         case ListKind.ListOfStructs:
                             {
                                 if (Offset >= CurrentSegment.Length)
+                                {
                                     throw new DeserializationException(
                                         "List of composites pointer exceeds segment bounds"
                                     );
+                                }
+
                                 WirePointer tag = CurrentSegment[Offset];
                                 if (tag.Kind != PointerKind.Struct)
+                                {
                                     throw new DeserializationException(
                                         "Unexpected: List of composites with non-struct type tag"
                                     );
+                                }
+
                                 IncrementBytesTraversed(
-                                    checked(8u * (uint)pointer.ListElementCount + 8u)
+                                    checked((8u * (uint)pointer.ListElementCount) + 8u)
                                 );
                                 ListElementCount = tag.ListOfStructsElementCount;
                                 StructDataCount = tag.StructDataCount;
@@ -372,32 +386,40 @@ public struct DeserializerState : IStructDeserializer, IDisposable
                 case PointerKind.Far:
 
                     if (pointer.TargetSegmentIndex >= Segments.Count)
+                    {
                         throw new DeserializationException(
                             "Error decoding pointer: Invalid target segment index"
                         );
+                    }
 
                     CurrentSegmentIndex = pointer.TargetSegmentIndex;
 
                     if (pointer.IsDoubleFar)
                     {
                         if (pointer.LandingPadOffset >= CurrentSegment.Length - 1)
+                        {
                             throw new DeserializationException(
                                 "Error decoding double-far pointer: exceeds segment bounds"
                             );
+                        }
 
                         Offset = 0;
 
                         WirePointer pointer1 = CurrentSegment[pointer.LandingPadOffset];
                         if (pointer1.Kind != PointerKind.Far || pointer1.IsDoubleFar)
+                        {
                             throw new DeserializationException(
                                 "Error decoding double-far pointer: convention broken"
                             );
+                        }
 
                         WirePointer pointer2 = CurrentSegment[pointer.LandingPadOffset + 1];
                         if (pointer2.Kind == PointerKind.Far)
+                        {
                             throw new DeserializationException(
                                 "Error decoding double-far pointer: not followed by intra-segment pointer"
                             );
+                        }
 
                         CurrentSegmentIndex = pointer1.TargetSegmentIndex;
                         Offset = pointer1.LandingPadOffset;
@@ -410,9 +432,11 @@ public struct DeserializerState : IStructDeserializer, IDisposable
                         offset = pointer.LandingPadOffset;
 
                         if (pointer.LandingPadOffset >= CurrentSegment.Length)
+                        {
                             throw new DeserializationException(
                                 "Error decoding pointer: exceeds segment bounds"
                             );
+                        }
 
                         pointer = CurrentSegment[pointer.LandingPadOffset];
                     }
@@ -420,7 +444,7 @@ public struct DeserializerState : IStructDeserializer, IDisposable
                     continue;
 
                 case PointerKind.Other:
-                    var tmp = Caps;
+                    IList<ConsumedCapability>? tmp = Caps;
                     this = default;
                     Caps = tmp;
                     Kind = ObjectKind.Capability;
@@ -448,23 +472,33 @@ public struct DeserializerState : IStructDeserializer, IDisposable
     internal ConsumedCapability DecodeCapPointer(int offset)
     {
         if (offset < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(offset));
+        }
 
         if (Caps == null)
+        {
             throw new InvalidOperationException("Capbility table not set");
+        }
 
         WirePointer pointer = CurrentSegment[Offset + offset];
 
         if (pointer.IsNull)
-            // Despite this behavior is not officially specified,
-            // the official C++ implementation seems to send null pointers for null caps.
+        // Despite this behavior is not officially specified,
+        // the official C++ implementation seems to send null pointers for null caps.
+        {
             return NullCapability.Instance;
+        }
 
         if (pointer.Kind != PointerKind.Other)
+        {
             throw new RpcException("Expected a capability pointer, but got something different");
+        }
 
         if (pointer.CapabilityIndex >= Caps.Count)
+        {
             throw new RpcException("Capability index out of range");
+        }
 
         return Caps[(int)pointer.CapabilityIndex];
     }
@@ -488,31 +522,43 @@ public struct DeserializerState : IStructDeserializer, IDisposable
 
             case ObjectKind.Struct:
 
-                var index = checked((int)(bitOffset / 64));
-                var relBitOffset = (int)(bitOffset % 64);
+                int index = checked((int)(bitOffset / 64));
+                int relBitOffset = (int)(bitOffset % 64);
 
-                var data = StructDataSection;
+                ReadOnlySpan<ulong> data = StructDataSection;
 
                 if (index >= data.Length)
+                {
                     return 0; // Assume backwards-compatible change
+                }
 
                 if (relBitOffset + bitCount > 64)
+                {
                     throw new ArgumentOutOfRangeException(nameof(bitCount));
+                }
 
-                var word = data[index];
+                ulong word = data[index];
 
                 if (bitCount == 64)
+                {
                     return word;
+                }
 
-                var mask = (1ul << bitCount) - 1;
+                ulong mask = (1ul << bitCount) - 1;
                 return (word >> relBitOffset) & mask;
 
             case ObjectKind.Value:
 
                 if (bitOffset >= 32)
+                {
                     return 0;
+                }
+
                 if (bitCount >= 32)
+                {
                     return BytesTraversedOrData >> (int)bitOffset;
+                }
+
                 return (BytesTraversedOrData >> (int)bitOffset) & ((1u << bitCount) - 1);
 
             default:
@@ -535,12 +581,16 @@ public struct DeserializerState : IStructDeserializer, IDisposable
     public DeserializerState StructReadPointer(int index)
     {
         if (Kind != ObjectKind.Struct && Kind != ObjectKind.Nil)
+        {
             throw new DeserializationException("This is not a struct");
+        }
 
         if (index >= StructPtrCount)
+        {
             return default;
+        }
 
-        var state = this;
+        DeserializerState state = this;
         state.DecodePointer(index + StructDataCount);
 
         return state;
@@ -549,10 +599,14 @@ public struct DeserializerState : IStructDeserializer, IDisposable
     internal ConsumedCapability StructReadRawCap(int index)
     {
         if (Kind != ObjectKind.Struct && Kind != ObjectKind.Nil)
+        {
             throw new InvalidOperationException("Allowed on structs only");
+        }
 
         if (index >= StructPtrCount)
+        {
             return NullCapability.Instance;
+        }
 
         return DecodeCapPointer(index + StructDataCount);
     }
@@ -714,14 +768,18 @@ public struct DeserializerState : IStructDeserializer, IDisposable
     public bool IsStructFieldNonNull(int index)
     {
         if (Kind != ObjectKind.Struct && Kind != ObjectKind.Nil)
+        {
             throw new DeserializationException("This is not a struct");
+        }
 
         if (index < 0 || index >= StructPtrCount)
+        {
             throw new IndexOutOfRangeException(
                 $"Invalid index {index}. Must be [0, {StructPtrCount})."
             );
+        }
 
-        var pointerOffset = index + StructDataCount;
+        int pointerOffset = index + StructDataCount;
         WirePointer pointer = CurrentSegment[Offset + pointerOffset];
         return !pointer.IsNull;
     }
@@ -745,7 +803,7 @@ public struct DeserializerState : IStructDeserializer, IDisposable
     public T? ReadCap<T>(int index)
         where T : class
     {
-        var cap = StructReadRawCap(index);
+        ConsumedCapability cap = StructReadRawCap(index);
         return CapabilityReflection.CreateProxy<T>(cap) as T;
     }
 
@@ -762,7 +820,7 @@ public struct DeserializerState : IStructDeserializer, IDisposable
     /// </exception>
     public BareProxy ReadCap(int index)
     {
-        var cap = StructReadRawCap(index);
+        ConsumedCapability cap = StructReadRawCap(index);
         return new BareProxy(cap);
     }
 
@@ -777,13 +835,19 @@ public struct DeserializerState : IStructDeserializer, IDisposable
         where T : class
     {
         if (Kind == ObjectKind.Nil)
+        {
             return null;
+        }
 
         if (Kind != ObjectKind.Capability)
+        {
             throw new DeserializationException("Expected a capability");
+        }
 
         if (Caps == null)
+        {
             throw new InvalidOperationException("Capability table not set");
+        }
 
         return (CapabilityReflection.CreateProxy<T>(Caps[(int)CapabilityIndex]) as T)!;
     }
@@ -795,8 +859,10 @@ public struct DeserializerState : IStructDeserializer, IDisposable
     {
         if (Caps != null && !_disposed)
         {
-            foreach (var cap in Caps)
+            foreach (ConsumedCapability cap in Caps)
+            {
                 cap.Release();
+            }
 
             Caps = null;
             _disposed = true;
