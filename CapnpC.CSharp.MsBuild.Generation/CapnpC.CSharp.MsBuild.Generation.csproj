@@ -5,24 +5,17 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <NoPackageAnalysis>true</NoPackageAnalysis>
 
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>
             $(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb
         </AllowedOutputExtensionsInPackageBuildOutputFolder>
 
     <NuspecFile>$(MSBuildThisFileDirectory)CapnpC.CSharp.MsBuild.Generation.nuspec</NuspecFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageOutputPath>..\bin\$(Configuration)</PackageOutputPath>
-    <Configurations>Debug;Release</Configurations>
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
-    <LangVersion>13.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" />
-    <PackageReference Update="Nerdbank.GitVersioning">
-      <Version>3.9.50</Version>
-    </PackageReference>
   </ItemGroup>
 
   <ItemDefinitionGroup>
@@ -32,44 +25,11 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
-    <PackageReference
-      Include="Microsoft.Build.Framework"
-      Version="18.4.0"
-      Condition="'$(TargetFramework)' == 'net10.0'"
-    />
-    <PackageReference
-      Include="Microsoft.Build.Utilities.Core"
-      Version="18.4.0"
-      Condition="'$(TargetFramework)' == 'net10.0'"
-    />
-    <PackageReference
-      Include="Microsoft.Build.Framework"
-      Version="18.4.0"
-      Condition="'$(TargetFramework)' == 'net9.0'"
-    />
-    <PackageReference
-      Include="Microsoft.Build.Utilities.Core"
-      Version="18.4.0"
-      Condition="'$(TargetFramework)' == 'net9.0'"
-    />
-    <PackageReference
-      Include="Microsoft.Build.Framework"
-      Version="18.4.0"
-      Condition="'$(TargetFramework)' == 'net8.0'"
-    />
-    <PackageReference
-      Include="Microsoft.Build.Utilities.Core"
-      Version="18.4.0"
-      Condition="'$(TargetFramework)' == 'net8.0'"
-    />
+    <PackageReference Include="Microsoft.Build.Framework" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" />
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
-    <PackageReference Update="Microsoft.Xaml" Version="4.0.0.1" />
-    <PackageReference Update="System.Collections.Immutable" Version="10.0.7" />
-    <PackageReference
-      Include="Microsoft.SourceLink.GitHub"
-      Version="10.0.203"
-      PrivateAssets="all"
-    />
+    <PackageReference Update="Microsoft.Xaml" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>

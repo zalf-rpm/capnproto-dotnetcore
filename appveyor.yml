@@ -34,10 +34,11 @@ before_build:
   - cmd: dotnet restore ./CapnpC.CSharp.MsBuild.Generation.Tests/CapnpC.CSharp.MsBuild.Generation.Tests.csproj --verbosity m
   - cmd: dotnet restore ./capnpc-csharp/capnpc-csharp.csproj --verbosity m
 build_script:
-  - cmd: msbuild ./Capnp.Net.sln /p:Configuration="Debug" -V:m
-  - cmd: msbuild ./Capnp.Net.sln /p:Configuration="Release" -V:m
-  - cmd: msbuild ./CapnpCompatTest.sln /p:Configuration="Debug" -V:m
-  - cmd: msbuild ./CapnpCompatTest.sln /p:Configuration="Release" -V:m
+  - cmd: dotnet build ./Capnp.Net.slnx --configuration Debug --verbosity m
+  - cmd: dotnet build ./Capnp.Net.slnx --configuration Release --verbosity m
+  - cmd: dotnet pack ./Capnp.Net.slnx --configuration Release --no-build --verbosity m
+  - cmd: dotnet build ./CapnpCompatTest.slnx --configuration Debug --verbosity m
+  - cmd: dotnet build ./CapnpCompatTest.slnx --configuration Release --verbosity m
   - ps: scripts\capnpc-csharp-pack.ps1
 after_build: # For once the build has completed
 artifacts:
@@ -82,8 +83,8 @@ test_script:
       notinstalled-test
       cd %APPVEYOR_BUILD_FOLDER%
       dotnet test --project CapnpC.CSharp.MsBuild.Generation.Tests\CapnpC.CSharp.MsBuild.Generation.Tests.csproj --configuration Release --no-build
-      msbuild -t:restore ./MsBuildGenerationTest/MsBuildGenerationTest.csproj /p:Configuration="Debug" /p:PackageReferenceVersion="%VERSION%"
-      msbuild ./MsBuildGenerationTest/MsBuildGenerationTest.sln /p:Configuration="Debug" /p:PackageReferenceVersion="%VERSION%"
+      dotnet restore ./MsBuildGenerationTest/MsBuildGenerationTest.csproj --verbosity m /p:Configuration="Debug" /p:PackageReferenceVersion="%VERSION%"
+      dotnet build ./MsBuildGenerationTest/MsBuildGenerationTest.slnx --configuration Debug --no-restore /p:PackageReferenceVersion="%VERSION%"
       dotnet test --project Capnp.Net.Runtime.Tests\Capnp.Net.Runtime.Tests.csproj --configuration Release --no-build
       powershell -File .\scripts\measure-coverage.ps1
       csmacnz.Coveralls --lcov -i "coverage\lcov.info" --repoToken %COVERALLS_REPO_TOKEN%

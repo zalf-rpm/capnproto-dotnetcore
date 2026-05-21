@@ -11,14 +11,18 @@
     </PropertyGroup>
   </Target>
 
-  <Target Name="CleanupNupkgs" BeforeTargets="Build">
+  <Target Name="CleanupNupkgs" BeforeTargets="Pack" Condition="'$(IsInnerBuild)' != 'true'">
     <ItemGroup>
       <Nupkgs2Delete Include="$(PackageOutputAbsolutePath)\*.nupkg" />
     </ItemGroup>
     <Delete Files="@(Nupkgs2Delete)" />
   </Target>
 
-  <Target Name="CopyNupkgToFolder" AfterTargets="Pack">
+  <Target
+    Name="CopyNupkgToFolder"
+    AfterTargets="Pack"
+    Condition="'$(IsInnerBuild)' != 'true' and '$(SolutionDir)' != ''"
+  >
     <ItemGroup>
       <GeneratedNupkgs Include="$(PackageOutputAbsolutePath)\*.nupkg" />
     </ItemGroup>

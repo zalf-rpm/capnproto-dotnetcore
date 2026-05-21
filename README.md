@@ -62,7 +62,7 @@ vcpkg install capnproto
 ```
 
 Solution/project structure is as follows:
-- `Capnp.Net.sln` contains these projects:
+- `Capnp.Net.slnx` contains these projects:
   * `Capnp.Net.Runtime` is the runtime implementation, a multi-target assembly.
   * `CapnpC.CSharp.Generator` contains the generator backend logic for C# language. It is also a multi-target (.NET Standard 2.0 + .NET Core 2.1) assembly.
   * `capnpc-csharp` is the command line-based generator backend (a .NET Core 2.1 application).
@@ -70,8 +70,8 @@ Solution/project structure is as follows:
   * `Capnp.Net.Runtime.Tests` is an MS test assembly, containing - you guessed it - the test suite.
   * `CapnpC.CSharp.Generator.Tests` contains the generator backend test suite.
   * `CapnpC.CSharp.MsBuild.Generation.Tests` contains tests for `CapnpC.CSharp.MsBuild.Generation`.
-- `CapnpCompatTest.sln` compiles to a native x86 executable which depends on the original Cap'n Proto C++ implementation. It is (partially) required by the test suite for interoperability testing.
-- `MsBuildGenerationTest\MsBuildGenerationTest.sln` is a test solution/project for MSBuild integration.
+- `CapnpCompatTest.slnx` compiles to a native x86 executable which depends on the original Cap'n Proto C++ implementation. It is (partially) required by the test suite for interoperability testing.
+- `MsBuildGenerationTest\MsBuildGenerationTest.slnx` is a test solution/project for MSBuild integration.
 
 ## Features
 
