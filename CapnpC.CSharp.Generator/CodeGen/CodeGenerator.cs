@@ -254,10 +254,10 @@ internal class CodeGenerator
                     new CSharpier.Core.CodeFormatterOptions()
                 )
                 .Result;
-            if (result.CompilationErrors.Any() || string.IsNullOrEmpty(result.Code))
+            if (result.ErrorDiagnostics.Any() || string.IsNullOrEmpty(result.Code))
             {
                 throw new Exception(
-                    $"CSharpier failed for {file.Name}. Errors: {string.Join(", ", result.CompilationErrors)}"
+                    $"CSharpier failed for {file.Name}. Errors: {string.Join(", ", result.ErrorDiagnostics)}"
                 );
             }
             return result.Code;
