@@ -2,8 +2,7 @@
   <PropertyGroup>
     <CapnpcCsharp_CpsExtensionDesignTimeTargetsPath
       Condition="'$(CapnpcCsharp_CpsExtensionDesignTimeTargetsPath)' == ''"
-      >$(MSBuildThisFileDirectory)CPS\Buildsystem\CpsExtension.DesignTime.targets</CapnpcCsharp_CpsExtensionDesignTimeTargetsPath
-    >
+      >$(MSBuildThisFileDirectory)CPS\Buildsystem\CpsExtension.DesignTime.targets</CapnpcCsharp_CpsExtensionDesignTimeTargetsPath>
   </PropertyGroup>
 
   <Import
@@ -14,26 +13,22 @@
   <PropertyGroup>
     <CapnpcCsharp_UseHostCompilerIfAvailable
       Condition="'$(CapnpcCsharp_UseHostCompilerIfAvailable)'==''"
-      >false</CapnpcCsharp_UseHostCompilerIfAvailable
-    >
+      >false</CapnpcCsharp_UseHostCompilerIfAvailable>
     <UseHostCompilerIfAvailable>$(CapnpcCsharp_UseHostCompilerIfAvailable)</UseHostCompilerIfAvailable>
   </PropertyGroup>
 
   <PropertyGroup>
     <OverwriteReadOnlyFiles Condition="'$(OverwriteReadOnlyFiles)'==''"
-      >false</OverwriteReadOnlyFiles
-    >
+      >false</OverwriteReadOnlyFiles>
     <ForceGeneration Condition="'$(ForceGeneration)'==''">false</ForceGeneration>
 
     <ShowTrace Condition="'$(ShowTrace)'==''">false</ShowTrace>
     <VerboseOutput Condition="'$(VerboseOutput)'==''">true</VerboseOutput>
     <CapnpcCsharp_DebugMSBuildTask Condition="'$(CapnpcCsharp_DebugMSBuildTask)' == ''"
-      >false</CapnpcCsharp_DebugMSBuildTask
-    >
+      >false</CapnpcCsharp_DebugMSBuildTask>
 
     <_CapnpcCsharpPropsImported Condition="'$(_CapnpcCsharpPropsImported)'==''"
-      >true</_CapnpcCsharpPropsImported
-    >
+      >true</_CapnpcCsharpPropsImported>
   </PropertyGroup>
 
   <!--
@@ -45,20 +40,17 @@
         -->
     <CapnpcCsharp_DeleteCodeBehindFilesOnCleanRebuild
       Condition="'$(CapnpcCsharp_DeleteCodeBehindFilesOnCleanRebuild)'==''"
-      >false</CapnpcCsharp_DeleteCodeBehindFilesOnCleanRebuild
-    >
+      >false</CapnpcCsharp_DeleteCodeBehindFilesOnCleanRebuild>
 
     <!--
           net.sdk support: feature flag to enable experimental support for net.sdk project system
         -->
     <CapnpcCsharp_EnableDefaultCompileItems
       Condition="'$(CapnpcCsharp_EnableDefaultCompileItems)'==''"
-      >true</CapnpcCsharp_EnableDefaultCompileItems
-    >
+      >true</CapnpcCsharp_EnableDefaultCompileItems>
     <CapnpcCsharp_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingCapnpFile
       Condition="'$(CapnpcCsharp_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingCapnpFile)'==''"
-      >$(CapnpcCsharp_EnableDefaultCompileItems)</CapnpcCsharp_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingCapnpFile
-    >
+      >$(CapnpcCsharp_EnableDefaultCompileItems)</CapnpcCsharp_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingCapnpFile>
 
     <DefaultItemExcludes>$(DefaultItemExcludes);**/*.capnp</DefaultItemExcludes>
   </PropertyGroup>
@@ -91,11 +83,9 @@
   <PropertyGroup>
     <_CapnpcCsharp_TaskFolder
       Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_CapnpcCsharp_TaskFolder)' == ''"
-      >net10.0</_CapnpcCsharp_TaskFolder
-    >
+      >net10.0</_CapnpcCsharp_TaskFolder>
     <_CapnpcCsharp_TaskAssembly Condition=" '$(_CapnpcCsharp_TaskAssembly)' == '' "
-      >..\tasks\$(_CapnpcCsharp_TaskFolder)\CapnpC.CSharp.MsBuild.Generation.dll</_CapnpcCsharp_TaskAssembly
-    >
+      >..\tasks\$(_CapnpcCsharp_TaskFolder)\CapnpC.CSharp.MsBuild.Generation.dll</_CapnpcCsharp_TaskAssembly>
   </PropertyGroup>
 
   <Import Project="CapnpC.CSharp.MsBuild.Generation.tasks" />

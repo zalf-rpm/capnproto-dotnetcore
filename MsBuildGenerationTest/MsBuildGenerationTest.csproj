@@ -9,8 +9,10 @@
   <PropertyGroup Condition="'$(PackageReferenceVersion)' == ''">
     <_CapnpcCsharp_TaskAssembly>$(MSBuildProjectDirectory)/../CapnpC.CSharp.MsBuild.Generation/bin/$(Configuration)/net10.0/CapnpC.CSharp.MsBuild.Generation.dll</_CapnpcCsharp_TaskAssembly>
   </PropertyGroup>
-  <Import Project="../CapnpC.CSharp.MsBuild.Generation/build/CapnpC.CSharp.MsBuild.Generation.props"
-          Condition="'$(PackageReferenceVersion)' == '' and '$(TargetFramework)' != ''" />
+  <Import
+    Project="../CapnpC.CSharp.MsBuild.Generation/build/CapnpC.CSharp.MsBuild.Generation.props"
+    Condition="'$(PackageReferenceVersion)' == '' and '$(TargetFramework)' != ''"
+  />
 
   <ItemGroup>
     <CapnpCsharpObsoleteCodeBehindFiles Remove="capnp\bergm.capnp.cs" />
@@ -77,13 +79,22 @@
   </ItemGroup>
   <ItemGroup Condition="'$(PackageReferenceVersion)' == ''">
     <ProjectReference Include="../Capnp.Net.Runtime/Capnp.Net.Runtime.csproj" />
-    <ProjectReference Include="../CapnpC.CSharp.MsBuild.Generation/CapnpC.CSharp.MsBuild.Generation.csproj"
-                      ReferenceOutputAssembly="false" SetTargetFramework="TargetFramework=net10.0" />
+    <ProjectReference
+      Include="../CapnpC.CSharp.MsBuild.Generation/CapnpC.CSharp.MsBuild.Generation.csproj"
+      ReferenceOutputAssembly="false"
+      SetTargetFramework="TargetFramework=net10.0"
+    />
   </ItemGroup>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
-  <Import Project="../CapnpC.CSharp.MsBuild.Generation/build/CapnpC.CSharp.MsBuild.Generation.targets"
-          Condition="'$(PackageReferenceVersion)' == '' and '$(TargetFramework)' != ''" />
-  <Target Name="BuildLocalCapnpGenerator" BeforeTargets="BeforeUpdateCapnpFilesInProject"
-          DependsOnTargets="ResolveProjectReferences" Condition="'$(PackageReferenceVersion)' == ''" />
+  <Import
+    Project="../CapnpC.CSharp.MsBuild.Generation/build/CapnpC.CSharp.MsBuild.Generation.targets"
+    Condition="'$(PackageReferenceVersion)' == '' and '$(TargetFramework)' != ''"
+  />
+  <Target
+    Name="BuildLocalCapnpGenerator"
+    BeforeTargets="BeforeUpdateCapnpFilesInProject"
+    DependsOnTargets="ResolveProjectReferences"
+    Condition="'$(PackageReferenceVersion)' == ''"
+  />
 </Project>

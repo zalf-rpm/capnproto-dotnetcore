@@ -11,7 +11,11 @@
     </PropertyGroup>
   </Target>
 
-  <Target Name="CleanupNupkgs" BeforeTargets="GenerateNuspec" Condition="'$(IsInnerBuild)' != 'true'">
+  <Target
+    Name="CleanupNupkgs"
+    BeforeTargets="GenerateNuspec"
+    Condition="'$(IsInnerBuild)' != 'true'"
+  >
     <ItemGroup>
       <Nupkgs2Delete Include="$(PackageOutputAbsolutePath)\*.nupkg" />
     </ItemGroup>

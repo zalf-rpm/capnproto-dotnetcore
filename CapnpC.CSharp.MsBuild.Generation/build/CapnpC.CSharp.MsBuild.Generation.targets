@@ -16,12 +16,10 @@
         -->
     <_CapnpcCsharp_EnableDefaultCompileItems
       Condition="'$(CapnpcCsharp_EnableDefaultCompileItems)' == '' And '$(UsingMicrosoftNETSdk)' == 'true'"
-      >true</_CapnpcCsharp_EnableDefaultCompileItems
-    >
+      >true</_CapnpcCsharp_EnableDefaultCompileItems>
     <_CapnpcCsharp_EnableDefaultCompileItems
       Condition="'$(CapnpcCsharp_EnableDefaultCompileItems)' == 'true' And '$(UsingMicrosoftNETSdk)' == 'true'"
-      >true</_CapnpcCsharp_EnableDefaultCompileItems
-    >
+      >true</_CapnpcCsharp_EnableDefaultCompileItems>
   </PropertyGroup>
 
   <PropertyGroup>

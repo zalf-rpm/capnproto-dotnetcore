@@ -6,8 +6,7 @@
 >
   <PropertyGroup>
     <CpsExtensionSchemaDirectory Condition="'$(CpsExtensionSchemaDirectory)' == ''"
-      >$(MSBuildThisFileDirectory)Rules\</CpsExtensionSchemaDirectory
-    >
+      >$(MSBuildThisFileDirectory)Rules\</CpsExtensionSchemaDirectory>
   </PropertyGroup>
 
   <ItemGroup>

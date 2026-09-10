@@ -10,16 +10,14 @@
         Generic
         <see cref="T:Capnp.ICapnpSerializable" />
         implementation, based on a wrapper around<see cref="T:Capnp.DeserializerState" />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="P:Capnp.AnyPointer.State">
       <summary>
         The
         <see cref="T:Capnp.DeserializerState" />
         will be set by the Deserialize method.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.AnyPointer.Deserialize(Capnp.DeserializerState)">
       <summary>
@@ -36,8 +34,7 @@
     <member name="T:Capnp.CapnpSerializable">
       <summary>
         Provides functionality to construct domain objects from<see cref="T:Capnp.DeserializerState" />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.CapnpSerializable.Create``1(Capnp.DeserializerState)">
       <summary>
@@ -50,16 +47,14 @@
             <description>
               Type implementing<see cref="T:Capnp.ICapnpSerializable" />. The type must must have
               a public parameterless constructor.
-            </description
-            >
+            </description>
           </item>
           <item>
             <description>
               A capability interface (
               <seealso cref="T:Capnp.Rpc.InvalidCapabilityInterfaceException" />
               for further explanation)
-            </description
-            >
+            </description>
           </item>
           <item>
             <description>
@@ -125,8 +120,7 @@
             <description>
               <see cref="T:System.Collections.Generic.IReadOnlyList`1" />
               whereby T is one of the things listed here.
-            </description
-            >
+            </description>
           </item>
         </list>
       </typeparam>
@@ -457,8 +451,7 @@
     <member name="M:Capnp.DynamicSerializerState.#ctor(Capnp.MessageBuilder)">
       <summary>
         Constructs an instance and binds it to the given<see cref="T:Capnp.MessageBuilder" />.
-      </summary
-      >
+      </summary>
       <param name="messageBuilder">message builder</param>
     </member>
     <member name="M:Capnp.DynamicSerializerState.CreateForRpc">
@@ -472,8 +465,7 @@
         Converts any
         <see cref="T:Capnp.DeserializerState" />
         to a DynamicSerializerState instance, which involves deep copying the object graph.
-      </summary
-      >
+      </summary>
       <param name="state">The deserializer state to convert</param>
     </member>
     <member name="M:Capnp.DynamicSerializerState.Link(System.Int32,Capnp.SerializerState,System.Boolean)">
@@ -496,13 +488,11 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="target" />
         is null
-      </exception
-      >
+      </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="slot" />
         out of range
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         <list type="bullet">
           <item>
@@ -521,8 +511,7 @@
               belong to different message builder, and
               <paramref name="allowCopy" />
               is false
-            </description
-            >
+            </description>
           </item>
         </list>
       </exception>
@@ -578,8 +567,7 @@
         outside allowed range,
         <paramref name="totalCount" />
         negative or exceeding 2^29-1
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.DynamicSerializerState.SetListOfPointers(System.Int32)">
       <summary>
@@ -593,8 +581,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="totalCount" />
         negative or exceeding 2^29-1
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.DynamicSerializerState.SetListOfStructs(System.Int32,System.UInt16,System.UInt16)">
       <summary>
@@ -610,8 +597,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="totalCount" />
         negative, or total word count would exceed 2^29-1
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.DynamicSerializerState.SetObject(System.Object)">
       <summary>
@@ -746,20 +732,17 @@
           <item>
             <description>
               Low-level capability object (<see cref="T:Capnp.Rpc.ConsumedCapability" />)
-            </description
-            >
+            </description>
           </item>
           <item>
             <description>
               Proxy object (<see cref="T:Capnp.Rpc.Proxy" />)
-            </description
-            >
+            </description>
           </item>
           <item>
             <description>
               Skeleton object (<see cref="T:Capnp.Rpc.Skeleton" />)
-            </description
-            >
+            </description>
           </item>
           <item>
             <description>Capability interface implementation</description>
@@ -772,8 +755,7 @@
               </code>
               whereby each list item is one of
               the things listed here.
-            </description
-            >
+            </description>
           </item>
         </list>
       </param>
@@ -781,15 +763,13 @@
     <member name="T:Capnp.EmptyList`1">
       <summary>
         Implements an empty<see cref="T:System.Collections.Generic.IReadOnlyList`1" />.
-      </summary
-      >
+      </summary>
       <typeparam name="T"></typeparam>
     </member>
     <member name="P:Capnp.EmptyList`1.Item(System.Int32)">
       <summary>
         Always throws an<see cref="T:System.ArgumentOutOfRangeException" />.
-      </summary
-      >
+      </summary>
       <param name="index">Ignored</param>
     </member>
     <member name="P:Capnp.EmptyList`1.Count">
@@ -815,8 +795,7 @@
     <member name="M:Capnp.EmptyListDeserializer.Cast``1(System.Func{Capnp.DeserializerState,``0})">
       <summary>
         Returns am empty<see cref="T:System.Collections.Generic.IReadOnlyList`1" />.
-      </summary
-      >
+      </summary>
       <typeparam name="T">Element ype</typeparam>
       <param name="cons">Ignored</param>
     </member>
@@ -827,8 +806,7 @@
           <![CDATA[IReadOnlyList<bool>]]>
         </code>
         />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.EmptyListDeserializer.CastByte">
       <summary>
@@ -837,8 +815,7 @@
           <![CDATA[IReadOnlyList<byte>]]>
         </code>
         />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.EmptyListDeserializer.CastDouble">
       <summary>
@@ -847,8 +824,7 @@
           <![CDATA[IReadOnlyList<double>]]>
         </code>
         />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.EmptyListDeserializer.CastFloat">
       <summary>
@@ -857,8 +833,7 @@
           <![CDATA[IReadOnlyList<float>]]>
         </code>
         .
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.EmptyListDeserializer.CastInt">
       <summary>
@@ -867,8 +842,7 @@
           <![CDATA[IReadOnlyList<int>]]>
         </code>
         .
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.EmptyListDeserializer.CastList">
       <summary>
@@ -877,8 +851,7 @@
           <![CDATA[IReadOnlyList<ListDeserializer>]]>
         </code>
         .
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.EmptyListDeserializer.CastLong">
       <summary>
@@ -887,8 +860,7 @@
           <![CDATA[IReadOnlyList<long>]]>
         </code>
         />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.EmptyListDeserializer.CastSByte">
       <summary>
@@ -897,8 +869,7 @@
           <![CDATA[IReadOnlyList<sbyte>]]>
         </code>
         .
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.EmptyListDeserializer.CastShort">
       <summary>
@@ -907,8 +878,7 @@
           <![CDATA[IReadOnlyList<short>]]>
         </code>
         .
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.EmptyListDeserializer.CastText">
       <summary>
@@ -922,8 +892,7 @@
           <![CDATA[IReadOnlyList<uint>]]>
         </code>
         .
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.EmptyListDeserializer.CastULong">
       <summary>
@@ -932,8 +901,7 @@
           <![CDATA[IReadOnlyList<ulong>]]>
         </code>
         .
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.EmptyListDeserializer.CastUShort">
       <summary>
@@ -942,8 +910,7 @@
           <![CDATA[IReadOnlyList<ushort>]]>
         </code>
         .
-      </summary
-      >
+      </summary>
     </member>
     <member name="T:Capnp.FramePump">
       <summary>
@@ -966,8 +933,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="stream" />
         is null.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.FramePump.Dispose">
       <summary>
@@ -1038,8 +1004,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="stream" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.ArgumentException">
         The stream does not support reading, is null, or is already
         closed.
@@ -1072,8 +1037,7 @@
         a
         <see cref="T:Capnp.DeserializerState" />
         and serialization to a<see cref="T:Capnp.SerializerState" />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.ICapnpSerializable.Serialize(Capnp.SerializerState)">
       <summary>
@@ -1107,8 +1071,7 @@
         If that flag is true, allocation will fail (return false). Otherwise, the allocation shall scan existing
         segments for the requested amount of space,
         and create a new segment if none provides enough space.
-      </summary
-      >
+      </summary>
       <param name="nwords">Number of words to allocate</param>
       <param name="preferredSegment">
         Index of preferred segment wherein the block should be allocated
@@ -1118,8 +1081,7 @@
         Whether the segment specified by
         <paramref name="preferredSegment" />
         is mandatory
-      </param
-      >
+      </param>
       <returns>Whether allocation was successful</returns>
     </member>
     <member name="T:Capnp.IStructDeserializer">
@@ -1169,8 +1131,7 @@
         is not completely within the struct's data section, misaligned, exceeds one word, or
         <paramref name="bitCount" />
         is negative
-      </exception
-      >
+      </exception>
     </member>
     <member name="P:Capnp.IStructSerializer.StructDataSection">
       <summary>
@@ -1182,8 +1143,7 @@
         Base class for interpreting a
         <see cref="T:Capnp.DeserializerState" />
         as List(T).
-      </summary
-      >
+      </summary>
     </member>
     <member name="F:Capnp.ListDeserializer.State">
       <summary>
@@ -1217,8 +1177,7 @@
         The list of lists representation, each element being a
         <see cref="T:Capnp.ListDeserializer" />
         on its own.
-      </returns
-      >
+      </returns>
       <exception cref="T:System.NotSupportedException">
         If this kind of list cannot be represented as list of lists
         (because it is a list of non-pointers)
@@ -1238,8 +1197,7 @@
         If
         <typeparamref name="T" />
         does not qualify as capability interface.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.ListDeserializer.CastND``1(System.Int32)">
       <summary>
@@ -1253,8 +1211,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="n" />
         is less than or equal to 0
-      </exception
-      >
+      </exception>
       <exception cref="T:System.NotSupportedException">
         If this list cannot be represented in the desired manner.
       </exception>
@@ -1277,13 +1234,11 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="cons" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="n" />
         is less than or equals 0.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.NotSupportedException">
         If this list cannot be represented in the desired manner.
       </exception>
@@ -1301,13 +1256,11 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="cons" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="n" />
         is less than or equals 0.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.NotSupportedException">
         If this list cannot be represented in the desired manner.
       </exception>
@@ -1323,8 +1276,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="n" />
         is less than or equals 0
-      </exception
-      >
+      </exception>
       <exception cref="T:System.NotSupportedException">
         If this list cannot be represented in the desired manner.
       </exception>
@@ -1363,8 +1315,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="cons" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.NotSupportedException">
         If this list cannot be represented in the desired manner.
       </exception>
@@ -1379,8 +1330,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="cons" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.NotSupportedException">
         If this list cannot be represented in the desired manner.
       </exception>
@@ -1410,8 +1360,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="cons" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.NotSupportedException">
         If this list cannot be represented in the desired manner.
       </exception>
@@ -1426,8 +1375,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="cons" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.NotSupportedException">
         If this list cannot be represented in the desired manner.
       </exception>
@@ -1442,8 +1390,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="cons" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.NotSupportedException">
         If this list cannot be represented in the desired manner.
       </exception>
@@ -1479,8 +1426,7 @@
       <summary>
         Represents this list as List(Text). For representing it as Text, use
         <seealso cref="M:Capnp.ListDeserializer.CastText" />.
-      </summary
-      >
+      </summary>
       <returns>The desired representation</returns>
       <exception cref="T:System.NotSupportedException">
         If this list cannot be represented in the desired manner.
@@ -1490,8 +1436,7 @@
       <summary>
         Represents this list as Text. For representing it as List(Text), use
         <seealso cref="M:Capnp.ListDeserializer.CastText2" />.
-      </summary
-      >
+      </summary>
       <remarks>
         Did you notice that the naming pattern is broken here? For every other CastX method, X depicts the
         element type.
@@ -1675,8 +1620,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of range.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.ListOfBitsDeserializer.GetEnumerator">
       <summary>
@@ -1695,8 +1639,7 @@
         Always throws
         <see cref="T:System.NotSupportedException" />
         since it is not intended to represent a list of bits differently.
-      </summary
-      >
+      </summary>
     </member>
     <member name="T:Capnp.ListOfBitsSerializer">
       <summary>
@@ -1716,8 +1659,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of range.
-      </exception
-      >
+      </exception>
     </member>
     <member name="P:Capnp.ListOfBitsSerializer.Count">
       <summary>
@@ -1735,8 +1677,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="count" />
         is negative or greater than 2^29-1
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.ListOfBitsSerializer.Init(System.Collections.Generic.IReadOnlyList{System.Boolean})">
       <summary>
@@ -1778,14 +1719,12 @@
       <summary>
         Always throws<see cref="T:System.NotSupportedException" />, since it is not intended to convert a
         capability list to anything else.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.ListOfCapsDeserializer`1.GetEnumerator">
       <summary>
         Implements<see cref="T:System.Collections.Generic.IEnumerable`1" />.
-      </summary
-      >
+      </summary>
       <returns></returns>
     </member>
     <member name="T:Capnp.ListOfCapsSerializer`1">
@@ -1805,8 +1744,7 @@
         load). Currently it doesn't
         because there is a significant risk of messing something up and ending with a hard-to-debug
         <see cref="T:System.TypeLoadException" />.
-      </exception
-      >
+      </exception>
     </member>
     <member name="P:Capnp.ListOfCapsSerializer`1.Item(System.Int32)">
       <summary>
@@ -1821,8 +1759,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of range.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.ListOfCapsSerializer`1.Init(System.Int32)">
       <summary>
@@ -1835,8 +1772,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="count" />
         is negative or greater than 2^29-1
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.ListOfCapsSerializer`1.Init(System.Collections.Generic.IReadOnlyList{`0})">
       <summary>
@@ -1858,8 +1794,7 @@
     <member name="M:Capnp.ListOfCapsSerializer`1.GetEnumerator">
       <summary>
         Implements<see cref="T:System.Collections.Generic.IEnumerable`1" />.
-      </summary
-      >
+      </summary>
       <returns></returns>
     </member>
     <member name="T:Capnp.ListOfEmptyDeserializer">
@@ -1879,8 +1814,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of range.
-      </exception
-      >
+      </exception>
     </member>
     <member name="P:Capnp.ListOfEmptyDeserializer.Kind">
       <summary>
@@ -1899,8 +1833,7 @@
     <member name="M:Capnp.ListOfEmptyDeserializer.GetEnumerator">
       <summary>
         Implements<see cref="T:System.Collections.Generic.IEnumerable`1" />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="T:Capnp.ListOfEmptySerializer">
       <summary>
@@ -1923,8 +1856,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="count" />
         is negative or greater than 2^29-1
-      </exception
-      >
+      </exception>
     </member>
     <member name="T:Capnp.ListOfPointersDeserializer">
       <summary>
@@ -1948,8 +1880,7 @@
     <member name="M:Capnp.ListOfPointersDeserializer.GetEnumerator">
       <summary>
         Implements<see cref="T:System.Collections.Generic.IEnumerable`1" />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.ListOfPointersDeserializer.Cast``1(System.Func{Capnp.DeserializerState,``0})">
       <summary>
@@ -1998,8 +1929,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of range.
-      </exception
-      >
+      </exception>
     </member>
     <member name="P:Capnp.ListOfPointersSerializer`1.Count">
       <summary>
@@ -2009,8 +1939,7 @@
     <member name="M:Capnp.ListOfPointersSerializer`1.GetEnumerator">
       <summary>
         Implements<see cref="T:System.Collections.Generic.IEnumerable`1" />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.ListOfPointersSerializer`1.Init(System.Int32)">
       <summary>
@@ -2023,8 +1952,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="count" />
         is negative or greater than 2^29-1
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.ListOfPointersSerializer`1.Init``1(System.Collections.Generic.IReadOnlyList{``0},System.Action{`0,``0})">
       <summary>
@@ -2062,16 +1990,14 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of range.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.ListOfPrimitivesDeserializer`1.CastBool">
       <summary>
         Always throws
         <see cref="T:System.NotSupportedException" />
         because this specialization can never represent a List(bool).
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.ListOfPrimitivesDeserializer`1.CastByte">
       <summary>
@@ -2183,8 +2109,7 @@
     <member name="M:Capnp.ListOfPrimitivesDeserializer`1.GetEnumerator">
       <summary>
         Implements<see cref="T:System.Collections.Generic.IEnumerable`1" />.
-      </summary
-      >
+      </summary>
       <returns></returns>
     </member>
     <member name="T:Capnp.ListOfPrimitivesSerializer`1">
@@ -2219,8 +2144,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="count" />
         is negative or greater than 2^29-1
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.ListOfPrimitivesSerializer`1.Init(System.Collections.Generic.IReadOnlyList{`0})">
       <summary>
@@ -2237,8 +2161,7 @@
     <member name="M:Capnp.ListOfPrimitivesSerializer`1.GetEnumerator">
       <summary>
         Implements<see cref="T:System.Collections.Generic.IEnumerable`1" />.
-      </summary
-      >
+      </summary>
       <returns></returns>
     </member>
     <member name="T:Capnp.ListOfStructsDeserializer">
@@ -2250,8 +2173,7 @@
     <member name="P:Capnp.ListOfStructsDeserializer.Kind">
       <summary>
         Always returns <code>ListKind.ListOfStructs</code>.
-      </summary
-      >
+      </summary>
     </member>
     <member name="P:Capnp.ListOfStructsDeserializer.Item(System.Int32)">
       <summary>
@@ -2262,8 +2184,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of range.
-      </exception
-      >
+      </exception>
       <exception cref="T:Capnp.DeserializationException">Traversal limit reached</exception>
     </member>
     <member name="M:Capnp.ListOfStructsDeserializer.Cast``1(System.Func{Capnp.DeserializerState,``0})">
@@ -2277,8 +2198,7 @@
     <member name="M:Capnp.ListOfStructsDeserializer.GetEnumerator">
       <summary>
         Implements<see cref="T:System.Collections.Generic.IEnumerable`1" />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="T:Capnp.ListOfStructsSerializer`1">
       <summary>
@@ -2302,8 +2222,7 @@
     <member name="M:Capnp.ListOfStructsSerializer`1.GetEnumerator">
       <summary>
         Implementation of<see cref="T:System.Collections.Generic.IEnumerable`1" />/>
-      </summary
-      >
+      </summary>
       <returns></returns>
     </member>
     <member name="M:Capnp.ListOfStructsSerializer`1.Init(System.Int32)">
@@ -2342,8 +2261,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of range.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         UTF-8 encoding exceeds 2^29-2 bytes
       </exception>
@@ -2356,8 +2274,7 @@
     <member name="M:Capnp.ListOfTextSerializer.GetEnumerator">
       <summary>
         Implementation of<see cref="T:System.Collections.Generic.IEnumerable`1" />/>
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.ListOfTextSerializer.Init(System.Int32)">
       <summary>
@@ -2370,8 +2287,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="count" />
         is negative or greater than 2^29-1
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.ListOfTextSerializer.Init(System.Collections.Generic.IReadOnlyList{System.String})">
       <summary>
@@ -2438,8 +2354,7 @@
         Gets or sets the root object. The root object must be set exactly once per message.
         Setting it manually is only required (and allowed) when it was created with
         <see cref="M:Capnp.MessageBuilder.CreateObject``1" />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.MessageBuilder.BuildRoot``1">
       <summary>
@@ -2541,8 +2456,7 @@
         LINQ-like "Select" operator for<see cref="T:System.Collections.Generic.IReadOnlyList`1" />, with the
         addition that the resulting elements are accessible by index.
         The operator implements lazy semantics, which means that the selector function results are not cached./>
-      </summary
-      >
+      </summary>
       <typeparam name="From">Source element type</typeparam>
       <typeparam name="To">Target element type</typeparam>
       <param name="source">Source list</param>
@@ -2556,8 +2470,7 @@
         or
         <paramref name="selector" />
         is null.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.ReadOnlyListExtensions.ToReadOnlyList``2(System.Collections.Generic.IReadOnlyList{``0},System.Func{``0,``1})">
       <summary>
@@ -2566,8 +2479,7 @@
         <see cref="M:Capnp.ReadOnlyListExtensions.LazyListSelect``2(System.Collections.Generic.IReadOnlyList{``0},System.Func{``0,``1})" />
         the source is evaluated immediately
         and the result is cached.
-      </summary
-      >
+      </summary>
       <typeparam name="From">Source element type</typeparam>
       <typeparam name="To">Target element type</typeparam>
       <param name="source">Source list</param>
@@ -2581,8 +2493,7 @@
         or
         <paramref name="selector" />
         is null.
-      </exception
-      >
+      </exception>
     </member>
     <member name="T:Capnp.Reserializing">
       <summary>
@@ -2602,8 +2513,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="to" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         Target state was already set to a different object type
         than the source state.
@@ -2655,14 +2565,12 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="impl" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:Capnp.Rpc.InvalidCapabilityInterfaceException">
         No
         <see cref="T:Capnp.Rpc.SkeletonAttribute" />
         found on implemented interface(s).
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         Mismatch between generic type arguments (if capability
         interface is generic).
@@ -2714,8 +2622,7 @@
         and<see cref="T:Capnp.Rpc.SkeletonAttribute" />.
         There are some intricacies to consider that you usually don't need to care about, since all that stuff
         will be generated.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.Rpc.CapabilityReflection.CreateSkeleton(System.Object)">
       <summary>
@@ -2724,20 +2631,17 @@
       <param name="obj">
         Interface implementation. Must implement at least one interface which is annotated with a
         <see cref="T:Capnp.Rpc.SkeletonAttribute" />.
-      </param
-      >
+      </param>
       <returns>The Skeleton</returns>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="obj" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:Capnp.Rpc.InvalidCapabilityInterfaceException">
         No
         <see cref="T:Capnp.Rpc.SkeletonAttribute" />
         found on implemented interface(s).
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         Mismatch between generic type arguments (if capability
         interface is generic).
@@ -2764,14 +2668,12 @@
         Validates that a given type qualifies as cpapbility interface, throws
         <see cref="T:Capnp.Rpc.InvalidCapabilityInterfaceException" />
         on failure.
-      </summary
-      >
+      </summary>
       <param name="interfaceType">type to check</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="interfaceType" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:Capnp.Rpc.InvalidCapabilityInterfaceException">
         Given typ did not qualify as capability
         interface.
@@ -2787,13 +2689,11 @@
         true when
         <paramref name="interfaceType" />
         is a capability interface
-      </returns
-      >
+      </returns>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="interfaceType" />
         is null.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.Rpc.CapabilityReflection.CreateProxy``1(Capnp.Rpc.ConsumedCapability,System.String,System.String,System.Int32)">
       <summary>
@@ -2801,26 +2701,22 @@
       </summary>
       <typeparam name="TInterface">
         Capability interface. Must be annotated with<see cref="T:Capnp.Rpc.ProxyAttribute" />.
-      </typeparam
-      >
+      </typeparam>
       <param name="cap">low-level capability</param>
       <param name="memberName">debugging aid</param>
       <param name="sourceFilePath">debugging aid</param>
       <param name="sourceLineNumber">debugging aid</param>
       <returns>
         The Proxy instance which implements<typeparamref name="TInterface" />.
-      </returns
-      >
+      </returns>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="cap" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:Capnp.Rpc.InvalidCapabilityInterfaceException">
         <typeparamref name="TInterface" />
         did not qualify as capability interface.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         Mismatch between generic type arguments (if capability
         interface is generic).
@@ -2848,8 +2744,7 @@
         <see cref="T:Capnp.Rpc.RpcEngine" />. An application does not directly interact with it
         (which is intentionally impossible, since the invocation method is internal), but instead uses a
         <see cref="T:Capnp.Rpc.Proxy" />-derived wrapper.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.Rpc.ConsumedCapability.ReleaseRemotely">
       <summary>
@@ -2860,8 +2755,7 @@
     <member name="T:Capnp.Rpc.IEndpoint">
       <summary>
         A uni-directional endpoint, used in conjunction with the<see cref="T:Capnp.Rpc.RpcEngine" />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.Rpc.IEndpoint.Forward(Capnp.WireFrame)">
       <summary>
@@ -2877,8 +2771,7 @@
       <summary>
         A mono skeleton (as opposed to<see cref="T:Capnp.Rpc.PolySkeleton" />) is a skeleton which implements one
         particular RPC interface.
-      </summary
-      >
+      </summary>
     </member>
     <member name="P:Capnp.Rpc.IMonoSkeleton.InterfaceId">
       <summary>
@@ -2903,8 +2796,7 @@
         or
         <paramref name="then" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.ArgumentException">The pomise was already registered.</exception>
     </member>
     <member name="M:Capnp.Rpc.Impatient.GetAnswer(System.Threading.Tasks.Task)">
@@ -2917,8 +2809,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="task" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.ArgumentException">
         The task was not registered using MakePipelineAware.
       </exception>
@@ -2937,14 +2828,12 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="task" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:Capnp.Rpc.InvalidCapabilityInterfaceException">
         <typeparamref name="TInterface" />
         did not
         quality as capability interface.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.Rpc.Impatient.MaybeTailCall``1(System.Threading.Tasks.Task{``0},System.Func{``0,Capnp.SerializerState})">
       <summary>
@@ -2997,8 +2886,7 @@
         <see cref="T:Capnp.Rpc.ProxyAttribute" />
         and<see cref="T:Capnp.Rpc.SkeletonAttribute" />.
         See descriptions of these attributes for further details.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.Rpc.InvalidCapabilityInterfaceException.#ctor(System.String)">
       <summary>
@@ -3080,8 +2968,7 @@
         Constructs a path from
         <see cref="T:Capnp.Rpc.MemberAccessPath.MemberAccess" />
         qualifiers.
-      </summary
-      >
+      </summary>
       <param name="path">List of member access elements</param>
     </member>
     <member name="M:Capnp.Rpc.MemberAccessPath.#ctor(System.UInt32[])">
@@ -3101,8 +2988,7 @@
         "ArrayElementAccess".
         Now we already have a suitable design pattern, mainly to show the abstract concept behind a member
         access path.
-      </remarks
-      >
+      </remarks>
     </member>
     <member name="M:Capnp.Rpc.MemberAccessPath.MemberAccess.Deserialize(Capnp.Rpc.PromisedAnswer.Op.READER)">
       <summary>
@@ -3114,8 +3000,7 @@
     <member name="M:Capnp.Rpc.MemberAccessPath.MemberAccess.Serialize(Capnp.Rpc.PromisedAnswer.Op.WRITER)">
       <summary>
         Serializes this instance to a<see cref="T:Capnp.Rpc.PromisedAnswer.Op" />.
-      </summary
-      >
+      </summary>
       <param name="op">Serialization target</param>
     </member>
     <member name="M:Capnp.Rpc.MemberAccessPath.MemberAccess.Eval(Capnp.DeserializerState)">
@@ -3144,8 +3029,7 @@
     <member name="M:Capnp.Rpc.MemberAccessPath.StructMemberAccess.Serialize(Capnp.Rpc.PromisedAnswer.Op.WRITER)">
       <summary>
         Serializes this instance to a<see cref="T:Capnp.Rpc.PromisedAnswer.Op" />.
-      </summary
-      >
+      </summary>
       <param name="op">Serialization target</param>
     </member>
     <member name="M:Capnp.Rpc.MemberAccessPath.StructMemberAccess.Eval(Capnp.DeserializerState)">
@@ -3163,8 +3047,7 @@
     <member name="M:Capnp.Rpc.MemberAccessPath.Serialize(Capnp.Rpc.PromisedAnswer.WRITER)">
       <summary>
         Serializes this path th a<see cref="T:Capnp.Rpc.PromisedAnswer" />.
-      </summary
-      >
+      </summary>
       <param name="promisedAnswer">The serialization target</param>
     </member>
     <member name="M:Capnp.Rpc.MemberAccessPath.Eval(Capnp.DeserializerState)">
@@ -3255,8 +3138,7 @@
     <member name="M:Capnp.Rpc.PendingQuestion.Dispose">
       <summary>
         Implements<see cref="T:System.IDisposable" />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="T:Capnp.Rpc.PolySkeleton">
       <summary>
@@ -3272,14 +3154,12 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="skeleton" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         A skeleton with
         <paramref name="interfaceId" />
         was already added.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.Rpc.PolySkeleton.Invoke(System.UInt64,System.UInt16,Capnp.DeserializerState,System.Threading.CancellationToken)">
       <summary>
@@ -3366,8 +3246,7 @@
       <exception cref="T:Capnp.Rpc.InvalidCapabilityInterfaceException">
         <typeparamref name="T" />
         did not qualify as capability interface.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         This capability is broken, or mismatch between generic
         type arguments (if capability interface is generic).
@@ -3404,13 +3283,11 @@
         and
         exposes a public parameterless constructor. Moreover, it must have same amount of generic type
         parameters like the annotated interface, with identical generic constraints.
-      </param
-      >
+      </param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="proxyClass" />
         is null.
-      </exception
-      >
+      </exception>
     </member>
     <member name="P:Capnp.Rpc.ProxyAttribute.ProxyClass">
       <summary>
@@ -3451,8 +3328,7 @@
       <summary>
         A skeleton is a wrapper around a capability interface implementation which adapts it in the way it is
         expected by the<see cref="T:Capnp.Rpc.RpcEngine" />.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.Rpc.Skeleton.Claim``1(``0)">
       <summary>
@@ -3548,13 +3424,11 @@
         and
         exposes a public parameterless constructor. Moreover, it must have same amount of generic type
         parameters like the annotated interface, with identical generic constraints.
-      </param
-      >
+      </param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="skeletonClass" />
         is null.
-      </exception
-      >
+      </exception>
     </member>
     <member name="P:Capnp.Rpc.SkeletonAttribute.SkeletonClass">
       <summary>
@@ -3581,13 +3455,11 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="host" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="port" />
         is not between System.Net.IPEndPoint.MinPort and System.Net.IPEndPoint.MaxPort.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.Net.Sockets.SocketException">
         An error occurred when accessing the socket.
       </exception>
@@ -3684,13 +3556,11 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="localAddr" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="port" />
         is not between System.Net.IPEndPoint.MinPort and System.Net.IPEndPoint.MaxPort.
-      </exception
-      >
+      </exception>
     </member>
     <member name="P:Capnp.Rpc.TcpRpcServer.IsAlive">
       <summary>
@@ -3704,8 +3574,7 @@
       <summary>
         Sets the bootstrap capability. It must be an object which implements a valid capability interface
         (<see cref="T:Capnp.Rpc.SkeletonAttribute" />).
-      </summary
-      >
+      </summary>
     </member>
     <member name="P:Capnp.Rpc.TcpRpcServer.Connections">
       <summary>
@@ -3759,8 +3628,7 @@
         Preferred segment index. If enough space is available,
         memory will be allocated inside that segment. Otherwise, a different segment will be chosen, or
         a new one will be allocated, or allocation will fail (depending on<paramref name="forcePreferredSegment" />).
-      </param
-      >
+      </param>
       <param name="result">
         The allocated memory slice in case of success (
         <code>default(SegmentSlice) otherwise)</code>
@@ -3794,8 +3662,7 @@
         and
         <see cref="T:Capnp.IStructSerializer" />
         interfaces for type-safe reading and writing.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.SerializerExtensions.ReadDataBool``1(``0,System.UInt64,System.Boolean)">
       <summary>
@@ -4170,8 +4037,7 @@
         somewhat
         non-symmetric to <code>DeserializerState.RawData</code>. Never mind: You should not use it directly,
         anyway.
-      </summary
-      >
+      </summary>
     </member>
     <member name="M:Capnp.SerializerState.Allocate">
       <summary>
@@ -4200,13 +4066,11 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="target" />
         is null
-      </exception
-      >
+      </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="slot" />
         out of range
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         <list type="bullet">
           <item>
@@ -4225,8 +4089,7 @@
               belong to different message builder, and
               <paramref name="allowCopy" />
               is false
-            </description
-            >
+            </description>
           </item>
         </list>
       </exception>
@@ -4282,8 +4145,7 @@
         outside allowed range,
         <paramref name="totalCount" />
         negative or exceeding 2^29-1
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.SetListOfPointers(System.Int32)">
       <summary>
@@ -4297,8 +4159,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="totalCount" />
         negative or exceeding 2^29-1
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.SetListOfStructs(System.Int32,System.UInt16,System.UInt16)">
       <summary>
@@ -4314,8 +4175,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="totalCount" />
         negative, or total word count would exceed 2^29-1
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.WriteText(System.String)">
       <summary>
@@ -4325,8 +4185,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="text" />
         is null
-      </exception
-      >
+      </exception>
       <exception cref="T:System.Text.EncoderFallbackException">
         Trying to obtain the UTF-8 encoding might throw
         this exception.
@@ -4358,8 +4217,7 @@
         is not completely within the struct's data section, misaligned, exceeds one word, or
         <paramref name="bitCount" />
         is negative
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.StructReadData(System.UInt64,System.Int32)">
       <summary>
@@ -4380,8 +4238,7 @@
         is not completely within the struct's data section, misaligned, exceeds one word, or
         <paramref name="count" />
         is negative
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.BuildPointer``1(System.Int32)">
       <summary>
@@ -4412,8 +4269,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.TryGetPointer``1(System.Int32)">
       <summary>
@@ -4444,8 +4300,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.BuildPointer(System.Int32)">
       <summary>
@@ -4477,8 +4332,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.TryGetPointer(System.Int32)">
       <summary>
@@ -4510,8 +4364,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ReadText(System.Int32,System.String)">
       <summary>
@@ -4535,8 +4388,7 @@
       <param name="text">Text to encode</param>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="text" />is null
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         <list type="bullet">
           <item>
@@ -4552,8 +4404,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.WriteText(System.Int32,System.String,System.String)">
       <summary>
@@ -4566,16 +4417,14 @@
       <param name="text">Text to encode</param>
       <param name="defaultText">
         Default text of<paramref name="text" />> is null
-      </param
-      >
+      </param>
       <exception cref="T:System.ArgumentNullException">
         Both
         <paramref name="text" />
         and
         <paramref name="defaultText" />
         are null
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         <list type="bullet">
           <item>
@@ -4591,8 +4440,7 @@
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListBuildStruct(System.Int32)">
       <summary>
@@ -4606,8 +4454,7 @@
       </exception>
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListBuildStruct``1(System.Int32)">
       <summary>
@@ -4622,8 +4469,7 @@
       </exception>
       <exception cref="T:System.IndexOutOfRangeException">
         <paramref name="index" />is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListWriteValue(System.Int32,System.Boolean,System.Boolean)">
       <summary>
@@ -4640,8 +4486,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListWriteValues(System.Collections.Generic.IReadOnlyList{System.Boolean},System.Boolean)">
       <summary>
@@ -4657,8 +4502,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="values" />
         is null.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.ArgumentOutOfRangeException">
         The given element count does not match the underlying
         list's element count.
@@ -4679,8 +4523,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListGetBytes">
       <summary>
@@ -4718,8 +4561,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListWriteValue(System.Int32,System.UInt16,System.UInt16)">
       <summary>
@@ -4737,8 +4579,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListWriteValue(System.Int32,System.Int16,System.Int16)">
       <summary>
@@ -4756,8 +4597,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListWriteValue(System.Int32,System.UInt32,System.UInt32)">
       <summary>
@@ -4775,8 +4615,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListWriteValue(System.Int32,System.Int32,System.Int32)">
       <summary>
@@ -4794,8 +4633,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListWriteValue(System.Int32,System.Single,System.Single)">
       <summary>
@@ -4813,8 +4651,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListWriteValue(System.Int32,System.UInt64,System.UInt64)">
       <summary>
@@ -4832,8 +4669,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListWriteValue(System.Int32,System.Int64,System.Int64)">
       <summary>
@@ -4851,8 +4687,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ListWriteValue(System.Int32,System.Double,System.Double)">
       <summary>
@@ -4870,8 +4705,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="index" />
         is out of bounds.
-      </exception
-      >
+      </exception>
     </member>
     <member name="M:Capnp.SerializerState.ProvideCapability(Capnp.Rpc.ConsumedCapability)">
       <summary>
@@ -4905,20 +4739,17 @@
           <item>
             <description>
               Low-level capability object (<code>Rpc.ConsumedCapability</code>)
-            </description
-            >
+            </description>
           </item>
           <item>
             <description>
               Proxy object (<code>Rpc.Proxy</code>)
-            </description
-            >
+            </description>
           </item>
           <item>
             <description>
               Skeleton object (<code>Rpc.Skeleton</code>)
-            </description
-            >
+            </description>
           </item>
           <item>
             <description>Capability interface implementation</description>
@@ -4937,8 +4768,7 @@
         In contrast to<see cref="M:Capnp.SerializerState.Link(System.Int32,Capnp.SerializerState,System.Boolean)" />, this
         method also accepts deserializer states, domain objects, capabilites, and lists thereof.
         If necessary, it will perform a deep copy.
-      </summary
-      >
+      </summary>
       <param name="slot">
         If this state describes a struct: Index into this struct's pointer table.
         If this state describes a list of pointers: List element index.
@@ -4957,8 +4787,7 @@
               A
               <see cref="T:Capnp.DeserializerState" />
               (will always deep copy)
-            </description
-            >
+            </description>
           </item>
           <item>
             <description>
@@ -4969,20 +4798,17 @@
           <item>
             <description>
               A low-level capability object (<see cref="T:Capnp.Rpc.ConsumedCapability" />)
-            </description
-            >
+            </description>
           </item>
           <item>
             <description>
               A proxy object (<see cref="T:Capnp.Rpc.Proxy" />)
-            </description
-            >
+            </description>
           </item>
           <item>
             <description>
               A skeleton object (<see cref="T:Capnp.Rpc.Skeleton" />)
-            </description
-            >
+            </description>
           </item>
           <item>
             <description>A capability interface implementation</description>
@@ -4992,16 +4818,14 @@
               A
               <see cref="T:System.Collections.Generic.IReadOnlyList`1" />
               of one of the things listed here.
-            </description
-            >
+            </description>
           </item>
         </list>
       </param>
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="slot" />
         is out of range.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         <list type="bullet">
           <item>
@@ -5026,13 +4850,11 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="slot" />
         is out of range.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.ArgumentException">
         The desired interface does not qualify as capability interface
         (<see cref="T:Capnp.Rpc.ProxyAttribute" />)
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         This state does not represent a struct.
       </exception>
@@ -5046,8 +4868,7 @@
       <exception cref="T:System.ArgumentOutOfRangeException">
         <paramref name="slot" />
         is out of range.
-      </exception
-      >
+      </exception>
       <exception cref="T:System.InvalidOperationException">
         This state does not represent a struct.
       </exception>
