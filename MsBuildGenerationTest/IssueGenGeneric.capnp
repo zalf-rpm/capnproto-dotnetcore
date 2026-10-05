@@ -6,6 +6,10 @@ $Cxx.namespace("MsBuildGenerationTest.IssueGenGeneric");
 interface GenericInterface(T) {
   interface NestedInterface {
     method @0 ();
+
+    # Capability returned from an interface nested in a generic one: the pipelining
+    # extension method has to declare the enclosing type's parameter T.
+    child @1 () -> (msg :Msg, child :NestedInterface);
   }
 
   getNested @0 () -> (nested :NestedInterface);

@@ -1006,6 +1006,15 @@ internal class InterfaceSnippetGen
             .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
     }
 
+    private static IEnumerable<string> EnclosingGenericParameterNames(TypeDefinition type)
+    {
+        // DefinitionHierarchy runs innermost to outermost; declare outermost parameters first.
+        return type
+            .DefinitionHierarchy.Reverse()
+            .SelectMany(def => def.GenericParameters)
+            .Distinct();
+    }
+
     public IEnumerable<MemberDeclarationSyntax> MakePipeliningSupport(TypeDefinition type)
     {
         foreach (var method in type.Methods)
@@ -1100,10 +1109,26 @@ internal class InterfaceSnippetGen
                     )
                 );
 
-            if (type.GenericParameters.Count > 0)
+            // Nested types of a generic type inherit the enclosing type's parameters, but the
+            // extension method lives in a static, non-generic class, so declare them here too.
+            var typeParameterNames = EnclosingGenericParameterNames(type).ToArray();
+            if (typeParameterNames.Length > 0)
                 methodDecl = methodDecl
-                    .AddTypeParameterListParameters(MakeTypeParameters(type).ToArray())
-                    .AddConstraintClauses(MakeTypeParameterConstraints(type).ToArray());
+                    .AddTypeParameterListParameters(
+                        typeParameterNames
+                            .Select(n => TypeParameter(_names.GetGenericTypeParameter(n).Identifier))
+                            .ToArray()
+                    )
+                    .AddConstraintClauses(
+                        typeParameterNames
+                            .Select(n =>
+                                TypeParameterConstraintClause(
+                                        _names.GetGenericTypeParameter(n).IdentifierName
+                                    )
+                                    .AddConstraints(ClassOrStructConstraint(SyntaxKind.ClassConstraint))
+                            )
+                            .ToArray()
+                    );
 
             yield return pathDecl;
             yield return methodDecl;
